@@ -1,6 +1,6 @@
 # Villa of Darkness — Biệt Thự Bóng Tối
 
-> *A Vietnamese horror survival game built in Unity 3D.*
+> *A Vietnamese horror survival game built in Unity 6.3.*
 
 ---
 
@@ -34,7 +34,7 @@ Low-polygon 3D with a deliberate PS1/PS2 aesthetic: sub-256px textures, CRT scan
 
 | | |
 |---|---|
-| Engine | Unity 2022 LTS (URP) |
+| Engine | Unity 6000.3.11f1 (Unity 6.3, URP) |
 | Language | C# |
 | AI Navigation | Unity NavMesh |
 | Post-processing | URP Volume + Custom Shader Graph |
@@ -47,14 +47,14 @@ Low-polygon 3D with a deliberate PS1/PS2 aesthetic: sub-256px textures, CRT scan
 
 Final project — FPT Polytechnic, class GA20303.
 
-| Role | Member |
-|---|---|
-| Lead Developer / Game Director | P1 |
-| Gameplay Systems | P2 |
-| UI & Audio | P3 |
-| Level Design | P4 |
-| Event & Trigger Systems | P5 |
-| UI & Scene Flow | P6 |
+| Role | Member | Student ID |
+|---|---|---|
+| Lead Developer / Game Director | Nguyễn Bùi Phúc Thái | PS46979 |
+| Gameplay Systems | Võ Văn Thuận | PS45550 |
+| UI & Audio | Bùi Thành Tân | PS45713 |
+| Level Design | Lê Phú Tuấn Anh | PS45865 |
+| Event & Trigger Systems | Nguyễn Hữu Phúc | PS45498 |
+| UI & Scene Flow | Nguyễn Trường Vũ | PS45585 |
 
 ---
 
