@@ -1,0 +1,5 @@
+root = true
+
+[*.cs]
+# Cho phép _camelCase cho private serialized field
+dotnet_naming_rule.unity_serialized_field_rule.severity = none

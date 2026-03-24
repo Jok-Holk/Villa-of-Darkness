@@ -1,0 +1,13 @@
+{
+    "name": "Phase1.Tests",
+    "references": [
+        "BietThuBongToi.Runtime",
+        "UnityEngine.TestRunner",
+        "UnityEditor.TestRunner"
+    ],
+    "includePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [ "nunit.framework.dll" ],
+    "autoReferenced": false
+}
