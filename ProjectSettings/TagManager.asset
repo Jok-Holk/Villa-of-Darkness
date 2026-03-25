@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Ghost
   - Interactable
+  - HideSpot
   layers:
   - Default
   - TransparentFX
