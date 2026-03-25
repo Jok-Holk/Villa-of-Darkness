@@ -1,0 +1,4 @@
+﻿<Solution>
+  <Project Path="BietThuBongToi.Runtime.csproj" />
+  <Project Path="Phase1.Tests.csproj" />
+</Solution>
