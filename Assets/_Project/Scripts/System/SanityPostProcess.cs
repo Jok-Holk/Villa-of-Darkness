@@ -1,7 +1,6 @@
 using UnityEngine;
 using UnityEngine.Rendering; 
 using UnityEngine.Rendering.Universal; // Cần thiết cho Post-processing
-using Phase1.BuiThanhTan; // THÊM DÒNG NÀY VÀO ĐÂY
 
 namespace Assets._Project.Scripts.System
 {
