@@ -13,7 +13,12 @@ public class AudioManager : MonoBehaviour
         if (Instance == null) { Instance = this; DontDestroyOnLoad(gameObject); }
         else Destroy(gameObject);
         
+        // --- PHẦN FIX MỚI Ở ĐÂY ---
         if (_bgmSource == null) _bgmSource = GetComponent<AudioSource>();
+        
+        // Nếu designer quên kéo _sfxSource, dùng tạm _bgmSource để phát tiếng
+        if (_sfxSource == null) _sfxSource = _bgmSource; 
+        // --------------------------
     }
 
     public void PlayBGM(AudioClip clip)
@@ -36,6 +41,8 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySFX(AudioClip clip)
     {
-        if (clip != null && _sfxSource != null) _sfxSource.PlayOneShot(clip);
+        // Bây giờ _sfxSource đã được đảm bảo không null nhờ Awake
+        if (clip != null && _sfxSource != null) 
+            _sfxSource.PlayOneShot(clip);
     }
 }
