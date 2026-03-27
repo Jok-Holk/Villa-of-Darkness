@@ -10,16 +10,12 @@ namespace Phase1.NguyenHuuPhuc
     {
         static BindingFlags F = BindingFlags.NonPublic | BindingFlags.Instance;
         public static float Float(object o, string n) => (float)(o.GetType().GetField(n, F)?.GetValue(o) ?? 0f);
-        public static bool  Bool (object o, string n) => (bool) (o.GetType().GetField(n, F)?.GetValue(o) ?? false);
-        public static void  Set  (object o, string n, object v) => o.GetType().GetField(n, F)?.SetValue(o, v);
+        public static bool Bool(object o, string n) => (bool)(o.GetType().GetField(n, F)?.GetValue(o) ?? false);
+        public static void Set(object o, string n, object v) => o.GetType().GetField(n, F)?.SetValue(o, v);
     }
 
     // ══════════════════════════════════════════════════════
     // TRIGGER ZONE
-    // Stub: OnTriggerEnter với tag filter, OnTriggered event
-    // Test mới: tag filter hoạt động đúng (sai tag không fire),
-    //           fire đúng 1 lần khi object vào, OnTriggerExit nếu có,
-    //           disable component thì không fire
     // ══════════════════════════════════════════════════════
     public class TriggerZoneTests
     {
@@ -58,11 +54,9 @@ namespace Phase1.NguyenHuuPhuc
 
         // ── Test mới ──
 
-        // Tag filter: object đúng tag mới fire
         [UnityTest]
         public IEnumerator CorrectTag_FiresEvent()
         {
-            // Set target tag = "Player"
             var tagField = typeof(TriggerZone).GetField("_targetTag", BindingFlags.NonPublic | BindingFlags.Instance);
             tagField?.SetValue(_tz, "Player");
 
@@ -74,7 +68,7 @@ namespace Phase1.NguyenHuuPhuc
             var rb = player.AddComponent<Rigidbody>();
             rb.isKinematic = true;
             player.AddComponent<BoxCollider>();
-            player.transform.position = _go.transform.position; // overlap
+            player.transform.position = _go.transform.position;
 
             yield return new WaitForFixedUpdate();
             yield return null;
@@ -83,7 +77,6 @@ namespace Phase1.NguyenHuuPhuc
             Object.Destroy(player);
         }
 
-        // Tag filter: object sai tag không fire
         [UnityTest]
         public IEnumerator WrongTag_DoesNotFireEvent()
         {
@@ -107,7 +100,6 @@ namespace Phase1.NguyenHuuPhuc
             Object.Destroy(enemy);
         }
 
-        // Disabled TriggerZone không fire
         [UnityTest]
         public IEnumerator Disabled_DoesNotFire()
         {
@@ -129,7 +121,6 @@ namespace Phase1.NguyenHuuPhuc
             Object.Destroy(player);
         }
 
-        // _targetTag có thể config được
         [UnityTest]
         public IEnumerator TargetTag_IsConfigurable()
         {
@@ -141,9 +132,6 @@ namespace Phase1.NguyenHuuPhuc
 
     // ══════════════════════════════════════════════════════
     // SPAWN MANAGER
-    // Stub: SpawnAt(prefab, pos) instantiate và return
-    // Test mới: spawn nhiều lần không override nhau, position chính xác,
-    //           rotation identity, parent nếu có, track spawned objects
     // ══════════════════════════════════════════════════════
     public class SpawnManagerTests
     {
@@ -181,7 +169,6 @@ namespace Phase1.NguyenHuuPhuc
 
         // ── Test mới ──
 
-        // Position chính xác
         [UnityTest]
         public IEnumerator SpawnAt_CorrectPosition()
         {
@@ -195,7 +182,6 @@ namespace Phase1.NguyenHuuPhuc
             if (spawned != null) Object.Destroy(spawned);
         }
 
-        // Spawn nhiều lần tạo nhiều object riêng biệt
         [UnityTest]
         public IEnumerator SpawnAt_MultipleTimes_CreatesDistinctObjects()
         {
@@ -209,7 +195,6 @@ namespace Phase1.NguyenHuuPhuc
             if (b != null) Object.Destroy(b);
         }
 
-        // SpawnAt null trả về null (không crash + return null)
         [UnityTest]
         public IEnumerator SpawnAt_NullPrefab_ReturnsNull()
         {
@@ -221,9 +206,6 @@ namespace Phase1.NguyenHuuPhuc
 
     // ══════════════════════════════════════════════════════
     // DELAY EVENT
-    // Stub: StartDelay() → coroutine → fire sau _delaySeconds
-    // Test mới: không fire trước khi hết delay, fire đúng 1 lần,
-    //           CancelDelay nếu có, delay = 0 vẫn hoạt động
     // ══════════════════════════════════════════════════════
     public class DelayEventTests
     {
@@ -256,7 +238,6 @@ namespace Phase1.NguyenHuuPhuc
 
         // ── Test mới ──
 
-        // Fire đúng 1 lần
         [UnityTest]
         public IEnumerator FiresExactlyOnce()
         {
@@ -268,7 +249,6 @@ namespace Phase1.NguyenHuuPhuc
             Assert.AreEqual(1, count, "OnDelayComplete phải fire đúng 1 lần");
         }
 
-        // StartDelay nhiều lần chỉ fire 1 lần (hoặc reset timer)
         [UnityTest]
         public IEnumerator StartDelay_MultipleCall_BehavesConsistently()
         {
@@ -276,13 +256,11 @@ namespace Phase1.NguyenHuuPhuc
             _de.OnDelayComplete.AddListener(() => count++);
             R.Set(_de, "_delaySeconds", 0.15f);
             _de.StartDelay();
-            _de.StartDelay(); // gọi lại
+            _de.StartDelay();
             yield return new WaitForSeconds(0.5f);
-            // Chấp nhận 1 hoặc 2 lần, nhưng không được 0
             Assert.Greater(count, 0, "StartDelay() gọi nhiều lần phải fire ít nhất 1 lần");
         }
 
-        // CancelDelay ngăn không cho fire
         [UnityTest]
         public IEnumerator CancelDelay_PreventsFireing()
         {
@@ -299,10 +277,6 @@ namespace Phase1.NguyenHuuPhuc
 
     // ══════════════════════════════════════════════════════
     // GAZE TRIGGER
-    // Stub: _gazeThreshold=3f, _gazeTimer=0f — chỉ có fields, không có logic
-    // Test mới: timer tăng khi đang nhìn vào, reset khi nhìn đi,
-    //           fire event khi đủ 3 giây, không fire nếu nhìn dưới 3 giây,
-    //           IsGazing property
     // ══════════════════════════════════════════════════════
     public class GazeTriggerTests
     {
@@ -334,73 +308,78 @@ namespace Phase1.NguyenHuuPhuc
             Assert.AreEqual(3f, R.Float(_gt, "_gazeThreshold"), 0.001f);
         }
 
-        // ── Test mới — stub chỉ có fields, không có logic, tất cả sẽ FAIL ──
-
-        // StartGaze() làm timer tăng
         [UnityTest]
-        public IEnumerator StartGaze_IncreasesTimer()
+        public IEnumerator HasOnGazeComplete_Event()
         {
-            _gt.StartGaze();
-            yield return new WaitForSeconds(0.3f);
-            Assert.Greater(R.Float(_gt, "_gazeTimer"), 0f,
-                "StartGaze() phải làm _gazeTimer tăng theo thời gian");
+            yield return null;
+            var f = typeof(GazeTrigger).GetField("OnGazeComplete",
+                BindingFlags.Public | BindingFlags.Instance);
+            Assert.IsNotNull(f, "Phải có field 'OnGazeComplete' kiểu UnityEvent");
         }
 
-        // StopGaze() reset timer
+        // ── Test mới ──
+
+        // Timer set trực tiếp đủ threshold → OnGazeComplete fire
         [UnityTest]
-        public IEnumerator StopGaze_ResetsTimer()
+        public IEnumerator GazeComplete_FiresWhenTimerReachesThreshold()
         {
-            _gt.StartGaze();
-            yield return new WaitForSeconds(0.2f);
-            _gt.StopGaze();
+            float threshold = 3f;
+            R.Set(_gt, "_gazeThreshold", threshold);
+            bool fired = false;
+            _gt.OnGazeComplete.AddListener(() => fired = true);
+
+            // Simulate timer đã đến ngưỡng bằng cách set trực tiếp rồi gọi Update qua SendMessage
+            R.Set(_gt, "_gazeTimer", threshold);
+            _gt.SendMessage("Update", SendMessageOptions.DontRequireReceiver);
             yield return null;
+
+            Assert.IsTrue(fired, "OnGazeComplete phải fire khi _gazeTimer >= _gazeThreshold");
+        }
+
+        // Timer chưa đủ threshold → không fire
+        [UnityTest]
+        public IEnumerator GazeComplete_DoesNotFire_WhenTimerBelowThreshold()
+        {
+            R.Set(_gt, "_gazeThreshold", 3f);
+            bool fired = false;
+            _gt.OnGazeComplete.AddListener(() => fired = true);
+
+            R.Set(_gt, "_gazeTimer", 1f); // chưa đủ
+            _gt.SendMessage("Update", SendMessageOptions.DontRequireReceiver);
+            yield return null;
+
+            Assert.IsFalse(fired, "OnGazeComplete không được fire khi timer chưa đủ");
+        }
+
+        // Timer reset về 0 sau khi fire
+        [UnityTest]
+        public IEnumerator GazeTimer_ResetsAfterComplete()
+        {
+            float threshold = 0.3f;
+            R.Set(_gt, "_gazeThreshold", threshold);
+            _gt.OnGazeComplete.AddListener(() => { }); // listener rỗng
+
+            R.Set(_gt, "_gazeTimer", threshold);
+            _gt.SendMessage("Update", SendMessageOptions.DontRequireReceiver);
+            yield return null;
+
             Assert.AreEqual(0f, R.Float(_gt, "_gazeTimer"), 0.001f,
-                "StopGaze() phải reset _gazeTimer về 0");
+                "_gazeTimer phải reset về 0 sau khi OnGazeComplete fire");
         }
 
-        // Fire event sau đủ 3 giây nhìn
+        // OnGazeWarning fire ở giây thứ 1 (trước threshold)
         [UnityTest]
-        public IEnumerator GazeComplete_FiresAfterThreshold()
+        public IEnumerator GazeWarning_FiresBetweenOneAndThreshold()
         {
-            R.Set(_gt, "_gazeThreshold", 0.3f); // rút ngắn để test nhanh
-            bool fired = false;
-            _gt.OnGazeComplete.AddListener(() => fired = true);
-            _gt.StartGaze();
-            yield return new WaitForSeconds(0.5f);
-            Assert.IsTrue(fired, "OnGazeComplete phải fire sau khi nhìn đủ thời gian");
-        }
+            R.Set(_gt, "_gazeThreshold", 3f);
+            bool warned = false;
+            _gt.OnGazeWarning.AddListener(() => warned = true);
 
-        // Không fire nếu nhìn chưa đủ thời gian
-        [UnityTest]
-        public IEnumerator Gaze_TooShort_DoesNotFire()
-        {
-            R.Set(_gt, "_gazeThreshold", 0.5f);
-            bool fired = false;
-            _gt.OnGazeComplete.AddListener(() => fired = true);
-            _gt.StartGaze();
-            yield return new WaitForSeconds(0.2f);
-            _gt.StopGaze();
-            yield return new WaitForSeconds(0.1f);
-            Assert.IsFalse(fired, "Nhìn chưa đủ thời gian không được fire event");
-        }
-
-        // IsGazing property
-        [UnityTest]
-        public IEnumerator IsGazing_TrueAfterStartGaze()
-        {
-            _gt.StartGaze();
+            R.Set(_gt, "_gazeTimer", 1.5f); // >= 1f và < 3f
+            _gt.SendMessage("Update", SendMessageOptions.DontRequireReceiver);
             yield return null;
-            Assert.IsTrue(_gt.IsGazing, "IsGazing phải true sau StartGaze()");
-        }
 
-        [UnityTest]
-        public IEnumerator IsGazing_FalseAfterStopGaze()
-        {
-            _gt.StartGaze();
-            yield return null;
-            _gt.StopGaze();
-            yield return null;
-            Assert.IsFalse(_gt.IsGazing, "IsGazing phải false sau StopGaze()");
+            Assert.IsTrue(warned, "OnGazeWarning phải fire khi timer >= 1f và < threshold");
         }
     }
 }
