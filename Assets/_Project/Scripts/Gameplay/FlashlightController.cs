@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-namespace Phase1.VoVanThuan
-{
     public class FlashlightController : MonoBehaviour
     {
         [SerializeField] private float _batteryLevel = 1f;
@@ -46,4 +44,3 @@ namespace Phase1.VoVanThuan
             }
         }
     }
-}

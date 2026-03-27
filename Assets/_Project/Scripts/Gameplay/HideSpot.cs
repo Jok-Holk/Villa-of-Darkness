@@ -1,8 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
 
-namespace Phase1.VoVanThuan
-{
     public class HideSpot : MonoBehaviour, IInteractable
     {
         private bool _playerIsHiding = false;
@@ -19,4 +17,3 @@ namespace Phase1.VoVanThuan
             else OnReveal.Invoke();
         }
     }
-}

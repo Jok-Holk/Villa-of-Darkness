@@ -1,8 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.Events; // Quan trọng để dùng UnityEvent
 
-namespace Phase1.VoVanThuan
-{
+
     public class DoorController : MonoBehaviour, IInteractable
     {
         [SerializeField] private bool _isOpen = false;
@@ -19,4 +18,3 @@ namespace Phase1.VoVanThuan
             if (_isOpen) OnDoorOpen.Invoke(); else OnDoorClose.Invoke();
         }
     }
-}
