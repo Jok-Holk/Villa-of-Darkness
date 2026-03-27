@@ -2,8 +2,6 @@
 using UnityEngine.Events;
 using System.Collections.Generic;
 
-namespace Phase1.VoVanThuan
-{
     // Class kế thừa UnityEvent có tham số string để báo tên Item
     [System.Serializable]
     public class ItemEvent : UnityEvent<string> { }
@@ -27,4 +25,3 @@ namespace Phase1.VoVanThuan
 
         public List<string> GetAllItems() => new List<string>(GameData.collectedItems);
     }
-}
