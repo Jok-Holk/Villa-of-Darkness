@@ -1,7 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 public class MainMenuUI : MonoBehaviour
 {
+    public UnityEvent OnMenuOpen = new UnityEvent();
+
     public void StartGame() { GameManager.Instance?.LoadChapter(1); }
     public void QuitGame()  { Application.Quit(); }
+    public void Show() { gameObject.SetActive(true); OnMenuOpen.Invoke(); }
+    public void Hide() { gameObject.SetActive(false); }
 }
