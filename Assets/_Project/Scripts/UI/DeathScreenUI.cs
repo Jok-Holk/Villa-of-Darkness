@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+#pragma warning disable CS0414
 
 public class DeathScreenUI : MonoBehaviour
 {

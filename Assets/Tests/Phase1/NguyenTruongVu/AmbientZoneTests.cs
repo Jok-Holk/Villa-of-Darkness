@@ -55,7 +55,7 @@ namespace Phase1.NguyenTruongVu
         {
             SetField("_fadeDuration", 0.2f);
             SetField("_targetVolume", 0.8f);
-            _go.StartCoroutine(_zone.FadeIn());
+            _zone.StartCoroutine(_zone.FadeIn());
             yield return new WaitForSeconds(0.4f);
             Assert.IsTrue(_zone.IsActive, "IsActive phải true sau FadeIn");
         }
@@ -65,7 +65,7 @@ namespace Phase1.NguyenTruongVu
         {
             SetField("_fadeDuration", 0.2f);
             SetField("_targetVolume", 0.8f);
-            _go.StartCoroutine(_zone.FadeIn());
+            _zone.StartCoroutine(_zone.FadeIn());
             yield return new WaitForSeconds(0.4f);
             Assert.AreEqual(0.8f, _src.volume, 0.05f, "Volume phải đạt _targetVolume sau FadeIn");
         }
@@ -75,9 +75,9 @@ namespace Phase1.NguyenTruongVu
         {
             SetField("_fadeDuration", 0.1f);
             SetField("_targetVolume", 0.8f);
-            _go.StartCoroutine(_zone.FadeIn());
+            _zone.StartCoroutine(_zone.FadeIn());
             yield return new WaitForSeconds(0.2f);
-            _go.StartCoroutine(_zone.FadeOut());
+            _zone.StartCoroutine(_zone.FadeOut());
             yield return new WaitForSeconds(0.2f);
             Assert.IsFalse(_zone.IsActive, "IsActive phải false sau FadeOut");
         }
@@ -87,7 +87,7 @@ namespace Phase1.NguyenTruongVu
         {
             _src.volume = 0.8f;
             SetField("_fadeDuration", 0.2f);
-            _go.StartCoroutine(_zone.FadeOut());
+            _zone.StartCoroutine(_zone.FadeOut());
             yield return new WaitForSeconds(0.4f);
             Assert.AreEqual(0f, _src.volume, 0.05f, "Volume phải về 0 sau FadeOut");
         }
@@ -97,7 +97,7 @@ namespace Phase1.NguyenTruongVu
         {
             SetField("_fadeDuration", 0.1f);
             bool threw = false;
-            try { _go.StartCoroutine(_zone.FadeOut()); }
+            try { _zone.StartCoroutine(_zone.FadeOut()); }
             catch { threw = true; }
             yield return new WaitForSeconds(0.2f);
             Assert.IsFalse(threw, "FadeOut khi chưa active không được throw");

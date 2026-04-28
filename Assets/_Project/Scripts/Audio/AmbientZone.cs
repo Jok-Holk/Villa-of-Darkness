@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections;
+#pragma warning disable CS0414
 
 [RequireComponent(typeof(Collider))]
 [RequireComponent(typeof(AudioSource))]
