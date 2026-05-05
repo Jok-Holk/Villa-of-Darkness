@@ -863,7 +863,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1412136ee34fec43adca42a920fa505, type: 3}
   m_Name: 
   m_EditorClassIdentifier: BietThuBongToi.Runtime::DelayEvent
-  _delaySeconds: 6.66
+  _delaySeconds: 3
   OnDelayComplete:
     m_PersistentCalls:
       m_Calls:
