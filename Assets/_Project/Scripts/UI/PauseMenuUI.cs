@@ -26,4 +26,9 @@ public class PauseMenuUI : MonoBehaviour
         if (_isPaused) Resume();
         else Pause();
     }
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape))
+            Toggle();
+    }
 }
