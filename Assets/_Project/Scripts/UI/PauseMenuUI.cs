@@ -4,6 +4,7 @@ using UnityEngine.Events;
 public class PauseMenuUI : MonoBehaviour
 {
     [SerializeField] private bool _isPaused = false;
+    [SerializeField] private GameObject _pauseMenuPanel;
     public UnityEvent OnPause = new UnityEvent();
     public UnityEvent OnResume = new UnityEvent();
 
@@ -12,6 +13,10 @@ public class PauseMenuUI : MonoBehaviour
         if (_isPaused) return;
         _isPaused = true;  
         Time.timeScale = 0f; 
+        _pauseMenuPanel.SetActive(true);
+        // ✅ Hiện và mở khóa chuột
+    Cursor.visible = true;
+    Cursor.lockState = CursorLockMode.None;
         OnPause.Invoke();
     }
     public void Resume() 
@@ -19,6 +24,10 @@ public class PauseMenuUI : MonoBehaviour
         if (!_isPaused) return;
         _isPaused = false; 
         Time.timeScale = 1f; 
+        _pauseMenuPanel.SetActive(false);
+         // ✅ Ẩn và khóa chuột lại như lúc chơi
+    Cursor.visible = false;
+    Cursor.lockState = CursorLockMode.Locked;
         OnResume.Invoke();
     }
     public void Toggle()
