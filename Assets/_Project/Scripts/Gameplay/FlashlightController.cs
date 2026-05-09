@@ -4,28 +4,18 @@ using System.Collections;
 
 public class FlashlightController : MonoBehaviour
 {
-    [Header("Battery")]
-    [SerializeField] private float _batteryLevel = 1f;
-    [SerializeField] private float _drainRate    = 0.02f;
+    [Header("Data — kéo FlashlightData asset vào")]
+    [SerializeField] private FlashlightData _data;
 
     [Header("Light")]
     [SerializeField] private Light _light;
-    [SerializeField] private float _maxIntensity    = 1.425f;
-    [SerializeField] private float _spotAngle       = 90f;
-    [SerializeField] private float _innerSpotAngle  = 80f;
-    [SerializeField] private float _range           = 30f;
-    [SerializeField] private bool  _isOn            = false;
+    [SerializeField] private bool  _isOn = false;
 
-    [Header("Shake to Recover (phím F)")]
-    [SerializeField] private float _shakeRecoverAmount  = 0.1f;  // phục hồi 10%
-    [SerializeField] private float _shakeCooldown       = 3f;    // cooldown lắc tiếp
-    [SerializeField] private float _shakeDrainPause     = 2f;    // tạm dừng drain bao lâu sau khi lắc
-    [SerializeField] private float _shakeBatteryThresh  = 0.5f;  // chỉ lắc khi pin < 50%
-
-    private float _shakeCooldownTimer  = 0f;
-    private float _drainPauseTimer     = 0f; // đếm ngược thời gian pause drain
-    private bool  _eventFired          = false;
-    private bool  _isFlickering        = false;
+    private float _batteryLevel       = 1f;
+    private float _shakeCooldownTimer = 0f;
+    private float _drainPauseTimer    = 0f;
+    private bool  _eventFired         = false;
+    private bool  _isFlickering       = false;
 
     public UnityEvent OnBatteryEmpty = new UnityEvent();
 
@@ -38,26 +28,27 @@ public class FlashlightController : MonoBehaviour
 
     private void SetupLight()
     {
-        if (_light == null) return;
-        _light.type            = LightType.Spot;
-        _light.spotAngle       = _spotAngle;
-        _light.innerSpotAngle  = _innerSpotAngle;
-        _light.range           = _range;
-        _light.color           = new Color(1f, 0.97f, 0.88f);
-        _light.intensity       = 0f;
-        _light.shadows         = LightShadows.Soft;
+        if (_light == null || _data == null) return;
+        _light.type           = LightType.Spot;
+        _light.spotAngle      = _data.spotAngle;
+        _light.innerSpotAngle = _data.innerSpotAngle;
+        _light.range          = _data.range;
+        _light.color          = new Color(1f, 0.97f, 0.88f);
+        _light.intensity      = 0f;
+        _light.shadows        = LightShadows.Soft;
     }
 
     // ─── UPDATE ────────────────────────────────────────────────────────────────
     private void Update()
     {
+        if (_data == null) return;
+
         if (_shakeCooldownTimer > 0f) _shakeCooldownTimer -= Time.deltaTime;
         if (_drainPauseTimer    > 0f) _drainPauseTimer    -= Time.deltaTime;
 
         if (Input.GetKeyDown(KeyCode.T)) Toggle();
         if (Input.GetKeyDown(KeyCode.F)) TryShake();
 
-        // Hết pin
         if (_batteryLevel <= 0f)
         {
             _batteryLevel = 0f;
@@ -67,9 +58,8 @@ public class FlashlightController : MonoBehaviour
             return;
         }
 
-        // Drain pin — tạm dừng khi vừa lắc xong
         if (_isOn && _drainPauseTimer <= 0f)
-            _batteryLevel -= _drainRate * Time.deltaTime;
+            _batteryLevel -= _data.drainRate * Time.deltaTime;
 
         UpdateLightState();
     }
@@ -93,7 +83,9 @@ public class FlashlightController : MonoBehaviour
     // ─── SHAKE ─────────────────────────────────────────────────────────────────
     private void TryShake()
     {
-        if (_batteryLevel >= _shakeBatteryThresh)
+        if (_data == null) return;
+
+        if (_batteryLevel >= _data.shakeBatteryThresh)
         {
             Debug.Log("[Đèn Pin] Pin còn đủ, không cần lắc.");
             return;
@@ -104,46 +96,46 @@ public class FlashlightController : MonoBehaviour
             return;
         }
 
-        AddBattery(_shakeRecoverAmount);
-        _shakeCooldownTimer = _shakeCooldown;
-
-        // Tạm dừng drain sau khi lắc để pin không bị ăn ngay lập tức
-        _drainPauseTimer = _shakeDrainPause;
-
-        Debug.Log($"[Đèn Pin] Lắc! +10% → {_batteryLevel * 100f:F0}% (drain tạm dừng {_shakeDrainPause}s)");
+        AddBattery(_data.shakeRecoverAmount);
+        _shakeCooldownTimer = _data.shakeCooldown;
+        _drainPauseTimer    = _data.shakeDrainPause;
+        Debug.Log($"[Đèn Pin] Lắc! +{_data.shakeRecoverAmount * 100f:F0}% → {_batteryLevel * 100f:F0}%");
     }
 
     // ─── LIGHT STATE ───────────────────────────────────────────────────────────
     private void UpdateLightState()
     {
+        if (_data == null) return;
         if (!_isOn || _isFlickering)
         {
             if (!_isFlickering) SetLightIntensity(0f);
             return;
         }
 
-        if (_batteryLevel > 0.75f)
+        float max = _data.maxIntensity;
+
+        if (_batteryLevel > _data.flickerMediumThresh)
         {
-            SetLightIntensity(_maxIntensity);
+            // 50-100% → sáng ổn định, giảm dần
+            float t = (_batteryLevel - _data.flickerMediumThresh) / (1f - _data.flickerMediumThresh);
+            SetLightIntensity(Mathf.Lerp(max * 0.7f, max, t));
         }
-        else if (_batteryLevel > 0.5f)
+        else if (_batteryLevel > _data.flickerLowThresh)
         {
-            float t = (_batteryLevel - 0.5f) / 0.25f;
-            SetLightIntensity(Mathf.Lerp(_maxIntensity * 0.7f, _maxIntensity, t));
-        }
-        else if (_batteryLevel > 0.3f)
-        {
-            SetLightIntensity(_maxIntensity * 0.65f);
+            // 30-50% → nhấp nháy nhẹ
+            SetLightIntensity(max * 0.65f);
             if (Random.value < 0.003f) StartCoroutine(Flicker(2, 0.05f));
         }
-        else if (_batteryLevel > 0.15f)
+        else if (_batteryLevel > _data.flickerCriticalThresh)
         {
-            SetLightIntensity(_maxIntensity * 0.4f);
+            // 15-30% → nhấp nháy mạnh
+            SetLightIntensity(max * 0.4f);
             if (Random.value < 0.005f) StartCoroutine(Flicker(1, 0.15f));
         }
         else
         {
-            SetLightIntensity(_maxIntensity * 0.2f);
+            // <15% → rất yếu
+            SetLightIntensity(max * 0.2f);
             if (Random.value < 0.01f) StartCoroutine(Flicker(2, 0.2f));
         }
     }
