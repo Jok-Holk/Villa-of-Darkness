@@ -21,9 +21,7 @@ public class InventoryUI : MonoBehaviour
     public UnityEvent OnOpen  = new UnityEvent();
     public UnityEvent OnClose = new UnityEvent();
 
-    // ─── AWAKE: chỉ SetActive(false), KHÔNG cache slot ở đây ──────────────────
-    // Lý do: trong test, BuildWithGrid() gọi AddComponent<InventoryUI>() TRƯỚC
-    // khi tạo Grid và Slot con → nếu cache trong Awake thì Find("Grid") = null.
+    // ─── AWAKE ─────────────────────────────────────────────────────────────────
     private void Awake()
     {
         gameObject.SetActive(false);
@@ -66,11 +64,15 @@ public class InventoryUI : MonoBehaviour
 
     public void Open()
     {
-        // Cache lại slot nếu chưa có (trường hợp Start() chưa chạy khi panel inactive)
         if (_slotIcons == null) CacheSlots();
 
         _isOpen = true;
         gameObject.SetActive(true);
+
+        // Hiện cursor và unlock để click vào slot
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible   = true;
+
         OnOpen.Invoke();
         Refresh();
     }
@@ -79,12 +81,17 @@ public class InventoryUI : MonoBehaviour
     {
         _isOpen = false;
         gameObject.SetActive(false);
+
+        // Ẩn cursor và lock lại để camera quay bình thường
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible   = false;
+
         OnClose.Invoke();
     }
 
+    // ─── REFRESH ───────────────────────────────────────────────────────────────
     public void Refresh()
     {
-        // Cache lại nếu cần
         if (_slotIcons == null) CacheSlots();
         if (_slotIcons == null || _slotIcons.Length == 0) return;
 
@@ -104,6 +111,7 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
+    // ─── ON ITEM CLICKED ───────────────────────────────────────────────────────
     public void OnItemClicked(string itemId)
     {
         if (AudioManager.Instance != null && _itemSelectClip != null)
@@ -112,6 +120,7 @@ public class InventoryUI : MonoBehaviour
         Debug.Log($"[InventoryUI] Clicked item: {itemId}");
     }
 
+    // ─── INTERNAL ──────────────────────────────────────────────────────────────
     private void OnSlotClicked(int slotIndex)
     {
         List<string> items = _inventorySystem != null

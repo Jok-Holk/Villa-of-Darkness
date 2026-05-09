@@ -270,7 +270,7 @@ GameObject:
   - component: {fileID: 144559518}
   - component: {fileID: 144559517}
   m_Layer: 8
-  m_Name: Key_Son
+  m_Name: Key_Sol
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -303,7 +303,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69c70f5c872cde84b8dff2633d99f787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: BietThuBongToi.Runtime::PianoKey
-  _note: Son
+  _noteDefinition: {fileID: 11400000, guid: 8481051ade653744b9ffec87cd9c4efb, type: 2}
+  _note: Sol
   _piano: {fileID: 2102412102}
 --- !u!65 &144559518
 BoxCollider:
@@ -1069,7 +1070,6 @@ GameObject:
   - component: {fileID: 407706303}
   - component: {fileID: 407706302}
   - component: {fileID: 407706306}
-  - component: {fileID: 407706305}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1152,22 +1152,6 @@ Transform:
   - {fileID: 1431996229}
   m_Father: {fileID: 297275822}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &407706305
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 407706301}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1b28cfe46e5a4b549a2b215c9817b324, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::InteractionSystem
-  _interactRange: 2.5
-  _interactLayer:
-    serializedVersion: 2
-    m_Bits: 256
 --- !u!114 &407706306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1259,6 +1243,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69c70f5c872cde84b8dff2633d99f787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: BietThuBongToi.Runtime::PianoKey
+  _noteDefinition: {fileID: 11400000, guid: 8481051ade653744b9ffec87cd9c4efb, type: 2}
   _note: Do
   _piano: {fileID: 2102412102}
 --- !u!65 &414294612
@@ -2194,7 +2179,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &702784779
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2632,6 +2617,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69c70f5c872cde84b8dff2633d99f787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: BietThuBongToi.Runtime::PianoKey
+  _noteDefinition: {fileID: 11400000, guid: 8481051ade653744b9ffec87cd9c4efb, type: 2}
   _note: Si
   _piano: {fileID: 2102412102}
 --- !u!65 &794042343
@@ -3329,6 +3315,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69c70f5c872cde84b8dff2633d99f787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: BietThuBongToi.Runtime::PianoKey
+  _noteDefinition: {fileID: 11400000, guid: 8481051ade653744b9ffec87cd9c4efb, type: 2}
   _note: Mi
   _piano: {fileID: 2102412102}
 --- !u!65 &1119720954
@@ -3980,6 +3967,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69c70f5c872cde84b8dff2633d99f787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: BietThuBongToi.Runtime::PianoKey
+  _noteDefinition: {fileID: 11400000, guid: 8481051ade653744b9ffec87cd9c4efb, type: 2}
   _note: Fa
   _piano: {fileID: 2102412102}
 --- !u!65 &1293486226
@@ -4736,6 +4724,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69c70f5c872cde84b8dff2633d99f787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: BietThuBongToi.Runtime::PianoKey
+  _noteDefinition: {fileID: 11400000, guid: 8481051ade653744b9ffec87cd9c4efb, type: 2}
   _note: La
   _piano: {fileID: 2102412102}
 --- !u!65 &1438462811
@@ -5911,12 +5900,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e5d88893a2f776d45b3075bc12ca72ef, type: 3}
   m_Name: 
   m_EditorClassIdentifier: BietThuBongToi.Runtime::PianoInteractable
+  _noteDefinition: {fileID: 11400000, guid: 8481051ade653744b9ffec87cd9c4efb, type: 2}
   _correctSequence:
   - Do
   - Re
   - Mi
   - Fa
-  - Son
+  - Sol
   - La
   - Si
   _correctNoteClip: {fileID: 0}
@@ -6085,6 +6075,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69c70f5c872cde84b8dff2633d99f787, type: 3}
   m_Name: 
   m_EditorClassIdentifier: BietThuBongToi.Runtime::PianoKey
+  _noteDefinition: {fileID: 11400000, guid: 8481051ade653744b9ffec87cd9c4efb, type: 2}
   _note: Re
   _piano: {fileID: 2102412102}
 --- !u!65 &2124826894
