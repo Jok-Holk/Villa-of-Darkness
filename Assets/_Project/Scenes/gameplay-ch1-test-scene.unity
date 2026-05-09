@@ -3011,7 +3011,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BietThuBongToi.Runtime::InventoryUI
   _inventorySystem: {fileID: 1869048898}
-  _itemSelectClip: {fileID: 0}
+  _playerController: {fileID: 0}
   OnOpen:
     m_PersistentCalls:
       m_Calls: []
@@ -4578,18 +4578,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c0ce1eebbfb02548908df3ddef2ea4a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: BietThuBongToi.Runtime::FlashlightController
-  _batteryLevel: 1
-  _drainRate: 0.02
+  _data: {fileID: 11400000, guid: e52897a999578ab4794a1a1951593d83, type: 2}
   _light: {fileID: 1431996232}
-  _maxIntensity: 1.5
-  _spotAngle: 70
-  _innerSpotAngle: 35
-  _range: 30
   _isOn: 0
-  _shakeRecoverAmount: 0.1
-  _shakeCooldown: 5
-  _shakeDrainPause: 3
-  _shakeBatteryThresh: 0.5
   OnBatteryEmpty:
     m_PersistentCalls:
       m_Calls: []
@@ -5556,6 +5547,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: befe953e26b90a24fb4dd1a10a4c4f98, type: 3}
   m_Name: 
   m_EditorClassIdentifier: BietThuBongToi.Runtime::InventorySystem
+  _itemDatabase:
+  - {fileID: 11400000, guid: 1b647e14871a3544d99d584b078a98ef, type: 2}
   OnItemAdded:
     m_PersistentCalls:
       m_Calls: []
