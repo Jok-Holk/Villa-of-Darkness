@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 
 public class PauseMenuUI : MonoBehaviour
 {
@@ -40,4 +41,12 @@ public class PauseMenuUI : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Escape))
             Toggle();
     }
+    public void GoToMainMenu()
+{
+    _isPaused = false;
+    Time.timeScale = 1f;
+    Cursor.visible = true;
+    Cursor.lockState = CursorLockMode.None;
+    SceneManager.LoadScene("MainMenu"); // đổi tên đúng scene của bạn
+}
 }
