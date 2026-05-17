@@ -23,29 +23,47 @@ public class AmbientZone : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        // TODO: if (other.CompareTag(_targetTag)) StartCoroutine(FadeIn());
-        throw new System.NotImplementedException();
+        if (other.CompareTag(_targetTag)) StartCoroutine(FadeIn());
     }
 
     private void OnTriggerExit(Collider other)
     {
-        // TODO: if (other.CompareTag(_targetTag)) StartCoroutine(FadeOut());
-        throw new System.NotImplementedException();
+        if (other.CompareTag(_targetTag)) StartCoroutine(FadeOut());
     }
 
     public IEnumerator FadeIn()
     {
-        // TODO: _isActive = true
-        //       dùng vòng lặp tăng _audioSource.volume từ giá trị hiện tại lên _targetVolume
-        //       trong _fadeDuration giây, yield return null mỗi frame
-        throw new System.NotImplementedException();
+        _isActive = true;
+
+        if (!_audioSource.isPlaying) _audioSource.Play();
+
+        float startVolume = _audioSource.volume;
+        float elapsed     = 0f;
+
+        while (elapsed < _fadeDuration)
+        {
+            elapsed              += Time.deltaTime;
+            _audioSource.volume  = Mathf.Lerp(startVolume, _targetVolume, elapsed / _fadeDuration);
+            yield return null;
+        }
+
+        _audioSource.volume = _targetVolume;
     }
 
     public IEnumerator FadeOut()
     {
-        // TODO: dùng vòng lặp giảm _audioSource.volume từ giá trị hiện tại xuống 0
-        //       trong _fadeDuration giây, yield return null mỗi frame
-        //       xong thì _isActive = false
-        throw new System.NotImplementedException();
+        float startVolume = _audioSource.volume;
+        float elapsed     = 0f;
+
+        while (elapsed < _fadeDuration)
+        {
+            elapsed             += Time.deltaTime;
+            _audioSource.volume  = Mathf.Lerp(startVolume, 0f, elapsed / _fadeDuration);
+            yield return null;
+        }
+
+        _audioSource.volume = 0f;
+        _audioSource.Stop();
+        _isActive = false;
     }
 }
