@@ -39,4 +39,8 @@ public class GameManager : MonoBehaviour
         GameData.Reset();
         // SceneManager.LoadScene("MainMenu");
     }
+    public void DebugMessage(string msg)
+{
+    Debug.Log(msg);
+}
 }
