@@ -15,19 +15,23 @@ public class GhostAI : MonoBehaviour
     [SerializeField] private LayerMask _playerLayer;
 
     [Header("Speed")]
-    [SerializeField] private float _patrolSpeed  = 1.5f;
-    [SerializeField] private float _chaseSpeed   = 4f;
+    [SerializeField] private float _patrolSpeed = 1.5f;
+    [SerializeField] private float _chaseSpeed  = 4f;
+
+    [Header("Kill")]
+    [SerializeField] private float _killDelay = 0.5f;
 
     private NavMeshAgent _agent;
-    private State _currentState = State.Patrol;
-    private int _waypointIndex;
-    private Transform _player;
-    private Vector3 _lastKnownPosition;
-    private float _investigateTimer;
+    private State        _currentState = State.Patrol;
+    private int          _waypointIndex;
+    private Transform    _player;
+    private Vector3      _lastKnownPosition;
+    private float        _investigateTimer;
+    private float        _killTimer = 0f;
 
     private void Awake()
     {
-        _agent = GetComponent<NavMeshAgent>();
+        _agent  = GetComponent<NavMeshAgent>();
         _player = GameObject.FindWithTag("Player")?.transform;
     }
 
@@ -35,19 +39,19 @@ public class GhostAI : MonoBehaviour
     {
         switch (_currentState)
         {
-            case State.Patrol:     UpdatePatrol();     break;
-            case State.Investigate:UpdateInvestigate();break;
-            case State.Chase:      UpdateChase();      break;
+            case State.Patrol:      UpdatePatrol();      break;
+            case State.Investigate: UpdateInvestigate(); break;
+            case State.Chase:       UpdateChase();       break;
         }
     }
 
-    // ── PATROL ───────────────────────────────────────────
     private void UpdatePatrol()
     {
+        if (_agent == null) return;
         _agent.speed = _patrolSpeed;
 
         if (_waypoints == null || _waypoints.Length == 0) return;
-        if (!_agent.isOnNavMesh) return; 
+        if (!_agent.isOnNavMesh) return;
 
         if (!_agent.hasPath || _agent.remainingDistance < 0.5f)
         {
@@ -55,15 +59,14 @@ public class GhostAI : MonoBehaviour
             _agent.SetDestination(_waypoints[_waypointIndex].position);
         }
 
-        if (CanDetectPlayer())
-            EnterChase();
-        else if (CanHearPlayer())
-            EnterInvestigate(_lastKnownPosition);
+        if (CanDetectPlayer())      EnterChase();
+        else if (CanHearPlayer())   EnterInvestigate(_lastKnownPosition);
     }
 
-    // ── INVESTIGATE ──────────────────────────────────────
     private void UpdateInvestigate()
     {
+        if (_agent == null) return;
+
         if (_agent.remainingDistance < 0.5f)
         {
             _investigateTimer += Time.deltaTime;
@@ -73,48 +76,49 @@ public class GhostAI : MonoBehaviour
         if (CanDetectPlayer()) EnterChase();
     }
 
-    // ── CHASE ────────────────────────────────────────────
     private void UpdateChase()
     {
-        _agent.speed = _chaseSpeed;
-        if (_agent.isOnNavMesh)
-            _agent.SetDestination(_player.position);
+        if (_agent == null) return;
 
         if (!CanDetectPlayer() && !CanHearPlayer())
         {
-            EnterInvestigate(_player.position);
+            EnterInvestigate(_lastKnownPosition);
+            return;
         }
+
+        _agent.speed = _chaseSpeed;
+        if (_agent.isOnNavMesh)
+            _agent.SetDestination(_player.position);
     }
 
-    // ── TRANSITIONS ──────────────────────────────────────
     private void EnterPatrol()
     {
         _currentState = State.Patrol;
-        _agent.speed = _patrolSpeed;
+        if (_agent != null) _agent.speed = _patrolSpeed;
     }
 
     private void EnterInvestigate(Vector3 pos)
     {
-        _currentState = State.Investigate;
+        _currentState      = State.Investigate;
         _lastKnownPosition = pos;
-        _investigateTimer = 0f;
-        if (_agent.isOnNavMesh)
+        _investigateTimer  = 0f;
+        if (_agent != null && _agent.isOnNavMesh)
             _agent.SetDestination(pos);
     }
 
     private void EnterChase()
     {
         _currentState = State.Chase;
-        _agent.speed = _chaseSpeed;
+        if (_agent != null) _agent.speed = _chaseSpeed;
     }
 
-    // ── DETECTION ────────────────────────────────────────
     private bool CanDetectPlayer()
     {
         if (_player == null) return false;
+        if (HideSpot.AnyPlayerHiding) return false;
 
         Vector3 dirToPlayer = _player.position - transform.position;
-        float dist = dirToPlayer.magnitude;
+        float   dist        = dirToPlayer.magnitude;
         if (dist > _sightRadius) return false;
 
         float angle = Vector3.Angle(transform.forward, dirToPlayer);
@@ -127,19 +131,47 @@ public class GhostAI : MonoBehaviour
     private bool CanHearPlayer()
     {
         if (_player == null) return false;
+        if (HideSpot.AnyPlayerHiding) return false;
+
         float dist = Vector3.Distance(transform.position, _player.position);
         if (dist > _hearingRadius) return false;
+
         _lastKnownPosition = _player.position;
         return true;
     }
 
-    // ── KILL ─────────────────────────────────────────────
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
+            _killTimer = 0f;
+    }
+
+    private void OnTriggerStay(Collider other)
+    {
+        if (!other.CompareTag("Player")) return;
+
+        // DEBUG — in ra mỗi frame ghost đang chạm player
+        Debug.Log($"[GhostAI] OnTriggerStay — AnyPlayerHiding={HideSpot.AnyPlayerHiding} | killTimer={_killTimer:F2}");
+
+        if (HideSpot.AnyPlayerHiding)
         {
-            _currentState = State.Kill;
-            GameManager.Instance.PlayerDead();
+            _killTimer = 0f;
+            return;
         }
+
+        _killTimer += Time.deltaTime;
+        if (_killTimer >= _killDelay)
+        {
+            Debug.Log("[GhostAI] KILL!");
+            _killTimer    = 0f;
+            _currentState = State.Kill;
+            GameManager.Instance?.PlayerDead();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Player"))
+            _killTimer = 0f;
     }
 }
