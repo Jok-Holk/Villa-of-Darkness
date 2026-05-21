@@ -1,56 +1,55 @@
 using UnityEngine;
-using UnityEngine.Rendering; 
-using UnityEngine.Rendering.Universal; // Cần thiết cho Post-processing
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
-namespace Assets._Project.Scripts.System
+public class SanityPostProcess : MonoBehaviour
 {
-    public class SanityPostProcess : MonoBehaviour
+    [SerializeField] private SanitySystem _sanitySystem;
+    [SerializeField] private SanityData _data; // Kéo file ScriptableObject vào đây
+    [SerializeField] private Volume _volume;
+    [SerializeField] private float _lerpSpeed = 2f;
+
+    private FilmGrain _grain;
+    private ChromaticAberration _chromatic;
+    private ColorAdjustments _colorAdj;
+    private Vignette _vignette;
+    private LensDistortion _lensDistort;
+
+    private int _currentIndex = 0;
+
+    private void Awake()
     {
-        [SerializeField] private SanitySystem _sanitySystem;
-        [SerializeField] private Volume _volume;
+        _volume.profile.TryGet(out _grain);
+        _volume.profile.TryGet(out _chromatic);
+        _volume.profile.TryGet(out _colorAdj);
+        _volume.profile.TryGet(out _vignette);
+        _volume.profile.TryGet(out _lensDistort);
 
-        private FilmGrain _grain;
-        private Vignette _vignette;
-        private ChromaticAberration _chromatic;
+        if (_sanitySystem != null)
+            _sanitySystem.OnLevelChanged.AddListener(OnLevelChanged);
+    }
 
-        private float _targetGrain, _targetVignette, _targetChromatic;
-        [SerializeField] private float _lerpSpeed = 2f;
+    private void OnLevelChanged(SanitySystem.SanityLevel level)
+    {
+        // Chuyển đổi Enum cũ sang index (0, 1, 2, 3...) để đọc Array trong Data
+        _currentIndex = (int)level; 
+    }
 
-        private void Awake()
+    private void Update()
+    {
+        if (_data == null || _data.levels.Length <= _currentIndex) return;
+
+        var settings = _data.levels[_currentIndex];
+        float dt = Time.deltaTime * _lerpSpeed;
+
+        if (_grain != null) _grain.intensity.value = Mathf.Lerp(_grain.intensity.value, settings.grain, dt);
+        if (_chromatic != null) _chromatic.intensity.value = Mathf.Lerp(_chromatic.intensity.value, settings.chromatic, dt);
+        if (_colorAdj != null)
         {
-            if (_volume == null) _volume = GetComponent<Volume>();
-            if (_volume != null && _volume.profile != null)
-            {
-                _volume.profile.TryGet(out _grain);
-                _volume.profile.TryGet(out _vignette);
-                _volume.profile.TryGet(out _chromatic);
-            }
-
-            if (_sanitySystem != null)
-            {
-                _sanitySystem.OnLevelChanged.AddListener(UpdatePostProcessTargets);
-                UpdatePostProcessTargets(_sanitySystem.GetLevel());
-            }
+            _colorAdj.saturation.value = Mathf.Lerp(_colorAdj.saturation.value, settings.saturation, dt);
+            _colorAdj.postExposure.value = Mathf.Lerp(_colorAdj.postExposure.value, settings.exposure, dt);
         }
-
-        private void UpdatePostProcessTargets(SanitySystem.SanityLevel level)
-        {
-            switch (level)
-            {
-                case SanitySystem.SanityLevel.High: SetTargets(0f, 0.2f, 0f); break;
-                case SanitySystem.SanityLevel.Medium: SetTargets(0.3f, 0.35f, 0.1f); break;
-                case SanitySystem.SanityLevel.Low: SetTargets(0.6f, 0.5f, 0.3f); break;
-                case SanitySystem.SanityLevel.Critical: SetTargets(1.0f, 0.7f, 0.8f); break;
-            }
-        }
-
-        private void SetTargets(float g, float v, float c) { _targetGrain = g; _targetVignette = v; _targetChromatic = c; }
-
-        private void Update()
-        {
-            if (_grain != null) _grain.intensity.value = Mathf.Lerp(_grain.intensity.value, _targetGrain, Time.deltaTime * _lerpSpeed);
-            if (_vignette != null) _vignette.intensity.value = Mathf.Lerp(_vignette.intensity.value, _targetVignette, Time.deltaTime * _lerpSpeed);
-            if (_chromatic != null) _chromatic.intensity.value = Mathf.Lerp(_chromatic.intensity.value, _targetChromatic, Time.deltaTime * _lerpSpeed);
-        }
+        if (_vignette != null) _vignette.intensity.value = Mathf.Lerp(_vignette.intensity.value, settings.vignette, dt);
+        if (_lensDistort != null) _lensDistort.intensity.value = Mathf.Lerp(_lensDistort.intensity.value, settings.lensDistort, dt);
     }
 }
