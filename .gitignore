@@ -101,4 +101,7 @@ InitTestScene*.unity*
 # Local project docs (không push lên public)
 CLAUDE.md
 Phase2_TeamGuide.md
+Phase2.5_TeamGuide.md
+Requirements_VillaBuildSpec_v1.md
+GDD_BietThuBongToi_v3.md
 .claude/
