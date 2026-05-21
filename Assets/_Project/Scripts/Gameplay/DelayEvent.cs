@@ -12,6 +12,7 @@ public class DelayEvent : MonoBehaviour
     public void StartDelay()
     {
         CancelDelay();
+        Debug.Log($"<color=cyan>[DelayEvent]</color> Bắt đầu đợi {_delaySeconds} giây...");
         _delayCoroutine = StartCoroutine(DelayRoutine());
     }
 
@@ -19,6 +20,7 @@ public class DelayEvent : MonoBehaviour
     {
         if (_delayCoroutine != null)
         {
+            Debug.Log("<color=yellow>[DelayEvent]</color> Đã hủy đếm ngược cũ.");
             StopCoroutine(_delayCoroutine);
             _delayCoroutine = null;
         }
@@ -27,7 +29,12 @@ public class DelayEvent : MonoBehaviour
     private IEnumerator DelayRoutine()
     {
         yield return new WaitForSeconds(_delaySeconds);
+        
+        Debug.Log("<color=green>[DelayEvent]</color> Đã hết thời gian chờ! Đang kích hoạt Event...");
+        
+        // Kích hoạt các hàm đã đăng ký trong UnityEvent
         OnDelayComplete?.Invoke();
+        
         _delayCoroutine = null;
     }
 }

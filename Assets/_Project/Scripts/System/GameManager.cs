@@ -31,12 +31,16 @@ public class GameManager : MonoBehaviour
     public void LoadChapter(int chapterNumber)
     {
         GameData.currentChapter = chapterNumber;
-        // SceneManager.LoadScene("Chapter" + chapterNumber);
+        //SceneManager.LoadScene("Chapter" + chapterNumber); 
     }
 
     public void LoadMainMenu()
     {
         GameData.Reset();
-        // SceneManager.LoadScene("MainMenu");
+        //SceneManager.LoadScene("MainMenu");
     }
+    public void DebugMessage(string msg)
+{
+    Debug.Log(msg);
+}
 }
