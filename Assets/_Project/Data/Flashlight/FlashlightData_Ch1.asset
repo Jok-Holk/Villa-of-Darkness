@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8cd5d610fb20834c9161b0d746886db, type: 3}
+  m_Name: FlashlightData_Ch1
+  m_EditorClassIdentifier: BietThuBongToi.Runtime::FlashlightData
+  drainRate: 0.005
+  maxIntensity: 1.425
+  spotAngle: 70
+  innerSpotAngle: 35
+  range: 30
+  shakeRecoverAmount: 0.1
+  shakeCooldown: 5
+  shakeDrainPause: 3
+  shakeBatteryThresh: 0.5
+  flickerMediumThresh: 0.5
+  flickerLowThresh: 0.3
+  flickerCriticalThresh: 0.15

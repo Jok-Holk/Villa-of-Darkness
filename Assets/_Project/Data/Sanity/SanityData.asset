@@ -1,0 +1,81 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 579dacf3a3d359c458a1aaf71d8eec16, type: 3}
+  m_Name: SanityData
+  m_EditorClassIdentifier: BietThuBongToi.Runtime::SanityData
+  levels:
+  - levelName: 100
+    sanityMin: 80
+    sanityMax: 100
+    drainRate: 0
+    traumaTarget: 0
+    shakeIntensityX: 0
+    shakeIntensityY: 0
+    grain: 0
+    chromatic: 0
+    saturation: 0
+    exposure: 0
+    vignette: 0.15
+    lensDistort: 0
+  - levelName: 80
+    sanityMin: 60
+    sanityMax: 80
+    drainRate: 0.002
+    traumaTarget: 0.25
+    shakeIntensityX: 1.5
+    shakeIntensityY: 0.5
+    grain: 0.12
+    chromatic: 0.04
+    saturation: -10
+    exposure: -0.3
+    vignette: 0.28
+    lensDistort: 0
+  - levelName: 60
+    sanityMin: 40
+    sanityMax: 60
+    drainRate: 0.005
+    traumaTarget: 0.45
+    shakeIntensityX: 2.5
+    shakeIntensityY: 1
+    grain: 0.28
+    chromatic: 0.12
+    saturation: -25
+    exposure: -0.8
+    vignette: 0.38
+    lensDistort: -0.1
+  - levelName: 40
+    sanityMin: 20
+    sanityMax: 40
+    drainRate: 0.008
+    traumaTarget: 0.7
+    shakeIntensityX: 3.5
+    shakeIntensityY: 1.5
+    grain: 0.5
+    chromatic: 0.28
+    saturation: -45
+    exposure: -1.5
+    vignette: 0.55
+    lensDistort: -0.25
+  - levelName: 20
+    sanityMin: 0
+    sanityMax: 20
+    drainRate: 0.012
+    traumaTarget: 1
+    shakeIntensityX: 5
+    shakeIntensityY: 2
+    grain: 0.9
+    chromatic: 0.65
+    saturation: -80
+    exposure: -3.5
+    vignette: 0.85
+    lensDistort: -0.45
+  recoveryRate: 0.01
