@@ -10,7 +10,7 @@ public class SpawnManager : MonoBehaviour
     private bool _hasSpawned = false;
 
     // UnityEvent dùng hàm này
-    public void SpawnAt()
+    public void SpawnAt(GameObject ghostPrefab)
     {
         // BỔ SUNG: Nếu đã spawn rồi thì thoát luôn, không chạy các lệnh bên dưới
         if (_hasSpawned) return;
