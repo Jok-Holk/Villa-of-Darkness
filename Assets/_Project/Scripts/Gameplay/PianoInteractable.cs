@@ -22,7 +22,6 @@ public class PianoInteractable : MonoBehaviour, IInteractable
 
     private List<string> _inputSequence = new List<string>();
     private bool         _isCompleted   = false;
-    private int          _lastNoteFrame = -1;
 
     public UnityEvent OnSequenceComplete = new UnityEvent();
 
@@ -38,9 +37,8 @@ public class PianoInteractable : MonoBehaviour, IInteractable
         if (string.IsNullOrEmpty(note)) return;
         if (_correctSequence == null || _correctSequence.Length == 0) return;
 
-        // Frame guard chỉ chặn double-call cùng frame
-        if (Time.frameCount > 0 && Time.frameCount == _lastNoteFrame) return;
-        _lastNoteFrame = Time.frameCount;
+        // Frame guard đã được xử lý tại PianoKey.Interact() — không cần guard ở đây
+        // để tránh double-block khi reset sau note sai.
 
         bool noteIsCorrect = _inputSequence.Count < _correctSequence.Length
                              && note == _correctSequence[_inputSequence.Count];
@@ -63,9 +61,6 @@ public class PianoInteractable : MonoBehaviour, IInteractable
             Debug.Log($"[Piano] ✘ Sai: [{note}] — reset! Bắt đầu lại từ [{nextExpected}]");
 
             _inputSequence.Clear();
-
-            // RESET frame guard để note đúng tiếp theo không bị chặn
-            _lastNoteFrame = -1;
         }
     }
 
@@ -81,7 +76,7 @@ public class PianoInteractable : MonoBehaviour, IInteractable
         if (_spawnManager != null && _ghostPrefab != null)
         {
             if (_ghostSpawnPoint != null)
-                _spawnManager.SpawnAt(_ghostPrefab, _ghostSpawnPoint);
+                _spawnManager.SpawnAtTransform(_ghostPrefab, _ghostSpawnPoint); // dùng đúng overload Transform
             else
                 _spawnManager.SpawnAt(_ghostPrefab, transform.position + transform.forward * 2f);
             Debug.Log("[Piano] Ghost spawned!");
