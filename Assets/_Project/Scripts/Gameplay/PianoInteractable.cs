@@ -81,7 +81,7 @@ public class PianoInteractable : MonoBehaviour, IInteractable
         if (_spawnManager != null && _ghostPrefab != null)
         {
             if (_ghostSpawnPoint != null)
-                _spawnManager.SpawnAt(_ghostPrefab, _ghostSpawnPoint);
+                _spawnManager.SpawnAtTransform(_ghostPrefab, _ghostSpawnPoint);
             else
                 _spawnManager.SpawnAt(_ghostPrefab, transform.position + transform.forward * 2f);
             Debug.Log("[Piano] Ghost spawned!");

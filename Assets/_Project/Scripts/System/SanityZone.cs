@@ -8,7 +8,7 @@ public class SanityZone : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Player")) return;
-        var sanity = FindObjectOfType<SanitySystem>();
+        var sanity = Object.FindFirstObjectByType<SanitySystem>();
         if (sanity == null) return;
 
         sanity.SetSafeZone(_zoneType == ZoneType.Safe);
@@ -17,7 +17,7 @@ public class SanityZone : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (!other.CompareTag("Player")) return;
-        var sanity = FindObjectOfType<SanitySystem>();
+        var sanity = Object.FindFirstObjectByType<SanitySystem>();
         if (sanity == null) return;
 
         // Khi ra ngoài → luôn về trạng thái nguy hiểm
