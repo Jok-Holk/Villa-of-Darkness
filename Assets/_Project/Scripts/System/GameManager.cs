@@ -72,7 +72,10 @@ public class GameManager : MonoBehaviour
     public void LoadMainMenu()
     {
         GameData.Reset();
-        //SceneManager.LoadScene("MainMenu");
+        Time.timeScale   = 1f;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible   = true;
+        SceneManager.LoadScene("MainMenu");
     }
 
     public void DebugMessage(string msg)
