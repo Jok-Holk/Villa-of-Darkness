@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7c01db4d44d7b554a80c098c52d17818, type: 3}
-  m_Name: ItemData_MusicBox
+  m_Name: ItemData_Key01
   m_EditorClassIdentifier: BietThuBongToi.Runtime::ItemData
-  itemId: music_box
-  itemName: "H\u1ED9p Nh\u1EA1c"
-  description: "M\u1ED9t chi\u1EBFc h\u1ED9p nh\u1EA1c c\u0169 k\u1EF9..."
+  itemId: key_01
+  itemName: Key
+  description: "Ch\xECa kho\xE1 g\u1EC9 s\xE9t, g\u1EAFn nh\xE3n ch\u1EEF s\u1ED1."
   icon: {fileID: 0}
-  slotBorderColor: {r: 1, g: 0.9372188, b: 0, a: 1}
+  slotBorderColor: {r: 1, g: 1, b: 1, a: 1}
   monologueClip: {fileID: 0}
-  isKeyItem: 1
+  isKeyItem: 0

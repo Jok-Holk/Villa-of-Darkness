@@ -21,7 +21,6 @@ public class InventoryUI : MonoBehaviour
     private bool _isOpen = false;
     public bool IsOpen => _isOpen;
 
-    // Frame guard chống click 2 lần cùng frame
     private int _lastClickFrame = -1;
 
     public UnityEvent OnOpen  = new UnityEvent();
@@ -30,12 +29,10 @@ public class InventoryUI : MonoBehaviour
     // ─── AWAKE ─────────────────────────────────────────────────────────────────
     private void Awake()
     {
-        gameObject.SetActive(false);
-    }
-
-    private void Start()
-    {
+        // Cache slots TRƯỚC khi SetActive(false)
+        // vì Start() sẽ không chạy khi GameObject inactive
         CacheSlots();
+        gameObject.SetActive(false);
     }
 
     private void CacheSlots()
@@ -71,6 +68,7 @@ public class InventoryUI : MonoBehaviour
 
     public void Open()
     {
+        // Fallback phòng thủ nếu CacheSlots chưa chạy được vì lý do nào đó
         if (_slotIcons == null) CacheSlots();
 
         _isOpen = true;
@@ -172,7 +170,6 @@ public class InventoryUI : MonoBehaviour
     // ─── INTERNAL ──────────────────────────────────────────────────────────────
     private void OnSlotClicked(int slotIndex)
     {
-        // Frame guard — chặn click 2 lần trong cùng 1 frame
         if (Time.frameCount == _lastClickFrame) return;
         _lastClickFrame = Time.frameCount;
 
