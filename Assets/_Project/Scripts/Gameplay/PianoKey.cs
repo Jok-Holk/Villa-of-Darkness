@@ -1,11 +1,7 @@
 using UnityEngine;
+using System.Collections;
 
-/// <summary>
-/// Gắn lên từng phím đàn (7 object).
-/// _note được chọn từ dropdown trong Inspector (nhờ PianoKeyEditor)
-/// thay vì gõ tay — tránh nhập sai tên note.
-/// </summary>
-public class PianoKey : MonoBehaviour, IInteractable
+public class PianoKey : MonoBehaviour
 {
     [Header("Note Definition — kéo ScriptableObject vào để dùng dropdown")]
     [SerializeField] private PianoNoteDefinition _noteDefinition;
@@ -13,26 +9,68 @@ public class PianoKey : MonoBehaviour, IInteractable
     [Header("Note của phím này")]
     [SerializeField] private string _note;
 
+    [Header("Phím bàn phím tương ứng (A/S/D/F/G/H/J...)")]
+    [SerializeField] private KeyCode _keyCode = KeyCode.A;
+
     [Header("Piano chứa phím này")]
     [SerializeField] private PianoInteractable _piano;
 
-    // Frame guard — chỉ ở PianoKey, không ảnh hưởng test PianoInteractable
-    private int _lastFrame = -1;
+    [Header("Âm thanh phím đàn")]
+    [SerializeField] private AudioClip _keyClip;
+
+    [Header("Animation phím")]
+    [SerializeField] private float _pressDepth  = 0.05f;
+    [SerializeField] private float _pressSpeed  = 20f;
+    [SerializeField] private float _returnSpeed = 8f;
+
+    private Vector3   _restPosition;
+    private Vector3   _pressedPosition;
+    private Vector3   _targetPosition;
+    private Coroutine _animCoroutine;
 
     public string Note => _note;
 
-    public void Interact()
+    private void Awake()
     {
-        if (_piano == null)
-        {
-            Debug.LogWarning($"[PianoKey] {gameObject.name} chưa gán _piano!");
-            return;
-        }
+        _restPosition    = transform.localPosition;
+        _pressedPosition = _restPosition + Vector3.down * _pressDepth;
+        _targetPosition  = _restPosition;
+    }
 
-        if (Time.frameCount == _lastFrame) return;
-        _lastFrame = Time.frameCount;
+    private void Update()
+    {
+        transform.localPosition = Vector3.Lerp(
+            transform.localPosition, _targetPosition,
+            Time.deltaTime * (_targetPosition == _pressedPosition ? _pressSpeed : _returnSpeed));
 
-        Debug.Log($"[PianoKey] Nhấn phím: {_note}");
+        if (_piano == null || !_piano.IsInPianoMode) return;
+
+        if (Input.GetKeyDown(_keyCode))
+            PressKey();
+    }
+
+    private void PressKey()
+    {
+        // Phát âm thanh
+        if (_keyClip != null)
+            AudioManager.Instance.PlaySFX(_keyClip);
+
+        if (_animCoroutine != null) StopCoroutine(_animCoroutine);
+        _animCoroutine = StartCoroutine(PressAndReturn());
+
+        Debug.Log($"[PianoKey] Nhấn phím: {_note} ({_keyCode})");
         _piano.AddNote(_note);
+    }
+
+    private IEnumerator PressAndReturn()
+    {
+        _targetPosition = _pressedPosition;
+
+        float threshold = _pressDepth * 0.05f;
+        while (Vector3.Distance(transform.localPosition, _pressedPosition) > threshold)
+            yield return null;
+
+        _targetPosition = _restPosition;
+        _animCoroutine  = null;
     }
 }
