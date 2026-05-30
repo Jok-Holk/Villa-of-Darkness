@@ -305,7 +305,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: BietThuBongToi.Runtime::PianoKey
   _noteDefinition: {fileID: 11400000, guid: 8481051ade653744b9ffec87cd9c4efb, type: 2}
   _note: Sol
+  _keyCode: 104
   _piano: {fileID: 2102412102}
+  _keyClip: {fileID: 8300000, guid: 05197460db6066949888bf3c3d96c82f, type: 3}
+  _pressDepth: 0.05
+  _pressSpeed: 20
+  _returnSpeed: 8
 --- !u!65 &144559518
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -709,6 +714,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e24b4da91cfe344478942e95bf34734f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: BietThuBongToi.Runtime::SpawnManager
+  defaultPrefab: {fileID: 0}
+  defaultSpawnPoint: {fileID: 0}
 --- !u!4 &337555405
 Transform:
   m_ObjectHideFlags: 0
@@ -1208,7 +1215,7 @@ GameObject:
   - component: {fileID: 414294614}
   - component: {fileID: 414294613}
   - component: {fileID: 414294612}
-  - component: {fileID: 414294611}
+  - component: {fileID: 414294615}
   m_Layer: 8
   m_Name: Key_Do
   m_TagString: Untagged
@@ -1231,21 +1238,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2102412106}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &414294611
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 414294609}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69c70f5c872cde84b8dff2633d99f787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: BietThuBongToi.Runtime::PianoKey
-  _noteDefinition: {fileID: 11400000, guid: 8481051ade653744b9ffec87cd9c4efb, type: 2}
-  _note: Do
-  _piano: {fileID: 2102412102}
 --- !u!65 &414294612
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1324,6 +1316,26 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 414294609}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &414294615
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 414294609}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69c70f5c872cde84b8dff2633d99f787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BietThuBongToi.Runtime::PianoKey
+  _noteDefinition: {fileID: 11400000, guid: 8481051ade653744b9ffec87cd9c4efb, type: 2}
+  _note: Do
+  _keyCode: 97
+  _piano: {fileID: 2102412102}
+  _keyClip: {fileID: 8300000, guid: b7d065c93645b7647bbbeab981dfabc7, type: 3}
+  _pressDepth: 0.05
+  _pressSpeed: 20
+  _returnSpeed: 8
 --- !u!1 &502216967
 GameObject:
   m_ObjectHideFlags: 0
@@ -2619,7 +2631,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: BietThuBongToi.Runtime::PianoKey
   _noteDefinition: {fileID: 11400000, guid: 8481051ade653744b9ffec87cd9c4efb, type: 2}
   _note: Si
+  _keyCode: 108
   _piano: {fileID: 2102412102}
+  _keyClip: {fileID: 0}
+  _pressDepth: 0.05
+  _pressSpeed: 20
+  _returnSpeed: 8
 --- !u!65 &794042343
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3280,7 +3297,7 @@ GameObject:
   - component: {fileID: 1119720956}
   - component: {fileID: 1119720955}
   - component: {fileID: 1119720954}
-  - component: {fileID: 1119720953}
+  - component: {fileID: 1119720957}
   m_Layer: 8
   m_Name: Key_Mi
   m_TagString: Untagged
@@ -3303,21 +3320,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2102412106}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1119720953
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1119720951}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69c70f5c872cde84b8dff2633d99f787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: BietThuBongToi.Runtime::PianoKey
-  _noteDefinition: {fileID: 11400000, guid: 8481051ade653744b9ffec87cd9c4efb, type: 2}
-  _note: Mi
-  _piano: {fileID: 2102412102}
 --- !u!65 &1119720954
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -3396,6 +3398,26 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1119720951}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1119720957
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1119720951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69c70f5c872cde84b8dff2633d99f787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BietThuBongToi.Runtime::PianoKey
+  _noteDefinition: {fileID: 11400000, guid: 8481051ade653744b9ffec87cd9c4efb, type: 2}
+  _note: Mi
+  _keyCode: 100
+  _piano: {fileID: 2102412102}
+  _keyClip: {fileID: 8300000, guid: 70d6b75b93e8e404a9f4909456e26263, type: 3}
+  _pressDepth: 0.05
+  _pressSpeed: 20
+  _returnSpeed: 8
 --- !u!1 &1163587583
 GameObject:
   m_ObjectHideFlags: 0
@@ -3932,7 +3954,7 @@ GameObject:
   - component: {fileID: 1293486228}
   - component: {fileID: 1293486227}
   - component: {fileID: 1293486226}
-  - component: {fileID: 1293486225}
+  - component: {fileID: 1293486229}
   m_Layer: 8
   m_Name: Key_Fa
   m_TagString: Untagged
@@ -3955,21 +3977,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2102412106}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1293486225
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1293486223}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69c70f5c872cde84b8dff2633d99f787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: BietThuBongToi.Runtime::PianoKey
-  _noteDefinition: {fileID: 11400000, guid: 8481051ade653744b9ffec87cd9c4efb, type: 2}
-  _note: Fa
-  _piano: {fileID: 2102412102}
 --- !u!65 &1293486226
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4048,6 +4055,26 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1293486223}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &1293486229
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1293486223}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69c70f5c872cde84b8dff2633d99f787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BietThuBongToi.Runtime::PianoKey
+  _noteDefinition: {fileID: 11400000, guid: 8481051ade653744b9ffec87cd9c4efb, type: 2}
+  _note: Fa
+  _keyCode: 103
+  _piano: {fileID: 2102412102}
+  _keyClip: {fileID: 8300000, guid: 71d97c97a37430e4d9635b7b75a90d25, type: 3}
+  _pressDepth: 0.05
+  _pressSpeed: 20
+  _returnSpeed: 8
 --- !u!1 &1344509499
 GameObject:
   m_ObjectHideFlags: 0
@@ -4727,7 +4754,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: BietThuBongToi.Runtime::PianoKey
   _noteDefinition: {fileID: 11400000, guid: 8481051ade653744b9ffec87cd9c4efb, type: 2}
   _note: La
+  _keyCode: 107
   _piano: {fileID: 2102412102}
+  _keyClip: {fileID: 8300000, guid: 4734f8bf13e433549be42f0ee33700ea, type: 3}
+  _pressDepth: 0.05
+  _pressSpeed: 20
+  _returnSpeed: 8
 --- !u!65 &1438462811
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -5212,8 +5244,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b0aeaecca23002345a145b2172383b99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: BietThuBongToi.Runtime::TriggerZone
-  _targetTag: Player
-  _triggerOnce: 1
+  _settings: {fileID: 0}
   OnTriggered:
     m_PersistentCalls:
       m_Calls: []
@@ -5496,7 +5527,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bea9c256fc1607049867d81b3ebbd434, type: 3}
   m_Name: 
   m_EditorClassIdentifier: BietThuBongToi.Runtime::GazeTrigger
-  _gazeThreshold: 3
+  _settings: {fileID: 0}
   OnGazeComplete:
     m_PersistentCalls:
       m_Calls: []
@@ -5915,10 +5946,19 @@ MonoBehaviour:
   _correctNoteClip: {fileID: 0}
   _wrongNoteClip: {fileID: 0}
   _sequenceCompleteClip: {fileID: 0}
-  _spawnManager: {fileID: 0}
-  _ghostPrefab: {fileID: 0}
+  _spawnManager: {fileID: 337555404}
+  _ghostPrefab: {fileID: 3013255791950520468, guid: db0d6bae7ec97a94aa91167b257f3de5, type: 3}
   _ghostSpawnPoint: {fileID: 0}
+  _cameraZoomTarget: {fileID: 0}
+  _playerController: {fileID: 0}
+  _zoomSpeed: 3
   OnSequenceComplete:
+    m_PersistentCalls:
+      m_Calls: []
+  OnEnterPianoMode:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitPianoMode:
     m_PersistentCalls:
       m_Calls: []
 --- !u!23 &2102412104
@@ -6043,7 +6083,7 @@ GameObject:
   - component: {fileID: 2124826896}
   - component: {fileID: 2124826895}
   - component: {fileID: 2124826894}
-  - component: {fileID: 2124826893}
+  - component: {fileID: 2124826897}
   m_Layer: 8
   m_Name: Key_Re
   m_TagString: Untagged
@@ -6066,21 +6106,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2102412106}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2124826893
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2124826891}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 69c70f5c872cde84b8dff2633d99f787, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: BietThuBongToi.Runtime::PianoKey
-  _noteDefinition: {fileID: 11400000, guid: 8481051ade653744b9ffec87cd9c4efb, type: 2}
-  _note: Re
-  _piano: {fileID: 2102412102}
 --- !u!65 &2124826894
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -6159,6 +6184,26 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2124826891}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2124826897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2124826891}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 69c70f5c872cde84b8dff2633d99f787, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BietThuBongToi.Runtime::PianoKey
+  _noteDefinition: {fileID: 11400000, guid: 8481051ade653744b9ffec87cd9c4efb, type: 2}
+  _note: Re
+  _keyCode: 115
+  _piano: {fileID: 2102412102}
+  _keyClip: {fileID: 8300000, guid: cd87e85d3d439a440afca926cf4975c6, type: 3}
+  _pressDepth: 0.05
+  _pressSpeed: 20
+  _returnSpeed: 8
 --- !u!1 &2126437845
 GameObject:
   m_ObjectHideFlags: 0
