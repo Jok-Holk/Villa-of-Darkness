@@ -24,6 +24,7 @@ public class WellDeathSequence : MonoBehaviour
     [Header("References")]
     [SerializeField] private GazeTrigger _gazeTrigger;
     [SerializeField] private PlayerController _playerController;
+    [SerializeField] private float _requiredDistance = 2f;
 
     private CanvasGroup _screenFadeCanvas;
     private bool _deathSequenceTriggered = false;
@@ -43,8 +44,18 @@ public class WellDeathSequence : MonoBehaviour
     public void OnWellGazeComplete()
     {
         if (_deathSequenceTriggered) return;
-        _deathSequenceTriggered = true;
 
+        if (_playerController != null)
+        {
+            float distance = Vector3.Distance(_playerController.transform.position, transform.position);
+            if (distance > _requiredDistance)
+            {
+                Debug.Log($"[WellDeathSequence] Gaze complete ignored - too far ({distance:F2}m). Required <= {_requiredDistance}m.");
+                return;
+            }
+        }
+
+        _deathSequenceTriggered = true;
         StartCoroutine(PlayDeathSequence());
     }
 
@@ -73,6 +84,8 @@ public class WellDeathSequence : MonoBehaviour
         if (_deathScreenUI != null)
             _deathScreenUI.Show("Minh Khoa", "1979 – 2000");
 
+        // 6. Báo GameManager rằng player đã chết nếu cần để cập nhật state chung
+        GameManager.Instance?.PlayerDead();
         Debug.Log("[WellDeathSequence] Death sequence completed!");
     }
 
