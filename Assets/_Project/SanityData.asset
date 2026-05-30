@@ -29,53 +29,53 @@ MonoBehaviour:
   - levelName: 80
     sanityMin: 60
     sanityMax: 80
-    drainRate: 0.002
+    drainRate: 0.004
     traumaTarget: 0.25
     shakeIntensityX: 1.5
     shakeIntensityY: 0.5
-    grain: 0.12
+    grain: 0.18
     chromatic: 0.04
     saturation: -10
-    exposure: -0.3
-    vignette: 0.28
+    exposure: -0.5
+    vignette: 0.32
     lensDistort: 0
   - levelName: 60
     sanityMin: 40
     sanityMax: 60
-    drainRate: 0.005
+    drainRate: 0.006
     traumaTarget: 0.45
     shakeIntensityX: 2.5
     shakeIntensityY: 1
     grain: 0.28
-    chromatic: 0.12
-    saturation: -25
-    exposure: -0.8
-    vignette: 0.38
+    chromatic: 0.15
+    saturation: -30
+    exposure: -1
+    vignette: 0.45
     lensDistort: -0.1
   - levelName: 40
     sanityMin: 20
     sanityMax: 40
-    drainRate: 0.008
+    drainRate: 0.009
     traumaTarget: 0.7
     shakeIntensityX: 3.5
     shakeIntensityY: 1.5
-    grain: 0.5
-    chromatic: 0.28
-    saturation: -45
-    exposure: -1.5
-    vignette: 0.55
-    lensDistort: -0.25
+    grain: 0.6
+    chromatic: 0.35
+    saturation: -55
+    exposure: -1.8
+    vignette: 0.62
+    lensDistort: -0.28
   - levelName: 20
     sanityMin: 0
     sanityMax: 20
-    drainRate: 0.012
+    drainRate: 0.014
     traumaTarget: 1
     shakeIntensityX: 5
     shakeIntensityY: 2
-    grain: 0.9
-    chromatic: 0.65
-    saturation: -80
-    exposure: -3.5
-    vignette: 0.85
-    lensDistort: -0.45
-  recoveryRate: 0.01
+    grain: 0.92
+    chromatic: 0.7
+    saturation: -90
+    exposure: -3.8
+    vignette: 0.88
+    lensDistort: -0.48
+  recoveryRate: 0
