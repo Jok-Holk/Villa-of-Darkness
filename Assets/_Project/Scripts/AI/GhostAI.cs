@@ -17,6 +17,9 @@ public class GhostAI : MonoBehaviour
     [Header("Speed")]
     [SerializeField] private float _patrolSpeed = 1.5f;
     [SerializeField] private float _chaseSpeed  = 4f;
+    private float _patrolSpeedOriginal;
+    private float _hearingRadiusOriginal;
+    private bool _isAlerted = false;
 
     [Header("Kill")]
     [SerializeField] private float _killDelay = 0.5f;
@@ -34,6 +37,10 @@ public class GhostAI : MonoBehaviour
     {
         _agent  = GetComponent<NavMeshAgent>();
         _player = GameObject.FindWithTag("Player")?.transform;
+        
+        // Lưu giá trị ban đầu để dùng SetAlertMode()
+        _patrolSpeedOriginal = _patrolSpeed;
+        _hearingRadiusOriginal = _hearingRadius;
     }
 
     // THÊM: reset flag khi scene reload (OnEnable chạy lại)
@@ -179,5 +186,20 @@ public class GhostAI : MonoBehaviour
     {
         if (other.CompareTag("Player"))
             _killTimer = 0f;
+    }
+
+    /// <summary>
+    /// Gọi khi piano giải xong (Ch.1) để tăng tốc độ và bán kính nghe.
+    /// Được wire từ PianoInteractable.OnSequenceComplete UnityEvent.
+    /// </summary>
+    public void SetAlertMode()
+    {
+        if (_isAlerted) return; // Chỉ alert 1 lần
+
+        _isAlerted = true;
+        _patrolSpeed = _patrolSpeedOriginal * 1.1f;  // +10% tốc độ patrol
+        _hearingRadius = _hearingRadiusOriginal * 1.25f;  // +25% bán kính nghe
+
+        Debug.Log($"[GhostAI] SetAlertMode() - Patrol speed: {_patrolSpeed:F2}, Hearing radius: {_hearingRadius:F2}");
     }
 }
