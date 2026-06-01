@@ -28,11 +28,18 @@ public class GhostAI : MonoBehaviour
     private Vector3      _lastKnownPosition;
     private float        _investigateTimer;
     private float        _killTimer = 0f;
+    private bool         _hasKilled = false; // THÊM: chặn gọi PlayerDead nhiều lần
 
     private void Awake()
     {
         _agent  = GetComponent<NavMeshAgent>();
         _player = GameObject.FindWithTag("Player")?.transform;
+    }
+
+    // THÊM: reset flag khi scene reload (OnEnable chạy lại)
+    private void OnEnable()
+    {
+        _hasKilled = false;
     }
 
     private void Update()
@@ -59,8 +66,8 @@ public class GhostAI : MonoBehaviour
             _agent.SetDestination(_waypoints[_waypointIndex].position);
         }
 
-        if (CanDetectPlayer())      EnterChase();
-        else if (CanHearPlayer())   EnterInvestigate(_lastKnownPosition);
+        if (CanDetectPlayer())    EnterChase();
+        else if (CanHearPlayer()) EnterInvestigate(_lastKnownPosition);
     }
 
     private void UpdateInvestigate()
@@ -149,9 +156,7 @@ public class GhostAI : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         if (!other.CompareTag("Player")) return;
-
-        // DEBUG — in ra mỗi frame ghost đang chạm player
-        Debug.Log($"[GhostAI] OnTriggerStay — AnyPlayerHiding={HideSpot.AnyPlayerHiding} | killTimer={_killTimer:F2}");
+        if (_hasKilled) return; // THÊM: đã kill rồi thì bỏ qua
 
         if (HideSpot.AnyPlayerHiding)
         {
@@ -163,6 +168,7 @@ public class GhostAI : MonoBehaviour
         if (_killTimer >= _killDelay)
         {
             Debug.Log("[GhostAI] KILL!");
+            _hasKilled    = true; // THÊM: đánh dấu đã kill
             _killTimer    = 0f;
             _currentState = State.Kill;
             GameManager.Instance?.PlayerDead();
