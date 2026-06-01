@@ -1,6 +1,12 @@
 using UnityEngine;
 using System.Collections;
 
+/// <summary>
+/// Gắn lên từng phím đàn (7 object).
+/// Phím được nhấn bằng KeyCode trên bàn phím (A/S/D/F/G/H/J...), KHÔNG dùng E.
+/// Chỉ nhận input khi Piano đang ở piano mode (IsInPianoMode == true).
+/// Animation: phím nhún xuống rồi trả về vị trí ban đầu bằng Lerp.
+/// </summary>
 public class PianoKey : MonoBehaviour
 {
     [Header("Note Definition — kéo ScriptableObject vào để dùng dropdown")]
@@ -19,10 +25,14 @@ public class PianoKey : MonoBehaviour
     [SerializeField] private AudioClip _keyClip;
 
     [Header("Animation phím")]
+    [Tooltip("Phím nhún xuống bao nhiêu đơn vị theo trục Y")]
     [SerializeField] private float _pressDepth  = 0.05f;
+    [Tooltip("Tốc độ nhún xuống")]
     [SerializeField] private float _pressSpeed  = 20f;
+    [Tooltip("Tốc độ trả lên")]
     [SerializeField] private float _returnSpeed = 8f;
 
+    // Animation state
     private Vector3   _restPosition;
     private Vector3   _pressedPosition;
     private Vector3   _targetPosition;
@@ -39,10 +49,12 @@ public class PianoKey : MonoBehaviour
 
     private void Update()
     {
+        // Lerp animation
         transform.localPosition = Vector3.Lerp(
             transform.localPosition, _targetPosition,
             Time.deltaTime * (_targetPosition == _pressedPosition ? _pressSpeed : _returnSpeed));
 
+        // Chỉ nhận input khi đang trong piano mode
         if (_piano == null || !_piano.IsInPianoMode) return;
 
         if (Input.GetKeyDown(_keyCode))
@@ -51,10 +63,11 @@ public class PianoKey : MonoBehaviour
 
     private void PressKey()
     {
-        // Phát âm thanh
-        if (_keyClip != null)
+        // Phát âm thanh phím
+        if (_keyClip != null && AudioManager.Instance != null)
             AudioManager.Instance.PlaySFX(_keyClip);
 
+        // Animation nhún
         if (_animCoroutine != null) StopCoroutine(_animCoroutine);
         _animCoroutine = StartCoroutine(PressAndReturn());
 
