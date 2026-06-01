@@ -619,8 +619,9 @@ GameObject:
   - component: {fileID: 536281595}
   - component: {fileID: 536281594}
   - component: {fileID: 536281593}
+  - component: {fileID: 536281598}
   m_Layer: 0
-  m_Name: SafeZone
+  m_Name: Zone_Salon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -638,7 +639,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12638a38527e36c4bb03ddad7213b4e0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: BietThuBongToi.Runtime::SanityZone
-  _zoneType: 0
+  _zoneType: 1
 --- !u!65 &536281594
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -725,13 +726,26 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 536281592}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 13.5, y: -0.55, z: 7.76}
-  m_LocalScale: {x: 5, y: 3, z: 5}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 10.256269, y: -0.55, z: 10.83}
+  m_LocalScale: {x: 11.9825, y: 7.1895003, z: 11.9825}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1125268647}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &536281598
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 536281592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c09568ffbd365404495c448859381f41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BietThuBongToi.Runtime::SanityZoneVisual
+  _color: {r: 1, g: 0, b: 0, a: 0.15}
 --- !u!1 &546186969
 GameObject:
   m_ObjectHideFlags: 0
@@ -923,6 +937,7 @@ GameObject:
   - component: {fileID: 702784781}
   - component: {fileID: 702784780}
   - component: {fileID: 702784779}
+  - component: {fileID: 702784785}
   m_Layer: 7
   m_Name: Ghost
   m_TagString: Ghost
@@ -955,6 +970,7 @@ MonoBehaviour:
     m_Bits: 64
   _patrolSpeed: 1.5
   _chaseSpeed: 4
+  _killDelay: 0.5
 --- !u!195 &702784780
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -1076,6 +1092,20 @@ Transform:
   - {fileID: 2121253920}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &702784785
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 702784778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d3ccc520a666b1745a94032093e0cb94, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BietThuBongToi.Runtime::GhostProximitySanity
+  _drainPerSecond: 0.08
+  _sanitySystem: {fileID: 1963201170}
 --- !u!1 &917587728
 GameObject:
   m_ObjectHideFlags: 0
@@ -1351,6 +1381,40 @@ Transform:
   - {fileID: 407706304}
   m_Father: {fileID: 297275822}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1125268646
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1125268647}
+  m_Layer: 0
+  m_Name: SanityZone
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1125268647
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1125268646}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.24373, y: -0, z: 0.96725}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 536281597}
+  - {fileID: 2122593922}
+  - {fileID: 1417365902}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1320105628
 GameObject:
   m_ObjectHideFlags: 0
@@ -1527,6 +1591,87 @@ Transform:
   m_Children: []
   m_Father: {fileID: 407706304}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1417365901
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1417365902}
+  - component: {fileID: 1417365905}
+  - component: {fileID: 1417365904}
+  - component: {fileID: 1417365903}
+  m_Layer: 0
+  m_Name: Zone_HanhLang_Tret
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1417365902
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417365901}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -17, y: 0, z: 0}
+  m_LocalScale: {x: 11.9825, y: 7.1895003, z: 11.9825}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1125268647}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1417365903
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417365901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12638a38527e36c4bb03ddad7213b4e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BietThuBongToi.Runtime::SanityZone
+  _zoneType: 1
+--- !u!65 &1417365904
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417365901}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1417365905
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1417365901}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c09568ffbd365404495c448859381f41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BietThuBongToi.Runtime::SanityZoneVisual
+  _color: {r: 1, g: 0, b: 0, a: 0.15}
 --- !u!1 &1599890667
 GameObject:
   m_ObjectHideFlags: 0
@@ -1842,6 +1987,87 @@ Transform:
   m_Children: []
   m_Father: {fileID: 702784784}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2122593921
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2122593922}
+  - component: {fileID: 2122593925}
+  - component: {fileID: 2122593924}
+  - component: {fileID: 2122593923}
+  m_Layer: 0
+  m_Name: Zone_Galerie_SanSau
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2122593922
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2122593921}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 9, y: -0.42, z: -13.76}
+  m_LocalScale: {x: 11.9825, y: 7.1895003, z: 11.9825}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1125268647}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2122593923
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2122593921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c09568ffbd365404495c448859381f41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BietThuBongToi.Runtime::SanityZoneVisual
+  _color: {r: 1, g: 0, b: 0, a: 0.15}
+--- !u!114 &2122593924
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2122593921}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 12638a38527e36c4bb03ddad7213b4e0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BietThuBongToi.Runtime::SanityZone
+  _zoneType: 1
+--- !u!65 &2122593925
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2122593921}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -1855,4 +2081,4 @@ SceneRoots:
   - {fileID: 1963201171}
   - {fileID: 1320105633}
   - {fileID: 1599890672}
-  - {fileID: 536281597}
+  - {fileID: 1125268647}
