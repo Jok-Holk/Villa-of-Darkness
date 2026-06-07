@@ -2,4 +2,5 @@
   <Project Path="BietThuBongToi.Runtime.csproj" />
   <Project Path="Assembly-CSharp.csproj" />
   <Project Path="Phase1.Tests.csproj" />
+  <Project Path="Phase2.Tests.csproj" />
 </Solution>
