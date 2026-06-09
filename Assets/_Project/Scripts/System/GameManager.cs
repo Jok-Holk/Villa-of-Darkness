@@ -6,28 +6,26 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance { get; private set; }
 
     private DeathScreenUI _deathScreenUI;
+    private ChapterTransition _chapterTransition;
 
     private void Awake()
     {
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
-            return; // duplicate → không làm gì thêm, đặc biệt KHÔNG đăng ký sceneLoaded
+            return;
         }
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        // Chỉ đăng ký 1 lần duy nhất trên instance hợp lệ
         SceneManager.sceneLoaded += OnSceneLoaded;
 
-        // Tìm ngay lần đầu (scene hiện tại lúc game start)
         _deathScreenUI = FindObjectOfType<DeathScreenUI>(true);
     }
 
     private void OnDestroy()
     {
-        // Chỉ unsubscribe nếu đây là instance hợp lệ
         if (Instance == this)
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
@@ -38,16 +36,34 @@ public class GameManager : MonoBehaviour
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         _deathScreenUI = FindObjectOfType<DeathScreenUI>(true);
-        Debug.Log($"[GameManager] Scene loaded: {scene.name} | DeathScreenUI: {(_deathScreenUI != null ? "OK" : "NULL")}");
+        _chapterTransition = FindObjectOfType<ChapterTransition>(true);
+
+        Debug.Log($"[GameManager] Scene loaded: {scene.name} | ChapterTransition: {(_chapterTransition != null ? "OK" : "NULL")}");
+
+        // Khi vừa load vào TestMenu → tự động play transition
+        if (scene.name == "TestMenu" && GameData.currentChapter > 0)
+        {
+            if (_chapterTransition != null)
+            {
+                _chapterTransition.PlayTransition(
+                    "Chương 1 – Căn Nhà Của Ký Ức",
+                    "Biệt Thự Gia Đình Đặng · 1965–2000"
+                );
+            }
+            else
+            {
+                Debug.LogWarning("[GameManager] Không tìm thấy ChapterTransition trong TestMenu!");
+            }
+        }
     }
 
     public void PlayerDead(string characterName = "Minh Khoa", string characterYears = "1979 – 2000")
     {
         Debug.Log("Player died");
-        Time.timeScale   = 0f;  // tạm dừng game
+        Time.timeScale = 0f;
 
         Cursor.lockState = CursorLockMode.None;
-        Cursor.visible   = true;
+        Cursor.visible = true;
 
         if (_deathScreenUI != null)
             _deathScreenUI.Show(characterName, characterYears);
@@ -58,23 +74,23 @@ public class GameManager : MonoBehaviour
     public void PlayerRespawn()
     {
         Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible   = false;
-        Time.timeScale   = 1f;   // chạy lại game
+        Cursor.visible = false;
+        Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void LoadChapter(int chapterNumber)
     {
         GameData.currentChapter = chapterNumber;
-        //SceneManager.LoadScene("Chapter" + chapterNumber);
+        SceneManager.LoadScene("TestMenu"); // load scene → OnSceneLoaded sẽ tự play transition
     }
 
     public void LoadMainMenu()
     {
         GameData.Reset();
-        Time.timeScale   = 1f;
+        Time.timeScale = 1f;
         Cursor.lockState = CursorLockMode.None;
-        Cursor.visible   = true;
+        Cursor.visible = true;
         SceneManager.LoadScene("MainMenu");
     }
 

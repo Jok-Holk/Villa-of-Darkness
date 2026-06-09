@@ -11,7 +11,12 @@ public class MainMenuUI : MonoBehaviour
 
     public void StartGame() { GameManager.Instance?.LoadChapter(1);
         SceneManager.LoadScene("TestMenu"); // đổi tên đúng scene của bạn
+        
     }
+    public void OnStartButtonClick()
+{
+    GameManager.Instance.LoadChapter(1);
+}
     public void OpenSettings()
     {
         mainMenuPanel.SetActive(false);

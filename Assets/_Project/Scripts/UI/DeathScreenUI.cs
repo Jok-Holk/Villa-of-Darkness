@@ -5,49 +5,44 @@ using UnityEngine.UI;
 using TMPro;
 #pragma warning disable CS0414
 
-/// <summary>
-/// HIERARCHY:
-/// DeathScreen                      ← script gắn ở đây (luôn active)
-///  └─ DeathScreenPanel             ← SetActive = false lúc đầu
-///      ├─ Background   Image       #0D0D0D stretch full
-///      ├─ GlitchNoise  RawImage    stretch full, color white alpha 0
-///      ├─ ScanlineStrip Image      height 4, color white alpha 0
-///      └─ PaperPanel   Image       #111111, width ~520, center
-///          ├─ Masthead  TMP_Text   monospace, size 12, #999999, center
-///          ├─ RuleTop   Image      height 2, #555555, stretch ngang
-///          ├─ Headline  TMP_Text   bold, size 26, #E8E0D0
-///          ├─ RuleMid   Image      height 1, #444444
-///          ├─ SubText   TMP_Text   size 13, #888888
-///          ├─ Quote     TMP_Text   italic, size 15, #BBBBBB
-///          ├─ RuleBot   Image      height 2, #555555
-///          └─ ButtonRow HorizontalLayoutGroup spacing 80
-///              ├─ RetryButton  "[ THỬ LẠI ]"
-///              └─ MenuButton   "[ MENU ]"
-/// </summary>
 public class DeathScreenUI : MonoBehaviour
 {
-    // ── Panel & glitch (giữ từ gốc) ───────────────────────────────────────────
+    // ── Panel & Glitch ─────────────────────────────────────────────────────────
     [Header("Panel & Glitch")]
     [SerializeField] private GameObject deathScreenPanel;
     [SerializeField] private RawImage   glitchNoise;
     [SerializeField] private Image      scanlineStrip;
 
-    // ── Newspaper text (thêm mới) ──────────────────────────────────────────────
+    // ── Newspaper Text ─────────────────────────────────────────────────────────
     [Header("Newspaper Text")]
-    [SerializeField] private TMP_Text mastheadText;  // "SAIGON THỜI BÁO · 14/3/2000"
-    [SerializeField] private TMP_Text headlineText;  // dòng tiêu đề lớn
-    [SerializeField] private TMP_Text subText;       // dòng phụ nhỏ
-    [SerializeField] private TMP_Text quoteText;     // tên + năm dạng quote
+    [SerializeField] private TMP_Text mastheadText;
+    [SerializeField] private TMP_Text headlineText;
+     [SerializeField] private TMP_Text quoteText;
 
     [Header("Nội dung cố định")]
-    [SerializeField] private string masthead    = "SAIGON THỜI BÁO  ·  14/3/2000";
-    [SerializeField] private string headline    = "PHÓNG VIÊN MẤT TÍCH TẠI BIỆT THỰ";
-    [SerializeField] private string subContent  = "Nguyễn Minh Khoa, 28 tuổi...";
+    [SerializeField] private string masthead   = "SAIGON THỜI BÁO  ·  14/3/2000";
+    [SerializeField] private string headline   = "PHÓNG VIÊN MẤT TÍCH TẠI BIỆT THỰ";
+    
+    // ── Typewriter ─────────────────────────────────────────────────────────────
+    [Header("Typewriter")]
+    [Tooltip("Giây giữa mỗi ký tự")]
+    [SerializeField] private float charDelay  = 0.045f;
+    [Tooltip("Giây dừng giữa các dòng")]
+    [SerializeField] private float lineDelay  = 0.35f;
+    [Tooltip("Xác suất phát tiếng gõ mỗi ký tự")]
+    [SerializeField] [Range(0f,1f)] private float typeChance = 0.85f;
 
-    // ── Buttons (thêm mới) ────────────────────────────────────────────────────
+    // ── Âm thanh ───────────────────────────────────────────────────────────────
+    [Header("Âm thanh")]
+    [SerializeField] private AudioSource audioSource;
+    [SerializeField] private AudioClip   typeClip;    // tiếng gõ từng phím
+    [SerializeField] private AudioClip   returnClip;  // tiếng carriage return cuối dòng
+
+    // ── Buttons ────────────────────────────────────────────────────────────────
     [Header("Buttons")]
-    [SerializeField] private Button retryButton;
-    [SerializeField] private Button menuButton;
+    [SerializeField] private Button     retryButton;
+    [SerializeField] private Button     menuButton;
+    [SerializeField] private GameObject buttonRow;    // ẩn cho đến khi in xong
 
     // ── Gốc giữ nguyên ────────────────────────────────────────────────────────
     [SerializeField] private bool   _isVisible     = false;
@@ -55,6 +50,7 @@ public class DeathScreenUI : MonoBehaviour
     public UnityEvent OnRetry = new UnityEvent();
 
     private Coroutine _glitch;
+    private Coroutine _typewriter;
     private Texture2D _noiseTex;
 
     // ══════════════════════════════════════════════════════════════════════════
@@ -69,14 +65,8 @@ public class DeathScreenUI : MonoBehaviour
         SetAlpha(glitchNoise,   0f);
         SetAlpha(scanlineStrip, 0f);
 
-        // Gắn button listener bằng code – không phụ thuộc Inspector sau reload
         if (retryButton != null) retryButton.onClick.AddListener(Retry);
         if (menuButton  != null) menuButton.onClick.AddListener(GoMenu);
-
-        // Text cố định gán 1 lần
-        if (mastheadText != null) mastheadText.text = masthead;
-        if (headlineText != null) headlineText.text = headline;
-        if (subText      != null) subText.text      = subContent;
     }
 
     private void OnDestroy() { if (_noiseTex) Destroy(_noiseTex); }
@@ -88,20 +78,30 @@ public class DeathScreenUI : MonoBehaviour
         _isVisible     = true;
         _characterName = name;
 
-        // Quote dùng tên + năm động
-        if (quoteText != null) quoteText.text = $"\"{name}, {years}...\"";
+        // Xoá sạch text trước
+        SetText(mastheadText, "");
+        SetText(headlineText, "");
+         SetText(quoteText,    "");
+
+        // Ẩn nút cho đến khi in xong
+        if (buttonRow != null) buttonRow.SetActive(false);
 
         if (deathScreenPanel != null) deathScreenPanel.SetActive(true);
 
-        if (_glitch != null) StopCoroutine(_glitch);
-        _glitch = StartCoroutine(GlitchRoutine());
+        // Glitch + typewriter chạy song song
+        if (_glitch     != null) StopCoroutine(_glitch);
+        if (_typewriter != null) StopCoroutine(_typewriter);
+        _glitch     = StartCoroutine(GlitchRoutine());
+        _typewriter = StartCoroutine(PrintNewspaper(name, years));
     }
 
     public void Hide()
     {
         _isVisible = false;
 
-        if (_glitch != null) { StopCoroutine(_glitch); _glitch = null; }
+        if (_glitch     != null) { StopCoroutine(_glitch);     _glitch     = null; }
+        if (_typewriter != null) { StopCoroutine(_typewriter); _typewriter = null; }
+
         SetAlpha(glitchNoise,   0f);
         SetAlpha(scanlineStrip, 0f);
         if (glitchNoise      != null) glitchNoise.uvRect = new Rect(0, 0, 1, 1);
@@ -127,6 +127,60 @@ public class DeathScreenUI : MonoBehaviour
             Debug.LogWarning("[DeathScreenUI] Không tìm thấy GameManager.Instance!");
     }
 
+    // ── Typewriter ─────────────────────────────────────────────────────────────
+
+    private IEnumerator PrintNewspaper(string name, string years)
+    {
+        // Dòng 1: Masthead
+        yield return TypeLine(mastheadText, masthead);
+        yield return new WaitForSecondsRealtime(lineDelay);
+
+        // Dòng 2: Headline
+        yield return TypeLine(headlineText, headline);
+        yield return new WaitForSecondsRealtime(lineDelay);
+
+         yield return new WaitForSecondsRealtime(lineDelay);
+
+        // Dòng 4: Quote tên + năm
+        yield return TypeLine(quoteText, $"\"{name}, {years}...\"");
+        yield return new WaitForSecondsRealtime(lineDelay * 0.5f);
+
+        // Hiện nút sau khi in xong
+        if (buttonRow != null) buttonRow.SetActive(true);
+    }
+
+    /// In từng ký tự vào TMP_Text
+    private IEnumerator TypeLine(TMP_Text tmp, string content)
+    {
+        if (tmp == null) yield break;
+        tmp.text = "";
+
+        foreach (char c in content)
+        {
+            tmp.text += c;
+            PlayTypeSound(c);
+            yield return new WaitForSecondsRealtime(charDelay * Random.Range(0.7f, 1.4f));
+        }
+
+        PlayReturnSound();
+    }
+
+    private void PlayTypeSound(char c)
+    {
+        if (typeClip == null || audioSource == null) return;
+        if (char.IsWhiteSpace(c)) return;
+        if (Random.value > typeChance) return;
+
+        audioSource.pitch = Random.Range(0.9f, 1.15f);
+        audioSource.PlayOneShot(typeClip, Random.Range(0.4f, 0.7f));
+    }
+
+    private void PlayReturnSound()
+    {
+        if (returnClip == null || audioSource == null) return;
+        audioSource.PlayOneShot(returnClip, 0.6f);
+    }
+
     // ── Glitch loop vĩnh viễn, unscaled time ──────────────────────────────────
 
     private IEnumerator GlitchRoutine()
@@ -136,7 +190,6 @@ public class DeathScreenUI : MonoBehaviour
 
         while (true)
         {
-            // Noise texture
             Color32[] px = new Color32[128 * 72];
             for (int i = 0; i < px.Length; i++)
             {
@@ -150,15 +203,14 @@ public class DeathScreenUI : MonoBehaviour
             _noiseTex.SetPixels32(px);
             _noiseTex.Apply();
 
-            // Glitch noise layer
             if (glitchNoise != null)
             {
                 SetAlpha(glitchNoise, Random.Range(0.3f, 0.65f));
-                float tear = Random.value < 0.3f ? Random.Range(-0.06f, 0.06f) : 0f;
-                glitchNoise.uvRect = new Rect(tear, 0, 1, 1);
+                glitchNoise.uvRect = new Rect(
+                    Random.value < 0.3f ? Random.Range(-0.06f, 0.06f) : 0f,
+                    0, 1, 1);
             }
 
-            // Scanline trượt dọc
             if (scanlineStrip != null)
             {
                 scanY -= Time.unscaledDeltaTime * Random.Range(0.4f, 0.9f);
@@ -172,6 +224,10 @@ public class DeathScreenUI : MonoBehaviour
             yield return new WaitForSecondsRealtime(interval * Random.Range(0.7f, 1.3f));
         }
     }
+
+    // ── Helpers ────────────────────────────────────────────────────────────────
+
+    private static void SetText(TMP_Text tmp, string t) { if (tmp != null) tmp.text = t; }
 
     private static void SetAlpha(Graphic g, float a)
     {
