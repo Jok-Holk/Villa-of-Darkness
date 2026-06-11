@@ -108,4 +108,16 @@ LevelDesign_Ch1_Note.md
 LevelDesign_Phase3_Note.md
 UI_StyleGuide.md
 TeamTask_Current.md
+DailyTask_*.md
 .claude/
+
+# Node.js / build tools (không push)
+node_modules/
+package-lock.json
+package.json
+create_gdd.js
+
+# Temp / working dirs
+gdd_unpacked/
+*_unpacked/
+*_extract.txt
