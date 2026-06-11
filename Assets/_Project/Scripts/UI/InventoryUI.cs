@@ -11,6 +11,17 @@ public class InventoryUI : MonoBehaviour
     [Header("Kéo Player vào để tắt input khi mở inventory")]
     [SerializeField] private PlayerController _playerController;
 
+    [Header("Xem 3D item từ túi đồ")]
+    [Tooltip("itemId → ExamineItem proxy. Click item → xem 3D → E → về lại túi đồ.")]
+    [SerializeField] private ExamineItemEntry[] _examineRegistry;
+
+    [System.Serializable]
+    public struct ExamineItemEntry
+    {
+        public string     itemId;
+        public ExamineItem examineItem;
+    }
+
     private Image[]    _slotIcons;
     private TMP_Text[] _slotLabels;
     private Image[]    _slotBorders;
@@ -21,16 +32,17 @@ public class InventoryUI : MonoBehaviour
     private bool _isOpen = false;
     public bool IsOpen => _isOpen;
 
+    // BUG FIX 5: track xem có examine đang chạy không để chặn Tab
+    private ExamineItem _activeExamine = null;
+    public  bool IsExamining => _activeExamine != null && _activeExamine.IsExamining;
+
     private int _lastClickFrame = -1;
 
     public UnityEvent OnOpen  = new UnityEvent();
     public UnityEvent OnClose = new UnityEvent();
 
-    // ─── AWAKE ─────────────────────────────────────────────────────────────────
     private void Awake()
     {
-        // Cache slots TRƯỚC khi SetActive(false)
-        // vì Start() sẽ không chạy khi GameObject inactive
         CacheSlots();
         gameObject.SetActive(false);
     }
@@ -68,7 +80,6 @@ public class InventoryUI : MonoBehaviour
 
     public void Open()
     {
-        // Fallback phòng thủ nếu CacheSlots chưa chạy được vì lý do nào đó
         if (_slotIcons == null) CacheSlots();
 
         _isOpen = true;
@@ -86,14 +97,23 @@ public class InventoryUI : MonoBehaviour
 
     public void Close()
     {
+        // BUG FIX 3: Nếu đang có examine chạy, dừng examine trước, KHÔNG đóng inventory ngay.
+        // ReopenAfterExamine sẽ KHÔNG được gọi vì ta xóa listener trước.
+        if (_activeExamine != null && _activeExamine.IsExamining)
+        {
+            _activeExamine.OnExamineEnd.RemoveListener(ReopenAfterExamine);
+            _activeExamine.StopExamine();
+            _activeExamine = null;
+        }
+
         _isOpen = false;
         gameObject.SetActive(false);
 
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible   = false;
-
         if (_playerController != null)
             _playerController.SetInputEnabled(true);
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible   = false;
 
         OnClose.Invoke();
     }
@@ -161,10 +181,62 @@ public class InventoryUI : MonoBehaviour
         if (data != null && data.monologueClip != null && AudioManager.Instance != null)
             AudioManager.Instance.PlaySFX(data.monologueClip);
 
-        if (data != null)
-            Debug.Log($"[InventoryUI] {data.itemName}: {data.description}");
-        else
-            Debug.Log($"[InventoryUI] Clicked: {itemId}");
+        if (!TryOpenExamine(itemId))
+        {
+            if (data != null)
+                Debug.Log($"[InventoryUI] {data.itemName}: {data.description}");
+        }
+    }
+
+    private bool TryOpenExamine(string itemId)
+    {
+        if (_examineRegistry == null) return false;
+
+        foreach (var entry in _examineRegistry)
+        {
+            if (entry.itemId != itemId || entry.examineItem == null) continue;
+
+            // Ẩn panel inventory tạm thời — _isOpen giữ nguyên true
+            gameObject.SetActive(false);
+
+            // BUG FIX 3: Lưu lại examine đang active để Tab/Close có thể kiểm tra
+            _activeExamine = entry.examineItem;
+
+            // Đăng ký callback — RemoveListener trước để không bị double-register
+            entry.examineItem.OnExamineEnd.RemoveListener(ReopenAfterExamine);
+            entry.examineItem.OnExamineEnd.AddListener(ReopenAfterExamine);
+
+            // StartExamineFromInventory() tự gọi SetActive(true) bên trong
+            entry.examineItem.StartExamineFromInventory();
+            return true;
+        }
+        return false;
+    }
+
+    /// <summary>
+    /// Gọi khi ExamineItem.OnExamineEnd fire (player nhấn E thoát xem).
+    /// Mở lại panel inventory, player vẫn locked.
+    /// </summary>
+    private void ReopenAfterExamine()
+    {
+        // BUG FIX 3: Xóa listener + reset active examine ngay khi callback chạy
+        if (_activeExamine != null)
+        {
+            _activeExamine.OnExamineEnd.RemoveListener(ReopenAfterExamine);
+            _activeExamine = null;
+        }
+
+        _isOpen = true;
+        gameObject.SetActive(true);
+
+        if (_playerController != null)
+            _playerController.SetInputEnabled(false);
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible   = true;
+
+        Refresh();
+        Debug.Log("[InventoryUI] Mở lại sau khi thoát xem.");
     }
 
     // ─── INTERNAL ──────────────────────────────────────────────────────────────
