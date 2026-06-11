@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: ItemData_MusicBox
   m_EditorClassIdentifier: BietThuBongToi.Runtime::ItemData
   itemId: music_box
-  itemName: "H\u1ED9p Nh\u1EA1c"
-  description: "M\u1ED9t chi\u1EBFc h\u1ED9p nh\u1EA1c c\u0169 k\u1EF9..."
+  itemName: "H\u1ED9p Nh\u1EA1c \u0110\u1ED3ng"
+  description: "H\u1ED9p nh\u1EA1c c\u1ED5. \u0110\xE2y l\xE0 th\u1EE9 c\u1EA3 gia
+    \u0111\xECnh \u0110\u1EB7ng \u0111\xE3 t\xECm ki\u1EBFm."
   icon: {fileID: 0}
   slotBorderColor: {r: 1, g: 0.9372188, b: 0, a: 1}
   monologueClip: {fileID: 0}

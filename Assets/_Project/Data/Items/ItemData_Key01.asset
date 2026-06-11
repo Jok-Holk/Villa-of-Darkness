@@ -13,8 +13,9 @@ MonoBehaviour:
   m_Name: ItemData_Key01
   m_EditorClassIdentifier: BietThuBongToi.Runtime::ItemData
   itemId: key_01
-  itemName: Key
-  description: "Ch\xECa kho\xE1 g\u1EC9 s\xE9t, g\u1EAFn nh\xE3n ch\u1EEF s\u1ED1."
+  itemName: "Ch\xECa Kho\xE1 C\u0169"
+  description: "Ch\xECa kho\xE1 b\u1ED9ng b\u1EB1ng s\u1EAFt g\u1EC9. C\xF3 th\u1EC3
+    m\u1EDF \u1ED5 kho\xE1 g\xEC \u0111\xF3."
   icon: {fileID: 0}
   slotBorderColor: {r: 1, g: 1, b: 1, a: 1}
   monologueClip: {fileID: 0}
