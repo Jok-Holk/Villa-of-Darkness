@@ -57,18 +57,43 @@ public class PianoInteractableEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_ghostPrefab"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_ghostSpawnPoint"));
 
-        // Camera Zoom  ← MỚI
+        // Camera Zoom
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Camera Zoom", EditorStyles.boldLabel);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_cameraZoomTarget"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_playerController"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_zoomSpeed"));
 
+        // Sheet Music Lock ← MỚI
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("Sheet Music Lock", EditorStyles.boldLabel);
+
+        SerializedProperty invProp = serializedObject.FindProperty("_inventorySystem");
+        EditorGUILayout.PropertyField(invProp, new GUIContent("Inventory System"));
+
+        SerializedProperty reqProp = serializedObject.FindProperty("_requiredItemId");
+        EditorGUILayout.PropertyField(reqProp, new GUIContent("Required Item ID"));
+
+        // Cảnh báo nếu chưa gán InventorySystem
+        if (invProp.objectReferenceValue == null)
+        {
+            EditorGUILayout.HelpBox(
+                "Chưa gán Inventory System — piano sẽ không kiểm tra SheetMusic, " +
+                "player interact được luôn.",
+                MessageType.Warning);
+        }
+
         // Events
         EditorGUILayout.Space();
         EditorGUILayout.PropertyField(serializedObject.FindProperty("OnSequenceComplete"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("OnEnterPianoMode"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("OnExitPianoMode"));
+        EditorGUILayout.PropertyField(
+            serializedObject.FindProperty("OnMissingSheetMusic"),
+            new GUIContent(
+                "On Missing Sheet Music",
+                "Fire khi player interact piano nhưng chua co SheetMusic trong tui. " +
+                "Wire vao UI de hien prompt 'Can tim ban nhac truoc'."));
 
         serializedObject.ApplyModifiedProperties();
     }

@@ -25,10 +25,8 @@ public class InteractionSystem : MonoBehaviour
 
         Debug.Log($"[Interact] Hit: {hit.collider.gameObject.name}");
 
-        // Bước 1: tìm IInteractable enabled trên chính object bị hit
         IInteractable target = FindEnabledInteractable(hit.collider.gameObject);
 
-        // Bước 2: nếu không thấy → leo lên parent (trường hợp collider nằm ở object con)
         if (target == null && hit.collider.transform.parent != null)
             target = FindEnabledInteractable(hit.collider.transform.parent.gameObject);
 
@@ -38,10 +36,6 @@ public class InteractionSystem : MonoBehaviour
         target?.Interact();
     }
 
-    /// <summary>
-    /// Tìm component đầu tiên implement IInteractable VÀ đang enabled
-    /// trên đúng GameObject được chỉ định (không leo lên parent).
-    /// </summary>
     private IInteractable FindEnabledInteractable(GameObject go)
     {
         foreach (MonoBehaviour mb in go.GetComponents<MonoBehaviour>())
