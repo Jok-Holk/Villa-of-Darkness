@@ -121,3 +121,12 @@ create_gdd.js
 gdd_unpacked/
 *_unpacked/
 *_extract.txt
+
+# Local development tools
+Assets/Editor/MCP/
+Assets/Editor/MCP.meta
+Packages/com.unity.mcp*/
+**/mcp-unity*/
+mcp-unity/
+blender-mcp/
+.mcp-cache/
