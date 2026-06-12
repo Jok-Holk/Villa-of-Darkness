@@ -1,5 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/_Project/Models/Props/Decor/Prop_Frame_Portrait.glb.meta
 guid: b9d1517cdcdd96849bbb7eb836338248
+========
+guid: e4f7f21dde2aa4e47ac3e37ed1908850
+folderAsset: yes
+>>>>>>>> origin/level/blockout-chapter1:Assets/_Project/Models/Characters.meta
 DefaultImporter:
   externalObjects: {}
   userData: 
