@@ -35,6 +35,12 @@ public class PianoInteractable : MonoBehaviour, IInteractable
     [Tooltip("Tốc độ zoom vào/ra")]
     [SerializeField] private float _zoomSpeed = 3f;
 
+    [Header("Sheet Music Lock")]
+    [Tooltip("Kéo InventorySystem vào để kiểm tra SheetMusic trước khi chơi")]
+    [SerializeField] private InventorySystem _inventorySystem;
+    [Tooltip("Item ID của tờ nhạc — mặc định: SheetMusic")]
+    [SerializeField] private string _requiredItemId = "SheetMusic";
+
     // ─── State ────────────────────────────────────────────────────────────────
     private List<string> _inputSequence = new List<string>();
     private bool         _isCompleted   = false;
@@ -49,9 +55,11 @@ public class PianoInteractable : MonoBehaviour, IInteractable
     // Frame guard cho E để tránh exit ngay frame vừa Enter
     private int _enterFrame = -1;
 
-    public UnityEvent OnSequenceComplete = new UnityEvent();
-    public UnityEvent OnEnterPianoMode   = new UnityEvent();
-    public UnityEvent OnExitPianoMode    = new UnityEvent();
+    public UnityEvent OnSequenceComplete  = new UnityEvent();
+    public UnityEvent OnEnterPianoMode    = new UnityEvent();
+    public UnityEvent OnExitPianoMode     = new UnityEvent();
+    /// <summary>Fire khi player interact nhưng chưa có SheetMusic — UI dùng để hiện prompt.</summary>
+    public UnityEvent OnMissingSheetMusic = new UnityEvent();
 
     // ─── INIT ─────────────────────────────────────────────────────────────────
     private void Awake()
@@ -81,6 +89,18 @@ public class PianoInteractable : MonoBehaviour, IInteractable
         }
 
         if (_isInPianoMode) return; // đang trong mode → Update() lo việc thoát
+
+        // Kiểm tra tờ nhạc — phải có trong túi mới được chơi
+        if (_inventorySystem != null && !string.IsNullOrEmpty(_requiredItemId))
+        {
+            if (!_inventorySystem.HasItem(_requiredItemId))
+            {
+                Debug.Log("[Piano] Cần tìm bản nhạc trước.");
+                // Fire event để UI hiện prompt nếu cần (designer wire vào UnityEvent)
+                OnMissingSheetMusic?.Invoke();
+                return;
+            }
+        }
 
         EnterPianoMode();
     }

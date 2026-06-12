@@ -2,24 +2,28 @@ using UnityEngine;
 using UnityEngine.Events;
 
 /// <summary>
-/// Gắn lên object nhặt được (nến, key_01, hộp nhạc, v.v.)
-/// Player nhìn vào và nhấn E → item vào Inventory, object ẩn đi.
-/// Tạo ItemData asset tương ứng rồi kéo vào _itemData.
+/// Gắn lên object nhặt được ngoài scene.
+/// Nhấn E → thêm vào Inventory, tắt MeshRenderer + Collider (KHÔNG SetActive false).
+/// Như vậy ExamineItem (nếu trên cùng GameObject) vẫn có thể được bật bởi
+/// StartExamineFromInventory() khi cần xem từ túi đồ.
 ///
-/// Phase 2.5 — Võ Văn Thuận
-/// Path: Assets/_Project/Scripts/Gameplay/PickupItem.cs
+/// NẾU ExamineItem là proxy RIÊNG (khác GameObject):
+///   → vẫn hoạt động bình thường, không ảnh hưởng.
+///
+/// NẾU ExamineItem nằm TRÊN CÙNG GameObject này:
+///   → Sau khi nhặt, object bị ẩn bằng cách tắt Renderer + Collider.
+///   → ExamineItem.StartExamineFromInventory() sẽ SetActive(true) + tắt Renderer
+///      trong lúc xem → sau khi xem xong trả lại trạng thái ẩn đúng.
 /// </summary>
 public class PickupItem : MonoBehaviour, IInteractable
 {
     [Header("Item")]
-    [Tooltip("ItemData asset của vật phẩm này — tạo tại Create → Inventory → Item Data")]
     [SerializeField] private ItemData _itemData;
 
     [Header("References")]
     [SerializeField] private InventorySystem _inventorySystem;
 
     [Header("Audio")]
-    [Tooltip("Tiếng nhặt đồ — để trống nếu không cần")]
     [SerializeField] private AudioClip _pickupSFX;
 
     [Header("Events")]
@@ -43,7 +47,6 @@ public class PickupItem : MonoBehaviour, IInteractable
         }
 
         _hasBeenPickedUp = true;
-
         _inventorySystem.AddItem(_itemData.itemId);
 
         if (_pickupSFX != null && AudioManager.Instance != null)
@@ -52,7 +55,46 @@ public class PickupItem : MonoBehaviour, IInteractable
         Debug.Log($"[PickupItem] Đã nhặt: {_itemData.itemId}");
         OnPickedUp.Invoke();
 
-        // Ẩn object sau khi nhặt (không Destroy để tránh mất reference Inspector)
-        gameObject.SetActive(false);
+        // ── THAY ĐỔI CHÍNH ─────────────────────────────────────────────────────
+        // Trước đây: gameObject.SetActive(false)
+        //   → Tắt luôn cả ExamineItem component nếu nó trên cùng object.
+        //   → Khi InventoryUI gọi StartExamineFromInventory(), object đã bị disabled,
+        //     StartExamine() không chạy được.
+        //
+        // Bây giờ: ẩn visual + collider, KHÔNG tắt GameObject.
+        //   → ExamineItem vẫn có thể được gọi bởi InventoryUI.
+        //   → Object không còn "thấy được" và không thể nhặt lại (Collider tắt).
+        // ───────────────────────────────────────────────────────────────────────
+        HideInScene();
+    }
+
+    /// <summary>Ẩn object trong scene mà không dùng SetActive(false).</summary>
+    private void HideInScene()
+    {
+        // Tắt tất cả Renderer → không nhìn thấy
+        foreach (var r in GetComponentsInChildren<Renderer>())
+            r.enabled = false;
+
+        // Tắt tất cả Collider → không nhặt lại được, không block vật lý
+        foreach (var c in GetComponentsInChildren<Collider>())
+            c.enabled = false;
+
+        // Tắt chính component này → InteractionSystem sẽ bỏ qua (FindEnabledInteractable)
+        this.enabled = false;
+    }
+
+    /// <summary>
+    /// Bật lại visual + collider nếu cần reset (respawn scene, v.v.).
+    /// </summary>
+    public void ResetPickup()
+    {
+        _hasBeenPickedUp = false;
+        this.enabled     = true;
+
+        foreach (var r in GetComponentsInChildren<Renderer>())
+            r.enabled = true;
+
+        foreach (var c in GetComponentsInChildren<Collider>())
+            c.enabled = true;
     }
 }
