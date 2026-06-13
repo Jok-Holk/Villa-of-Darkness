@@ -1,5 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/_Project/Models/Props/Decor/Prop_Lamp_TableOil.glb.meta
 guid: de0cc4d441028ac479cd48990192765e
+========
+guid: f0c2279c0faedf8418c86da002806b9e
+folderAsset: yes
+>>>>>>>> origin/level/blockout-chapter1:Assets/_Project/Models/Characters/Ghosts.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

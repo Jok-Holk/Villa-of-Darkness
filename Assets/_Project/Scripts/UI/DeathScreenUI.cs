@@ -5,24 +5,59 @@ using UnityEngine.UI;
 using TMPro;
 #pragma warning disable CS0414
 
+/// <summary>
+/// HIERARCHY:
+/// DeathScreen                      ← script gắn ở đây (luôn active)
+///  └─ DeathScreenPanel             ← SetActive = false lúc đầu
+///      ├─ Background   Image       #0D0D0D stretch full
+///      ├─ GlitchNoise  RawImage    stretch full, color white alpha 0
+///      ├─ ScanlineStrip Image      height 4, color white alpha 0
+///      └─ PaperPanel   Image       #111111, width ~520, center
+///          ├─ Masthead  TMP_Text   monospace, size 12, #999999, center
+///          ├─ RuleTop   Image      height 2, #555555, stretch ngang
+///          ├─ Headline  TMP_Text   bold, size 26, #E8E0D0
+///          ├─ RuleMid   Image      height 1, #444444
+///          ├─ SubText   TMP_Text   size 13, #888888
+///          ├─ Quote     TMP_Text   italic, size 15, #BBBBBB
+///          ├─ RuleBot   Image      height 2, #555555
+///          └─ ButtonRow HorizontalLayoutGroup spacing 80
+///              ├─ RetryButton  "[ THỬ LẠI ]"
+///              └─ MenuButton   "[ MENU ]"
+/// </summary>
 public class DeathScreenUI : MonoBehaviour
 {
-    [Header("Refs")]
+    // ── Panel & glitch (giữ từ gốc) ───────────────────────────────────────────
+    [Header("Panel & Glitch")]
     [SerializeField] private GameObject deathScreenPanel;
-    [SerializeField] private TMP_Text   nameText;
-    [SerializeField] private TMP_Text   yearText;
     [SerializeField] private RawImage   glitchNoise;
     [SerializeField] private Image      scanlineStrip;
 
+    // ── Newspaper text (thêm mới) ──────────────────────────────────────────────
+    [Header("Newspaper Text")]
+    [SerializeField] private TMP_Text mastheadText;  // "SAIGON THỜI BÁO · 14/3/2000"
+    [SerializeField] private TMP_Text headlineText;  // dòng tiêu đề lớn
+    [SerializeField] private TMP_Text subText;       // dòng phụ nhỏ
+    [SerializeField] private TMP_Text quoteText;     // tên + năm dạng quote
+
+    [Header("Nội dung cố định")]
+    [SerializeField] private string masthead    = "SAIGON THỜI BÁO  ·  14/3/2000";
+    [SerializeField] private string headline    = "PHÓNG VIÊN MẤT TÍCH TẠI BIỆT THỰ";
+    [SerializeField] private string subContent  = "Nguồn tin từ Sở Công an TP.HCM xác nhận\ntrường hợp mất tích bí ẩn vào đêm 13/3.";
+
+    // ── Buttons (thêm mới) ────────────────────────────────────────────────────
+    [Header("Buttons")]
+    [SerializeField] private Button retryButton;
+    [SerializeField] private Button menuButton;
+
+    // ── Gốc giữ nguyên ────────────────────────────────────────────────────────
     [SerializeField] private bool   _isVisible     = false;
     [SerializeField] private string _characterName;
-
-    // Giữ lại cho ai dùng ngoài, nhưng Retry() không còn phụ thuộc vào nó nữa
     public UnityEvent OnRetry = new UnityEvent();
 
     private Coroutine _glitch;
     private Texture2D _noiseTex;
 
+    // ══════════════════════════════════════════════════════════════════════════
     private void Awake()
     {
         _noiseTex            = new Texture2D(128, 72, TextureFormat.RGBA32, false);
@@ -33,17 +68,28 @@ public class DeathScreenUI : MonoBehaviour
         if (deathScreenPanel != null) deathScreenPanel.SetActive(false);
         SetAlpha(glitchNoise,   0f);
         SetAlpha(scanlineStrip, 0f);
+
+        // Gắn button listener bằng code – không phụ thuộc Inspector sau reload
+        if (retryButton != null) retryButton.onClick.AddListener(Retry);
+        if (menuButton  != null) menuButton.onClick.AddListener(GoMenu);
+
+        // Text cố định gán 1 lần
+        if (mastheadText != null) mastheadText.text = masthead;
+        if (headlineText != null) headlineText.text = headline;
+        if (subText      != null) subText.text      = subContent;
     }
 
     private void OnDestroy() { if (_noiseTex) Destroy(_noiseTex); }
+
+    // ── Public API ─────────────────────────────────────────────────────────────
 
     public void Show(string name, string years)
     {
         _isVisible     = true;
         _characterName = name;
 
-        if (nameText != null) nameText.text = name;
-        if (yearText != null) yearText.text  = years;
+        // Quote dùng tên + năm động
+        if (quoteText != null) quoteText.text = $"\"{name}, {years}...\"";
 
         if (deathScreenPanel != null) deathScreenPanel.SetActive(true);
 
@@ -65,15 +111,23 @@ public class DeathScreenUI : MonoBehaviour
     public void Retry()
     {
         Debug.Log("[DeathScreenUI] Sự kiện: Người chơi nhấn THỬ LẠI");
-
-        // Gọi thẳng GameManager – không phụ thuộc Inspector hay UnityEvent
         if (GameManager.Instance != null)
             GameManager.Instance.PlayerRespawn();
         else
             Debug.LogWarning("[DeathScreenUI] Không tìm thấy GameManager.Instance!");
-
-        OnRetry.Invoke(); // vẫn giữ để tương thích nếu có listener khác
+        OnRetry.Invoke();
     }
+
+    public void GoMenu()
+    {
+        Debug.Log("[DeathScreenUI] Sự kiện: Người chơi nhấn MENU");
+        if (GameManager.Instance != null)
+            GameManager.Instance.LoadMainMenu();
+        else
+            Debug.LogWarning("[DeathScreenUI] Không tìm thấy GameManager.Instance!");
+    }
+
+    // ── Glitch loop vĩnh viễn, unscaled time ──────────────────────────────────
 
     private IEnumerator GlitchRoutine()
     {
@@ -82,6 +136,7 @@ public class DeathScreenUI : MonoBehaviour
 
         while (true)
         {
+            // Noise texture
             Color32[] px = new Color32[128 * 72];
             for (int i = 0; i < px.Length; i++)
             {
@@ -95,6 +150,7 @@ public class DeathScreenUI : MonoBehaviour
             _noiseTex.SetPixels32(px);
             _noiseTex.Apply();
 
+            // Glitch noise layer
             if (glitchNoise != null)
             {
                 SetAlpha(glitchNoise, Random.Range(0.3f, 0.65f));
@@ -102,6 +158,7 @@ public class DeathScreenUI : MonoBehaviour
                 glitchNoise.uvRect = new Rect(tear, 0, 1, 1);
             }
 
+            // Scanline trượt dọc
             if (scanlineStrip != null)
             {
                 scanY -= Time.unscaledDeltaTime * Random.Range(0.4f, 0.9f);
