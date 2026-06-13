@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7c01db4d44d7b554a80c098c52d17818, type: 3}
-  m_Name: ItemData_Candle
+  m_Name: ItemData_SheetMusic
   m_EditorClassIdentifier: BietThuBongToi.Runtime::ItemData
-  itemId: candle_brass
-  itemName: "N\u1EBFn \u0111\u1ED3ng"
-  description: "M\u1ED9t c\xE2y n\u1EBFn \u0111\u1ED3ng c\u0169. L\u1EEDa v\u1EABn
-    c\xF2n c\xF3 th\u1EC3 th\u1EAFp l\xEAn."
+  itemId: sheet_music
+  itemName: "T\u1EDD Nh\u1EA1c"
+  description: "5 n\u1ED1t nh\u1EA1c vi\u1EBFt tay ngu\u1EC7ch ngo\u1EA1c. N\u1ED1t
+    nh\u1EA1c cho c\xE2y \u0111\xE0n trong ph\xF2ng kh\xE1ch."
   icon: {fileID: 0}
   slotBorderColor: {r: 1, g: 1, b: 1, a: 1}
   monologueClip: {fileID: 0}

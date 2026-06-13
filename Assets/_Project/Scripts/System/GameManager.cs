@@ -12,22 +12,20 @@ public class GameManager : MonoBehaviour
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
-            return; // duplicate → không làm gì thêm, đặc biệt KHÔNG đăng ký sceneLoaded
+            return; 
         }
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        // Chỉ đăng ký 1 lần duy nhất trên instance hợp lệ
         SceneManager.sceneLoaded += OnSceneLoaded;
 
-        // Tìm ngay lần đầu (scene hiện tại lúc game start)
-        _deathScreenUI = FindObjectOfType<DeathScreenUI>(true);
+        // ĐÃ SỬA DÒNG 25: Dùng FindFirstObjectByType kết hợp FindObjectsInactive.Include để tìm Object đang ẩn chuẩn URP mới
+        _deathScreenUI = FindFirstObjectByType<DeathScreenUI>(FindObjectsInactive.Include);
     }
 
     private void OnDestroy()
     {
-        // Chỉ unsubscribe nếu đây là instance hợp lệ
         if (Instance == this)
         {
             SceneManager.sceneLoaded -= OnSceneLoaded;
@@ -37,14 +35,15 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
-        _deathScreenUI = FindObjectOfType<DeathScreenUI>(true);
+        // ĐÃ SỬA DÒNG 40: Đồng bộ cách tìm kiếm mới khi load scene
+        _deathScreenUI = FindFirstObjectByType<DeathScreenUI>(FindObjectsInactive.Include);
         Debug.Log($"[GameManager] Scene loaded: {scene.name} | DeathScreenUI: {(_deathScreenUI != null ? "OK" : "NULL")}");
     }
 
     public void PlayerDead(string characterName = "Minh Khoa", string characterYears = "1979 – 2000")
     {
         Debug.Log("Player died");
-        Time.timeScale   = 0f;  // tạm dừng game
+        Time.timeScale   = 0f;  
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible   = true;
@@ -59,14 +58,13 @@ public class GameManager : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible   = false;
-        Time.timeScale   = 1f;   // chạy lại game
+        Time.timeScale   = 1f;   
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void LoadChapter(int chapterNumber)
     {
         GameData.currentChapter = chapterNumber;
-        //SceneManager.LoadScene("Chapter" + chapterNumber);
     }
 
     public void LoadMainMenu()

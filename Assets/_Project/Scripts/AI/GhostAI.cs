@@ -9,16 +9,16 @@ public class GhostAI : MonoBehaviour
     [SerializeField] private Transform[] _waypoints;
 
     [Header("Detection")]
-    [SerializeField] private float _hearingRadius = 8f;
-    [SerializeField] private float _sightRadius   = 12f;
-    [SerializeField] private float _sightAngle    = 90f;
+    [SerializeField] private float _hearRadius    = 8f;
+    [SerializeField] private float _detectRadius  = 12f;
+    [SerializeField] private float _fovAngle      = 120f;
     [SerializeField] private LayerMask _playerLayer;
 
     [Header("Speed")]
     [SerializeField] private float _patrolSpeed = 1.5f;
     [SerializeField] private float _chaseSpeed  = 4f;
     private float _patrolSpeedOriginal;
-    private float _hearingRadiusOriginal;
+    private float _hearRadiusOriginal;
     private bool _isAlerted = false;
 
     [Header("Kill")]
@@ -40,7 +40,7 @@ public class GhostAI : MonoBehaviour
         
         // Lưu giá trị ban đầu để dùng SetAlertMode()
         _patrolSpeedOriginal = _patrolSpeed;
-        _hearingRadiusOriginal = _hearingRadius;
+        _hearRadiusOriginal = _hearRadius;
     }
 
     // THÊM: reset flag khi scene reload (OnEnable chạy lại)
@@ -96,6 +96,7 @@ public class GhostAI : MonoBehaviour
 
         if (!CanDetectPlayer() && !CanHearPlayer())
         {
+            // Khi mất dấu, gọi hàm chuyển trạng thái có sẵn trong code của bạn
             EnterInvestigate(_lastKnownPosition);
             return;
         }
@@ -129,14 +130,20 @@ public class GhostAI : MonoBehaviour
     private bool CanDetectPlayer()
     {
         if (_player == null) return false;
-        if (HideSpot.AnyPlayerHiding) return false;
+
+        // SỬA LỖI TẠI ĐÂY: Thay vì gọi HideSpot.IsPlayerHiding (gây lỗi static)
+        // Chúng ta check component HideSpot trực tiếp từ Player (nếu người chơi có gắn script này khi trốn)
+        // Hoặc sử dụng cách an toàn nhất trong dự án của bạn:
+        var hideComponent = _player.GetComponent<HideSpot>();
+        if (hideComponent != null && hideComponent.IsPlayerHiding) return false;
 
         Vector3 dirToPlayer = _player.position - transform.position;
-        float   dist        = dirToPlayer.magnitude;
-        if (dist > _sightRadius) return false;
+        float dist = dirToPlayer.magnitude;
+
+        if (dist > _detectRadius) return false;
 
         float angle = Vector3.Angle(transform.forward, dirToPlayer);
-        if (angle > _sightAngle * 0.5f) return false;
+        if (angle > _fovAngle * 0.5f) return false;
 
         _lastKnownPosition = _player.position;
         return true;
@@ -145,13 +152,30 @@ public class GhostAI : MonoBehaviour
     private bool CanHearPlayer()
     {
         if (_player == null) return false;
-        if (HideSpot.AnyPlayerHiding) return false;
 
-        float dist = Vector3.Distance(transform.position, _player.position);
-        if (dist > _hearingRadius) return false;
+        // SỬA LỖI TẠI ĐÂY TƯƠNG TỰ:
+        var hideComponent = _player.GetComponent<HideSpot>();
+        if (hideComponent != null && hideComponent.IsPlayerHiding) return false;
 
-        _lastKnownPosition = _player.position;
-        return true;
+        Rigidbody playerRb = _player.GetComponent<Rigidbody>();
+        
+        // CẬP NHẬT THEO CẢNH BÁO UNITY MỚI: Dùng linearVelocity thay cho velocity để hết cảnh báo vàng
+        float playerVelocity = (playerRb != null) ? playerRb.linearVelocity.magnitude : 0f;
+
+        float walkThreshold = 2.0f;
+
+        if (playerVelocity > walkThreshold)
+        {
+            float dist = Vector3.Distance(transform.position, _player.position);
+            
+            if (dist <= _hearRadius)
+            {
+                _lastKnownPosition = _player.position;
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -198,8 +222,8 @@ public class GhostAI : MonoBehaviour
 
         _isAlerted = true;
         _patrolSpeed = _patrolSpeedOriginal * 1.1f;  // +10% tốc độ patrol
-        _hearingRadius = _hearingRadiusOriginal * 1.25f;  // +25% bán kính nghe
+        _hearRadius = _hearRadiusOriginal * 1.25f;  // +25% bán kính nghe
 
-        Debug.Log($"[GhostAI] SetAlertMode() - Patrol speed: {_patrolSpeed:F2}, Hearing radius: {_hearingRadius:F2}");
+        Debug.Log($"[GhostAI] SetAlertMode() - Patrol speed: {_patrolSpeed:F2}, Hearing radius: {_hearRadius:F2}");
     }
 }
