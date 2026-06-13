@@ -130,3 +130,4 @@ Packages/com.unity.mcp*/
 mcp-unity/
 blender-mcp/
 .mcp-cache/
+.mcp.json
