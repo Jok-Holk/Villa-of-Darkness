@@ -65,6 +65,8 @@ public class GameManager : MonoBehaviour
     public void LoadChapter(int chapterNumber)
     {
         GameData.currentChapter = chapterNumber;
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("Chapter" + chapterNumber);
     }
 
     public void LoadMainMenu()
