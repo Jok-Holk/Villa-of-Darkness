@@ -42,8 +42,9 @@ public static class VillaArchitectureFix
     const float ENTRANCE_CLEAR = 3.0f; // clear 3m either side of door
 
     // Asset paths
-    const string ARCH = "Assets/_Project/Models/Props/Architecture/";
-    const string FURN = "Assets/_Project/Models/Props/Furniture/";
+    const string ARCH   = "Assets/_Project/Models/Props/Architecture/";
+    const string FURN   = "Assets/_Project/Models/Props/Furniture/";
+    const string NATURE = "Assets/_Project/Models/Props/Nature/";
 
     // FBX model scales (Blender cm-export: at scale 1 door = 0.19m×1.0m×0.63m)
     // Target door: 1.1m wide × 2.3m tall × 0.16m deep
@@ -265,17 +266,34 @@ public static class VillaArchitectureFix
     static void AddVegetation(GameObject parent, float x, float y, float z,
                                float radius, float height, string name)
     {
-        var go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        go.name = name;
-        go.transform.position = new Vector3(x, y + height * 0.5f, z);
-        go.transform.localScale = new Vector3(radius * 2f, height, radius * 2f);
-        go.transform.SetParent(parent.transform, true);
-        // Đánh dấu là vegetation để dễ nhận biết
-        go.tag = "Untagged";
-        Undo.RegisterCreatedObjectUndo(go, name);
+        // Try actual low-poly models from Nature/ folder first (Kenney Nature Kit GLB)
+        // Place downloaded GLBs as: Tree_Large.glb, Tree_Small.glb, Bush_Small.glb, Bush_Large.glb
+        bool isTall = height > 2f;
+        string modelKey = isTall ? (radius > 1f ? "Tree_Large" : "Tree_Small")
+                                 : (radius > 0.8f ? "Bush_Large" : "Bush_Small");
+        var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(NATURE + modelKey + ".glb");
+        if (prefab == null) prefab = AssetDatabase.LoadAssetAtPath<GameObject>(NATURE + modelKey + ".fbx");
 
-        // Thân cây (trunk) cho cây cao
-        if (height > 2f)
+        if (prefab != null)
+        {
+            var go = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
+            go.name = name;
+            go.transform.position = new Vector3(x, y, z);
+            go.transform.localScale = Vector3.one * (height * 0.4f);
+            go.transform.SetParent(parent.transform, true);
+            Undo.RegisterCreatedObjectUndo(go, name);
+            return;
+        }
+
+        // Fallback: Unity primitive placeholder
+        var sphere = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        sphere.name = name;
+        sphere.transform.position = new Vector3(x, y + height * 0.5f, z);
+        sphere.transform.localScale = new Vector3(radius * 2f, height, radius * 2f);
+        sphere.transform.SetParent(parent.transform, true);
+        Undo.RegisterCreatedObjectUndo(sphere, name);
+
+        if (isTall)
         {
             var trunk = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             trunk.name = name + "_Trunk";
