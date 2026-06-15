@@ -1,4 +1,4 @@
-%YAML 1.1
+﻿%YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
 --- !u!29 &1
 OcclusionCullingSettings:
@@ -206,7 +206,7 @@ GameObject:
   - component: {fileID: 1384325}
   - component: {fileID: 1384324}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -357,7 +357,7 @@ GameObject:
   - component: {fileID: 3900854}
   - component: {fileID: 3900853}
   m_Layer: 0
-  m_Name: chair (17)
+  m_Name: Prop_Chair_19
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -477,7 +477,7 @@ GameObject:
   - component: {fileID: 4131624}
   - component: {fileID: 4131623}
   m_Layer: 0
-  m_Name: chair (18)
+  m_Name: Prop_Chair_20
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -934,7 +934,7 @@ GameObject:
   - component: {fileID: 11966587}
   - component: {fileID: 11966586}
   m_Layer: 0
-  m_Name: fencing (39)
+  m_Name: Fence_Post_41
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1046,7 +1046,7 @@ GameObject:
   - component: {fileID: 15879083}
   - component: {fileID: 15879082}
   m_Layer: 0
-  m_Name: fencing (34)
+  m_Name: Fence_Post_36
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1158,7 +1158,7 @@ GameObject:
   - component: {fileID: 18434891}
   - component: {fileID: 18434890}
   m_Layer: 0
-  m_Name: fencing (33)
+  m_Name: Fence_Post_35
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1526,7 +1526,7 @@ GameObject:
   - component: {fileID: 22878691}
   - component: {fileID: 22878690}
   m_Layer: 0
-  m_Name: fencing (48)
+  m_Name: Fence_Post_50
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1712,7 +1712,7 @@ GameObject:
   - component: {fileID: 24918577}
   - component: {fileID: 24918576}
   m_Layer: 0
-  m_Name: bookshelf (1)
+  m_Name: Prop_Bookshelf_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1898,7 +1898,7 @@ GameObject:
   - component: {fileID: 29123614}
   - component: {fileID: 29123613}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2010,7 +2010,7 @@ GameObject:
   - component: {fileID: 29184619}
   - component: {fileID: 29184618}
   m_Layer: 0
-  m_Name: drawers (4)
+  m_Name: Prop_Drawer_06
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2234,7 +2234,7 @@ GameObject:
   - component: {fileID: 32344957}
   - component: {fileID: 32344956}
   m_Layer: 0
-  m_Name: chair (20)
+  m_Name: Prop_Chair_22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2458,7 +2458,7 @@ GameObject:
   - component: {fileID: 34777296}
   - component: {fileID: 34777295}
   m_Layer: 0
-  m_Name: BATHTUB (2)
+  m_Name: Prop_Bathtub_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2570,7 +2570,7 @@ GameObject:
   - component: {fileID: 34835428}
   - component: {fileID: 34835427}
   m_Layer: 0
-  m_Name: Floor (45)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3735,7 +3735,7 @@ GameObject:
   - component: {fileID: 62199362}
   - component: {fileID: 62199361}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4185,7 +4185,7 @@ GameObject:
   - component: {fileID: 63792255}
   - component: {fileID: 63792254}
   m_Layer: 0
-  m_Name: chair (5)
+  m_Name: Prop_Chair_07
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5163,7 +5163,7 @@ GameObject:
   - component: {fileID: 77216042}
   - component: {fileID: 77216041}
   m_Layer: 0
-  m_Name: bookshelf (2)
+  m_Name: Prop_Bookshelf_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5461,7 +5461,7 @@ GameObject:
   - component: {fileID: 82493717}
   - component: {fileID: 82493716}
   m_Layer: 0
-  m_Name: Floor (21)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5759,7 +5759,7 @@ GameObject:
   - component: {fileID: 91005436}
   - component: {fileID: 91005435}
   m_Layer: 0
-  m_Name: chair (18)
+  m_Name: Prop_Chair_20
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6243,7 +6243,7 @@ GameObject:
   - component: {fileID: 94193864}
   - component: {fileID: 94193863}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6355,7 +6355,7 @@ GameObject:
   - component: {fileID: 94765434}
   - component: {fileID: 94765433}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6467,7 +6467,7 @@ GameObject:
   - component: {fileID: 95512131}
   - component: {fileID: 95512130}
   m_Layer: 0
-  m_Name: fencing (94)
+  m_Name: Fence_Post_96
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6691,7 +6691,7 @@ GameObject:
   - component: {fileID: 98399280}
   - component: {fileID: 98399279}
   m_Layer: 0
-  m_Name: Heater (1)
+  m_Name: Prop_Heater (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6810,7 +6810,7 @@ GameObject:
   - component: {fileID: 101399570}
   - component: {fileID: 101399569}
   m_Layer: 0
-  m_Name: fencing (29)
+  m_Name: Fence_Post_31
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7216,7 +7216,7 @@ GameObject:
   - component: {fileID: 107428830}
   - component: {fileID: 107428829}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7402,7 +7402,7 @@ GameObject:
   - component: {fileID: 112774334}
   - component: {fileID: 112774333}
   m_Layer: 0
-  m_Name: "table with mirror\u01B0"
+  m_Name: Prop_Table_Mirror_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7519,7 +7519,7 @@ GameObject:
   - component: {fileID: 112962470}
   - component: {fileID: 112962469}
   m_Layer: 0
-  m_Name: Balcony (10)
+  m_Name: Struct_Balcony_12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7891,7 +7891,7 @@ GameObject:
   - component: {fileID: 124712792}
   - component: {fileID: 124712791}
   m_Layer: 0
-  m_Name: bookshelf (3)
+  m_Name: Prop_Bookshelf_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8003,7 +8003,7 @@ GameObject:
   - component: {fileID: 127096992}
   - component: {fileID: 127096991}
   m_Layer: 0
-  m_Name: fencing (90)
+  m_Name: Fence_Post_92
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8339,7 +8339,7 @@ GameObject:
   - component: {fileID: 132201095}
   - component: {fileID: 132201094}
   m_Layer: 0
-  m_Name: Floor (29)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8451,7 +8451,7 @@ GameObject:
   - component: {fileID: 133388008}
   - component: {fileID: 133388007}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8563,7 +8563,7 @@ GameObject:
   - component: {fileID: 137168453}
   - component: {fileID: 137168452}
   m_Layer: 0
-  m_Name: fencing (50)
+  m_Name: Fence_Post_52
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8787,7 +8787,7 @@ GameObject:
   - component: {fileID: 137832039}
   - component: {fileID: 137832038}
   m_Layer: 0
-  m_Name: fencing (49)
+  m_Name: Fence_Post_51
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9046,7 +9046,7 @@ GameObject:
   - component: {fileID: 144479430}
   - component: {fileID: 144479429}
   m_Layer: 0
-  m_Name: bookshelf (12)
+  m_Name: Prop_Bookshelf_14
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9158,7 +9158,7 @@ GameObject:
   - component: {fileID: 144782792}
   - component: {fileID: 144782791}
   m_Layer: 0
-  m_Name: chair (20)
+  m_Name: Prop_Chair_22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9505,7 +9505,7 @@ GameObject:
   - component: {fileID: 146134094}
   - component: {fileID: 146134093}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9617,7 +9617,7 @@ GameObject:
   - component: {fileID: 153052437}
   - component: {fileID: 153052436}
   m_Layer: 0
-  m_Name: drawers (2)
+  m_Name: Prop_Drawer_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9729,7 +9729,7 @@ GameObject:
   - component: {fileID: 153819961}
   - component: {fileID: 153819960}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9841,7 +9841,7 @@ GameObject:
   - component: {fileID: 154831593}
   - component: {fileID: 154831592}
   m_Layer: 0
-  m_Name: chair (6)
+  m_Name: Prop_Chair_08
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10487,7 +10487,7 @@ GameObject:
   - component: {fileID: 166694943}
   - component: {fileID: 166694942}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -10711,7 +10711,7 @@ GameObject:
   - component: {fileID: 169582851}
   - component: {fileID: 169582850}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11009,7 +11009,7 @@ GameObject:
   - component: {fileID: 171954639}
   - component: {fileID: 171954638}
   m_Layer: 0
-  m_Name: "table with mirror\u01B0 (1)"
+  m_Name: Prop_Table_Mirror_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11121,7 +11121,7 @@ GameObject:
   - component: {fileID: 172584689}
   - component: {fileID: 172584688}
   m_Layer: 0
-  m_Name: fencing (2)
+  m_Name: Fence_Post_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11345,7 +11345,7 @@ GameObject:
   - component: {fileID: 177095847}
   - component: {fileID: 177095846}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11457,7 +11457,7 @@ GameObject:
   - component: {fileID: 177349122}
   - component: {fileID: 177349121}
   m_Layer: 0
-  m_Name: bookshelf (1)
+  m_Name: Prop_Bookshelf_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11577,7 +11577,7 @@ GameObject:
   - component: {fileID: 179863890}
   - component: {fileID: 179863889}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11993,7 +11993,7 @@ GameObject:
   - component: {fileID: 183131195}
   - component: {fileID: 183131194}
   m_Layer: 0
-  m_Name: drawers (2)
+  m_Name: Prop_Drawer_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12105,7 +12105,7 @@ GameObject:
   - component: {fileID: 183647016}
   - component: {fileID: 183647015}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -12636,7 +12636,7 @@ GameObject:
   - component: {fileID: 187341190}
   - component: {fileID: 187341189}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13008,7 +13008,7 @@ GameObject:
   - component: {fileID: 196768864}
   - component: {fileID: 196768863}
   m_Layer: 0
-  m_Name: Balcony (3)
+  m_Name: Struct_Balcony_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13120,7 +13120,7 @@ GameObject:
   - component: {fileID: 197190662}
   - component: {fileID: 197190661}
   m_Layer: 0
-  m_Name: Floor (6)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13419,7 +13419,7 @@ GameObject:
   - component: {fileID: 202090907}
   - component: {fileID: 202090906}
   m_Layer: 0
-  m_Name: Double bed
+  m_Name: Prop_Bed_Double_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -13858,7 +13858,7 @@ GameObject:
   - component: {fileID: 206398175}
   - component: {fileID: 206398174}
   m_Layer: 0
-  m_Name: wall mirror
+  m_Name: Prop_Mirror_Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14256,7 +14256,7 @@ GameObject:
   - component: {fileID: 209997845}
   - component: {fileID: 209997844}
   m_Layer: 0
-  m_Name: chair (21)
+  m_Name: Prop_Chair_23
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14368,7 +14368,7 @@ GameObject:
   - component: {fileID: 211729172}
   - component: {fileID: 211729171}
   m_Layer: 0
-  m_Name: Floor (06)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14480,7 +14480,7 @@ GameObject:
   - component: {fileID: 212683179}
   - component: {fileID: 212683178}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -14928,7 +14928,7 @@ GameObject:
   - component: {fileID: 215748135}
   - component: {fileID: 215748134}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15040,7 +15040,7 @@ GameObject:
   - component: {fileID: 217002941}
   - component: {fileID: 217002940}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15152,7 +15152,7 @@ GameObject:
   - component: {fileID: 217181689}
   - component: {fileID: 217181688}
   m_Layer: 0
-  m_Name: drawers (4)
+  m_Name: Prop_Drawer_06
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15261,7 +15261,7 @@ GameObject:
   m_Component:
   - component: {fileID: 217891215}
   m_Layer: 0
-  m_Name: Entertainment room
+  m_Name: Room_Entertainment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15300,7 +15300,7 @@ GameObject:
   - component: {fileID: 218920952}
   - component: {fileID: 218920951}
   m_Layer: 0
-  m_Name: fencing (64)
+  m_Name: Fence_Post_66
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15486,7 +15486,7 @@ GameObject:
   - component: {fileID: 219525155}
   - component: {fileID: 219525154}
   m_Layer: 0
-  m_Name: chair (20)
+  m_Name: Prop_Chair_22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15598,7 +15598,7 @@ GameObject:
   - component: {fileID: 219641054}
   - component: {fileID: 219641053}
   m_Layer: 0
-  m_Name: Balcony (12)
+  m_Name: Struct_Balcony_14
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15710,7 +15710,7 @@ GameObject:
   - component: {fileID: 220288325}
   - component: {fileID: 220288324}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -15822,7 +15822,7 @@ GameObject:
   - component: {fileID: 220881096}
   - component: {fileID: 220881095}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16008,7 +16008,7 @@ GameObject:
   - component: {fileID: 226687703}
   - component: {fileID: 226687702}
   m_Layer: 0
-  m_Name: Floor (24)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16232,7 +16232,7 @@ GameObject:
   - component: {fileID: 230471316}
   - component: {fileID: 230471315}
   m_Layer: 0
-  m_Name: fencing (51)
+  m_Name: Fence_Post_53
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16344,7 +16344,7 @@ GameObject:
   - component: {fileID: 232180203}
   - component: {fileID: 232180202}
   m_Layer: 0
-  m_Name: chair (19)
+  m_Name: Prop_Chair_21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16464,7 +16464,7 @@ GameObject:
   - component: {fileID: 234023577}
   - component: {fileID: 234023576}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -16912,7 +16912,7 @@ GameObject:
   - component: {fileID: 239973919}
   - component: {fileID: 239973918}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17024,7 +17024,7 @@ GameObject:
   - component: {fileID: 240135422}
   - component: {fileID: 240135421}
   m_Layer: 0
-  m_Name: drawers (1)
+  m_Name: Prop_Drawer_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17136,7 +17136,7 @@ GameObject:
   - component: {fileID: 242052995}
   - component: {fileID: 242052994}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17360,7 +17360,7 @@ GameObject:
   - component: {fileID: 242746965}
   - component: {fileID: 242746964}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17472,7 +17472,7 @@ GameObject:
   - component: {fileID: 243570095}
   - component: {fileID: 243570094}
   m_Layer: 0
-  m_Name: Floor (23)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17584,7 +17584,7 @@ GameObject:
   - component: {fileID: 243832007}
   - component: {fileID: 243832006}
   m_Layer: 0
-  m_Name: "table with mirror\u01B0 (1)"
+  m_Name: Prop_Table_Mirror_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18496,7 +18496,7 @@ GameObject:
   - component: {fileID: 259036644}
   - component: {fileID: 259036643}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18722,7 +18722,7 @@ GameObject:
   - component: {fileID: 260619510}
   - component: {fileID: 260619509}
   m_Layer: 0
-  m_Name: Balcony (1)
+  m_Name: Struct_Balcony_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18834,7 +18834,7 @@ GameObject:
   - component: {fileID: 261798392}
   - component: {fileID: 261798391}
   m_Layer: 0
-  m_Name: fencing (73)
+  m_Name: Fence_Post_75
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19060,7 +19060,7 @@ GameObject:
   - component: {fileID: 268958669}
   - component: {fileID: 268958668}
   m_Layer: 0
-  m_Name: fencing (54)
+  m_Name: Fence_Post_56
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19396,7 +19396,7 @@ GameObject:
   - component: {fileID: 272012021}
   - component: {fileID: 272012020}
   m_Layer: 0
-  m_Name: Heater (1)
+  m_Name: Prop_Heater (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19513,7 +19513,7 @@ GameObject:
   - component: {fileID: 274452342}
   - component: {fileID: 274452341}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19625,7 +19625,7 @@ GameObject:
   - component: {fileID: 274703506}
   - component: {fileID: 274703505}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19737,7 +19737,7 @@ GameObject:
   - component: {fileID: 275126875}
   - component: {fileID: 275126874}
   m_Layer: 0
-  m_Name: fencing (49)
+  m_Name: Fence_Post_51
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -19849,7 +19849,7 @@ GameObject:
   - component: {fileID: 277254793}
   - component: {fileID: 277254792}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20297,7 +20297,7 @@ GameObject:
   - component: {fileID: 280155637}
   - component: {fileID: 280155636}
   m_Layer: 0
-  m_Name: bookshelf (5)
+  m_Name: Prop_Bookshelf_07
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20409,7 +20409,7 @@ GameObject:
   - component: {fileID: 280843853}
   - component: {fileID: 280843852}
   m_Layer: 0
-  m_Name: Floor (7)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -20633,7 +20633,7 @@ GameObject:
   - component: {fileID: 281351121}
   - component: {fileID: 281351120}
   m_Layer: 0
-  m_Name: Double bed (2)
+  m_Name: Prop_Bed_Double_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21089,7 +21089,7 @@ GameObject:
   - component: {fileID: 291278919}
   - component: {fileID: 291278918}
   m_Layer: 0
-  m_Name: chair (18)
+  m_Name: Prop_Chair_20
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21201,7 +21201,7 @@ GameObject:
   - component: {fileID: 292713172}
   - component: {fileID: 292713171}
   m_Layer: 0
-  m_Name: Floor (25)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21313,7 +21313,7 @@ GameObject:
   - component: {fileID: 294915697}
   - component: {fileID: 294915696}
   m_Layer: 0
-  m_Name: fencing (57)
+  m_Name: Fence_Post_59
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21425,7 +21425,7 @@ GameObject:
   - component: {fileID: 296106121}
   - component: {fileID: 296106120}
   m_Layer: 0
-  m_Name: wall mirror
+  m_Name: Prop_Mirror_Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21537,7 +21537,7 @@ GameObject:
   - component: {fileID: 296508143}
   - component: {fileID: 296508142}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -21873,7 +21873,7 @@ GameObject:
   - component: {fileID: 300880656}
   - component: {fileID: 300880655}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22097,7 +22097,7 @@ GameObject:
   - component: {fileID: 307271236}
   - component: {fileID: 307271235}
   m_Layer: 0
-  m_Name: fencing (24)
+  m_Name: Fence_Post_26
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22619,7 +22619,7 @@ GameObject:
   - component: {fileID: 313832721}
   - component: {fileID: 313832720}
   m_Layer: 0
-  m_Name: fencing (37)
+  m_Name: Fence_Post_39
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -22731,7 +22731,7 @@ GameObject:
   - component: {fileID: 316527793}
   - component: {fileID: 316527792}
   m_Layer: 0
-  m_Name: bookshelf (6)
+  m_Name: Prop_Bookshelf_08
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23017,7 +23017,7 @@ GameObject:
   - component: {fileID: 317957415}
   - component: {fileID: 317957414}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23129,7 +23129,7 @@ GameObject:
   - component: {fileID: 319868588}
   - component: {fileID: 319868587}
   m_Layer: 0
-  m_Name: Floor (32)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23353,7 +23353,7 @@ GameObject:
   - component: {fileID: 323519063}
   - component: {fileID: 323519062}
   m_Layer: 0
-  m_Name: chair (20)
+  m_Name: Prop_Chair_22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23465,7 +23465,7 @@ GameObject:
   - component: {fileID: 324866830}
   - component: {fileID: 324866829}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23577,7 +23577,7 @@ GameObject:
   - component: {fileID: 326222130}
   - component: {fileID: 326222129}
   m_Layer: 0
-  m_Name: Floor (73)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23689,7 +23689,7 @@ GameObject:
   - component: {fileID: 329119689}
   - component: {fileID: 329119688}
   m_Layer: 0
-  m_Name: Floor (54)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23801,7 +23801,7 @@ GameObject:
   - component: {fileID: 329222661}
   - component: {fileID: 329222660}
   m_Layer: 0
-  m_Name: bookshelf (1)
+  m_Name: Prop_Bookshelf_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -23913,7 +23913,7 @@ GameObject:
   - component: {fileID: 331300051}
   - component: {fileID: 331300050}
   m_Layer: 0
-  m_Name: Heater (1)
+  m_Name: Prop_Heater (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24032,7 +24032,7 @@ GameObject:
   - component: {fileID: 334120521}
   - component: {fileID: 334120520}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24206,7 +24206,7 @@ GameObject:
   - component: {fileID: 336006706}
   - component: {fileID: 336006705}
   m_Layer: 0
-  m_Name: fencing (41)
+  m_Name: Fence_Post_43
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24318,7 +24318,7 @@ GameObject:
   - component: {fileID: 340047084}
   - component: {fileID: 340047083}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24430,7 +24430,7 @@ GameObject:
   - component: {fileID: 343176426}
   - component: {fileID: 343176425}
   m_Layer: 0
-  m_Name: fencing (3)
+  m_Name: Fence_Post_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -24651,7 +24651,7 @@ GameObject:
   m_Component:
   - component: {fileID: 349376572}
   m_Layer: 0
-  m_Name: Clothing room
+  m_Name: Room_Closet
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25025,7 +25025,7 @@ GameObject:
   - component: {fileID: 356352770}
   - component: {fileID: 356352769}
   m_Layer: 0
-  m_Name: Floor (3)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25249,7 +25249,7 @@ GameObject:
   - component: {fileID: 358979092}
   - component: {fileID: 358979091}
   m_Layer: 0
-  m_Name: "table with mirror\u01B0 (3)"
+  m_Name: Prop_Table_Mirror_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25473,7 +25473,7 @@ GameObject:
   - component: {fileID: 363317308}
   - component: {fileID: 363317307}
   m_Layer: 0
-  m_Name: fencing (42)
+  m_Name: Fence_Post_44
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25585,7 +25585,7 @@ GameObject:
   - component: {fileID: 365761367}
   - component: {fileID: 365761366}
   m_Layer: 0
-  m_Name: bookshelf (6)
+  m_Name: Prop_Bookshelf_08
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25697,7 +25697,7 @@ GameObject:
   - component: {fileID: 368341424}
   - component: {fileID: 368341423}
   m_Layer: 0
-  m_Name: Balcony (5)
+  m_Name: Struct_Balcony_07
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25809,7 +25809,7 @@ GameObject:
   - component: {fileID: 370283658}
   - component: {fileID: 370283657}
   m_Layer: 0
-  m_Name: chair (19)
+  m_Name: Prop_Chair_21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25921,7 +25921,7 @@ GameObject:
   - component: {fileID: 372720855}
   - component: {fileID: 372720854}
   m_Layer: 0
-  m_Name: fencing
+  m_Name: Fence_Post_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26398,7 +26398,7 @@ GameObject:
   - component: {fileID: 375506516}
   - component: {fileID: 375506515}
   m_Layer: 0
-  m_Name: fencing (54)
+  m_Name: Fence_Post_56
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26622,7 +26622,7 @@ GameObject:
   - component: {fileID: 376628798}
   - component: {fileID: 376628797}
   m_Layer: 0
-  m_Name: fencing (38)
+  m_Name: Fence_Post_40
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -26958,7 +26958,7 @@ GameObject:
   - component: {fileID: 377484978}
   - component: {fileID: 377484977}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27139,7 +27139,7 @@ GameObject:
   - component: {fileID: 378894792}
   - component: {fileID: 378894791}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27251,7 +27251,7 @@ GameObject:
   - component: {fileID: 384117230}
   - component: {fileID: 384117229}
   m_Layer: 0
-  m_Name: "table with mirror\u01B0 (2)"
+  m_Name: Prop_Table_Mirror_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27437,7 +27437,7 @@ GameObject:
   - component: {fileID: 391200142}
   - component: {fileID: 391200141}
   m_Layer: 0
-  m_Name: drawers (3)
+  m_Name: Prop_Drawer_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27623,7 +27623,7 @@ GameObject:
   - component: {fileID: 391935726}
   - component: {fileID: 391935725}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27732,7 +27732,7 @@ GameObject:
   m_Component:
   - component: {fileID: 393381600}
   m_Layer: 0
-  m_Name: Do Minh's Son's Room
+  m_Name: Room_SonRoom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -27881,7 +27881,7 @@ GameObject:
   - component: {fileID: 396393432}
   - component: {fileID: 396393431}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -28106,7 +28106,7 @@ GameObject:
   - component: {fileID: 399482720}
   - component: {fileID: 399482719}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29002,7 +29002,7 @@ GameObject:
   - component: {fileID: 407596301}
   - component: {fileID: 407596300}
   m_Layer: 0
-  m_Name: fencing (21)
+  m_Name: Fence_Post_23
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29114,7 +29114,7 @@ GameObject:
   - component: {fileID: 407973771}
   - component: {fileID: 407973770}
   m_Layer: 0
-  m_Name: Heater
+  m_Name: Prop_Heater
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29231,7 +29231,7 @@ GameObject:
   - component: {fileID: 409524856}
   - component: {fileID: 409524855}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29343,7 +29343,7 @@ GameObject:
   - component: {fileID: 412739027}
   - component: {fileID: 412739026}
   m_Layer: 0
-  m_Name: fencing (20)
+  m_Name: Fence_Post_22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29679,7 +29679,7 @@ GameObject:
   - component: {fileID: 415657271}
   - component: {fileID: 415657270}
   m_Layer: 0
-  m_Name: Floor (22)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30015,7 +30015,7 @@ GameObject:
   - component: {fileID: 420636871}
   - component: {fileID: 420636870}
   m_Layer: 0
-  m_Name: fencing (56)
+  m_Name: Fence_Post_58
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30162,7 +30162,7 @@ GameObject:
   - component: {fileID: 421701862}
   - component: {fileID: 421701861}
   m_Layer: 0
-  m_Name: fencing (61)
+  m_Name: Fence_Post_63
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30274,7 +30274,7 @@ GameObject:
   - component: {fileID: 424055052}
   - component: {fileID: 424055051}
   m_Layer: 0
-  m_Name: Balcony (3)
+  m_Name: Struct_Balcony_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30498,7 +30498,7 @@ GameObject:
   - component: {fileID: 427962152}
   - component: {fileID: 427962151}
   m_Layer: 0
-  m_Name: Floor (04)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30869,7 +30869,7 @@ GameObject:
   - component: {fileID: 433873879}
   - component: {fileID: 433873878}
   m_Layer: 0
-  m_Name: fencing (9)
+  m_Name: Fence_Post_11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -30981,7 +30981,7 @@ GameObject:
   - component: {fileID: 434262570}
   - component: {fileID: 434262569}
   m_Layer: 0
-  m_Name: drawers (1)
+  m_Name: Prop_Drawer_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31093,7 +31093,7 @@ GameObject:
   - component: {fileID: 439056339}
   - component: {fileID: 439056338}
   m_Layer: 0
-  m_Name: Floor (1)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31767,7 +31767,7 @@ GameObject:
   - component: {fileID: 447062595}
   - component: {fileID: 447062594}
   m_Layer: 0
-  m_Name: Floor (40)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -31879,7 +31879,7 @@ GameObject:
   - component: {fileID: 447320668}
   - component: {fileID: 447320667}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32177,7 +32177,7 @@ GameObject:
   - component: {fileID: 450188156}
   - component: {fileID: 450188155}
   m_Layer: 0
-  m_Name: fencing (43)
+  m_Name: Fence_Post_45
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32286,7 +32286,7 @@ GameObject:
   m_Component:
   - component: {fileID: 452423523}
   m_Layer: 0
-  m_Name: Mrs. Lan's Room 2
+  m_Name: Room_MrsLanRoom 2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32557,7 +32557,7 @@ GameObject:
   - component: {fileID: 454987853}
   - component: {fileID: 454987852}
   m_Layer: 0
-  m_Name: drawers (3)
+  m_Name: Prop_Drawer_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -32933,7 +32933,7 @@ GameObject:
   - component: {fileID: 459248058}
   - component: {fileID: 459248057}
   m_Layer: 0
-  m_Name: fencing (83)
+  m_Name: Fence_Post_85
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33157,7 +33157,7 @@ GameObject:
   - component: {fileID: 462000278}
   - component: {fileID: 462000277}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33269,7 +33269,7 @@ GameObject:
   - component: {fileID: 462368869}
   - component: {fileID: 462368868}
   m_Layer: 0
-  m_Name: chair (19)
+  m_Name: Prop_Chair_21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -33941,7 +33941,7 @@ GameObject:
   - component: {fileID: 467216016}
   - component: {fileID: 467216015}
   m_Layer: 0
-  m_Name: chair (16)
+  m_Name: Prop_Chair_18
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34063,7 +34063,7 @@ GameObject:
   - component: {fileID: 475564994}
   - component: {fileID: 475564993}
   m_Layer: 0
-  m_Name: drawers (5)
+  m_Name: Prop_Drawer_07
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34660,7 +34660,7 @@ GameObject:
   - component: {fileID: 480108323}
   - component: {fileID: 480108322}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -34884,7 +34884,7 @@ GameObject:
   - component: {fileID: 483232294}
   - component: {fileID: 483232293}
   m_Layer: 0
-  m_Name: Floor (42)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35291,7 +35291,7 @@ GameObject:
   - component: {fileID: 486713271}
   - component: {fileID: 486713270}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35403,7 +35403,7 @@ GameObject:
   - component: {fileID: 487040261}
   - component: {fileID: 487040260}
   m_Layer: 0
-  m_Name: fencing (40)
+  m_Name: Fence_Post_42
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35577,7 +35577,7 @@ GameObject:
   - component: {fileID: 491678845}
   - component: {fileID: 491678844}
   m_Layer: 0
-  m_Name: Floor (2)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35689,7 +35689,7 @@ GameObject:
   - component: {fileID: 492701115}
   - component: {fileID: 492701114}
   m_Layer: 0
-  m_Name: Climbing ladder
+  m_Name: Prop_Ladder_Climbing
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -35812,7 +35812,7 @@ GameObject:
   - component: {fileID: 493845704}
   - component: {fileID: 493845703}
   m_Layer: 0
-  m_Name: BATHTUB
+  m_Name: Prop_Bathtub_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36226,7 +36226,7 @@ GameObject:
   - component: {fileID: 497270168}
   - component: {fileID: 497270167}
   m_Layer: 0
-  m_Name: fencing (19)
+  m_Name: Fence_Post_21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36338,7 +36338,7 @@ GameObject:
   - component: {fileID: 497659884}
   - component: {fileID: 497659883}
   m_Layer: 0
-  m_Name: fencing (46)
+  m_Name: Fence_Post_48
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36487,7 +36487,7 @@ GameObject:
   - component: {fileID: 497993259}
   - component: {fileID: 497993258}
   m_Layer: 0
-  m_Name: Altar
+  m_Name: Prop_Altar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36607,7 +36607,7 @@ GameObject:
   - component: {fileID: 498009257}
   - component: {fileID: 498009256}
   m_Layer: 0
-  m_Name: bookshelf (15)
+  m_Name: Prop_Bookshelf_17
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -36831,7 +36831,7 @@ GameObject:
   - component: {fileID: 498425509}
   - component: {fileID: 498425508}
   m_Layer: 0
-  m_Name: Floor (07)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37055,7 +37055,7 @@ GameObject:
   - component: {fileID: 505540642}
   - component: {fileID: 505540641}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37229,7 +37229,7 @@ GameObject:
   - component: {fileID: 509844809}
   - component: {fileID: 509844808}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37565,7 +37565,7 @@ GameObject:
   - component: {fileID: 516854329}
   - component: {fileID: 516854328}
   m_Layer: 0
-  m_Name: drawers (1)
+  m_Name: Prop_Drawer_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -37863,7 +37863,7 @@ GameObject:
   - component: {fileID: 519126956}
   - component: {fileID: 519126955}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38161,7 +38161,7 @@ GameObject:
   - component: {fileID: 523301205}
   - component: {fileID: 523301204}
   m_Layer: 0
-  m_Name: fencing (9)
+  m_Name: Fence_Post_11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38273,7 +38273,7 @@ GameObject:
   - component: {fileID: 523354874}
   - component: {fileID: 523354873}
   m_Layer: 0
-  m_Name: fencing (66)
+  m_Name: Fence_Post_68
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38385,7 +38385,7 @@ GameObject:
   - component: {fileID: 524897961}
   - component: {fileID: 524897960}
   m_Layer: 0
-  m_Name: Floor (26)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38497,7 +38497,7 @@ GameObject:
   - component: {fileID: 525061112}
   - component: {fileID: 525061111}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38609,7 +38609,7 @@ GameObject:
   - component: {fileID: 527733518}
   - component: {fileID: 527733517}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38795,7 +38795,7 @@ GameObject:
   - component: {fileID: 532634033}
   - component: {fileID: 532634032}
   m_Layer: 0
-  m_Name: Double bed (1)
+  m_Name: Prop_Bed_Double_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -38912,7 +38912,7 @@ GameObject:
   - component: {fileID: 533834771}
   - component: {fileID: 533834770}
   m_Layer: 0
-  m_Name: drawers (5)
+  m_Name: Prop_Drawer_07
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39024,7 +39024,7 @@ GameObject:
   - component: {fileID: 535587388}
   - component: {fileID: 535587387}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39210,7 +39210,7 @@ GameObject:
   - component: {fileID: 536595514}
   - component: {fileID: 536595513}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39434,7 +39434,7 @@ GameObject:
   - component: {fileID: 541451993}
   - component: {fileID: 541451992}
   m_Layer: 0
-  m_Name: Floor (70)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39697,7 +39697,7 @@ GameObject:
   - component: {fileID: 548634962}
   - component: {fileID: 548634961}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39809,7 +39809,7 @@ GameObject:
   - component: {fileID: 549340245}
   - component: {fileID: 549340244}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -39921,7 +39921,7 @@ GameObject:
   - component: {fileID: 549676487}
   - component: {fileID: 549676486}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40033,7 +40033,7 @@ GameObject:
   - component: {fileID: 551126407}
   - component: {fileID: 551126406}
   m_Layer: 0
-  m_Name: fencing (76)
+  m_Name: Fence_Post_78
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40145,7 +40145,7 @@ GameObject:
   - component: {fileID: 554607498}
   - component: {fileID: 554607497}
   m_Layer: 0
-  m_Name: Floor (53)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40257,7 +40257,7 @@ GameObject:
   - component: {fileID: 557079189}
   - component: {fileID: 557079188}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40705,7 +40705,7 @@ GameObject:
   - component: {fileID: 558981341}
   - component: {fileID: 558981340}
   m_Layer: 0
-  m_Name: fencing (53)
+  m_Name: Fence_Post_55
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40817,7 +40817,7 @@ GameObject:
   - component: {fileID: 561785003}
   - component: {fileID: 561785002}
   m_Layer: 0
-  m_Name: fencing (74)
+  m_Name: Fence_Post_76
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -40929,7 +40929,7 @@ GameObject:
   - component: {fileID: 562538173}
   - component: {fileID: 562538172}
   m_Layer: 0
-  m_Name: chair (4)
+  m_Name: Prop_Chair_06
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41049,7 +41049,7 @@ GameObject:
   - component: {fileID: 564785468}
   - component: {fileID: 564785467}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41273,7 +41273,7 @@ GameObject:
   - component: {fileID: 567844780}
   - component: {fileID: 567844779}
   m_Layer: 0
-  m_Name: fencing (76)
+  m_Name: Fence_Post_78
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41385,7 +41385,7 @@ GameObject:
   - component: {fileID: 569716986}
   - component: {fileID: 569716985}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41497,7 +41497,7 @@ GameObject:
   - component: {fileID: 571410530}
   - component: {fileID: 571410529}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -41833,7 +41833,7 @@ GameObject:
   - component: {fileID: 575325514}
   - component: {fileID: 575325513}
   m_Layer: 0
-  m_Name: fencing (50)
+  m_Name: Fence_Post_52
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42169,7 +42169,7 @@ GameObject:
   - component: {fileID: 580354656}
   - component: {fileID: 580354655}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42281,7 +42281,7 @@ GameObject:
   - component: {fileID: 580505027}
   - component: {fileID: 580505026}
   m_Layer: 0
-  m_Name: chair (2)
+  m_Name: Prop_Chair_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42393,7 +42393,7 @@ GameObject:
   - component: {fileID: 580713542}
   - component: {fileID: 580713541}
   m_Layer: 0
-  m_Name: chair (15)
+  m_Name: Prop_Chair_17
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42625,7 +42625,7 @@ GameObject:
   - component: {fileID: 582590204}
   - component: {fileID: 582590203}
   m_Layer: 0
-  m_Name: Floor (4)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -42961,7 +42961,7 @@ GameObject:
   - component: {fileID: 587499361}
   - component: {fileID: 587499360}
   m_Layer: 0
-  m_Name: Floor (5)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43073,7 +43073,7 @@ GameObject:
   - component: {fileID: 588563628}
   - component: {fileID: 588563627}
   m_Layer: 0
-  m_Name: fencing (19)
+  m_Name: Fence_Post_21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43185,7 +43185,7 @@ GameObject:
   - component: {fileID: 589132082}
   - component: {fileID: 589132081}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43297,7 +43297,7 @@ GameObject:
   - component: {fileID: 589319047}
   - component: {fileID: 589319046}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43583,7 +43583,7 @@ GameObject:
   - component: {fileID: 592262549}
   - component: {fileID: 592262548}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43807,7 +43807,7 @@ GameObject:
   - component: {fileID: 597129650}
   - component: {fileID: 597129649}
   m_Layer: 0
-  m_Name: fencing (17)
+  m_Name: Fence_Post_19
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -43919,7 +43919,7 @@ GameObject:
   - component: {fileID: 597873065}
   - component: {fileID: 597873064}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44031,7 +44031,7 @@ GameObject:
   - component: {fileID: 599558458}
   - component: {fileID: 599558457}
   m_Layer: 0
-  m_Name: Balcony (1)
+  m_Name: Struct_Balcony_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44143,7 +44143,7 @@ GameObject:
   - component: {fileID: 599611855}
   - component: {fileID: 599611854}
   m_Layer: 0
-  m_Name: BATHTUB
+  m_Name: Prop_Bathtub_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44371,7 +44371,7 @@ GameObject:
   - component: {fileID: 601578175}
   - component: {fileID: 601578174}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44557,7 +44557,7 @@ GameObject:
   - component: {fileID: 604069980}
   - component: {fileID: 604069979}
   m_Layer: 0
-  m_Name: Floor (69)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44669,7 +44669,7 @@ GameObject:
   - component: {fileID: 604995183}
   - component: {fileID: 604995182}
   m_Layer: 0
-  m_Name: chair (19)
+  m_Name: Prop_Chair_21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -44866,7 +44866,7 @@ GameObject:
   - component: {fileID: 607911999}
   - component: {fileID: 607911998}
   m_Layer: 0
-  m_Name: BATHTUB
+  m_Name: Prop_Bathtub_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45096,7 +45096,7 @@ GameObject:
   - component: {fileID: 609474340}
   - component: {fileID: 609474339}
   m_Layer: 0
-  m_Name: Floor (09)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45208,7 +45208,7 @@ GameObject:
   - component: {fileID: 610722892}
   - component: {fileID: 610722891}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45320,7 +45320,7 @@ GameObject:
   - component: {fileID: 611994293}
   - component: {fileID: 611994292}
   m_Layer: 0
-  m_Name: chair (20)
+  m_Name: Prop_Chair_22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45618,7 +45618,7 @@ GameObject:
   - component: {fileID: 614765797}
   - component: {fileID: 614765796}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -45842,7 +45842,7 @@ GameObject:
   - component: {fileID: 617717781}
   - component: {fileID: 617717780}
   m_Layer: 0
-  m_Name: fencing (3)
+  m_Name: Fence_Post_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46178,7 +46178,7 @@ GameObject:
   - component: {fileID: 619824806}
   - component: {fileID: 619824805}
   m_Layer: 0
-  m_Name: Floor (38)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46290,7 +46290,7 @@ GameObject:
   - component: {fileID: 621494971}
   - component: {fileID: 621494970}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -46776,7 +46776,7 @@ GameObject:
   - component: {fileID: 626735974}
   - component: {fileID: 626735973}
   m_Layer: 0
-  m_Name: Double bed (1)
+  m_Name: Prop_Bed_Double_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47005,7 +47005,7 @@ GameObject:
   - component: {fileID: 629186222}
   - component: {fileID: 629186221}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47345,7 +47345,7 @@ GameObject:
   - component: {fileID: 630655204}
   - component: {fileID: 630655203}
   m_Layer: 0
-  m_Name: drawers (5)
+  m_Name: Prop_Drawer_07
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47681,7 +47681,7 @@ GameObject:
   - component: {fileID: 632411982}
   - component: {fileID: 632411981}
   m_Layer: 0
-  m_Name: chair (18)
+  m_Name: Prop_Chair_20
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47793,7 +47793,7 @@ GameObject:
   - component: {fileID: 633390213}
   - component: {fileID: 633390212}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -47905,7 +47905,7 @@ GameObject:
   - component: {fileID: 634629067}
   - component: {fileID: 634629066}
   m_Layer: 0
-  m_Name: fencing (13)
+  m_Name: Fence_Post_15
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48017,7 +48017,7 @@ GameObject:
   - component: {fileID: 637219064}
   - component: {fileID: 637219063}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48129,7 +48129,7 @@ GameObject:
   - component: {fileID: 642138013}
   - component: {fileID: 642138012}
   m_Layer: 0
-  m_Name: fencing (4)
+  m_Name: Fence_Post_06
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48577,7 +48577,7 @@ GameObject:
   - component: {fileID: 647413135}
   - component: {fileID: 647413134}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -48689,7 +48689,7 @@ GameObject:
   - component: {fileID: 650367700}
   - component: {fileID: 650367699}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49025,7 +49025,7 @@ GameObject:
   - component: {fileID: 654997663}
   - component: {fileID: 654997662}
   m_Layer: 0
-  m_Name: fencing (12)
+  m_Name: Fence_Post_14
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49137,7 +49137,7 @@ GameObject:
   - component: {fileID: 655051153}
   - component: {fileID: 655051152}
   m_Layer: 0
-  m_Name: fencing (68)
+  m_Name: Fence_Post_70
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49249,7 +49249,7 @@ GameObject:
   - component: {fileID: 657886736}
   - component: {fileID: 657886735}
   m_Layer: 0
-  m_Name: Floor (36)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49585,7 +49585,7 @@ GameObject:
   - component: {fileID: 662790264}
   - component: {fileID: 662790263}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -49809,7 +49809,7 @@ GameObject:
   - component: {fileID: 665962800}
   - component: {fileID: 665962799}
   m_Layer: 0
-  m_Name: Floor (34)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50033,7 +50033,7 @@ GameObject:
   - component: {fileID: 668828087}
   - component: {fileID: 668828086}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50219,7 +50219,7 @@ GameObject:
   - component: {fileID: 670589212}
   - component: {fileID: 670589211}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50331,7 +50331,7 @@ GameObject:
   - component: {fileID: 671851672}
   - component: {fileID: 671851671}
   m_Layer: 0
-  m_Name: bookshelf (4)
+  m_Name: Prop_Bookshelf_06
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50555,7 +50555,7 @@ GameObject:
   - component: {fileID: 675878499}
   - component: {fileID: 675878498}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -50891,7 +50891,7 @@ GameObject:
   - component: {fileID: 680134790}
   - component: {fileID: 680134789}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51077,7 +51077,7 @@ GameObject:
   - component: {fileID: 686128513}
   - component: {fileID: 686128512}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51412,7 +51412,7 @@ GameObject:
   - component: {fileID: 691658189}
   - component: {fileID: 691658188}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -51748,7 +51748,7 @@ GameObject:
   - component: {fileID: 701073155}
   - component: {fileID: 701073154}
   m_Layer: 0
-  m_Name: fencing (77)
+  m_Name: Fence_Post_79
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -52158,7 +52158,7 @@ GameObject:
   - component: {fileID: 707921575}
   - component: {fileID: 707921574}
   m_Layer: 0
-  m_Name: Balcony
+  m_Name: Struct_Balcony_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -52937,7 +52937,7 @@ GameObject:
   - component: {fileID: 727367503}
   - component: {fileID: 727367502}
   m_Layer: 0
-  m_Name: chair (19)
+  m_Name: Prop_Chair_21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -53161,7 +53161,7 @@ GameObject:
   - component: {fileID: 728065643}
   - component: {fileID: 728065642}
   m_Layer: 0
-  m_Name: chair (18)
+  m_Name: Prop_Chair_20
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -53357,7 +53357,7 @@ GameObject:
   - component: {fileID: 728764574}
   - component: {fileID: 728764573}
   m_Layer: 0
-  m_Name: chair (1)
+  m_Name: Prop_Chair_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -53477,7 +53477,7 @@ GameObject:
   - component: {fileID: 730089495}
   - component: {fileID: 730089494}
   m_Layer: 0
-  m_Name: Balcony (3)
+  m_Name: Struct_Balcony_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -54194,7 +54194,7 @@ GameObject:
   - component: {fileID: 738632093}
   - component: {fileID: 738632092}
   m_Layer: 0
-  m_Name: Balcony (2)
+  m_Name: Struct_Balcony_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -54306,7 +54306,7 @@ GameObject:
   - component: {fileID: 740081217}
   - component: {fileID: 740081216}
   m_Layer: 0
-  m_Name: fencing (45)
+  m_Name: Fence_Post_47
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -54418,7 +54418,7 @@ GameObject:
   - component: {fileID: 740271452}
   - component: {fileID: 740271451}
   m_Layer: 0
-  m_Name: fencing (27)
+  m_Name: Fence_Post_29
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -54716,7 +54716,7 @@ GameObject:
   - component: {fileID: 745869380}
   - component: {fileID: 745869379}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -54828,7 +54828,7 @@ GameObject:
   - component: {fileID: 747116869}
   - component: {fileID: 747116868}
   m_Layer: 0
-  m_Name: fencing (7)
+  m_Name: Fence_Post_09
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -54940,7 +54940,7 @@ GameObject:
   - component: {fileID: 747118026}
   - component: {fileID: 747118025}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -55052,7 +55052,7 @@ GameObject:
   - component: {fileID: 749896197}
   - component: {fileID: 749896196}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -55276,7 +55276,7 @@ GameObject:
   - component: {fileID: 753698874}
   - component: {fileID: 753698873}
   m_Layer: 0
-  m_Name: Balcony (7)
+  m_Name: Struct_Balcony_09
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -55450,7 +55450,7 @@ GameObject:
   - component: {fileID: 755570254}
   - component: {fileID: 755570253}
   m_Layer: 0
-  m_Name: fencing (5)
+  m_Name: Fence_Post_07
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -55562,7 +55562,7 @@ GameObject:
   - component: {fileID: 757438147}
   - component: {fileID: 757438146}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -55674,7 +55674,7 @@ GameObject:
   - component: {fileID: 757694954}
   - component: {fileID: 757694953}
   m_Layer: 0
-  m_Name: Floor (58)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -55786,7 +55786,7 @@ GameObject:
   - component: {fileID: 759823686}
   - component: {fileID: 759823685}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56010,7 +56010,7 @@ GameObject:
   - component: {fileID: 762729245}
   - component: {fileID: 762729244}
   m_Layer: 0
-  m_Name: fencing (32)
+  m_Name: Fence_Post_34
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56234,7 +56234,7 @@ GameObject:
   - component: {fileID: 763581633}
   - component: {fileID: 763581632}
   m_Layer: 0
-  m_Name: fencing (81)
+  m_Name: Fence_Post_83
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56346,7 +56346,7 @@ GameObject:
   - component: {fileID: 764227618}
   - component: {fileID: 764227617}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56570,7 +56570,7 @@ GameObject:
   - component: {fileID: 766346037}
   - component: {fileID: 766346036}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56682,7 +56682,7 @@ GameObject:
   - component: {fileID: 767300718}
   - component: {fileID: 767300717}
   m_Layer: 0
-  m_Name: Floor (3)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56794,7 +56794,7 @@ GameObject:
   - component: {fileID: 771319138}
   - component: {fileID: 771319137}
   m_Layer: 0
-  m_Name: Balcony (8)
+  m_Name: Struct_Balcony_10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -56906,7 +56906,7 @@ GameObject:
   - component: {fileID: 773407853}
   - component: {fileID: 773407852}
   m_Layer: 0
-  m_Name: Floor (12)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57018,7 +57018,7 @@ GameObject:
   - component: {fileID: 775125623}
   - component: {fileID: 775125622}
   m_Layer: 0
-  m_Name: Balcony (15)
+  m_Name: Struct_Balcony_17
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57242,7 +57242,7 @@ GameObject:
   - component: {fileID: 779347381}
   - component: {fileID: 779347380}
   m_Layer: 0
-  m_Name: Balcony (9)
+  m_Name: Struct_Balcony_11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57354,7 +57354,7 @@ GameObject:
   - component: {fileID: 779432700}
   - component: {fileID: 779432699}
   m_Layer: 0
-  m_Name: Floor (03)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57466,7 +57466,7 @@ GameObject:
   - component: {fileID: 780756220}
   - component: {fileID: 780756219}
   m_Layer: 0
-  m_Name: fencing (62)
+  m_Name: Fence_Post_64
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57802,7 +57802,7 @@ GameObject:
   - component: {fileID: 786073234}
   - component: {fileID: 786073233}
   m_Layer: 0
-  m_Name: drawers (1)
+  m_Name: Prop_Drawer_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -57914,7 +57914,7 @@ GameObject:
   - component: {fileID: 786701216}
   - component: {fileID: 786701215}
   m_Layer: 0
-  m_Name: fencing (33)
+  m_Name: Fence_Post_35
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58026,7 +58026,7 @@ GameObject:
   - component: {fileID: 788994090}
   - component: {fileID: 788994089}
   m_Layer: 0
-  m_Name: drawers (5)
+  m_Name: Prop_Drawer_07
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58138,7 +58138,7 @@ GameObject:
   - component: {fileID: 793451544}
   - component: {fileID: 793451543}
   m_Layer: 0
-  m_Name: fencing (63)
+  m_Name: Fence_Post_65
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58474,7 +58474,7 @@ GameObject:
   - component: {fileID: 795993567}
   - component: {fileID: 795993566}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -58586,7 +58586,7 @@ GameObject:
   - component: {fileID: 797399854}
   - component: {fileID: 797399853}
   m_Layer: 0
-  m_Name: chair (20)
+  m_Name: Prop_Chair_22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59034,7 +59034,7 @@ GameObject:
   - component: {fileID: 804777611}
   - component: {fileID: 804777610}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59258,7 +59258,7 @@ GameObject:
   - component: {fileID: 809279702}
   - component: {fileID: 809279701}
   m_Layer: 0
-  m_Name: Balcony (11)
+  m_Name: Struct_Balcony_13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59370,7 +59370,7 @@ GameObject:
   - component: {fileID: 810987444}
   - component: {fileID: 810987443}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59482,7 +59482,7 @@ GameObject:
   - component: {fileID: 812344214}
   - component: {fileID: 812344213}
   m_Layer: 0
-  m_Name: fencing (72)
+  m_Name: Fence_Post_74
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59594,7 +59594,7 @@ GameObject:
   - component: {fileID: 813010168}
   - component: {fileID: 813010167}
   m_Layer: 0
-  m_Name: Floor (43)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -59932,7 +59932,7 @@ GameObject:
   - component: {fileID: 818515378}
   - component: {fileID: 818515377}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60666,7 +60666,7 @@ GameObject:
   - component: {fileID: 828131439}
   - component: {fileID: 828131438}
   m_Layer: 0
-  m_Name: fencing (17)
+  m_Name: Fence_Post_19
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -60778,7 +60778,7 @@ GameObject:
   - component: {fileID: 829141004}
   - component: {fileID: 829141003}
   m_Layer: 0
-  m_Name: fencing (93)
+  m_Name: Fence_Post_95
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61002,7 +61002,7 @@ GameObject:
   - component: {fileID: 835786258}
   - component: {fileID: 835786257}
   m_Layer: 0
-  m_Name: fencing (96)
+  m_Name: Fence_Post_98
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61114,7 +61114,7 @@ GameObject:
   - component: {fileID: 842651257}
   - component: {fileID: 842651256}
   m_Layer: 0
-  m_Name: BATHTUB (2)
+  m_Name: Prop_Bathtub_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61226,7 +61226,7 @@ GameObject:
   - component: {fileID: 843497753}
   - component: {fileID: 843497752}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61450,7 +61450,7 @@ GameObject:
   - component: {fileID: 847387682}
   - component: {fileID: 847387681}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61745,7 +61745,7 @@ GameObject:
   - component: {fileID: 855848198}
   - component: {fileID: 855848197}
   m_Layer: 0
-  m_Name: fencing (36)
+  m_Name: Fence_Post_38
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -61857,7 +61857,7 @@ GameObject:
   - component: {fileID: 860657501}
   - component: {fileID: 860657500}
   m_Layer: 0
-  m_Name: Floor (5)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62081,7 +62081,7 @@ GameObject:
   - component: {fileID: 861114832}
   - component: {fileID: 861114831}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62193,7 +62193,7 @@ GameObject:
   - component: {fileID: 863603513}
   - component: {fileID: 863603512}
   m_Layer: 0
-  m_Name: fencing (84)
+  m_Name: Fence_Post_86
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62305,7 +62305,7 @@ GameObject:
   - component: {fileID: 864865668}
   - component: {fileID: 864865667}
   m_Layer: 0
-  m_Name: drawers (4)
+  m_Name: Prop_Drawer_06
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -62603,7 +62603,7 @@ GameObject:
   - component: {fileID: 872373765}
   - component: {fileID: 872373764}
   m_Layer: 0
-  m_Name: diary (1)
+  m_Name: Prop_Diary_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63058,7 +63058,7 @@ GameObject:
   - component: {fileID: 873664551}
   - component: {fileID: 873664550}
   m_Layer: 0
-  m_Name: Floor (9)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63170,7 +63170,7 @@ GameObject:
   - component: {fileID: 874539990}
   - component: {fileID: 874539989}
   m_Layer: 0
-  m_Name: Double bed (1)
+  m_Name: Prop_Bed_Double_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63287,7 +63287,7 @@ GameObject:
   - component: {fileID: 877574660}
   - component: {fileID: 877574659}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -63921,7 +63921,7 @@ GameObject:
   - component: {fileID: 888260953}
   - component: {fileID: 888260952}
   m_Layer: 0
-  m_Name: Floor (71)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64033,7 +64033,7 @@ GameObject:
   - component: {fileID: 889117537}
   - component: {fileID: 889117536}
   m_Layer: 0
-  m_Name: BATHTUB (3)
+  m_Name: Prop_Bathtub_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64219,7 +64219,7 @@ GameObject:
   - component: {fileID: 892061916}
   - component: {fileID: 892061915}
   m_Layer: 0
-  m_Name: fencing (2)
+  m_Name: Fence_Post_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64331,7 +64331,7 @@ GameObject:
   - component: {fileID: 892943838}
   - component: {fileID: 892943837}
   m_Layer: 0
-  m_Name: Floor (46)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64632,7 +64632,7 @@ GameObject:
   - component: {fileID: 896635196}
   - component: {fileID: 896635195}
   m_Layer: 0
-  m_Name: bookshelf (3)
+  m_Name: Prop_Bookshelf_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64744,7 +64744,7 @@ GameObject:
   - component: {fileID: 897139558}
   - component: {fileID: 897139557}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -64977,7 +64977,7 @@ GameObject:
   - component: {fileID: 899439236}
   - component: {fileID: 899439235}
   m_Layer: 0
-  m_Name: fencing (36)
+  m_Name: Fence_Post_38
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65275,7 +65275,7 @@ GameObject:
   - component: {fileID: 903306650}
   - component: {fileID: 903306649}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65499,7 +65499,7 @@ GameObject:
   - component: {fileID: 905295648}
   - component: {fileID: 905295647}
   m_Layer: 0
-  m_Name: fencing (82)
+  m_Name: Fence_Post_84
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -65800,7 +65800,7 @@ GameObject:
   - component: {fileID: 910051579}
   - component: {fileID: 910051578}
   m_Layer: 0
-  m_Name: fencing (62)
+  m_Name: Fence_Post_64
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66024,7 +66024,7 @@ GameObject:
   - component: {fileID: 911122303}
   - component: {fileID: 911122302}
   m_Layer: 0
-  m_Name: Floor (05)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66136,7 +66136,7 @@ GameObject:
   - component: {fileID: 915617771}
   - component: {fileID: 915617770}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66248,7 +66248,7 @@ GameObject:
   - component: {fileID: 917498364}
   - component: {fileID: 917498363}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66732,7 +66732,7 @@ GameObject:
   - component: {fileID: 928216645}
   - component: {fileID: 928216644}
   m_Layer: 0
-  m_Name: chair (20)
+  m_Name: Prop_Chair_22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -66844,7 +66844,7 @@ GameObject:
   - component: {fileID: 929382266}
   - component: {fileID: 929382265}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67292,7 +67292,7 @@ GameObject:
   - component: {fileID: 934403809}
   - component: {fileID: 934403808}
   m_Layer: 0
-  m_Name: fencing (44)
+  m_Name: Fence_Post_46
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67404,7 +67404,7 @@ GameObject:
   - component: {fileID: 935129277}
   - component: {fileID: 935129276}
   m_Layer: 0
-  m_Name: drawers (3)
+  m_Name: Prop_Drawer_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67628,7 +67628,7 @@ GameObject:
   - component: {fileID: 935815489}
   - component: {fileID: 935815488}
   m_Layer: 0
-  m_Name: Floor (2)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -67926,7 +67926,7 @@ GameObject:
   - component: {fileID: 937335546}
   - component: {fileID: 937335545}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68046,7 +68046,7 @@ GameObject:
   - component: {fileID: 937370894}
   - component: {fileID: 937370893}
   m_Layer: 0
-  m_Name: Floor (47)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -68270,7 +68270,7 @@ GameObject:
   - component: {fileID: 940661440}
   - component: {fileID: 940661439}
   m_Layer: 0
-  m_Name: BATHTUB (1)
+  m_Name: Prop_Bathtub_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69092,7 +69092,7 @@ GameObject:
   - component: {fileID: 955966519}
   - component: {fileID: 955966518}
   m_Layer: 0
-  m_Name: fencing (70)
+  m_Name: Fence_Post_72
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69204,7 +69204,7 @@ GameObject:
   - component: {fileID: 956515791}
   - component: {fileID: 956515790}
   m_Layer: 0
-  m_Name: fencing (1)
+  m_Name: Fence_Post_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69428,7 +69428,7 @@ GameObject:
   - component: {fileID: 958792808}
   - component: {fileID: 958792807}
   m_Layer: 0
-  m_Name: fencing (69)
+  m_Name: Fence_Post_71
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69540,7 +69540,7 @@ GameObject:
   - component: {fileID: 960637616}
   - component: {fileID: 960637615}
   m_Layer: 0
-  m_Name: fencing (52)
+  m_Name: Fence_Post_54
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -70284,7 +70284,7 @@ GameObject:
   - component: {fileID: 972392804}
   - component: {fileID: 972392803}
   m_Layer: 0
-  m_Name: fencing (35)
+  m_Name: Fence_Post_37
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -70396,7 +70396,7 @@ GameObject:
   - component: {fileID: 974086944}
   - component: {fileID: 974086943}
   m_Layer: 0
-  m_Name: chair (18)
+  m_Name: Prop_Chair_20
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -70732,7 +70732,7 @@ GameObject:
   - component: {fileID: 978537344}
   - component: {fileID: 978537343}
   m_Layer: 0
-  m_Name: Floor (61)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -71191,7 +71191,7 @@ GameObject:
   - component: {fileID: 981990585}
   - component: {fileID: 981990584}
   m_Layer: 0
-  m_Name: "table with mirror\u01B0 (1)"
+  m_Name: Prop_Table_Mirror_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -71644,7 +71644,7 @@ GameObject:
   - component: {fileID: 984892282}
   - component: {fileID: 984892281}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -71756,7 +71756,7 @@ GameObject:
   - component: {fileID: 986598665}
   - component: {fileID: 986598664}
   m_Layer: 0
-  m_Name: antique radio (2)
+  m_Name: Prop_Radio_Antique_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -71952,7 +71952,7 @@ GameObject:
   - component: {fileID: 987630918}
   - component: {fileID: 987630917}
   m_Layer: 0
-  m_Name: diary (1)
+  m_Name: Prop_Diary_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72064,7 +72064,7 @@ GameObject:
   - component: {fileID: 992828939}
   - component: {fileID: 992828938}
   m_Layer: 0
-  m_Name: Floor (75)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72660,7 +72660,7 @@ GameObject:
   - component: {fileID: 999230965}
   - component: {fileID: 999230964}
   m_Layer: 0
-  m_Name: fencing (98)
+  m_Name: Fence_Post_100
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72884,7 +72884,7 @@ GameObject:
   - component: {fileID: 1003219023}
   - component: {fileID: 1003219022}
   m_Layer: 0
-  m_Name: fencing (46)
+  m_Name: Fence_Post_48
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73220,7 +73220,7 @@ GameObject:
   - component: {fileID: 1005102012}
   - component: {fileID: 1005102011}
   m_Layer: 0
-  m_Name: Floor (39)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73332,7 +73332,7 @@ GameObject:
   - component: {fileID: 1005360301}
   - component: {fileID: 1005360300}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73730,7 +73730,7 @@ GameObject:
   - component: {fileID: 1013498199}
   - component: {fileID: 1013498198}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -73990,7 +73990,7 @@ GameObject:
   - component: {fileID: 1016476970}
   - component: {fileID: 1016476969}
   m_Layer: 0
-  m_Name: chair (1)
+  m_Name: Prop_Chair_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74102,7 +74102,7 @@ GameObject:
   - component: {fileID: 1018260458}
   - component: {fileID: 1018260457}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74326,7 +74326,7 @@ GameObject:
   - component: {fileID: 1020295606}
   - component: {fileID: 1020295605}
   m_Layer: 0
-  m_Name: chair (21)
+  m_Name: Prop_Chair_23
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74438,7 +74438,7 @@ GameObject:
   - component: {fileID: 1020668980}
   - component: {fileID: 1020668979}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74589,7 +74589,7 @@ GameObject:
   - component: {fileID: 1022954543}
   - component: {fileID: 1022954542}
   m_Layer: 0
-  m_Name: drawers (2)
+  m_Name: Prop_Drawer_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -74813,7 +74813,7 @@ GameObject:
   - component: {fileID: 1026434000}
   - component: {fileID: 1026433999}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75046,7 +75046,7 @@ GameObject:
   - component: {fileID: 1031083425}
   - component: {fileID: 1031083424}
   m_Layer: 0
-  m_Name: Balcony (2)
+  m_Name: Struct_Balcony_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75394,7 +75394,7 @@ GameObject:
   - component: {fileID: 1035787633}
   - component: {fileID: 1035787632}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75506,7 +75506,7 @@ GameObject:
   - component: {fileID: 1036151648}
   - component: {fileID: 1036151647}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75618,7 +75618,7 @@ GameObject:
   - component: {fileID: 1039979076}
   - component: {fileID: 1039979075}
   m_Layer: 0
-  m_Name: "table with mirror\u01B0 (2)"
+  m_Name: Prop_Table_Mirror_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75730,7 +75730,7 @@ GameObject:
   - component: {fileID: 1045123128}
   - component: {fileID: 1045123127}
   m_Layer: 0
-  m_Name: fencing (91)
+  m_Name: Fence_Post_93
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -75842,7 +75842,7 @@ GameObject:
   - component: {fileID: 1050692597}
   - component: {fileID: 1050692596}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76067,7 +76067,7 @@ GameObject:
   - component: {fileID: 1054147926}
   - component: {fileID: 1054147925}
   m_Layer: 0
-  m_Name: chair (18)
+  m_Name: Prop_Chair_20
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76189,7 +76189,7 @@ GameObject:
   - component: {fileID: 1054856202}
   - component: {fileID: 1054856201}
   m_Layer: 0
-  m_Name: chair (19)
+  m_Name: Prop_Chair_21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76749,7 +76749,7 @@ GameObject:
   - component: {fileID: 1063041476}
   - component: {fileID: 1063041475}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76861,7 +76861,7 @@ GameObject:
   - component: {fileID: 1064241564}
   - component: {fileID: 1064241563}
   m_Layer: 0
-  m_Name: bookshelf (3)
+  m_Name: Prop_Bookshelf_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -76973,7 +76973,7 @@ GameObject:
   - component: {fileID: 1064914638}
   - component: {fileID: 1064914637}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77085,7 +77085,7 @@ GameObject:
   - component: {fileID: 1067597473}
   - component: {fileID: 1067597472}
   m_Layer: 0
-  m_Name: drawers (2)
+  m_Name: Prop_Drawer_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77202,7 +77202,7 @@ GameObject:
   - component: {fileID: 1068798664}
   - component: {fileID: 1068798663}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77388,7 +77388,7 @@ GameObject:
   - component: {fileID: 1072311992}
   - component: {fileID: 1072311991}
   m_Layer: 0
-  m_Name: chair (21)
+  m_Name: Prop_Chair_23
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78123,7 +78123,7 @@ GameObject:
   - component: {fileID: 1079096009}
   - component: {fileID: 1079096008}
   m_Layer: 0
-  m_Name: bookshelf (4)
+  m_Name: Prop_Bookshelf_06
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78459,7 +78459,7 @@ GameObject:
   - component: {fileID: 1083043288}
   - component: {fileID: 1083043287}
   m_Layer: 0
-  m_Name: Floor (08)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78680,7 +78680,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1087184455}
   m_Layer: 0
-  m_Name: Family Room
+  m_Name: Room_FamilyRoom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -78718,7 +78718,7 @@ GameObject:
   - component: {fileID: 1087405220}
   - component: {fileID: 1087405219}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79204,7 +79204,7 @@ GameObject:
   - component: {fileID: 1098048622}
   - component: {fileID: 1098048621}
   m_Layer: 0
-  m_Name: chair (20)
+  m_Name: Prop_Chair_22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79316,7 +79316,7 @@ GameObject:
   - component: {fileID: 1098309093}
   - component: {fileID: 1098309092}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79428,7 +79428,7 @@ GameObject:
   - component: {fileID: 1099631127}
   - component: {fileID: 1099631126}
   m_Layer: 0
-  m_Name: fencing (15)
+  m_Name: Fence_Post_17
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79726,7 +79726,7 @@ GameObject:
   - component: {fileID: 1103962592}
   - component: {fileID: 1103962591}
   m_Layer: 0
-  m_Name: BATHTUB (4)
+  m_Name: Prop_Bathtub_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80121,7 +80121,7 @@ GameObject:
   - component: {fileID: 1110262814}
   - component: {fileID: 1110262813}
   m_Layer: 0
-  m_Name: bookshelf (7)
+  m_Name: Prop_Bookshelf_09
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80307,7 +80307,7 @@ GameObject:
   - component: {fileID: 1112033073}
   - component: {fileID: 1112033072}
   m_Layer: 0
-  m_Name: chair (2)
+  m_Name: Prop_Chair_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -80493,7 +80493,7 @@ GameObject:
   - component: {fileID: 1112704820}
   - component: {fileID: 1112704819}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81015,7 +81015,7 @@ GameObject:
   - component: {fileID: 1127537730}
   - component: {fileID: 1127537729}
   m_Layer: 0
-  m_Name: fencing (23)
+  m_Name: Fence_Post_25
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81239,7 +81239,7 @@ GameObject:
   - component: {fileID: 1128310707}
   - component: {fileID: 1128310706}
   m_Layer: 0
-  m_Name: bookshelf (1)
+  m_Name: Prop_Bookshelf_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81351,7 +81351,7 @@ GameObject:
   - component: {fileID: 1128472954}
   - component: {fileID: 1128472953}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81463,7 +81463,7 @@ GameObject:
   - component: {fileID: 1129087119}
   - component: {fileID: 1129087118}
   m_Layer: 0
-  m_Name: BATHTUB (1)
+  m_Name: Prop_Bathtub_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81649,7 +81649,7 @@ GameObject:
   - component: {fileID: 1130788993}
   - component: {fileID: 1130788992}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81761,7 +81761,7 @@ GameObject:
   - component: {fileID: 1131139713}
   - component: {fileID: 1131139712}
   m_Layer: 0
-  m_Name: bookshelf (2)
+  m_Name: Prop_Bookshelf_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -81870,7 +81870,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1133052011}
   m_Layer: 0
-  m_Name: ' house pillar'
+  m_Name: SupportPillars
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -82096,7 +82096,7 @@ GameObject:
   - component: {fileID: 1140792806}
   - component: {fileID: 1140792805}
   m_Layer: 0
-  m_Name: Floor (56)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -82208,7 +82208,7 @@ GameObject:
   - component: {fileID: 1141409883}
   - component: {fileID: 1141409882}
   m_Layer: 0
-  m_Name: Floor (15)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -82320,7 +82320,7 @@ GameObject:
   - component: {fileID: 1142471463}
   - component: {fileID: 1142471462}
   m_Layer: 0
-  m_Name: Floor (30)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -82730,7 +82730,7 @@ GameObject:
   - component: {fileID: 1146089707}
   - component: {fileID: 1146089706}
   m_Layer: 0
-  m_Name: fencing (34)
+  m_Name: Fence_Post_36
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83028,7 +83028,7 @@ GameObject:
   - component: {fileID: 1151065301}
   - component: {fileID: 1151065300}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83261,7 +83261,7 @@ GameObject:
   - component: {fileID: 1153417129}
   - component: {fileID: 1153417128}
   m_Layer: 0
-  m_Name: fencing (16)
+  m_Name: Fence_Post_18
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -83771,7 +83771,7 @@ GameObject:
   - component: {fileID: 1158817490}
   - component: {fileID: 1158817489}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -84065,7 +84065,7 @@ GameObject:
   - component: {fileID: 1163689425}
   - component: {fileID: 1163689424}
   m_Layer: 0
-  m_Name: fencing (35)
+  m_Name: Fence_Post_37
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -84177,7 +84177,7 @@ GameObject:
   - component: {fileID: 1164390471}
   - component: {fileID: 1164390470}
   m_Layer: 0
-  m_Name: fencing (44)
+  m_Name: Fence_Post_46
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -84440,7 +84440,7 @@ GameObject:
   - component: {fileID: 1166943580}
   - component: {fileID: 1166943579}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -84664,7 +84664,7 @@ GameObject:
   - component: {fileID: 1168236934}
   - component: {fileID: 1168236933}
   m_Layer: 0
-  m_Name: fencing (43)
+  m_Name: Fence_Post_45
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -84776,7 +84776,7 @@ GameObject:
   - component: {fileID: 1170156624}
   - component: {fileID: 1170156623}
   m_Layer: 0
-  m_Name: drawers (3)
+  m_Name: Prop_Drawer_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -85190,7 +85190,7 @@ GameObject:
   - component: {fileID: 1179515664}
   - component: {fileID: 1179515663}
   m_Layer: 0
-  m_Name: Floor (74)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -85638,7 +85638,7 @@ GameObject:
   - component: {fileID: 1185164649}
   - component: {fileID: 1185164648}
   m_Layer: 0
-  m_Name: fencing (20)
+  m_Name: Fence_Post_22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -86000,7 +86000,7 @@ GameObject:
   - component: {fileID: 1187784972}
   - component: {fileID: 1187784971}
   m_Layer: 0
-  m_Name: fencing (59)
+  m_Name: Fence_Post_61
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -86112,7 +86112,7 @@ GameObject:
   - component: {fileID: 1188397016}
   - component: {fileID: 1188397015}
   m_Layer: 0
-  m_Name: drawers (3)
+  m_Name: Prop_Drawer_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -86224,7 +86224,7 @@ GameObject:
   - component: {fileID: 1190213862}
   - component: {fileID: 1190213861}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -86510,7 +86510,7 @@ GameObject:
   - component: {fileID: 1193509845}
   - component: {fileID: 1193509844}
   m_Layer: 0
-  m_Name: fencing (8)
+  m_Name: Fence_Post_10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -86961,7 +86961,7 @@ GameObject:
   - component: {fileID: 1201494678}
   - component: {fileID: 1201494677}
   m_Layer: 0
-  m_Name: fencing (45)
+  m_Name: Fence_Post_47
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -87073,7 +87073,7 @@ GameObject:
   - component: {fileID: 1202055731}
   - component: {fileID: 1202055730}
   m_Layer: 0
-  m_Name: fencing (88)
+  m_Name: Fence_Post_90
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -87297,7 +87297,7 @@ GameObject:
   - component: {fileID: 1203192008}
   - component: {fileID: 1203192007}
   m_Layer: 0
-  m_Name: Floor (72)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -87483,7 +87483,7 @@ GameObject:
   - component: {fileID: 1206092898}
   - component: {fileID: 1206092897}
   m_Layer: 0
-  m_Name: antique radio
+  m_Name: Prop_Radio_Antique_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -87717,7 +87717,7 @@ GameObject:
   - component: {fileID: 1210176606}
   - component: {fileID: 1210176605}
   m_Layer: 0
-  m_Name: "table with mirror\u01B0 (1)"
+  m_Name: Prop_Table_Mirror_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -88351,7 +88351,7 @@ GameObject:
   - component: {fileID: 1220878280}
   - component: {fileID: 1220878279}
   m_Layer: 0
-  m_Name: fencing (75)
+  m_Name: Fence_Post_77
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -88463,7 +88463,7 @@ GameObject:
   - component: {fileID: 1221322951}
   - component: {fileID: 1221322950}
   m_Layer: 0
-  m_Name: Double bed (1)
+  m_Name: Prop_Bed_Double_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -88804,7 +88804,7 @@ GameObject:
   - component: {fileID: 1222594520}
   - component: {fileID: 1222594519}
   m_Layer: 0
-  m_Name: Floor (57)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -89252,7 +89252,7 @@ GameObject:
   - component: {fileID: 1226423667}
   - component: {fileID: 1226423666}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -89364,7 +89364,7 @@ GameObject:
   - component: {fileID: 1227363894}
   - component: {fileID: 1227363893}
   m_Layer: 0
-  m_Name: fencing (89)
+  m_Name: Fence_Post_91
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -89662,7 +89662,7 @@ GameObject:
   - component: {fileID: 1230279560}
   - component: {fileID: 1230279559}
   m_Layer: 0
-  m_Name: fencing (58)
+  m_Name: Fence_Post_60
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -89813,7 +89813,7 @@ GameObject:
   - component: {fileID: 1231144191}
   - component: {fileID: 1231144190}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -90223,7 +90223,7 @@ GameObject:
   - component: {fileID: 1235678057}
   - component: {fileID: 1235678056}
   m_Layer: 0
-  m_Name: drawers (4)
+  m_Name: Prop_Drawer_06
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -90335,7 +90335,7 @@ GameObject:
   - component: {fileID: 1236242423}
   - component: {fileID: 1236242422}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -90559,7 +90559,7 @@ GameObject:
   - component: {fileID: 1237127266}
   - component: {fileID: 1237127265}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -90671,7 +90671,7 @@ GameObject:
   - component: {fileID: 1237406822}
   - component: {fileID: 1237406821}
   m_Layer: 0
-  m_Name: Floor (12)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -90783,7 +90783,7 @@ GameObject:
   - component: {fileID: 1238655338}
   - component: {fileID: 1238655337}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -90897,7 +90897,7 @@ GameObject:
   - component: {fileID: 1240357962}
   - component: {fileID: 1240357961}
   m_Layer: 0
-  m_Name: Balcony (13)
+  m_Name: Struct_Balcony_15
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -91380,7 +91380,7 @@ GameObject:
   - component: {fileID: 1245100691}
   - component: {fileID: 1245100690}
   m_Layer: 0
-  m_Name: fencing (80)
+  m_Name: Fence_Post_82
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -91492,7 +91492,7 @@ GameObject:
   - component: {fileID: 1245615423}
   - component: {fileID: 1245615422}
   m_Layer: 0
-  m_Name: Balcony (4)
+  m_Name: Struct_Balcony_06
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -91604,7 +91604,7 @@ GameObject:
   - component: {fileID: 1247400811}
   - component: {fileID: 1247400810}
   m_Layer: 0
-  m_Name: Balcony (6)
+  m_Name: Struct_Balcony_08
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -91830,7 +91830,7 @@ GameObject:
   - component: {fileID: 1249190028}
   - component: {fileID: 1249190027}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -92128,7 +92128,7 @@ GameObject:
   - component: {fileID: 1251830278}
   - component: {fileID: 1251830277}
   m_Layer: 0
-  m_Name: drawers (4)
+  m_Name: Prop_Drawer_06
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -92240,7 +92240,7 @@ GameObject:
   - component: {fileID: 1252344247}
   - component: {fileID: 1252344246}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -92650,7 +92650,7 @@ GameObject:
   - component: {fileID: 1254832357}
   - component: {fileID: 1254832356}
   m_Layer: 0
-  m_Name: fencing (26)
+  m_Name: Fence_Post_28
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -93172,7 +93172,7 @@ GameObject:
   - component: {fileID: 1259846515}
   - component: {fileID: 1259846514}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -93470,7 +93470,7 @@ GameObject:
   - component: {fileID: 1261547450}
   - component: {fileID: 1261547449}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -93582,7 +93582,7 @@ GameObject:
   - component: {fileID: 1263232231}
   - component: {fileID: 1263232230}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -93806,7 +93806,7 @@ GameObject:
   - component: {fileID: 1266581757}
   - component: {fileID: 1266581756}
   m_Layer: 0
-  m_Name: chair (21)
+  m_Name: Prop_Chair_23
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -94030,7 +94030,7 @@ GameObject:
   - component: {fileID: 1267577231}
   - component: {fileID: 1267577230}
   m_Layer: 0
-  m_Name: bookshelf (8)
+  m_Name: Prop_Bookshelf_10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -94142,7 +94142,7 @@ GameObject:
   - component: {fileID: 1272253639}
   - component: {fileID: 1272253638}
   m_Layer: 0
-  m_Name: drawers (2)
+  m_Name: Prop_Drawer_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -94517,7 +94517,7 @@ GameObject:
   - component: {fileID: 1281276104}
   - component: {fileID: 1281276103}
   m_Layer: 0
-  m_Name: Floor (49)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -94857,7 +94857,7 @@ GameObject:
   - component: {fileID: 1282653600}
   - component: {fileID: 1282653599}
   m_Layer: 0
-  m_Name: chair (20)
+  m_Name: Prop_Chair_22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -95155,7 +95155,7 @@ GameObject:
   - component: {fileID: 1287371197}
   - component: {fileID: 1287371196}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -95267,7 +95267,7 @@ GameObject:
   - component: {fileID: 1289184354}
   - component: {fileID: 1289184353}
   m_Layer: 0
-  m_Name: drawers (2)
+  m_Name: Prop_Drawer_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -95384,7 +95384,7 @@ GameObject:
   - component: {fileID: 1289508383}
   - component: {fileID: 1289508382}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -95496,7 +95496,7 @@ GameObject:
   - component: {fileID: 1289785699}
   - component: {fileID: 1289785698}
   m_Layer: 0
-  m_Name: bookshelf (4)
+  m_Name: Prop_Bookshelf_06
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -95608,7 +95608,7 @@ GameObject:
   - component: {fileID: 1290810216}
   - component: {fileID: 1290810215}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -95720,7 +95720,7 @@ GameObject:
   - component: {fileID: 1295161592}
   - component: {fileID: 1295161591}
   m_Layer: 0
-  m_Name: fencing (6)
+  m_Name: Fence_Post_08
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -95832,7 +95832,7 @@ GameObject:
   - component: {fileID: 1296294526}
   - component: {fileID: 1296294525}
   m_Layer: 0
-  m_Name: fencing (11)
+  m_Name: Fence_Post_13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -96395,7 +96395,7 @@ GameObject:
   - component: {fileID: 1306760824}
   - component: {fileID: 1306760823}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -96655,7 +96655,7 @@ GameObject:
   - component: {fileID: 1315723455}
   - component: {fileID: 1315723454}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -97324,7 +97324,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1328057542}
   m_Layer: 0
-  m_Name: Master Bedroom
+  m_Name: Room_MasterBedroom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -97474,7 +97474,7 @@ GameObject:
   - component: {fileID: 1335882928}
   - component: {fileID: 1335882927}
   m_Layer: 0
-  m_Name: BATHTUB (3)
+  m_Name: Prop_Bathtub_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -97772,7 +97772,7 @@ GameObject:
   - component: {fileID: 1337610955}
   - component: {fileID: 1337610954}
   m_Layer: 0
-  m_Name: fencing (42)
+  m_Name: Fence_Post_44
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -97996,7 +97996,7 @@ GameObject:
   - component: {fileID: 1343462299}
   - component: {fileID: 1343462298}
   m_Layer: 0
-  m_Name: fencing (99)
+  m_Name: Fence_Post_101
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98108,7 +98108,7 @@ GameObject:
   - component: {fileID: 1343847924}
   - component: {fileID: 1343847923}
   m_Layer: 0
-  m_Name: drawers (1)
+  m_Name: Prop_Drawer_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98411,7 +98411,7 @@ GameObject:
   - component: {fileID: 1347439542}
   - component: {fileID: 1347439541}
   m_Layer: 0
-  m_Name: fencing (21)
+  m_Name: Fence_Post_23
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98635,7 +98635,7 @@ GameObject:
   - component: {fileID: 1350424126}
   - component: {fileID: 1350424125}
   m_Layer: 0
-  m_Name: BATHTUB (4)
+  m_Name: Prop_Bathtub_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -98933,7 +98933,7 @@ GameObject:
   - component: {fileID: 1352402417}
   - component: {fileID: 1352402416}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -99045,7 +99045,7 @@ GameObject:
   - component: {fileID: 1352611598}
   - component: {fileID: 1352611597}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -99157,7 +99157,7 @@ GameObject:
   - component: {fileID: 1353014265}
   - component: {fileID: 1353014264}
   m_Layer: 0
-  m_Name: bookshelf (16)
+  m_Name: Prop_Bookshelf_18
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -99837,7 +99837,7 @@ GameObject:
   - component: {fileID: 1356284625}
   - component: {fileID: 1356284624}
   m_Layer: 0
-  m_Name: fencing (60)
+  m_Name: Fence_Post_62
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -99949,7 +99949,7 @@ GameObject:
   - component: {fileID: 1358267493}
   - component: {fileID: 1358267492}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -100058,7 +100058,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1363002276}
   m_Layer: 0
-  m_Name: Bathroom (1)
+  m_Name: Room_Bathroom_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -100320,7 +100320,7 @@ GameObject:
   - component: {fileID: 1366395571}
   - component: {fileID: 1366395570}
   m_Layer: 0
-  m_Name: Floor (62)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -100432,7 +100432,7 @@ GameObject:
   - component: {fileID: 1367293129}
   - component: {fileID: 1367293128}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -100544,7 +100544,7 @@ GameObject:
   - component: {fileID: 1367511418}
   - component: {fileID: 1367511417}
   m_Layer: 0
-  m_Name: Floor (3)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -100768,7 +100768,7 @@ GameObject:
   - component: {fileID: 1375003839}
   - component: {fileID: 1375003838}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -101181,7 +101181,7 @@ GameObject:
   - component: {fileID: 1385195573}
   - component: {fileID: 1385195572}
   m_Layer: 0
-  m_Name: Floor (41)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -101293,7 +101293,7 @@ GameObject:
   - component: {fileID: 1385857598}
   - component: {fileID: 1385857597}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -101517,7 +101517,7 @@ GameObject:
   - component: {fileID: 1390653847}
   - component: {fileID: 1390653846}
   m_Layer: 0
-  m_Name: fencing (79)
+  m_Name: Fence_Post_81
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -101741,7 +101741,7 @@ GameObject:
   - component: {fileID: 1392535143}
   - component: {fileID: 1392535142}
   m_Layer: 0
-  m_Name: bookshelf (8)
+  m_Name: Prop_Bookshelf_10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -101965,7 +101965,7 @@ GameObject:
   - component: {fileID: 1395573796}
   - component: {fileID: 1395573795}
   m_Layer: 0
-  m_Name: folding ladder (2)
+  m_Name: LadderFolding_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -102077,7 +102077,7 @@ GameObject:
   - component: {fileID: 1395668957}
   - component: {fileID: 1395668956}
   m_Layer: 0
-  m_Name: fencing (22)
+  m_Name: Fence_Post_24
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -102189,7 +102189,7 @@ GameObject:
   - component: {fileID: 1396108152}
   - component: {fileID: 1396108151}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -102525,7 +102525,7 @@ GameObject:
   - component: {fileID: 1402752544}
   - component: {fileID: 1402752543}
   m_Layer: 0
-  m_Name: BATHTUB (4)
+  m_Name: Prop_Bathtub_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -102861,7 +102861,7 @@ GameObject:
   - component: {fileID: 1406955815}
   - component: {fileID: 1406955814}
   m_Layer: 0
-  m_Name: chair (18)
+  m_Name: Prop_Chair_20
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -103345,7 +103345,7 @@ GameObject:
   - component: {fileID: 1411325074}
   - component: {fileID: 1411325073}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -103457,7 +103457,7 @@ GameObject:
   - component: {fileID: 1413056853}
   - component: {fileID: 1413056852}
   m_Layer: 0
-  m_Name: fencing (67)
+  m_Name: Fence_Post_69
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -103569,7 +103569,7 @@ GameObject:
   - component: {fileID: 1414060590}
   - component: {fileID: 1414060589}
   m_Layer: 0
-  m_Name: bookshelf (14)
+  m_Name: Prop_Bookshelf_16
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -103681,7 +103681,7 @@ GameObject:
   - component: {fileID: 1414326034}
   - component: {fileID: 1414326033}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -104021,7 +104021,7 @@ GameObject:
   - component: {fileID: 1417779544}
   - component: {fileID: 1417779543}
   m_Layer: 0
-  m_Name: fencing (12)
+  m_Name: Fence_Post_14
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -104419,7 +104419,7 @@ GameObject:
   - component: {fileID: 1423998632}
   - component: {fileID: 1423998631}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -104531,7 +104531,7 @@ GameObject:
   - component: {fileID: 1425119538}
   - component: {fileID: 1425119537}
   m_Layer: 0
-  m_Name: drawers (4)
+  m_Name: Prop_Drawer_06
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -104717,7 +104717,7 @@ GameObject:
   - component: {fileID: 1427674204}
   - component: {fileID: 1427674203}
   m_Layer: 0
-  m_Name: Floor (10)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -104829,7 +104829,7 @@ GameObject:
   - component: {fileID: 1428098660}
   - component: {fileID: 1428098659}
   m_Layer: 0
-  m_Name: Heater
+  m_Name: Prop_Heater
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -104946,7 +104946,7 @@ GameObject:
   - component: {fileID: 1428917067}
   - component: {fileID: 1428917066}
   m_Layer: 0
-  m_Name: fencing (73)
+  m_Name: Fence_Post_75
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -105058,7 +105058,7 @@ GameObject:
   - component: {fileID: 1431524584}
   - component: {fileID: 1431524583}
   m_Layer: 0
-  m_Name: fencing (10)
+  m_Name: Fence_Post_12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -105401,7 +105401,7 @@ GameObject:
   - component: {fileID: 1433610985}
   - component: {fileID: 1433610984}
   m_Layer: 0
-  m_Name: fencing (70)
+  m_Name: Fence_Post_72
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -105625,7 +105625,7 @@ GameObject:
   - component: {fileID: 1439732413}
   - component: {fileID: 1439732412}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -105849,7 +105849,7 @@ GameObject:
   - component: {fileID: 1443257117}
   - component: {fileID: 1443257116}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -105961,7 +105961,7 @@ GameObject:
   - component: {fileID: 1444463970}
   - component: {fileID: 1444463969}
   m_Layer: 0
-  m_Name: drawers (1)
+  m_Name: Prop_Drawer_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106145,7 +106145,7 @@ GameObject:
   - component: {fileID: 1447265451}
   - component: {fileID: 1447265450}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106257,7 +106257,7 @@ GameObject:
   - component: {fileID: 1449972461}
   - component: {fileID: 1449972460}
   m_Layer: 0
-  m_Name: drawers (5)
+  m_Name: Prop_Drawer_07
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106369,7 +106369,7 @@ GameObject:
   - component: {fileID: 1452097769}
   - component: {fileID: 1452097768}
   m_Layer: 0
-  m_Name: drawers (2)
+  m_Name: Prop_Drawer_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106593,7 +106593,7 @@ GameObject:
   - component: {fileID: 1455215496}
   - component: {fileID: 1455215495}
   m_Layer: 0
-  m_Name: chair (20)
+  m_Name: Prop_Chair_22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106705,7 +106705,7 @@ GameObject:
   - component: {fileID: 1455298969}
   - component: {fileID: 1455298968}
   m_Layer: 0
-  m_Name: bookshelf (2)
+  m_Name: Prop_Bookshelf_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106817,7 +106817,7 @@ GameObject:
   - component: {fileID: 1459011334}
   - component: {fileID: 1459011333}
   m_Layer: 0
-  m_Name: fencing (53)
+  m_Name: Fence_Post_55
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -106929,7 +106929,7 @@ GameObject:
   - component: {fileID: 1460460823}
   - component: {fileID: 1460460822}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -107041,7 +107041,7 @@ GameObject:
   - component: {fileID: 1461928338}
   - component: {fileID: 1461928337}
   m_Layer: 0
-  m_Name: fencing (66)
+  m_Name: Fence_Post_68
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -107265,7 +107265,7 @@ GameObject:
   - component: {fileID: 1462466841}
   - component: {fileID: 1462466840}
   m_Layer: 0
-  m_Name: Balcony (3)
+  m_Name: Struct_Balcony_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -107489,7 +107489,7 @@ GameObject:
   - component: {fileID: 1464484376}
   - component: {fileID: 1464484375}
   m_Layer: 0
-  m_Name: Floor (02)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -107828,7 +107828,7 @@ GameObject:
   - component: {fileID: 1467707246}
   - component: {fileID: 1467707245}
   m_Layer: 0
-  m_Name: Balcony (5)
+  m_Name: Struct_Balcony_07
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -107940,7 +107940,7 @@ GameObject:
   - component: {fileID: 1472007831}
   - component: {fileID: 1472007830}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -108052,7 +108052,7 @@ GameObject:
   - component: {fileID: 1473749764}
   - component: {fileID: 1473749763}
   m_Layer: 0
-  m_Name: fencing (85)
+  m_Name: Fence_Post_87
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -108164,7 +108164,7 @@ GameObject:
   - component: {fileID: 1476183255}
   - component: {fileID: 1476183254}
   m_Layer: 0
-  m_Name: bookshelf (6)
+  m_Name: Prop_Bookshelf_08
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -108276,7 +108276,7 @@ GameObject:
   - component: {fileID: 1480912749}
   - component: {fileID: 1480912748}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -108388,7 +108388,7 @@ GameObject:
   - component: {fileID: 1482257952}
   - component: {fileID: 1482257951}
   m_Layer: 0
-  m_Name: chair (12)
+  m_Name: Prop_Chair_14
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -108694,7 +108694,7 @@ GameObject:
   - component: {fileID: 1482941349}
   - component: {fileID: 1482941348}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -108806,7 +108806,7 @@ GameObject:
   - component: {fileID: 1485223435}
   - component: {fileID: 1485223434}
   m_Layer: 0
-  m_Name: Floor (17)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -109030,7 +109030,7 @@ GameObject:
   - component: {fileID: 1486251432}
   - component: {fileID: 1486251431}
   m_Layer: 0
-  m_Name: fencing (59)
+  m_Name: Fence_Post_61
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -109184,7 +109184,7 @@ GameObject:
   - component: {fileID: 1486508936}
   - component: {fileID: 1486508935}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -109296,7 +109296,7 @@ GameObject:
   - component: {fileID: 1487495949}
   - component: {fileID: 1487495948}
   m_Layer: 0
-  m_Name: chair (22)
+  m_Name: Prop_Chair_24
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -109710,7 +109710,7 @@ GameObject:
   - component: {fileID: 1497562468}
   - component: {fileID: 1497562467}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -109896,7 +109896,7 @@ GameObject:
   - component: {fileID: 1502969864}
   - component: {fileID: 1502969863}
   m_Layer: 0
-  m_Name: fencing (67)
+  m_Name: Fence_Post_69
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -110232,7 +110232,7 @@ GameObject:
   - component: {fileID: 1506497805}
   - component: {fileID: 1506497804}
   m_Layer: 0
-  m_Name: fencing (25)
+  m_Name: Fence_Post_27
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -110344,7 +110344,7 @@ GameObject:
   - component: {fileID: 1506674740}
   - component: {fileID: 1506674739}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -110456,7 +110456,7 @@ GameObject:
   - component: {fileID: 1508583977}
   - component: {fileID: 1508583976}
   m_Layer: 0
-  m_Name: fencing (55)
+  m_Name: Fence_Post_57
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -110568,7 +110568,7 @@ GameObject:
   - component: {fileID: 1511021596}
   - component: {fileID: 1511021595}
   m_Layer: 0
-  m_Name: Floor (51)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -110866,7 +110866,7 @@ GameObject:
   - component: {fileID: 1517293938}
   - component: {fileID: 1517293937}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -110978,7 +110978,7 @@ GameObject:
   - component: {fileID: 1517964530}
   - component: {fileID: 1517964529}
   m_Layer: 0
-  m_Name: Floor (37)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -111202,7 +111202,7 @@ GameObject:
   - component: {fileID: 1520192656}
   - component: {fileID: 1520192655}
   m_Layer: 0
-  m_Name: Climbing ladder (1)
+  m_Name: Prop_Ladder_Climbing_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -111314,7 +111314,7 @@ GameObject:
   - component: {fileID: 1521015868}
   - component: {fileID: 1521015867}
   m_Layer: 0
-  m_Name: Floor (8)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -111426,7 +111426,7 @@ GameObject:
   - component: {fileID: 1527159741}
   - component: {fileID: 1527159740}
   m_Layer: 0
-  m_Name: Floor (27)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -111650,7 +111650,7 @@ GameObject:
   - component: {fileID: 1527379031}
   - component: {fileID: 1527379030}
   m_Layer: 0
-  m_Name: chair (21)
+  m_Name: Prop_Chair_23
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -111762,7 +111762,7 @@ GameObject:
   - component: {fileID: 1529304242}
   - component: {fileID: 1529304241}
   m_Layer: 0
-  m_Name: Balcony (2)
+  m_Name: Struct_Balcony_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -111994,7 +111994,7 @@ GameObject:
   - component: {fileID: 1532824583}
   - component: {fileID: 1532824582}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -112475,7 +112475,7 @@ GameObject:
   - component: {fileID: 1538354502}
   - component: {fileID: 1538354501}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -112587,7 +112587,7 @@ GameObject:
   - component: {fileID: 1538587249}
   - component: {fileID: 1538587248}
   m_Layer: 0
-  m_Name: fencing (47)
+  m_Name: Fence_Post_49
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -112699,7 +112699,7 @@ GameObject:
   - component: {fileID: 1540135932}
   - component: {fileID: 1540135931}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -113257,7 +113257,7 @@ GameObject:
   - component: {fileID: 1551568421}
   - component: {fileID: 1551568420}
   m_Layer: 0
-  m_Name: chair (2)
+  m_Name: Prop_Chair_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -113369,7 +113369,7 @@ GameObject:
   - component: {fileID: 1552116224}
   - component: {fileID: 1552116223}
   m_Layer: 0
-  m_Name: fencing (41)
+  m_Name: Fence_Post_43
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -113764,7 +113764,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1560752007}
   m_Layer: 0
-  m_Name: Mrs. Lan's Room
+  m_Name: Room_MrsLanRoom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -113802,7 +113802,7 @@ GameObject:
   - component: {fileID: 1561291279}
   - component: {fileID: 1561291278}
   m_Layer: 0
-  m_Name: drawers (1)
+  m_Name: Prop_Drawer_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -113919,7 +113919,7 @@ GameObject:
   - component: {fileID: 1563155019}
   - component: {fileID: 1563155018}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -114143,7 +114143,7 @@ GameObject:
   - component: {fileID: 1569726139}
   - component: {fileID: 1569726138}
   m_Layer: 0
-  m_Name: Floor (11)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -114367,7 +114367,7 @@ GameObject:
   - component: {fileID: 1573432104}
   - component: {fileID: 1573432103}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -114479,7 +114479,7 @@ GameObject:
   - component: {fileID: 1573690916}
   - component: {fileID: 1573690915}
   m_Layer: 0
-  m_Name: bookshelf (5)
+  m_Name: Prop_Bookshelf_07
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -114591,7 +114591,7 @@ GameObject:
   - component: {fileID: 1575280889}
   - component: {fileID: 1575280888}
   m_Layer: 0
-  m_Name: chair (14)
+  m_Name: Prop_Chair_16
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -114823,7 +114823,7 @@ GameObject:
   - component: {fileID: 1578590465}
   - component: {fileID: 1578590464}
   m_Layer: 0
-  m_Name: fencing (57)
+  m_Name: Fence_Post_59
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -115047,7 +115047,7 @@ GameObject:
   - component: {fileID: 1579633566}
   - component: {fileID: 1579633565}
   m_Layer: 0
-  m_Name: fencing (32)
+  m_Name: Fence_Post_34
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -115373,7 +115373,7 @@ GameObject:
   - component: {fileID: 1581604046}
   - component: {fileID: 1581604045}
   m_Layer: 0
-  m_Name: fencing (77)
+  m_Name: Fence_Post_79
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -115597,7 +115597,7 @@ GameObject:
   - component: {fileID: 1585744604}
   - component: {fileID: 1585744603}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -115711,7 +115711,7 @@ GameObject:
   - component: {fileID: 1585782250}
   - component: {fileID: 1585782249}
   m_Layer: 0
-  m_Name: Floor (20)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -116009,7 +116009,7 @@ GameObject:
   - component: {fileID: 1586672248}
   - component: {fileID: 1586672247}
   m_Layer: 0
-  m_Name: drawers (1)
+  m_Name: Prop_Drawer_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -116233,7 +116233,7 @@ GameObject:
   - component: {fileID: 1587645191}
   - component: {fileID: 1587645190}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -116345,7 +116345,7 @@ GameObject:
   - component: {fileID: 1588514653}
   - component: {fileID: 1588514652}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -116569,7 +116569,7 @@ GameObject:
   - component: {fileID: 1592267285}
   - component: {fileID: 1592267284}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -116979,7 +116979,7 @@ GameObject:
   - component: {fileID: 1601837264}
   - component: {fileID: 1601837263}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -117091,7 +117091,7 @@ GameObject:
   - component: {fileID: 1602150251}
   - component: {fileID: 1602150250}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -117434,7 +117434,7 @@ GameObject:
   - component: {fileID: 1607379832}
   - component: {fileID: 1607379831}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -117546,7 +117546,7 @@ GameObject:
   - component: {fileID: 1607772221}
   - component: {fileID: 1607772220}
   m_Layer: 0
-  m_Name: fencing (11)
+  m_Name: Fence_Post_13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -117770,7 +117770,7 @@ GameObject:
   - component: {fileID: 1611285032}
   - component: {fileID: 1611285031}
   m_Layer: 0
-  m_Name: Floor (8)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118204,7 +118204,7 @@ GameObject:
   - component: {fileID: 1621104042}
   - component: {fileID: 1621104041}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118527,7 +118527,7 @@ GameObject:
   - component: {fileID: 1628880041}
   - component: {fileID: 1628880040}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118639,7 +118639,7 @@ GameObject:
   - component: {fileID: 1629064441}
   - component: {fileID: 1629064440}
   m_Layer: 0
-  m_Name: BATHTUB (3)
+  m_Name: Prop_Bathtub_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118751,7 +118751,7 @@ GameObject:
   - component: {fileID: 1629988176}
   - component: {fileID: 1629988175}
   m_Layer: 0
-  m_Name: Floor (16)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -118863,7 +118863,7 @@ GameObject:
   - component: {fileID: 1631151920}
   - component: {fileID: 1631151919}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -119049,7 +119049,7 @@ GameObject:
   - component: {fileID: 1640344731}
   - component: {fileID: 1640344730}
   m_Layer: 0
-  m_Name: chair (20)
+  m_Name: Prop_Chair_22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -119161,7 +119161,7 @@ GameObject:
   - component: {fileID: 1640743215}
   - component: {fileID: 1640743214}
   m_Layer: 0
-  m_Name: "table with mirror\u01B0 (3)"
+  m_Name: Prop_Table_Mirror_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -119497,7 +119497,7 @@ GameObject:
   - component: {fileID: 1648604562}
   - component: {fileID: 1648604561}
   m_Layer: 0
-  m_Name: Balcony (2)
+  m_Name: Struct_Balcony_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -120308,7 +120308,7 @@ GameObject:
   - component: {fileID: 1657183091}
   - component: {fileID: 1657183090}
   m_Layer: 0
-  m_Name: bookshelf (8)
+  m_Name: Prop_Bookshelf_10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -120568,7 +120568,7 @@ GameObject:
   - component: {fileID: 1662366008}
   - component: {fileID: 1662366007}
   m_Layer: 0
-  m_Name: fencing (86)
+  m_Name: Fence_Post_88
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -121090,7 +121090,7 @@ GameObject:
   - component: {fileID: 1665397158}
   - component: {fileID: 1665397157}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -121314,7 +121314,7 @@ GameObject:
   - component: {fileID: 1666994408}
   - component: {fileID: 1666994407}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -121500,7 +121500,7 @@ GameObject:
   - component: {fileID: 1667843858}
   - component: {fileID: 1667843857}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -121724,7 +121724,7 @@ GameObject:
   - component: {fileID: 1670132189}
   - component: {fileID: 1670132188}
   m_Layer: 0
-  m_Name: fencing (27)
+  m_Name: Fence_Post_29
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -121836,7 +121836,7 @@ GameObject:
   - component: {fileID: 1672041350}
   - component: {fileID: 1672041349}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -121948,7 +121948,7 @@ GameObject:
   - component: {fileID: 1672715696}
   - component: {fileID: 1672715695}
   m_Layer: 0
-  m_Name: fencing (6)
+  m_Name: Fence_Post_08
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -122060,7 +122060,7 @@ GameObject:
   - component: {fileID: 1672728732}
   - component: {fileID: 1672728731}
   m_Layer: 0
-  m_Name: fencing (25)
+  m_Name: Fence_Post_27
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -122358,7 +122358,7 @@ GameObject:
   - component: {fileID: 1674954099}
   - component: {fileID: 1674954098}
   m_Layer: 0
-  m_Name: fencing (30)
+  m_Name: Fence_Post_32
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -122470,7 +122470,7 @@ GameObject:
   - component: {fileID: 1679565241}
   - component: {fileID: 1679565240}
   m_Layer: 0
-  m_Name: chair (8)
+  m_Name: Prop_Chair_10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -122664,7 +122664,7 @@ GameObject:
   - component: {fileID: 1682810338}
   - component: {fileID: 1682810337}
   m_Layer: 0
-  m_Name: fencing (52)
+  m_Name: Fence_Post_54
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -122815,7 +122815,7 @@ GameObject:
   - component: {fileID: 1694588462}
   - component: {fileID: 1694588461}
   m_Layer: 0
-  m_Name: fencing (22)
+  m_Name: Fence_Post_24
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -122927,7 +122927,7 @@ GameObject:
   - component: {fileID: 1695177515}
   - component: {fileID: 1695177514}
   m_Layer: 0
-  m_Name: bookshelf (4)
+  m_Name: Prop_Bookshelf_06
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -123263,7 +123263,7 @@ GameObject:
   - component: {fileID: 1702313774}
   - component: {fileID: 1702313773}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -123449,7 +123449,7 @@ GameObject:
   - component: {fileID: 1703714269}
   - component: {fileID: 1703714268}
   m_Layer: 0
-  m_Name: Floor (33)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -123561,7 +123561,7 @@ GameObject:
   - component: {fileID: 1704268110}
   - component: {fileID: 1704268109}
   m_Layer: 0
-  m_Name: drawers (2)
+  m_Name: Prop_Drawer_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -123678,7 +123678,7 @@ GameObject:
   - component: {fileID: 1706423422}
   - component: {fileID: 1706423421}
   m_Layer: 0
-  m_Name: fencing (95)
+  m_Name: Fence_Post_97
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -124200,7 +124200,7 @@ GameObject:
   - component: {fileID: 1716901252}
   - component: {fileID: 1716901251}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -124312,7 +124312,7 @@ GameObject:
   - component: {fileID: 1717126418}
   - component: {fileID: 1717126417}
   m_Layer: 0
-  m_Name: "table with mirror\u01B0 (3)"
+  m_Name: Prop_Table_Mirror_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -124498,7 +124498,7 @@ GameObject:
   - component: {fileID: 1718864552}
   - component: {fileID: 1718864551}
   m_Layer: 0
-  m_Name: fencing (15)
+  m_Name: Fence_Post_17
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -124722,7 +124722,7 @@ GameObject:
   - component: {fileID: 1720353855}
   - component: {fileID: 1720353854}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -124834,7 +124834,7 @@ GameObject:
   - component: {fileID: 1720634837}
   - component: {fileID: 1720634836}
   m_Layer: 0
-  m_Name: Floor (64)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -125170,7 +125170,7 @@ GameObject:
   - component: {fileID: 1723632885}
   - component: {fileID: 1723632884}
   m_Layer: 0
-  m_Name: fencing (16)
+  m_Name: Fence_Post_18
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -125282,7 +125282,7 @@ GameObject:
   - component: {fileID: 1724626676}
   - component: {fileID: 1724626675}
   m_Layer: 0
-  m_Name: Floor (6)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -125394,7 +125394,7 @@ GameObject:
   - component: {fileID: 1725606242}
   - component: {fileID: 1725606241}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -125961,7 +125961,7 @@ GameObject:
   - component: {fileID: 1730510451}
   - component: {fileID: 1730510450}
   m_Layer: 0
-  m_Name: chair (20)
+  m_Name: Prop_Chair_22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -126409,7 +126409,7 @@ GameObject:
   - component: {fileID: 1733955286}
   - component: {fileID: 1733955285}
   m_Layer: 0
-  m_Name: chair (22)
+  m_Name: Prop_Chair_24
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -126635,7 +126635,7 @@ GameObject:
   - component: {fileID: 1737885452}
   - component: {fileID: 1737885451}
   m_Layer: 0
-  m_Name: chair (11)
+  m_Name: Prop_Chair_13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -126979,7 +126979,7 @@ GameObject:
   - component: {fileID: 1739721866}
   - component: {fileID: 1739721865}
   m_Layer: 0
-  m_Name: Balcony (14)
+  m_Name: Struct_Balcony_16
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -127212,7 +127212,7 @@ GameObject:
   - component: {fileID: 1743620304}
   - component: {fileID: 1743620303}
   m_Layer: 0
-  m_Name: Floor (66)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -127548,7 +127548,7 @@ GameObject:
   - component: {fileID: 1745354272}
   - component: {fileID: 1745354271}
   m_Layer: 0
-  m_Name: chair (20)
+  m_Name: Prop_Chair_22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -127660,7 +127660,7 @@ GameObject:
   - component: {fileID: 1745985618}
   - component: {fileID: 1745985617}
   m_Layer: 0
-  m_Name: Floor (67)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -127772,7 +127772,7 @@ GameObject:
   - component: {fileID: 1746837088}
   - component: {fileID: 1746837087}
   m_Layer: 0
-  m_Name: Floor (28)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -128291,7 +128291,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1754248272}
   m_Layer: 0
-  m_Name: DINING ROOM
+  m_Name: Room_DiningRoom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -128724,7 +128724,7 @@ GameObject:
   - component: {fileID: 1759914094}
   - component: {fileID: 1759914093}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -128836,7 +128836,7 @@ GameObject:
   - component: {fileID: 1760832334}
   - component: {fileID: 1760832333}
   m_Layer: 0
-  m_Name: bookshelf (3)
+  m_Name: Prop_Bookshelf_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -129694,7 +129694,7 @@ GameObject:
   - component: {fileID: 1773233901}
   - component: {fileID: 1773233900}
   m_Layer: 0
-  m_Name: bookshelf (7)
+  m_Name: Prop_Bookshelf_09
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -129880,7 +129880,7 @@ GameObject:
   - component: {fileID: 1774006119}
   - component: {fileID: 1774006118}
   m_Layer: 0
-  m_Name: fencing (47)
+  m_Name: Fence_Post_49
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -129992,7 +129992,7 @@ GameObject:
   - component: {fileID: 1775555566}
   - component: {fileID: 1775555565}
   m_Layer: 0
-  m_Name: fencing (78)
+  m_Name: Fence_Post_80
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -130440,7 +130440,7 @@ GameObject:
   - component: {fileID: 1781263289}
   - component: {fileID: 1781263288}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -130664,7 +130664,7 @@ GameObject:
   - component: {fileID: 1784041623}
   - component: {fileID: 1784041622}
   m_Layer: 0
-  m_Name: fencing (58)
+  m_Name: Fence_Post_60
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -130850,7 +130850,7 @@ GameObject:
   - component: {fileID: 1786746232}
   - component: {fileID: 1786746231}
   m_Layer: 0
-  m_Name: Floor (52)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -131074,7 +131074,7 @@ GameObject:
   - component: {fileID: 1788358111}
   - component: {fileID: 1788358110}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -131298,7 +131298,7 @@ GameObject:
   - component: {fileID: 1791450216}
   - component: {fileID: 1791450215}
   m_Layer: 0
-  m_Name: bookshelf (5)
+  m_Name: Prop_Bookshelf_07
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -131410,7 +131410,7 @@ GameObject:
   - component: {fileID: 1796454221}
   - component: {fileID: 1796454220}
   m_Layer: 0
-  m_Name: fencing (61)
+  m_Name: Fence_Post_63
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -131522,7 +131522,7 @@ GameObject:
   - component: {fileID: 1796471324}
   - component: {fileID: 1796471323}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -131634,7 +131634,7 @@ GameObject:
   - component: {fileID: 1796496289}
   - component: {fileID: 1796496288}
   m_Layer: 0
-  m_Name: fencing (87)
+  m_Name: Fence_Post_89
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -131971,7 +131971,7 @@ GameObject:
   - component: {fileID: 1803911748}
   - component: {fileID: 1803911747}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -132307,7 +132307,7 @@ GameObject:
   - component: {fileID: 1812405180}
   - component: {fileID: 1812405179}
   m_Layer: 0
-  m_Name: fencing (31)
+  m_Name: Fence_Post_33
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -132419,7 +132419,7 @@ GameObject:
   - component: {fileID: 1814278955}
   - component: {fileID: 1814278954}
   m_Layer: 0
-  m_Name: Floor (13)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -132531,7 +132531,7 @@ GameObject:
   - component: {fileID: 1817191520}
   - component: {fileID: 1817191519}
   m_Layer: 0
-  m_Name: fencing (64)
+  m_Name: Fence_Post_66
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -132643,7 +132643,7 @@ GameObject:
   - component: {fileID: 1817956386}
   - component: {fileID: 1817956385}
   m_Layer: 0
-  m_Name: chair (20)
+  m_Name: Prop_Chair_22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -133091,7 +133091,7 @@ GameObject:
   - component: {fileID: 1820728272}
   - component: {fileID: 1820728271}
   m_Layer: 0
-  m_Name: drawers
+  m_Name: Prop_Drawer_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -133282,7 +133282,7 @@ GameObject:
   - component: {fileID: 1822422437}
   - component: {fileID: 1822422436}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -133394,7 +133394,7 @@ GameObject:
   - component: {fileID: 1824399794}
   - component: {fileID: 1824399793}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -133580,7 +133580,7 @@ GameObject:
   - component: {fileID: 1831502279}
   - component: {fileID: 1831502278}
   m_Layer: 0
-  m_Name: bookshelf (9)
+  m_Name: Prop_Bookshelf_11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -133878,7 +133878,7 @@ GameObject:
   - component: {fileID: 1836268357}
   - component: {fileID: 1836268356}
   m_Layer: 0
-  m_Name: bookshelf (11)
+  m_Name: Prop_Bookshelf_13
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -133990,7 +133990,7 @@ GameObject:
   - component: {fileID: 1836730838}
   - component: {fileID: 1836730837}
   m_Layer: 0
-  m_Name: fencing (13)
+  m_Name: Fence_Post_15
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -134214,7 +134214,7 @@ GameObject:
   - component: {fileID: 1837977882}
   - component: {fileID: 1837977881}
   m_Layer: 0
-  m_Name: fencing (28)
+  m_Name: Fence_Post_30
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -134326,7 +134326,7 @@ GameObject:
   - component: {fileID: 1838994867}
   - component: {fileID: 1838994866}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -134550,7 +134550,7 @@ GameObject:
   - component: {fileID: 1840933718}
   - component: {fileID: 1840933717}
   m_Layer: 0
-  m_Name: chair (1)
+  m_Name: Prop_Chair_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -134662,7 +134662,7 @@ GameObject:
   - component: {fileID: 1841954580}
   - component: {fileID: 1841954579}
   m_Layer: 0
-  m_Name: Floor (31)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -134774,7 +134774,7 @@ GameObject:
   - component: {fileID: 1843645565}
   - component: {fileID: 1843645564}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -134998,7 +134998,7 @@ GameObject:
   - component: {fileID: 1843804271}
   - component: {fileID: 1843804270}
   m_Layer: 0
-  m_Name: fencing (8)
+  m_Name: Fence_Post_10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -135110,7 +135110,7 @@ GameObject:
   - component: {fileID: 1845141651}
   - component: {fileID: 1845141650}
   m_Layer: 0
-  m_Name: bookshelf (8)
+  m_Name: Prop_Bookshelf_10
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -135396,7 +135396,7 @@ GameObject:
   - component: {fileID: 1847292672}
   - component: {fileID: 1847292671}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -135508,7 +135508,7 @@ GameObject:
   - component: {fileID: 1847396298}
   - component: {fileID: 1847396297}
   m_Layer: 0
-  m_Name: drawers (3)
+  m_Name: Prop_Drawer_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -135620,7 +135620,7 @@ GameObject:
   - component: {fileID: 1848144673}
   - component: {fileID: 1848144672}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -135732,7 +135732,7 @@ GameObject:
   - component: {fileID: 1848624999}
   - component: {fileID: 1848624998}
   m_Layer: 0
-  m_Name: fencing (26)
+  m_Name: Fence_Post_28
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -136242,7 +136242,7 @@ GameObject:
   - component: {fileID: 1850606100}
   - component: {fileID: 1850606099}
   m_Layer: 0
-  m_Name: antique radio (1)
+  m_Name: Prop_Radio_Antique_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -136512,7 +136512,7 @@ GameObject:
   - component: {fileID: 1852568601}
   - component: {fileID: 1852568600}
   m_Layer: 0
-  m_Name: chair (2)
+  m_Name: Prop_Chair_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -136968,7 +136968,7 @@ GameObject:
   - component: {fileID: 1859765961}
   - component: {fileID: 1859765960}
   m_Layer: 0
-  m_Name: drawers (2)
+  m_Name: Prop_Drawer_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -137207,7 +137207,7 @@ GameObject:
   - component: {fileID: 1861187544}
   - component: {fileID: 1861187543}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -137319,7 +137319,7 @@ GameObject:
   - component: {fileID: 1861809434}
   - component: {fileID: 1861809433}
   m_Layer: 0
-  m_Name: fencing (75)
+  m_Name: Fence_Post_77
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -137655,7 +137655,7 @@ GameObject:
   - component: {fileID: 1864984489}
   - component: {fileID: 1864984488}
   m_Layer: 0
-  m_Name: fencing (97)
+  m_Name: Fence_Post_99
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -137767,7 +137767,7 @@ GameObject:
   - component: {fileID: 1866577143}
   - component: {fileID: 1866577142}
   m_Layer: 0
-  m_Name: fencing (71)
+  m_Name: Fence_Post_73
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -137879,7 +137879,7 @@ GameObject:
   - component: {fileID: 1867744567}
   - component: {fileID: 1867744566}
   m_Layer: 0
-  m_Name: Floor (15)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -138103,7 +138103,7 @@ GameObject:
   - component: {fileID: 1870436469}
   - component: {fileID: 1870436468}
   m_Layer: 0
-  m_Name: chair (20)
+  m_Name: Prop_Chair_22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -138289,7 +138289,7 @@ GameObject:
   - component: {fileID: 1871392029}
   - component: {fileID: 1871392028}
   m_Layer: 0
-  m_Name: chair (19)
+  m_Name: Prop_Chair_21
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -138513,7 +138513,7 @@ GameObject:
   - component: {fileID: 1874038982}
   - component: {fileID: 1874038981}
   m_Layer: 0
-  m_Name: chair (7)
+  m_Name: Prop_Chair_09
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -139270,7 +139270,7 @@ GameObject:
   - component: {fileID: 1888327588}
   - component: {fileID: 1888327587}
   m_Layer: 0
-  m_Name: Floor (50)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -139494,7 +139494,7 @@ GameObject:
   - component: {fileID: 1891038415}
   - component: {fileID: 1891038414}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -139792,7 +139792,7 @@ GameObject:
   - component: {fileID: 1893423405}
   - component: {fileID: 1893423404}
   m_Layer: 0
-  m_Name: folding ladder (1)
+  m_Name: LadderFolding_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -139904,7 +139904,7 @@ GameObject:
   - component: {fileID: 1894871530}
   - component: {fileID: 1894871529}
   m_Layer: 0
-  m_Name: fencing (5)
+  m_Name: Fence_Post_07
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -140352,7 +140352,7 @@ GameObject:
   - component: {fileID: 1899379765}
   - component: {fileID: 1899379764}
   m_Layer: 0
-  m_Name: fencing (71)
+  m_Name: Fence_Post_73
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -140538,7 +140538,7 @@ GameObject:
   - component: {fileID: 1907138954}
   - component: {fileID: 1907138953}
   m_Layer: 0
-  m_Name: Floor (63)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -140650,7 +140650,7 @@ GameObject:
   - component: {fileID: 1908980217}
   - component: {fileID: 1908980216}
   m_Layer: 0
-  m_Name: fencing (18)
+  m_Name: Fence_Post_20
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -141210,7 +141210,7 @@ GameObject:
   - component: {fileID: 1914440608}
   - component: {fileID: 1914440607}
   m_Layer: 0
-  m_Name: bookshelf (13)
+  m_Name: Prop_Bookshelf_15
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -141322,7 +141322,7 @@ GameObject:
   - component: {fileID: 1917353591}
   - component: {fileID: 1917353590}
   m_Layer: 0
-  m_Name: fencing (51)
+  m_Name: Fence_Post_53
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -141570,7 +141570,7 @@ GameObject:
   - component: {fileID: 1919718880}
   - component: {fileID: 1919718879}
   m_Layer: 0
-  m_Name: Balcony (4)
+  m_Name: Struct_Balcony_06
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -141682,7 +141682,7 @@ GameObject:
   - component: {fileID: 1922055579}
   - component: {fileID: 1922055578}
   m_Layer: 0
-  m_Name: bookshelf (7)
+  m_Name: Prop_Bookshelf_09
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -142018,7 +142018,7 @@ GameObject:
   - component: {fileID: 1924945935}
   - component: {fileID: 1924945934}
   m_Layer: 0
-  m_Name: fencing (18)
+  m_Name: Fence_Post_20
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -142130,7 +142130,7 @@ GameObject:
   - component: {fileID: 1926919878}
   - component: {fileID: 1926919877}
   m_Layer: 0
-  m_Name: Floor (55)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -142428,7 +142428,7 @@ GameObject:
   - component: {fileID: 1934230280}
   - component: {fileID: 1934230279}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -142540,7 +142540,7 @@ GameObject:
   - component: {fileID: 1938510483}
   - component: {fileID: 1938510482}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -142652,7 +142652,7 @@ GameObject:
   - component: {fileID: 1938534899}
   - component: {fileID: 1938534898}
   m_Layer: 0
-  m_Name: fencing (48)
+  m_Name: Fence_Post_50
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -142988,7 +142988,7 @@ GameObject:
   - component: {fileID: 1945675599}
   - component: {fileID: 1945675598}
   m_Layer: 0
-  m_Name: Floor (10)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -143100,7 +143100,7 @@ GameObject:
   - component: {fileID: 1946603329}
   - component: {fileID: 1946603328}
   m_Layer: 0
-  m_Name: Floor (35)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -143212,7 +143212,7 @@ GameObject:
   - component: {fileID: 1948162461}
   - component: {fileID: 1948162460}
   m_Layer: 0
-  m_Name: fencing (24)
+  m_Name: Fence_Post_26
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -143324,7 +143324,7 @@ GameObject:
   - component: {fileID: 1948542958}
   - component: {fileID: 1948542957}
   m_Layer: 0
-  m_Name: bookshelf
+  m_Name: Prop_Bookshelf_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -143444,7 +143444,7 @@ GameObject:
   - component: {fileID: 1949362652}
   - component: {fileID: 1949362651}
   m_Layer: 0
-  m_Name: fencing
+  m_Name: Fence_Post_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -143588,7 +143588,7 @@ GameObject:
   - component: {fileID: 1951270923}
   - component: {fileID: 1951270922}
   m_Layer: 0
-  m_Name: Floor (7)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -143762,7 +143762,7 @@ GameObject:
   - component: {fileID: 1953302557}
   - component: {fileID: 1953302556}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -143874,7 +143874,7 @@ GameObject:
   - component: {fileID: 1955532822}
   - component: {fileID: 1955532821}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -144098,7 +144098,7 @@ GameObject:
   - component: {fileID: 1957857000}
   - component: {fileID: 1957856999}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -144545,7 +144545,7 @@ GameObject:
   - component: {fileID: 1963025617}
   - component: {fileID: 1963025616}
   m_Layer: 0
-  m_Name: Floor (19)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -144657,7 +144657,7 @@ GameObject:
   - component: {fileID: 1964493037}
   - component: {fileID: 1964493036}
   m_Layer: 0
-  m_Name: fencing (4)
+  m_Name: Fence_Post_06
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -144769,7 +144769,7 @@ GameObject:
   - component: {fileID: 1966118027}
   - component: {fileID: 1966118026}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -144881,7 +144881,7 @@ GameObject:
   - component: {fileID: 1966607581}
   - component: {fileID: 1966607580}
   m_Layer: 0
-  m_Name: fencing (14)
+  m_Name: Fence_Post_16
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -145652,7 +145652,7 @@ GameObject:
   - component: {fileID: 1978193154}
   - component: {fileID: 1978193153}
   m_Layer: 0
-  m_Name: fencing (1)
+  m_Name: Fence_Post_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -145764,7 +145764,7 @@ GameObject:
   - component: {fileID: 1979107299}
   - component: {fileID: 1979107298}
   m_Layer: 0
-  m_Name: chair (9)
+  m_Name: Prop_Chair_11
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -145996,7 +145996,7 @@ GameObject:
   - component: {fileID: 1981703205}
   - component: {fileID: 1981703204}
   m_Layer: 0
-  m_Name: fencing (23)
+  m_Name: Fence_Post_25
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -146108,7 +146108,7 @@ GameObject:
   - component: {fileID: 1982831514}
   - component: {fileID: 1982831513}
   m_Layer: 0
-  m_Name: fencing (63)
+  m_Name: Fence_Post_65
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -146220,7 +146220,7 @@ GameObject:
   - component: {fileID: 1983121755}
   - component: {fileID: 1983121754}
   m_Layer: 0
-  m_Name: diary
+  m_Name: Prop_Diary_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -146332,7 +146332,7 @@ GameObject:
   - component: {fileID: 1985602046}
   - component: {fileID: 1985602045}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -146444,7 +146444,7 @@ GameObject:
   - component: {fileID: 1986999882}
   - component: {fileID: 1986999881}
   m_Layer: 0
-  m_Name: fencing (7)
+  m_Name: Fence_Post_09
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -146730,7 +146730,7 @@ GameObject:
   - component: {fileID: 1990165090}
   - component: {fileID: 1990165089}
   m_Layer: 0
-  m_Name: fencing (14)
+  m_Name: Fence_Post_16
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -147142,7 +147142,7 @@ GameObject:
   - component: {fileID: 1995911445}
   - component: {fileID: 1995911444}
   m_Layer: 0
-  m_Name: chair (20)
+  m_Name: Prop_Chair_22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -147590,7 +147590,7 @@ GameObject:
   - component: {fileID: 2000603799}
   - component: {fileID: 2000603798}
   m_Layer: 0
-  m_Name: fencing (60)
+  m_Name: Fence_Post_62
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -147888,7 +147888,7 @@ GameObject:
   - component: {fileID: 2004994973}
   - component: {fileID: 2004994972}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -148000,7 +148000,7 @@ GameObject:
   - component: {fileID: 2005391768}
   - component: {fileID: 2005391767}
   m_Layer: 0
-  m_Name: chair (10)
+  m_Name: Prop_Chair_12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -148418,7 +148418,7 @@ GameObject:
   - component: {fileID: 2015914456}
   - component: {fileID: 2015914455}
   m_Layer: 0
-  m_Name: fencing (10)
+  m_Name: Fence_Post_12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -148530,7 +148530,7 @@ GameObject:
   - component: {fileID: 2016160453}
   - component: {fileID: 2016160452}
   m_Layer: 0
-  m_Name: BATHTUB (1)
+  m_Name: Prop_Bathtub_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -148704,7 +148704,7 @@ GameObject:
   - component: {fileID: 2020587251}
   - component: {fileID: 2020587250}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -148990,7 +148990,7 @@ GameObject:
   - component: {fileID: 2022640891}
   - component: {fileID: 2022640890}
   m_Layer: 0
-  m_Name: chair (20)
+  m_Name: Prop_Chair_22
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -149102,7 +149102,7 @@ GameObject:
   - component: {fileID: 2022969451}
   - component: {fileID: 2022969450}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -149512,7 +149512,7 @@ GameObject:
   - component: {fileID: 2028716068}
   - component: {fileID: 2028716067}
   m_Layer: 0
-  m_Name: fencing (69)
+  m_Name: Fence_Post_71
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -149624,7 +149624,7 @@ GameObject:
   - component: {fileID: 2029552232}
   - component: {fileID: 2029552231}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -149922,7 +149922,7 @@ GameObject:
   - component: {fileID: 2033523994}
   - component: {fileID: 2033523993}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -150034,7 +150034,7 @@ GameObject:
   - component: {fileID: 2034521565}
   - component: {fileID: 2034521564}
   m_Layer: 0
-  m_Name: chair (1)
+  m_Name: Prop_Chair_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -150186,7 +150186,7 @@ GameObject:
   - component: {fileID: 2038109333}
   - component: {fileID: 2038109332}
   m_Layer: 0
-  m_Name: fencing (65)
+  m_Name: Fence_Post_67
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -150410,7 +150410,7 @@ GameObject:
   - component: {fileID: 2038689199}
   - component: {fileID: 2038689198}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -150634,7 +150634,7 @@ GameObject:
   - component: {fileID: 2040907909}
   - component: {fileID: 2040907908}
   m_Layer: 0
-  m_Name: Floor (1)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -150746,7 +150746,7 @@ GameObject:
   - component: {fileID: 2042084238}
   - component: {fileID: 2042084237}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -151118,7 +151118,7 @@ GameObject:
   - component: {fileID: 2053376050}
   - component: {fileID: 2053376049}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -151230,7 +151230,7 @@ GameObject:
   - component: {fileID: 2053470552}
   - component: {fileID: 2053470551}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -151569,7 +151569,7 @@ GameObject:
   - component: {fileID: 2057870235}
   - component: {fileID: 2057870234}
   m_Layer: 0
-  m_Name: bookshelf (6)
+  m_Name: Prop_Bookshelf_08
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -151681,7 +151681,7 @@ GameObject:
   - component: {fileID: 2058482915}
   - component: {fileID: 2058482914}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -151905,7 +151905,7 @@ GameObject:
   - component: {fileID: 2058997209}
   - component: {fileID: 2058997208}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152017,7 +152017,7 @@ GameObject:
   - component: {fileID: 2059216089}
   - component: {fileID: 2059216088}
   m_Layer: 0
-  m_Name: drawers (5)
+  m_Name: Prop_Drawer_07
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152129,7 +152129,7 @@ GameObject:
   - component: {fileID: 2059670370}
   - component: {fileID: 2059670369}
   m_Layer: 0
-  m_Name: bookshelf (2)
+  m_Name: Prop_Bookshelf_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152689,7 +152689,7 @@ GameObject:
   - component: {fileID: 2064611228}
   - component: {fileID: 2064611227}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -152987,7 +152987,7 @@ GameObject:
   - component: {fileID: 2066415774}
   - component: {fileID: 2066415773}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -153285,7 +153285,7 @@ GameObject:
   - component: {fileID: 2070668415}
   - component: {fileID: 2070668414}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -153397,7 +153397,7 @@ GameObject:
   - component: {fileID: 2073391975}
   - component: {fileID: 2073391974}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -153509,7 +153509,7 @@ GameObject:
   - component: {fileID: 2075454710}
   - component: {fileID: 2075454709}
   m_Layer: 0
-  m_Name: "table with mirror\u01B0 (2)"
+  m_Name: Prop_Table_Mirror_04
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -153621,7 +153621,7 @@ GameObject:
   - component: {fileID: 2079428893}
   - component: {fileID: 2079428892}
   m_Layer: 0
-  m_Name: chair (13)
+  m_Name: Prop_Chair_15
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -153853,7 +153853,7 @@ GameObject:
   - component: {fileID: 2080760573}
   - component: {fileID: 2080760572}
   m_Layer: 0
-  m_Name: Balcony (1)
+  m_Name: Struct_Balcony_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -153969,7 +153969,7 @@ GameObject:
   - component: {fileID: 2081325509}
   - component: {fileID: 2081325508}
   m_Layer: 0
-  m_Name: Floor (14)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -154193,7 +154193,7 @@ GameObject:
   - component: {fileID: 2083108779}
   - component: {fileID: 2083108778}
   m_Layer: 0
-  m_Name: Floor (65)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -154379,7 +154379,7 @@ GameObject:
   - component: {fileID: 2084730036}
   - component: {fileID: 2084730035}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -154491,7 +154491,7 @@ GameObject:
   - component: {fileID: 2085476446}
   - component: {fileID: 2085476445}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -154827,7 +154827,7 @@ GameObject:
   - component: {fileID: 2089069222}
   - component: {fileID: 2089069221}
   m_Layer: 0
-  m_Name: Balcony (1)
+  m_Name: Struct_Balcony_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -155475,7 +155475,7 @@ GameObject:
   - component: {fileID: 2098108188}
   - component: {fileID: 2098108187}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -155623,7 +155623,7 @@ GameObject:
   - component: {fileID: 2100680073}
   - component: {fileID: 2100680072}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -155735,7 +155735,7 @@ GameObject:
   - component: {fileID: 2101140583}
   - component: {fileID: 2101140582}
   m_Layer: 0
-  m_Name: Floor (68)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -155959,7 +155959,7 @@ GameObject:
   - component: {fileID: 2107092937}
   - component: {fileID: 2107092936}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -156180,7 +156180,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2109685481}
   m_Layer: 0
-  m_Name: Bathroom
+  m_Name: Room_Bathroom
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -156366,7 +156366,7 @@ GameObject:
   - component: {fileID: 2111571837}
   - component: {fileID: 2111571836}
   m_Layer: 0
-  m_Name: bookshelf (7)
+  m_Name: Prop_Bookshelf_09
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -156593,7 +156593,7 @@ GameObject:
   - component: {fileID: 2112365290}
   - component: {fileID: 2112365289}
   m_Layer: 0
-  m_Name: fencing (92)
+  m_Name: Fence_Post_94
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -157003,7 +157003,7 @@ GameObject:
   - component: {fileID: 2118167865}
   - component: {fileID: 2118167864}
   m_Layer: 0
-  m_Name: bookshelf (5)
+  m_Name: Prop_Bookshelf_07
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -157115,7 +157115,7 @@ GameObject:
   - component: {fileID: 2118916429}
   - component: {fileID: 2118916428}
   m_Layer: 0
-  m_Name: Floor (44)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -157301,7 +157301,7 @@ GameObject:
   - component: {fileID: 2125374584}
   - component: {fileID: 2125374583}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -157675,7 +157675,7 @@ GameObject:
   - component: {fileID: 2134783293}
   - component: {fileID: 2134783292}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -157787,7 +157787,7 @@ GameObject:
   - component: {fileID: 2135159477}
   - component: {fileID: 2135159476}
   m_Layer: 0
-  m_Name: chair (3)
+  m_Name: Prop_Chair_05
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -157907,7 +157907,7 @@ GameObject:
   - component: {fileID: 2135442588}
   - component: {fileID: 2135442587}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -158016,7 +158016,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2139545060}
   m_Layer: 0
-  m_Name: Bathroom (1)
+  m_Name: Room_Bathroom_02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -158054,7 +158054,7 @@ GameObject:
   - component: {fileID: 2141359450}
   - component: {fileID: 2141359449}
   m_Layer: 0
-  m_Name: BATHTUB (2)
+  m_Name: Prop_Bathtub_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -158166,7 +158166,7 @@ GameObject:
   - component: {fileID: 2142587091}
   - component: {fileID: 2142587090}
   m_Layer: 0
-  m_Name: Floor (11)
+  m_Name: Floor_
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -158278,7 +158278,7 @@ GameObject:
   - component: {fileID: 2143821218}
   - component: {fileID: 2143821217}
   m_Layer: 0
-  m_Name: bookshelf (1)
+  m_Name: Prop_Bookshelf_03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -158464,7 +158464,7 @@ GameObject:
   - component: {fileID: 2146975048}
   - component: {fileID: 2146975047}
   m_Layer: 0
-  m_Name: bookshelf (10)
+  m_Name: Prop_Bookshelf_12
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -158576,7 +158576,7 @@ GameObject:
   - component: {fileID: 2147256130}
   - component: {fileID: 2147256129}
   m_Layer: 0
-  m_Name: chair
+  m_Name: Prop_Chair_01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
