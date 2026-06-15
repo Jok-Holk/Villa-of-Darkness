@@ -101,7 +101,7 @@ public class FootstepSystem : MonoBehaviour
 
         // Dùng internal PlayOneShot với volume tùy chỉnh nếu có,
         // hoặc gọi PlaySFX (volume do AudioSource quyết định)
-        AudioManager.Instance.PlaySFX(clip);
+        AudioManager.Instance.PlaySFX(clip, _footstepVolume);
     }
 
     // ─── SURFACE DETECTION ────────────────────────────────────────────────────

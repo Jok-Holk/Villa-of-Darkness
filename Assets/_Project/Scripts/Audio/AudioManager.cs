@@ -41,8 +41,13 @@ public class AudioManager : MonoBehaviour
 
     public void PlaySFX(AudioClip clip)
     {
-        // Bây giờ _sfxSource đã được đảm bảo không null nhờ Awake
-        if (clip != null && _sfxSource != null) 
+        if (clip != null && _sfxSource != null)
             _sfxSource.PlayOneShot(clip);
+    }
+
+    public void PlaySFX(AudioClip clip, float volume)
+    {
+        if (clip != null && _sfxSource != null)
+            _sfxSource.PlayOneShot(clip, Mathf.Clamp01(volume));
     }
 }
