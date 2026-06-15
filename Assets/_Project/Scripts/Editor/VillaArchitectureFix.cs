@@ -203,9 +203,9 @@ public static class VillaArchitectureFix
         if (existing != null) Undo.DestroyObjectImmediate(existing);
         var group = GetOrCreate("_Exterior_Arch", null);
 
-        // Cổng trước — trên trục giữa, ngoài sân (Z≈3, giữa hàng rào Z=0 và mặt tiền Z=7.78)
+        // Cổng trước — trên trục giữa, sát mép đất/hàng rào (Z≈0.8), mở vào sân
         var gate = LoadAndPlace(ARCH + "Arch_Gate_Colonial.glb", "Gate_Colonial_Main",
-                                new Vector3(CENTER_X, 32.5f, 3f), Quaternion.Euler(0, 0, 0), Vector3.one);
+                                new Vector3(CENTER_X, 32.5f, 0.8f), Quaternion.Euler(0, 0, 0), Vector3.one);
         if (gate) gate.transform.SetParent(group.transform, true);
 
         // Well (there's already a "well" at (58,32,27) — place model over it)
@@ -238,40 +238,104 @@ public static class VillaArchitectureFix
     [MenuItem("VoD/Villa/6 - Add Exterior Decor")]
     public static void AddExteriorDecor()
     {
+        var existing = GameObject.Find("_Exterior_Decor");
+        if (existing != null) Undo.DestroyObjectImmediate(existing);
         var group = GetOrCreate("_Exterior_Decor", null);
 
-        // ── Cột đèn lối vào (entrance lantern pillars) ─────────────────────
-        // Đặt 2 cột lồng đèn hai bên lối vào, Z≈16 (giữa cổng và cửa chính)
-        AddLanternPillar(group, 23.5f, Y_GROUND, 16f, "Lantern_L");
-        AddLanternPillar(group, 34.3f, Y_GROUND, 16f, "Lantern_R");
+        // Sân trước chỉ sâu ~7.7m (hàng rào Z≈0 → mặt tiền Z=7.78).
+        // Bố cục ĐỐI XỨNG trên trục giữa X=31.7: cổng → lối đá → perron → cửa.
 
-        // ── Cây / bụi cây ngoài nhà (vegetation markers) ─────────────────
-        AddVegetation(group, 10f,  Y_GROUND, 15f, 1.2f, 2.5f, "Tree_FL");
-        AddVegetation(group, 47f,  Y_GROUND, 15f, 1.0f, 2.2f, "Tree_FR");
-        AddVegetation(group, 5f,   Y_GROUND, 32f, 0.8f, 1.5f, "Bush_SL_01");
-        AddVegetation(group, 5f,   Y_GROUND, 36f, 0.7f, 1.3f, "Bush_SL_02");
-        AddVegetation(group, 55f,  Y_GROUND, 30f, 0.9f, 1.8f, "Bush_SR_01");
-        AddVegetation(group, 58f,  Y_GROUND, 35f, 0.8f, 1.6f, "Bush_SR_02");
-        AddVegetation(group, 20f,  Y_GROUND, 12f, 1.5f, 3.0f, "Tree_BL");
-        AddVegetation(group, 38f,  Y_GROUND, 12f, 1.3f, 2.8f, "Tree_BR");
-
-        // ── Đường đá lát sân (stone path stepping stones) ────────────────
-        // Lối đi từ cổng Z=10 đến cửa chính Z=22, dọc theo X=28.9
-        for (int si = 0; si < 6; si++)
+        // ── Lối đá trung tâm (từ cổng Z≈1 đến chân perron Z≈5.2) ──────────
+        for (int si = 0; si < 5; si++)
         {
-            float sz = 11.5f + si * 1.8f;
-            AddSteppingStone(group, 28.9f, Y_GROUND, sz, $"PathStone_{si:00}");
+            float sz = 1.6f + si * 0.9f;   // Z 1.6 → 5.2 dọc trục giữa
+            AddSteppingStone(group, CENTER_X, Y_GROUND, sz, $"PathStone_{si:00}");
         }
 
-        // ── Chậu hoa sân trước (flower pots at entrance corners) ──────────
-        AddFlowerPot(group, 25f, Y_GROUND, 21f, "FlowerPot_L");
-        AddFlowerPot(group, 33f, Y_GROUND, 21f, "FlowerPot_R");
+        // ── Đèn lồng cột hai bên đầu lối lên perron (đối xứng) ───────────
+        AddLanternPillar(group, CENTER_X - 3f, Y_GROUND, 5.2f, "Lantern_L");
+        AddLanternPillar(group, CENTER_X + 3f, Y_GROUND, 5.2f, "Lantern_R");
 
-        Debug.Log("[VoD] Exterior decor placed.");
+        // ── Chậu hoa hai bên cửa chính, trên thềm (đối xứng) ─────────────
+        AddFlowerPot(group, CENTER_X - 2.3f, Y_GROUND, 7.1f, "FlowerPot_L");
+        AddFlowerPot(group, CENTER_X + 2.3f, Y_GROUND, 7.1f, "FlowerPot_R");
+
+        // ── Cây cổ thụ hai góc sân trước (đối xứng, tránh trục lối đi) ────
+        AddVegetation(group, CENTER_X - 17f, Y_GROUND, 2.0f, 1.4f, 4.5f, "Tree_FrontL");
+        AddVegetation(group, CENTER_X + 17f, Y_GROUND, 2.0f, 1.4f, 4.5f, "Tree_FrontR");
+
+        // ── Bụi cây nền móng hai bên mặt tiền (đối xứng) ─────────────────
+        AddVegetation(group, CENTER_X - 14f, Y_GROUND, 7.3f, 0.9f, 1.6f, "Bush_FL");
+        AddVegetation(group, CENTER_X + 14f, Y_GROUND, 7.3f, 0.9f, 1.6f, "Bush_FR");
+
+        // ── Cây bóng mát hai cạnh hông (đối xứng quanh tâm Z) ────────────
+        AddVegetation(group, LEFT_X - 4f,  Y_GROUND, CENTER_Z - 8f, 1.3f, 4.0f, "Tree_SideL");
+        AddVegetation(group, RIGHT_X + 4f, Y_GROUND, CENTER_Z - 8f, 1.3f, 4.0f, "Tree_SideR");
+
+        Debug.Log("[VoD] Exterior decor placed (front-yard, symmetric).");
+        MarkDirty();
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    [MenuItem("VoD/Villa/7 - Build Perron (Entrance Portico)")]
+    public static void BuildPerron()
+    {
+        var existing = GameObject.Find("_Perron");
+        if (existing != null) Undo.DestroyObjectImmediate(existing);
+        var group = GetOrCreate("_Perron", null);
+
+        float doorZ     = FRONT_Z;          // 7.78 — mép thềm sát cửa
+        float frontEdge = FRONT_Z - 2.2f;   // 5.58 — mép ngoài thềm
+        float w         = 5.5f;             // bề ngang thềm/portico
+        float midZ      = (doorZ + frontEdge) / 2f;
+
+        // Thềm (landing) phẳng trước cửa
+        AddBox(group, "Perron_Landing", CENTER_X, Y_GROUND - 0.05f, midZ,
+               w, 0.2f, doorZ - frontEdge);
+
+        // 3 bậc tam cấp xuống sân
+        for (int i = 0; i < 3; i++)
+        {
+            float z = frontEdge - 0.35f * i - 0.2f;
+            float y = Y_GROUND - 0.18f * (i + 1);
+            AddBox(group, $"Perron_Step_{i}", CENTER_X, y, z, w, 0.18f, 0.42f);
+        }
+
+        // 2 cột trụ đỡ mái che (portico) — đối xứng
+        float colH = 4.2f;
+        AddColumn(group, "Perron_Col_L", CENTER_X - w / 2f + 0.5f, Y_GROUND, frontEdge + 0.4f, colH);
+        AddColumn(group, "Perron_Col_R", CENTER_X + w / 2f - 0.5f, Y_GROUND, frontEdge + 0.4f, colH);
+
+        // Mái che portico — tấm phẳng trên đầu cột, nhô ra che bậc
+        AddBox(group, "Perron_Roof", CENTER_X, Y_GROUND + colH + 0.15f, midZ,
+               w + 0.6f, 0.3f, (doorZ - frontEdge) + 1.2f);
+
+        Debug.Log("[VoD] Perron (entrance portico) built.");
         MarkDirty();
     }
 
     // ── Exterior primitive builders ───────────────────────────────────────────
+
+    static void AddBox(GameObject parent, string name, float x, float y, float z,
+                        float sx, float sy, float sz)
+    {
+        var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        go.name = name;
+        go.transform.position = new Vector3(x, y, z);
+        go.transform.localScale = new Vector3(sx, sy, sz);
+        go.transform.SetParent(parent.transform, true);
+        Undo.RegisterCreatedObjectUndo(go, name);
+    }
+
+    static void AddColumn(GameObject parent, string name, float x, float y, float z, float height)
+    {
+        var go = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+        go.name = name;
+        go.transform.position = new Vector3(x, y + height / 2f, z);
+        go.transform.localScale = new Vector3(0.45f, height / 2f, 0.45f); // cylinder cao = 2×scaleY
+        go.transform.SetParent(parent.transform, true);
+        Undo.RegisterCreatedObjectUndo(go, name);
+    }
 
     static void AddLanternPillar(GameObject parent, float x, float y, float z, string name)
     {
@@ -412,6 +476,7 @@ public static class VillaArchitectureFix
         PlaceRailings();
         PlaceDoors();
         PlaceGateAndWell();
+        BuildPerron();
         AddExteriorDecor();
         RenameHierarchy();
     }
