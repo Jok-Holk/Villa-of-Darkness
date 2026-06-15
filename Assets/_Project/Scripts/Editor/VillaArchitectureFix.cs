@@ -52,8 +52,8 @@ public static class VillaArchitectureFix
     // Pivot at center of model → lift by half scaled height so bottom sits on floor
     const float DOOR_Y_OFFSET = 1.15f;  // 0.998f/2 * 2.3f
 
-    // Target window: 1.16m wide × 1.8m tall × 0.125m deep
-    static readonly Vector3 WIN_SCALE = new Vector3(6f, 1.8f, 0.2f);
+    // Target window: 1.19m wide × 2.4m tall × 0.15m deep (based on GLB bounds 0.2156×1.0006×0.8170)
+    static readonly Vector3 WIN_SCALE = new Vector3(5.5f, 2.4f, 0.18f);
 
     // ─────────────────────────────────────────────────────────────────────────
     [MenuItem("VoD/Villa/1 - Fix Windows (Jalousie)")]
