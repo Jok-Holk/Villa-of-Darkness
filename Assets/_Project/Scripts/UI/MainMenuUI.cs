@@ -9,8 +9,10 @@ public class MainMenuUI : MonoBehaviour
     public GameObject mainMenuPanel;
     public GameObject settingsPanel;
 
-    public void StartGame() { GameManager.Instance?.LoadChapter(1);
-        SceneManager.LoadScene("TestMenu"); // đổi tên đúng scene của bạn
+    public void StartGame()
+    {
+        GameManager.Instance?.LoadChapter(1);
+        SceneManager.LoadScene("Chapter1");
     }
     public void OpenSettings()
     {
