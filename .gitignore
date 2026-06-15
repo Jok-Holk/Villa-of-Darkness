@@ -99,16 +99,7 @@ InitTestScene*.unity*
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
 
 # Local project docs (không push lên public)
-CLAUDE.md
-Phase2_TeamGuide.md
-Phase2.5_TeamGuide.md
-Requirements_VillaBuildSpec_v1.md
-GDD_BietThuBongToi_v3.md
-LevelDesign_Ch1_Note.md
-LevelDesign_Phase3_Note.md
-UI_StyleGuide.md
-TeamTask_Current.md
-DailyTask_*.md
+*.md
 .claude/
 
 # Node.js / build tools (không push)
