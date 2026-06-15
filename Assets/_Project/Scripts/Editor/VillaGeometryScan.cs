@@ -76,12 +76,24 @@ public static class VillaGeometryScan
         var wins = FindByNameContains("win").Concat(FindByNameContains("jalousie"))
                    .Concat(FindByNameContains("window")).Distinct().ToList();
         sb.AppendLine($"  count={wins.Count}");
-        foreach (var w in wins.OrderBy(g => g.name))
+        // Measure REAL rendered world size of the first actual window
+        var sample = wins.FirstOrDefault(g => g.name.StartsWith("Win_"));
+        if (sample != null)
+        {
+            var rends = sample.GetComponentsInChildren<MeshRenderer>();
+            if (rends.Length > 0)
+            {
+                var b = rends[0].bounds;
+                foreach (var r in rends) b.Encapsulate(r.bounds);
+                sb.AppendLine($"  *** SAMPLE WINDOW '{sample.name}' RENDERED WORLD SIZE = " +
+                              $"({b.size.x:F2} x {b.size.y:F2} x {b.size.z:F2})  (target ~1.2w x 2.4h) ***");
+            }
+        }
+        foreach (var w in wins.OrderBy(g => g.name).Take(6))
         {
             var p = w.transform.position;
             sb.AppendLine($"    {w.name,-26} pos=({p.x:F1},{p.y:F1},{p.z:F1}) " +
-                          $"rotY={w.transform.eulerAngles.y:F0} scale={w.transform.localScale} " +
-                          $"parent={(w.transform.parent ? w.transform.parent.name : "<root>")}");
+                          $"rotY={w.transform.eulerAngles.y:F0} scale={w.transform.localScale}");
         }
         sb.AppendLine();
 

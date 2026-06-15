@@ -41,13 +41,14 @@ public static class VillaArchitectureFix
     const float ENTRANCE_X = CENTER_X;
     const float ENTRANCE_CLEAR = 3.5f; // clear 3.5m hai bên cửa chính
 
-    // ─── Layout đối xứng (offsets quanh tâm) ──────────────────────────────────
-    // Cửa sổ mặt tiền: 5 bay mỗi bên, thẳng hàng dọc cả 3 tầng
-    static readonly float[] FRONT_OFFSETS = { 4f, 8f, 12f, 16f, 19.5f };
-    // Cửa sổ cạnh: 2 bay mỗi bên quanh tâm Z
-    static readonly float[] SIDE_OFFSETS  = { 7f, 14f };
-    // Cửa sổ mặt sau: gồm cả bay giữa (không có cửa chính ở sau)
-    static readonly float[] BACK_OFFSETS  = { 0f, 8f, 16f };
+    // ─── Layout đối xứng theo PHÒNG (villa, không phải chung cư) ──────────────
+    // Mật độ thưa, nhịp ~6m, mỗi bay = 1 phòng. Thẳng hàng dọc cả 3 tầng.
+    // Mặt tiền: 3 bay mỗi bên + cửa chính giữa = 6 cửa/tầng (đôi trong cùng ôm cửa chính)
+    static readonly float[] FRONT_OFFSETS = { 5f, 11f, 17f };
+    // Cạnh: 3 cửa mỗi cạnh (gồm bay giữa quanh Z tâm)
+    static readonly float[] SIDE_OFFSETS  = { 0f, 11f };
+    // Mặt sau (hướng phụ/gia nhân): 4 cửa, không có bay giữa
+    static readonly float[] BACK_OFFSETS  = { 8f, 17f };
 
     // Asset paths
     const string ARCH   = "Assets/_Project/Models/Props/Architecture/";
@@ -61,8 +62,13 @@ public static class VillaArchitectureFix
     // Pivot at center of model → lift by half scaled height so bottom sits on floor
     const float DOOR_Y_OFFSET = 1.15f;  // 0.998f/2 * 2.3f
 
-    // Target window: 1.19m wide × 2.4m tall × 0.15m deep (based on GLB bounds 0.2156×1.0006×0.8170)
-    static readonly Vector3 WIN_SCALE = new Vector3(5.5f, 2.4f, 0.18f);
+    // Blockout có tầng cao ~7.5m → cửa phải cao theo để giữ TỶ LỆ lịch sử (~55-60% tường).
+    // Cửa sổ jalousie tầng trên: ~1.3m rộng × 3.4m cao (GLB bounds 0.2156×1.0006×0.8170)
+    static readonly Vector3 WIN_SCALE    = new Vector3(6.0f, 3.4f, 0.18f);
+    // Cửa kính kiểu Pháp tầng trệt (mở ra galerie): cao gần trần, bệ sát sàn
+    static readonly Vector3 WIN_SCALE_GF = new Vector3(6.6f, 4.0f, 0.18f);
+    const float WIN_CENTER_UPPER = 2.20f;  // tâm cửa = sàn + 2.20 (bệ ~0.5m, cao 3.4m)
+    const float WIN_CENTER_GF    = 2.10f;  // tâm cửa Pháp = sàn + 2.10 (bệ sát sàn, cao 4.0m)
 
     // ─────────────────────────────────────────────────────────────────────────
     [MenuItem("VoD/Villa/1 - Fix Windows (Jalousie)")]
@@ -83,31 +89,32 @@ public static class VillaArchitectureFix
         var backX  = SymX(BACK_OFFSETS);
         var sideZ  = Sym(CENTER_Z, SIDE_OFFSETS);
 
-        var floors = new (string tag, float y)[] {
-            ("GF", Y_GROUND + WIN_HEIGHT_OFFSET),
-            ("1F", Y_1ST    + WIN_HEIGHT_OFFSET),
-            ("2F", Y_2ND    + WIN_HEIGHT_OFFSET),
+        // Tầng trệt = cửa kính Pháp cao (ra galerie); tầng trên = jalousie chuẩn
+        var floors = new (string tag, float y, Vector3 scale)[] {
+            ("GF", Y_GROUND + WIN_CENTER_GF,    WIN_SCALE_GF),
+            ("1F", Y_1ST    + WIN_CENTER_UPPER, WIN_SCALE),
+            ("2F", Y_2ND    + WIN_CENTER_UPPER, WIN_SCALE),
         };
 
-        foreach (var (tag, y) in floors)
+        foreach (var (tag, y, scale) in floors)
         {
             // Mặt tiền (quay -Z) — bỏ bay trục giữa (cửa chính)
             foreach (float wx in frontX)
-                PlaceWindow(group, wx, y, frontZ, Quaternion.Euler(0, 180, 0), $"Win_{tag}_Front_{(int)wx}");
+                PlaceWindow(group, wx, y, frontZ, Quaternion.Euler(0, 180, 0), $"Win_{tag}_Front_{(int)wx}", scale);
 
             // Mặt sau (quay +Z)
             foreach (float bx in backX)
-                PlaceWindow(group, bx, y, backZ, Quaternion.Euler(0, 0, 0), $"Win_{tag}_Back_{(int)bx}");
+                PlaceWindow(group, bx, y, backZ, Quaternion.Euler(0, 0, 0), $"Win_{tag}_Back_{(int)bx}", scale);
 
             // Cạnh trái (quay -X) / phải (quay +X) — đối xứng nhau
             foreach (float sz in sideZ)
             {
-                PlaceWindow(group, leftX,  y, sz, Quaternion.Euler(0, 90, 0),  $"Win_{tag}_Left_{(int)sz}");
-                PlaceWindow(group, rightX, y, sz, Quaternion.Euler(0, -90, 0), $"Win_{tag}_Right_{(int)sz}");
+                PlaceWindow(group, leftX,  y, sz, Quaternion.Euler(0, 90, 0),  $"Win_{tag}_Left_{(int)sz}", scale);
+                PlaceWindow(group, rightX, y, sz, Quaternion.Euler(0, -90, 0), $"Win_{tag}_Right_{(int)sz}", scale);
             }
         }
 
-        Debug.Log($"[VoD] Placed {group.transform.childCount} jalousie windows (symmetric, vertically aligned).");
+        Debug.Log($"[VoD] Placed {group.transform.childCount} windows (room-based bays, GF French doors).");
         MarkDirty();
     }
 
@@ -430,10 +437,10 @@ public static class VillaArchitectureFix
         }
     }
 
-    static void PlaceWindow(GameObject parent, float x, float y, float z, Quaternion rot, string goName)
+    static void PlaceWindow(GameObject parent, float x, float y, float z, Quaternion rot, string goName, Vector3 scale)
     {
         var go = LoadAndPlace(ARCH + "Arch_Window_Jalousie.glb", goName,
-                              new Vector3(x, y, z), rot, WIN_SCALE);
+                              new Vector3(x, y, z), rot, scale);
         if (go) go.transform.SetParent(parent.transform, true);
     }
 
