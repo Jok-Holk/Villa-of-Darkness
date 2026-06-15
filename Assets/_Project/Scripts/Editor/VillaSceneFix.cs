@@ -127,7 +127,7 @@ public static class VillaSceneFix
 
             if (isStructural && go.GetComponent<MeshRenderer>() != null)
             {
-                GameObjectUtility.SetStaticEditorFlags(go, StaticEditorFlags.Everything);
+                GameObjectUtility.SetStaticEditorFlags(go, (StaticEditorFlags)0x7FFFFFFF);
                 count++;
             }
         }
@@ -255,7 +255,7 @@ public static class VillaSceneFix
             var zone = sz.AddComponent<SanityZone>();
             // _zoneType is private — set via SerializedObject (Safe = 0)
             var so = new SerializedObject(zone);
-            so.FindProperty("_zoneType")?.SetEnumValueIndex(0);  // ZoneType.Safe = 0
+            var ztp = so.FindProperty("_zoneType"); if (ztp != null) ztp.enumValueIndex = 0;  // ZoneType.Safe = 0
             so.ApplyModifiedProperties();
             sanCount++;
         }
@@ -272,7 +272,7 @@ public static class VillaSceneFix
             var dz = CreateTriggerVolume(group, dname, dpos, dsize);
             var zone = dz.AddComponent<SanityZone>();
             var so = new SerializedObject(zone);
-            so.FindProperty("_zoneType")?.SetEnumValueIndex(1);  // ZoneType.Danger = 1
+            var ztp = so.FindProperty("_zoneType"); if (ztp != null) ztp.enumValueIndex = 1;  // ZoneType.Danger = 1
             so.ApplyModifiedProperties();
             sanCount++;
         }
@@ -574,11 +574,12 @@ public static class VillaSceneFix
     public static void BakeNavMesh()
     {
         // Step 3 must have run first to mark floors as NavigationStatic
+#pragma warning disable CS0618
         int staticCount = FindAll().Count(go =>
             (GameObjectUtility.GetStaticEditorFlags(go) & StaticEditorFlags.NavigationStatic) != 0);
         if (staticCount == 0)
         {
-            Debug.LogWarning("[SceneFix] No NavigationStatic objects found — run Step 3 first!");
+            Debug.LogWarning("[SceneFix] No NavigationStatic objects found — running Step 3 first…");
             MarkStructuralStatic();
         }
 
@@ -591,6 +592,7 @@ public static class VillaSceneFix
         {
             Debug.LogError($"[SceneFix] NavMesh bake failed: {e.Message}");
         }
+#pragma warning restore CS0618
         MarkDirty();
     }
 
