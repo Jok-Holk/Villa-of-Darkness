@@ -64,6 +64,8 @@ ExportedObj/
 sysinfo.txt
 Crashes/
 CrashDumps/
+Assets/_Recovery/
+Assets/_Recovery.meta
 
 # Mono auto generated files
 mono_crash.*
