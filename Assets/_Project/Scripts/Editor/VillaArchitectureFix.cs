@@ -527,11 +527,95 @@ public static class VillaArchitectureFix
     }
 
     // ─────────────────────────────────────────────────────────────────────────
+    [MenuItem("VoD/Villa/9 - Build Grand Approach (lối vào 60m)")]
+    public static void BuildGrandApproach()
+    {
+        var old = GameObject.Find("_GrandApproach");
+        if (old != null) Undo.DestroyObjectImmediate(old);
+        var group = GetOrCreate("_GrandApproach", null);
+
+        const float GATE_X     = -50f;       // gate 60m trước mặt tiền
+        const float DRIVE_W    = 5.0f;        // chiều rộng lối đi xe
+        const float APPROACH_L = FRONT_X - GATE_X;  // = 60.7m
+        float       driveY     = Y_GROUND - 0.06f;
+
+        // 1. Lối đi trải đá (driveway)
+        var drive = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        drive.name = "Approach_Driveway";
+        drive.transform.position   = new Vector3((GATE_X + FRONT_X) * 0.5f, driveY, CENTER_Z);
+        drive.transform.localScale = new Vector3(APPROACH_L, 0.08f, DRIVE_W);
+        drive.transform.SetParent(group.transform, true);
+        Undo.RegisterCreatedObjectUndo(drive, "Driveway");
+        var gran = AssetDatabase.LoadAssetAtPath<Material>("Assets/_Project/Materials/Mat_Perron_Granite.mat");
+        if (gran != null) drive.GetComponent<Renderer>().sharedMaterial = gran;
+
+        // 2. Allée cây — 7 cặp cách nhau 7m, đối xứng hai bên lối đi
+        for (int i = 0; i < 7; i++)
+        {
+            float tx = GATE_X + 4f + i * 7f;
+            AddVegetation(group, tx, Y_GROUND, CENTER_Z - 5.5f, 1.3f, 5.0f, $"Allee_L_{i}");
+            AddVegetation(group, tx, Y_GROUND, CENTER_Z + 5.5f, 1.3f, 5.0f, $"Allee_R_{i}");
+        }
+
+        // 3. Tường bao thấp hai bên lối vào (ochre)
+        var wallMat = AssetDatabase.LoadAssetAtPath<Material>("Assets/_Project/Materials/Mat_Wall_Ochre.mat");
+        foreach (float wz in new[] { CENTER_Z - DRIVE_W - 1.2f, CENTER_Z + DRIVE_W + 1.2f })
+        {
+            var wl = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            wl.name = $"ApproachWall_{wz:0}";
+            wl.transform.position   = new Vector3((GATE_X + FRONT_X) * 0.5f, Y_GROUND + 0.7f, wz);
+            wl.transform.localScale = new Vector3(APPROACH_L, 1.2f, 0.28f);
+            wl.transform.SetParent(group.transform, true);
+            Undo.RegisterCreatedObjectUndo(wl, "ApproachWall");
+            if (wallMat != null) wl.GetComponent<Renderer>().sharedMaterial = wallMat;
+        }
+
+        // 4. Trụ cổng (granite pillars) tại X=GATE_X, đối xứng Z
+        var pilMat = AssetDatabase.LoadAssetAtPath<Material>("Assets/_Project/Materials/Mat_Perron_Granite.mat");
+        foreach (float pz in new[] { CENTER_Z - DRIVE_W * 0.5f - 0.5f, CENTER_Z + DRIVE_W * 0.5f + 0.5f })
+        {
+            // Thân trụ
+            var pil = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            pil.name = $"GatePillar_{pz:0}";
+            pil.transform.position   = new Vector3(GATE_X, Y_GROUND + 2.4f, pz);
+            pil.transform.localScale = new Vector3(0.7f, 4.8f, 0.7f);
+            pil.transform.SetParent(group.transform, true);
+            Undo.RegisterCreatedObjectUndo(pil, "GatePillar");
+            if (pilMat != null) pil.GetComponent<Renderer>().sharedMaterial = pilMat;
+            // Mũ trụ
+            var cap = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cap.name = $"GatePillar_Cap_{pz:0}";
+            cap.transform.position   = new Vector3(GATE_X, Y_GROUND + 5.05f, pz);
+            cap.transform.localScale = new Vector3(0.95f, 0.3f, 0.95f);
+            cap.transform.SetParent(group.transform, true);
+            Undo.RegisterCreatedObjectUndo(cap, "GatePillarCap");
+            if (pilMat != null) cap.GetComponent<Renderer>().sharedMaterial = pilMat;
+        }
+
+        // 5. Mô hình cổng colonial (dịch sang vị trí GATE_X)
+        var gate = LoadAndPlace(ARCH + "Arch_Gate_Colonial.glb", "Gate_Colonial_Main",
+                                new Vector3(GATE_X, Y_GROUND + 0.5f, CENTER_Z),
+                                Quaternion.Euler(0, 90, 0), Vector3.one);
+        if (gate != null) gate.transform.SetParent(group.transform, true);
+
+        // 6. Nền đất phủ toàn bộ sân tiền (ground plane mở rộng)
+        var gnd = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        gnd.name = "Ground_FrontYard";
+        gnd.transform.position   = new Vector3((GATE_X + FRONT_X) * 0.5f, Y_GROUND - 0.1f, CENTER_Z);
+        gnd.transform.localScale = new Vector3(APPROACH_L + 15f, 0.1f, SIDE_ZHIGH - SIDE_ZLOW + 20f);
+        gnd.transform.SetParent(group.transform, true);
+        Undo.RegisterCreatedObjectUndo(gnd, "GroundFront");
+
+        MarkDirty();
+        Debug.Log($"[VoD] Grand approach: {APPROACH_L:0}m, gate at X={GATE_X}, 14 allée trees");
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
     [MenuItem("VoD/Villa/0 - Run All Fixes")]
     public static void RunAll()
     {
         if (!EditorUtility.DisplayDialog("VoD Architecture Fix",
-            "Chạy toàn bộ:\n1. Jalousie windows\n2. Balcony railings\n3. Interior doors\n4. Gate & well\n5. Rename hierarchy\n6. Exterior decor\n7. Perron steps\n8. Galerie slabs\n\nĐảm bảo Chapter1 đang mở.",
+            "Chạy toàn bộ:\n1. Jalousie windows\n2. Balcony railings\n3. Interior doors\n4. Gate & well\n5. Rename hierarchy\n6. Exterior decor\n7. Perron steps\n8. Galerie slabs\n9. Grand approach\n\nĐảm bảo Chapter1 đang mở.",
             "Run All", "Cancel")) return;
 
         PlaceWindows();
@@ -541,6 +625,7 @@ public static class VillaArchitectureFix
         AddExteriorDecor();
         BuildPerron();
         BuildGalerie();
+        BuildGrandApproach();
         RenameHierarchy();
     }
 

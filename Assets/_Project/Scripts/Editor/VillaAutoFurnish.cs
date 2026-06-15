@@ -281,6 +281,158 @@ public static class VillaAutoFurnish
         Debug.Log("[AutoFurn] ✓ Façade ornaments complete");
     }
 
+    [MenuItem("VoD/Auto/7 — Add String Courses (chỉ ngang tường)")]
+    static void AddStringCourses()
+    {
+        const float SC_H = 0.08f, SC_D = 0.16f;
+
+        // Y positions: base, mid-GF, cornice-line sub-band on each floor
+        float[] scY = { 33.55f, 36.0f, Y_GF_TOP - 0.45f, 40.55f, 43.5f, Y_1F_TOP - 0.45f };
+
+        var root   = new GameObject("Struct_StringCourseGroup");
+        var matW   = AssetDatabase.LoadAssetAtPath<Material>($"{M_PATH}/Mat_Cornice_White.mat");
+        Undo.RegisterCreatedObjectUndo(root, "StringCourses");
+
+        foreach (float y in scY)
+            CorniceRing(root.transform, $"SC_{y:0}", y, SC_H, SC_D);
+
+        if (matW != null)
+            foreach (var r in root.GetComponentsInChildren<Renderer>())
+                r.sharedMaterial = matW;
+
+        MarkDirty();
+        Debug.Log($"[AutoFurn] ✓ {scY.Length * 4} string course bands added");
+    }
+
+    [MenuItem("VoD/Auto/8 — Add Rusticated Base (đá chân tường)")]
+    static void AddRusticatedBase()
+    {
+        const float RB_H_TALL = 0.40f, RB_H_SHORT = 0.28f;
+        const float RB_PROT   = 0.10f;  // protrusion from wall face
+        const float RB_BASE_Y = 32.55f; // Y of first block bottom
+        const float BLOCK_GAP = 0.03f;
+        const float TOTAL_H   = 1.6f;   // height of rusticated band
+
+        var matGran = AssetDatabase.LoadAssetAtPath<Material>($"{M_PATH}/Mat_Perron_Granite.mat");
+        var root    = new GameObject("Struct_RusticatedBase");
+        Undo.RegisterCreatedObjectUndo(root, "RusticBase");
+
+        // Front face (−X), blocks stacked alternating, each block = full Z span, different heights
+        float curY = RB_BASE_Y;
+        bool  tall = true;
+        while (curY < RB_BASE_Y + TOTAL_H - 0.10f)
+        {
+            float bh   = tall ? RB_H_TALL : RB_H_SHORT;
+            float posY = curY + bh * 0.5f;
+            // Front
+            var f = Slab(root.transform, $"RB_F_{curY:00}",
+                new Vector3(FRONT_X - RB_PROT * 0.5f, posY, CENTER_Z),
+                new Vector3(RB_PROT, bh, VILLA_D + RB_PROT * 2f));
+            // Back
+            var b2 = Slab(root.transform, $"RB_B_{curY:00}",
+                new Vector3(BACK_X + RB_PROT * 0.5f, posY, CENTER_Z),
+                new Vector3(RB_PROT, bh, VILLA_D + RB_PROT * 2f));
+            // Side Lo
+            var sl = Slab(root.transform, $"RB_SL_{curY:00}",
+                new Vector3(CENTER_X, posY, SIDE_Z_LO - RB_PROT * 0.5f),
+                new Vector3(VILLA_W, bh, RB_PROT));
+            // Side Hi
+            var sh = Slab(root.transform, $"RB_SH_{curY:00}",
+                new Vector3(CENTER_X, posY, SIDE_Z_HI + RB_PROT * 0.5f),
+                new Vector3(VILLA_W, bh, RB_PROT));
+            if (matGran != null)
+                foreach (var go in new[] { f, b2, sl, sh })
+                    go.GetComponent<Renderer>().sharedMaterial = matGran;
+
+            curY += bh + BLOCK_GAP;
+            tall  = !tall;
+        }
+
+        MarkDirty();
+        Debug.Log("[AutoFurn] ✓ Rusticated base added — full perimeter");
+    }
+
+    [MenuItem("VoD/Auto/9 — Add Window Crowns + Modillions")]
+    static void AddWindowCrownsAndModillions()
+    {
+        var matW   = AssetDatabase.LoadAssetAtPath<Material>($"{M_PATH}/Mat_Cornice_White.mat");
+        var root   = new GameObject("Struct_WindowCrowns");
+        Undo.RegisterCreatedObjectUndo(root, "WindowCrowns");
+
+        // Window Z positions on front/back facade (same as sill script)
+        float[] winZ   = { CENTER_Z - 11f, CENTER_Z - 5f, CENTER_Z, CENTER_Z + 5f, CENTER_Z + 11f };
+        float[] floorY = { Y_GF_TOP - 1.05f, Y_1F_TOP - 1.05f }; // approx top of window
+
+        const float CW_W = 1.9f, CW_H = 0.14f, CW_D = 0.22f; // crown width, height, depth
+
+        // Window crowns on front face
+        foreach (float wz in winZ)
+            foreach (float fy in floorY)
+            {
+                var cro = Slab(root.transform, $"WCrown_F_{wz:0}_{fy:0}",
+                    new Vector3(FRONT_X - CW_D * 0.5f, fy, wz),
+                    new Vector3(CW_D, CW_H, CW_W));
+                if (matW != null) cro.GetComponent<Renderer>().sharedMaterial = matW;
+            }
+
+        // Window crowns on back face
+        foreach (float wz in winZ)
+            foreach (float fy in floorY)
+            {
+                var cro = Slab(root.transform, $"WCrown_B_{wz:0}_{fy:0}",
+                    new Vector3(BACK_X + CW_D * 0.5f, fy, wz),
+                    new Vector3(CW_D, CW_H, CW_W));
+                if (matW != null) cro.GetComponent<Renderer>().sharedMaterial = matW;
+            }
+
+        // Modillions: bracket blocks under each cornice band, every MOD_STEP metres
+        const float MOD_W  = 0.14f, MOD_H  = 0.22f, MOD_D = 0.18f;
+        const float MOD_STEP = 1.5f;
+
+        var modRoot = new GameObject("Struct_Modillions");
+        Undo.RegisterCreatedObjectUndo(modRoot, "Modillions");
+
+        float[] corniceY = { Y_GF_TOP + 0.02f, Y_1F_TOP + 0.02f };
+        foreach (float cy in corniceY)
+        {
+            // Front face — modillions along Z
+            for (float mz = SIDE_Z_LO + MOD_STEP * 0.5f; mz < SIDE_Z_HI; mz += MOD_STEP)
+            {
+                var m = Slab(modRoot.transform, $"Mod_F_{cy:0}_{mz:0}",
+                    new Vector3(FRONT_X - MOD_D * 0.5f, cy + MOD_H * 0.5f, mz),
+                    new Vector3(MOD_D, MOD_H, MOD_W));
+                if (matW != null) m.GetComponent<Renderer>().sharedMaterial = matW;
+            }
+            // Back face
+            for (float mz = SIDE_Z_LO + MOD_STEP * 0.5f; mz < SIDE_Z_HI; mz += MOD_STEP)
+            {
+                var m = Slab(modRoot.transform, $"Mod_B_{cy:0}_{mz:0}",
+                    new Vector3(BACK_X + MOD_D * 0.5f, cy + MOD_H * 0.5f, mz),
+                    new Vector3(MOD_D, MOD_H, MOD_W));
+                if (matW != null) m.GetComponent<Renderer>().sharedMaterial = matW;
+            }
+            // Side Lo
+            for (float mx = FRONT_X + MOD_STEP * 0.5f; mx < BACK_X; mx += MOD_STEP)
+            {
+                var m = Slab(modRoot.transform, $"Mod_SL_{cy:0}_{mx:0}",
+                    new Vector3(mx, cy + MOD_H * 0.5f, SIDE_Z_LO - MOD_D * 0.5f),
+                    new Vector3(MOD_W, MOD_H, MOD_D));
+                if (matW != null) m.GetComponent<Renderer>().sharedMaterial = matW;
+            }
+            // Side Hi
+            for (float mx = FRONT_X + MOD_STEP * 0.5f; mx < BACK_X; mx += MOD_STEP)
+            {
+                var m = Slab(modRoot.transform, $"Mod_SH_{cy:0}_{mx:0}",
+                    new Vector3(mx, cy + MOD_H * 0.5f, SIDE_Z_HI + MOD_D * 0.5f),
+                    new Vector3(MOD_W, MOD_H, MOD_D));
+                if (matW != null) m.GetComponent<Renderer>().sharedMaterial = matW;
+            }
+        }
+
+        MarkDirty();
+        Debug.Log("[AutoFurn] ✓ Window crowns + modillions added");
+    }
+
     [MenuItem("VoD/Auto/0 — RUN ALL (materials + furniture + cornice + sills + ornaments)")]
     static void RunAll()
     {
@@ -290,6 +442,9 @@ public static class VillaAutoFurnish
         AddCornices();
         AddWindowSills();
         AddFacadeOrnaments();
+        AddStringCourses();
+        AddRusticatedBase();
+        AddWindowCrownsAndModillions();
         Debug.Log("[AutoFurn] ══ All steps complete ══");
     }
 
@@ -299,8 +454,13 @@ public static class VillaAutoFurnish
         const float PW = 0.50f, PD = 0.15f;  // pilaster width (Z) and depth (X)
         const float CAP_H = 0.40f, CAP_EXTRA = 0.12f; // capital height, extra width
 
-        // 5 pilasters on front face creating 4 window bays across 40m facade
-        float[] pilZ = { SIDE_Z_LO + 6f, SIDE_Z_LO + 14f, CENTER_Z, SIDE_Z_HI - 14f, SIDE_Z_HI - 6f };
+        // Pilasters flanking windows — entrance bay (CENTER_Z) stays open, no pilaster there
+        // Front & back faces (Z-spaced): 6 symmetric positions skip CENTER_Z
+        float[] pilZ = {
+            SIDE_Z_LO + 4.5f, SIDE_Z_LO + 12f,
+            CENTER_Z - 7f,     CENTER_Z + 7f,
+            SIDE_Z_HI - 12f,   SIDE_Z_HI - 4.5f
+        };
 
         // floor slabs: (bottomY, topY)
         (float bot, float top)[] floors = { (32.05f, Y_GF_TOP), (39.30f, Y_1F_TOP) };
@@ -315,17 +475,28 @@ public static class VillaAutoFurnish
             float h  = top - bot;
             float cy = bot + h * 0.5f;
 
+            // Front face (pilZ spaced along Z)
             foreach (float pz in pilZ)
             {
-                // Shaft
                 var shaft = Slab(root.transform, $"Pil_F_{pz:0}_{bot:0}",
                     new Vector3(FRONT_X - PD * 0.5f, cy, pz),
                     new Vector3(PD, h, PW));
                 if (matWall != null) shaft.GetComponent<Renderer>().sharedMaterial = matWall;
-
-                // Capital (slightly wider + white)
                 var cap = Slab(root.transform, $"Cap_F_{pz:0}_{bot:0}",
                     new Vector3(FRONT_X - (PD + CAP_EXTRA) * 0.5f, top - CAP_H * 0.5f, pz),
+                    new Vector3(PD + CAP_EXTRA, CAP_H, PW + CAP_EXTRA));
+                if (matCap != null) cap.GetComponent<Renderer>().sharedMaterial = matCap;
+            }
+
+            // Back face — symmetric (mirror on X axis)
+            foreach (float pz in pilZ)
+            {
+                var shaft = Slab(root.transform, $"Pil_B_{pz:0}_{bot:0}",
+                    new Vector3(BACK_X + PD * 0.5f, cy, pz),
+                    new Vector3(PD, h, PW));
+                if (matWall != null) shaft.GetComponent<Renderer>().sharedMaterial = matWall;
+                var cap = Slab(root.transform, $"Cap_B_{pz:0}_{bot:0}",
+                    new Vector3(BACK_X + (PD + CAP_EXTRA) * 0.5f, top - CAP_H * 0.5f, pz),
                     new Vector3(PD + CAP_EXTRA, CAP_H, PW + CAP_EXTRA));
                 if (matCap != null) cap.GetComponent<Renderer>().sharedMaterial = matCap;
             }

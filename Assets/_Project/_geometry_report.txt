@@ -1,0 +1,182 @@
+=== VILLA GEOMETRY SCAN ===
+Scene: Chapter1
+
+--- ROOT OBJECTS (top-level) ---
+   house pillar                children=6    center=(31.0,39.5,27.6) size=(19.4,15.4,9.8)
+  _Doors_Interior              children=9    center=(36.7,37.2,31.5) size=(52.8,9.3,20.1)
+  _Exterior_Arch               children=4    center=(30.6,33.8,27.6) size=(56.2,3.4,8.1)
+  _Exterior_Decor              children=6    center=(4.7,36.3,27.7) size=(10.3,7.7,56.8)
+  _Galerie                     children=2    center=(9.5,43.4,27.6) size=(2.5,8.3,39.8)
+  _GameplaySystems             children=0    (no renderers)
+  _Perron                      children=3    center=(9.9,33.0,27.6) size=(1.6,0.9,7.5)
+  _Props_Chapter1              children=12   center=(46.1,39.0,27.2) size=(71.7,23.9,33.6)
+  _Railings_Balcony            children=38   center=(10.2,44.3,27.6) size=(0.1,8.1,37.0)
+  _Windows_Jalousie            children=60   center=(31.8,42.8,27.7) size=(42.8,20.0,40.5)
+  Basement                     children=11   center=(23.4,29.9,27.5) size=(26.7,7.8,25.4)
+  Directional Light            children=0    (no renderers)
+  FirstFloor                   children=7    center=(29.1,42.5,27.6) size=(47.9,6.4,39.6)
+  FloorGeometry                children=138  center=(31.8,43.4,27.7) size=(43.3,23.7,40.2)
+  FrontYard                    children=4    center=(30.8,35.0,26.5) size=(49.8,6.2,50.4)
+  GhostSpawn                   children=0    (no renderers)
+  GhostWaypoint_Basement       children=0    (no renderers)
+  GhostWaypoint_LivingRoom     children=0    (no renderers)
+  GhostWaypoint_Upstairs       children=0    (no renderers)
+  GroundFloor                  children=4    center=(31.7,35.2,27.6) size=(42.1,6.3,39.2)
+  KitchenWing                  children=39   center=(71.9,34.8,36.6) size=(19.9,6.1,17.3)
+  LadderFixed                  children=31   center=(27.5,43.5,27.7) size=(11.2,7.9,5.7)
+  LadderFolding                children=15   center=(45.3,54.0,18.1) size=(2.0,1.8,2.0)
+  Main Camera                  children=0    (no renderers)
+  PlayerSpawn                  children=0    (no renderers)
+  SecondFloor                  children=6    center=(29.1,50.7,27.6) size=(48.0,6.9,39.1)
+  Staircase_Main               children=31   center=(88.5,40.7,16.9) size=(8.0,5.8,6.2)
+  Staircase_Side               children=4    center=(46.3,35.7,27.6) size=(13.6,7.7,9.8)
+  StairRailing_A               children=41   center=(27.8,48.0,27.6) size=(10.5,1.3,8.0)
+  StairRailing_B               children=82   center=(34.5,40.2,27.6) size=(26.4,1.3,9.1)
+  StonePath                    children=0    center=(5.3,32.1,27.5) size=(9.9,0.2,2.7)
+  StructuralCore               children=20   center=(22.9,34.4,27.9) size=(45.8,5.2,56.7)
+  WatchTower                   children=8    center=(46.6,58.5,14.7) size=(14.2,6.9,15.2)
+  Well                         children=4    center=(58.1,32.8,27.6) size=(2.2,4.3,3.2)
+
+--- TOTAL RENDERERS: 1456 ---
+  WORLD BOUNDS: center=(46.0,44.0,27.8) size=(93.0,36.0,57.0)
+  min=(-0.4,26.0,-0.7) max=(92.5,62.0,56.3)
+
+--- FLOOR OBJECTS (Y levels) ---
+  Y≈26.0    count=1   X[10.2..36.7] Z[14.8..40.2]
+  Y≈29.0    count=3   X[10.0..36.8] Z[14.8..40.2]
+  Y≈31.0    count=1   X[24.5..24.8] Z[37.2..40.0]
+  Y≈32.0    count=2   X[10.4..81.6] Z[7.8..47.5]
+  Y≈33.0    count=4   X[10.3..81.8] Z[7.7..47.5]
+  Y≈34.0    count=1   X[62.1..62.2] Z[38.4..39.4]
+  Y≈34.5    count=3   X[10.3..53.3] Z[12.0..47.5]
+  Y≈35.0    count=9   X[62.0..81.8] Z[28.1..45.2]
+  Y≈35.5    count=5   X[10.1..53.4] Z[7.8..47.7]
+  Y≈36.0    count=2   X[10.1..53.4] Z[9.3..40.5]
+  Y≈37.0    count=3   X[62.1..81.8] Z[28.1..45.2]
+  Y≈38.0    count=1   X[62.1..81.6] Z[28.1..45.2]
+  Y≈38.5    count=3   X[10.3..53.3] Z[7.7..47.6]
+  Y≈39.5    count=3   X[10.5..53.0] Z[7.9..47.1]
+  Y≈40.5    count=1   X[52.9..53.3] Z[7.7..47.5]
+  Y≈41.0    count=2   X[10.3..10.7] Z[7.7..47.5]
+  Y≈42.5    count=2   X[10.3..10.7] Z[20.6..37.9]
+  Y≈43.5    count=18  X[10.1..53.4] Z[7.7..47.5]
+  Y≈44.0    count=2   X[10.1..10.5] Z[7.7..41.1]
+  Y≈46.0    count=2   X[10.3..53.3] Z[7.7..47.5]
+  Y≈46.5    count=2   X[10.3..10.7] Z[19.8..47.5]
+  Y≈47.0    count=4   X[10.5..53.2] Z[7.7..47.4]
+  Y≈48.5    count=2   X[10.3..53.3] Z[7.7..47.5]
+  Y≈50.5    count=1   X[10.3..10.7] Z[32.3..38.1]
+  Y≈51.0    count=2   X[10.3..10.7] Z[7.7..47.5]
+  Y≈51.5    count=9   X[10.1..53.4] Z[7.8..47.5]
+  Y≈54.0    count=3   X[10.3..53.3] Z[7.7..47.5]
+  Y≈55.0    count=1   X[10.4..53.0] Z[7.8..47.5]
+
+--- WALL / STRUCTURE OBJECTS ---
+  count=116
+    wall (25)                center=(0.5,34.4,0.1) size=(1.0,5.1,1.0)
+    wall (8)                 center=(16.2,34.4,0.1) size=(1.0,5.1,1.0)
+    wall (4)                 center=(11.3,34.4,0.1) size=(1.0,5.1,1.0)
+    wall (12)                center=(21.2,34.4,0.1) size=(1.0,5.1,1.0)
+    wall (10)                center=(35.2,34.4,0.1) size=(1.0,5.1,1.0)
+    wall (14)                center=(30.2,34.4,0.1) size=(1.0,5.1,1.0)
+    wall                     center=(6.3,34.4,0.1) size=(1.0,5.1,1.0)
+    wall (6)                 center=(40.2,34.4,0.1) size=(1.0,5.1,1.0)
+    wall (2)                 center=(45.3,34.4,0.1) size=(1.0,5.1,1.0)
+    wall (48)                center=(19.7,35.6,7.8) size=(0.4,3.5,0.4)
+    wall (47)                center=(16.2,36.1,7.8) size=(2.9,0.3,0.4)
+    wall (54)                center=(16.1,43.3,7.8) size=(0.4,3.5,0.4)
+    wall (55)                center=(16.2,43.8,7.8) size=(2.9,0.3,0.4)
+    wall (46)                center=(16.2,35.6,7.8) size=(0.4,3.5,0.4)
+    wall (49)                center=(19.8,36.1,7.8) size=(2.9,0.3,0.4)
+    wall (56)                center=(31.7,40.5,7.9) size=(42.6,2.2,0.4)
+    wall (45)                center=(36.9,35.6,7.9) size=(32.2,5.0,0.4)
+    wall (52)                center=(12.6,43.3,7.9) size=(4.5,5.0,0.4)
+    wall (43)                center=(12.6,35.6,7.9) size=(4.5,5.0,0.4)
+    wall (65)                center=(35.2,43.2,7.9) size=(35.9,5.0,0.4)
+    wall (50)                center=(31.7,32.9,7.9) size=(42.6,2.2,0.4)
+    wall (66)                center=(31.9,51.0,7.9) size=(42.9,8.0,0.4)
+    wall (44)                center=(18.0,35.6,7.9) size=(0.9,5.0,0.4)
+    wall (42)                center=(31.7,38.4,7.9) size=(42.6,2.2,0.4)
+    wall (51)                center=(31.7,46.1,7.9) size=(42.6,2.2,0.4)
+    wall (71)                center=(25.0,43.3,13.5) size=(0.5,7.2,11.3)
+    wall (87)                center=(39.9,51.1,13.5) size=(0.5,7.8,11.3)
+    wall (78)                center=(39.9,43.3,13.5) size=(0.5,7.2,11.3)
+    wall (85)                center=(25.0,51.1,13.5) size=(0.5,7.8,11.3)
+    wall (57)                center=(25.0,35.6,14.4) size=(0.6,7.2,13.0)
+    wall (30)                center=(23.4,29.2,14.9) size=(26.6,5.8,0.3)
+    wall (70)                center=(41.2,35.6,16.4) size=(0.5,7.2,10.7)
+    wall (90)                center=(33.8,51.1,19.1) size=(12.1,7.8,0.2)
+    wall (94)                center=(18.9,51.1,19.1) size=(12.1,7.8,0.2)
+    wall (82)                center=(33.8,43.3,19.1) size=(12.1,7.2,0.2)
+    wall (92)                center=(47.7,51.1,19.1) size=(10.8,7.8,0.2)
+    wall (84)                center=(47.7,43.3,19.1) size=(10.8,7.2,0.2)
+    wall (77)                center=(18.9,43.3,19.1) size=(12.1,7.2,0.2)
+    wall (69)                center=(18.9,35.6,21.0) size=(12.1,7.2,0.2)
+    wall (72)                center=(47.0,35.6,21.7) size=(12.1,7.2,0.2)
+
+--- EXISTING WINDOW OBJECTS ---
+  count=62
+  *** SAMPLE WINDOW 'Win_1F_Front_44' RENDERED WORLD SIZE = (0.15 x 4.50 x 1.29)  (target ~1.2w x 2.4h) ***
+    _Windows_Jalousie          pos=(0.0,0.0,0.0) rotY=0 scale=(1.00, 1.00, 1.00)
+    KitchenWing                pos=(73.7,32.0,35.7) rotY=0 scale=(0.62, 1.00, 0.67)
+    Win_1F_Back_10             pos=(53.1,42.5,10.6) rotY=270 scale=(6.00, 4.50, 0.18)
+    Win_1F_Back_16             pos=(53.1,42.5,16.6) rotY=270 scale=(6.00, 4.50, 0.18)
+    Win_1F_Back_22             pos=(53.1,42.5,22.6) rotY=270 scale=(6.00, 4.50, 0.18)
+    Win_1F_Back_32             pos=(53.1,42.5,32.6) rotY=270 scale=(6.00, 4.50, 0.18)
+
+--- EXISTING DOOR OBJECTS ---
+    _Doors_Interior            pos=(0.0,0.0,0.0) rotY=0
+    Door_1F_GuestRoom          pos=(50.0,40.7,25.0) rotY=90
+    Door_1F_MasterBed          pos=(15.0,40.7,35.0) rotY=90
+    Door_1F_MrsLanRoom         pos=(32.0,40.7,38.0) rotY=0
+    Door_GF_DiningToHall       pos=(38.0,33.7,35.0) rotY=0
+    Door_GF_KitchenEntry       pos=(63.0,33.7,41.0) rotY=90
+    Door_GF_LivingToHall       pos=(22.0,33.7,35.0) rotY=0
+    Door_GF_StudyToHall        pos=(16.0,33.7,22.0) rotY=90
+    Door_MainEntrance          pos=(10.4,33.7,27.6) rotY=90
+    Door_Storage_Locked        pos=(28.0,33.7,28.0) rotY=0
+
+--- POSSIBLE SAMPLE / SOURCE OBJECTS (Arch_*, named exactly like asset) ---
+
+--- EXTERIOR FACADE ANALYSIS ---
+  FRONT facade Z ≈ 7.78  (walls: 16)
+    Front GF solid wall X-spans (gaps = openings):
+      X[10.3 .. 14.9]  wall (43)
+      X[10.4 .. 53.0]  wall (42)
+      X[14.8 .. 17.7]  wall (47)
+      X[18.4 .. 21.3]  wall (49)
+      X[20.8 .. 53.0]  wall (45)
+  BACK facade Z ≈ 47.56
+  LEFT facade  X ≈ 16.08  (walls thin-in-X: 25)
+  RIGHT facade X ≈ 41.15
+  FOOTPRINT (GroundFloor): X[10.7..52.8] Z[8.0..47.2] centerX=31.7 centerZ=27.6
+
+--- -X FRONT FACADE (X≈10.7) GF WALL Z-SPANS (gaps = openings) ---
+    Z[-0.4 .. 0.6]  wall (4)
+    Z[55.3 .. 56.3]  wall (5)
+
+--- SITE / EXTERIOR INVENTORY (vs front facade Z=7.78) ---
+  _Exterior_Decor: 6 con
+      Tree_FrontL          (3.5,32.5,12.6)  [TRONG/DƯỚI NHÀ ⚠]
+      Tree_FrontR          (3.5,32.5,42.6)  [TRONG/DƯỚI NHÀ ⚠]
+      Bush_FL              (9.5,32.5,15.6)  [TRONG/DƯỚI NHÀ ⚠]
+      Bush_FR              (9.5,32.5,39.6)  [TRONG/DƯỚI NHÀ ⚠]
+      Tree_SideA           (4.0,32.5,2.8)  [SÂN TRƯỚC]
+      Tree_SideB           (4.0,32.5,52.6)  [sau nhà]
+  _Exterior_Arch: 4 con
+      Gate_Colonial_Main   (3.0,32.5,27.6)  [TRONG/DƯỚI NHÀ ⚠]
+      Well_Stone_Model     (58.0,32.5,27.0)  [TRONG/DƯỚI NHÀ ⚠]
+      Curtain_Entrance_L   (11.5,35.0,23.6)  [TRONG/DƯỚI NHÀ ⚠]
+      Curtain_Entrance_R   (11.5,35.0,31.6)  [TRONG/DƯỚI NHÀ ⚠]
+  _Perron: 3 con
+      Perron_Step_0        (9.3,32.7,27.6)  [TRONG/DƯỚI NHÀ ⚠]
+      Perron_Step_1        (9.9,33.0,27.6)  [TRONG/DƯỚI NHÀ ⚠]
+      Perron_Step_2        (10.4,33.3,27.6)  [TRONG/DƯỚI NHÀ ⚠]
+  StonePath: 0 con
+  FrontYard: 4 con
+      tree                 (54.3,34.3,2.7)  [SÂN TRƯỚC]
+      tree (1)             (44.9,34.3,50.2)  [sau nhà]
+      tree (2)             (7.4,34.3,48.5)  [sau nhà]
+      tree (3)             (9.1,34.3,2.7)  [SÂN TRƯỚC]
+  HÀNG RÀO/MÉP ĐẤT trước: Z≈0.08 (9 cọc) → sân sâu ≈ 7.7m
+
