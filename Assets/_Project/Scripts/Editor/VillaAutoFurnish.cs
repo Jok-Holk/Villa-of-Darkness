@@ -171,7 +171,7 @@ public static class VillaAutoFurnish
     static void FurnishAllRooms()
     {
         int placed = 0, rooms = 0;
-        foreach (var go in Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None))
+        foreach (var go in UnityEngine.Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None))
         {
             if (!go.name.StartsWith("Room_")) continue;
             if (go.transform.Find(MARKER) != null) continue;  // already done
@@ -198,7 +198,7 @@ public static class VillaAutoFurnish
     {
         int placed = 0;
         var keywords = new[] { "Hallway", "Corridor", "Hall", "Hành", "Landing" };
-        foreach (var go in Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None))
+        foreach (var go in UnityEngine.Object.FindObjectsByType<GameObject>(FindObjectsSortMode.None))
         {
             bool isHall = keywords.Any(k => go.name.Contains(k));
             if (!isHall) continue;
@@ -313,7 +313,7 @@ public static class VillaAutoFurnish
         go.transform.SetParent(parent);
         go.transform.position   = pos;
         go.transform.localScale = scale;
-        Object.DestroyImmediate(go.GetComponent<BoxCollider>());
+        UnityEngine.Object.DestroyImmediate(go.GetComponent<BoxCollider>());
     }
 
     static Vector3 GetFloorCenter(GameObject room)
@@ -343,7 +343,7 @@ public static class VillaAutoFurnish
             if (asset == null) return false;
         }
 
-        var go = Object.Instantiate(asset, parent);
+        var go = UnityEngine.Object.Instantiate(asset, parent);
         go.name = asset.name;
         go.transform.position = new Vector3(parent.position.x + dx, floorY, parent.position.z + dz);
         go.transform.rotation = Quaternion.Euler(0f, ry, 0f);
