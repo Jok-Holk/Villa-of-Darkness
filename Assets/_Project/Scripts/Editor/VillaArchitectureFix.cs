@@ -45,6 +45,16 @@ public static class VillaArchitectureFix
     const string ARCH = "Assets/_Project/Models/Props/Architecture/";
     const string FURN = "Assets/_Project/Models/Props/Furniture/";
 
+    // FBX model scales (Blender cm-export: at scale 1 door = 0.19m×1.0m×0.63m)
+    // Target door: 1.1m wide × 2.3m tall × 0.16m deep
+    static readonly Vector3 DOOR_SCALE      = new Vector3(5.8f, 2.3f, 0.25f);
+    static readonly Vector3 DOOR_MAIN_SCALE = new Vector3(10f,  2.3f, 0.25f);  // grand entrance
+    // Pivot at center of model → lift by half scaled height so bottom sits on floor
+    const float DOOR_Y_OFFSET = 1.15f;  // 0.998f/2 * 2.3f
+
+    // Target window: 1.16m wide × 1.8m tall × 0.125m deep
+    static readonly Vector3 WIN_SCALE = new Vector3(6f, 1.8f, 0.2f);
+
     // ─────────────────────────────────────────────────────────────────────────
     [MenuItem("VoD/Villa/1 - Fix Windows (Jalousie)")]
     public static void PlaceWindows()
@@ -132,7 +142,7 @@ public static class VillaArchitectureFix
         // Main entrance — front center (X=28.9, Z=22, ground floor)
         PlaceDoor(group, ENTRANCE_X, Y_GROUND, FRONT_Z,
                   Quaternion.Euler(0, 180, 0), "Door_MainEntrance",
-                  ARCH + "Arch_Door_Interior.glb");
+                  ARCH + "Arch_Door_Interior.glb", isMain: true);
 
         // Ground floor interior doors (between rooms based on room positions)
         // Living Room → Hallway (X≈22, Z≈35)
@@ -422,25 +432,33 @@ public static class VillaArchitectureFix
     static void PlaceWindow(GameObject parent, float x, float y, float z, Quaternion rot, string goName)
     {
         var go = LoadAndPlace(ARCH + "Arch_Window_Jalousie.glb", goName,
-                              new Vector3(x, y, z), rot, Vector3.one);
+                              new Vector3(x, y, z), rot, WIN_SCALE);
         if (go) go.transform.SetParent(parent.transform, true);
     }
 
     static void PlaceDoor(GameObject parent, float x, float y, float z,
-                           Quaternion rot, string goName, string assetPath)
+                           Quaternion rot, string goName, string assetPath, bool isMain = false)
     {
-        var go = LoadAndPlace(assetPath, goName, new Vector3(x, y, z), rot, Vector3.one);
+        var scale = isMain ? DOOR_MAIN_SCALE : DOOR_SCALE;
+        var go = LoadAndPlace(assetPath, goName, new Vector3(x, y + DOOR_Y_OFFSET, z), rot, scale);
         if (go) go.transform.SetParent(parent.transform, true);
     }
 
     static GameObject LoadAndPlace(string assetPath, string goName, Vector3 pos, Quaternion rot, Vector3 scale)
     {
         var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(assetPath);
-        // FBX fallback: nếu GLB chưa được import (cần glTFast), thử .fbx cùng tên
         if (prefab == null && assetPath.EndsWith(".glb"))
         {
-            var fbx = assetPath.Replace(".glb", ".fbx");
-            prefab = AssetDatabase.LoadAssetAtPath<GameObject>(fbx);
+            // Try same-name .fbx first
+            prefab = AssetDatabase.LoadAssetAtPath<GameObject>(assetPath.Replace(".glb", ".fbx"));
+            // FBX files drop the "Arch_" prefix (e.g. Arch_Door_Interior.glb → Door_Interior.fbx)
+            if (prefab == null)
+            {
+                var dir   = System.IO.Path.GetDirectoryName(assetPath).Replace('\\', '/') + "/";
+                var fname = System.IO.Path.GetFileNameWithoutExtension(assetPath);
+                if (fname.StartsWith("Arch_"))
+                    prefab = AssetDatabase.LoadAssetAtPath<GameObject>(dir + fname.Substring(5) + ".fbx");
+            }
         }
         if (prefab == null)
         {
