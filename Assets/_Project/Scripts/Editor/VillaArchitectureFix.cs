@@ -455,7 +455,7 @@ public static class VillaArchitectureFix
         };
 
         int count = 0;
-        foreach (var go in Object.FindObjectsOfType<GameObject>())
+        foreach (var go in UnityEngine.Object.FindObjectsOfType<GameObject>())
         {
             if (go == null) continue;
             var n = go.name;
