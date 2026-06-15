@@ -163,6 +163,18 @@ public static class VillaGeometryScan
         }
         sb.AppendLine();
 
+        // ── 8b. -X FRONT FACADE OPENINGS (tìm cửa vào thật) ────────────────
+        sb.AppendLine("--- -X FRONT FACADE (X≈10.7) GF WALL Z-SPANS (gaps = openings) ---");
+        var frontXWalls = all.Where(r => {
+            var c = r.bounds.center;
+            return Mathf.Abs(c.x - 10.7f) < 2.5f && c.y > 33f && c.y < 39f
+                   && r.bounds.size.z > 1f && r.bounds.size.x < 2f
+                   && r.gameObject.name.ToLower().Contains("wall");
+        }).OrderBy(r => r.bounds.min.z).ToList();
+        foreach (var w in frontXWalls)
+            sb.AppendLine($"    Z[{w.bounds.min.z:F1} .. {w.bounds.max.z:F1}]  {w.gameObject.name}");
+        sb.AppendLine();
+
         // ── 9. SITE / EXTERIOR INVENTORY ───────────────────────────────────
         sb.AppendLine("--- SITE / EXTERIOR INVENTORY (vs front facade Z=7.78) ---");
         foreach (var gname in new[] { "_Exterior_Decor", "_Exterior_Arch", "_Perron", "StonePath", "FrontYard" })
@@ -211,6 +223,18 @@ public static class VillaGeometryScan
         sv.pivot = new Vector3(52.8f, 40f, 27.6f);
         sv.rotation = Quaternion.LookRotation(Vector3.left, Vector3.up); // nhìn theo -X (vào cạnh phải)
         sv.size = 34f;
+        sv.orthographic = false;
+        sv.Repaint();
+    }
+
+    [MenuItem("VoD/Diagnostic/View Real Front (-X)")]
+    public static void ViewFrontX()
+    {
+        var sv = SceneView.lastActiveSceneView;
+        if (sv == null) return;
+        sv.pivot = new Vector3(10.7f, 40f, 27.6f);
+        sv.rotation = Quaternion.LookRotation(Vector3.right, Vector3.up); // nhìn theo +X (vào mặt tiền -X)
+        sv.size = 30f;
         sv.orthographic = false;
         sv.Repaint();
     }
