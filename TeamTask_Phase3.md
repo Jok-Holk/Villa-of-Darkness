@@ -1,4 +1,4 @@
-# Task Phase 3 — Chi tiết hoàn thiện Chapter1.unity
+# Task Phase 2.7 — Chi tiết hoàn thiện Chapter1.unity
 
 Scene chính: `Assets/_Project/Scenes/Chapter1.unity`
 Deadline: trước khi merge vào main — mỗi người tạo nhánh `phase3/detail/<tên>` từ main.
@@ -74,7 +74,7 @@ Deadline: trước khi merge vào main — mỗi người tạo nhánh `phase3/d
 ---
 
 ## Ghi chú chung
-- Mỗi người tạo nhánh `phase3/detail/<username>` từ main
+- Mỗi người tạo nhánh `phase2.7/detail/<username>` từ main
 - Không sửa file của người khác nếu không cần thiết
 - Merge về main khi xong — Jok review và merge
 - Scene save thường xuyên (Ctrl+S) trước khi push
