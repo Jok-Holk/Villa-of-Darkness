@@ -163,6 +163,29 @@ public static class VillaGeometryScan
         }
         sb.AppendLine();
 
+        // ── 9. SITE / EXTERIOR INVENTORY ───────────────────────────────────
+        sb.AppendLine("--- SITE / EXTERIOR INVENTORY (vs front facade Z=7.78) ---");
+        foreach (var gname in new[] { "_Exterior_Decor", "_Exterior_Arch", "_Perron", "StonePath", "FrontYard" })
+        {
+            var grp = GameObject.Find(gname);
+            if (grp == null) { sb.AppendLine($"  {gname}: (không có)"); continue; }
+            sb.AppendLine($"  {gname}: {grp.transform.childCount} con");
+            foreach (Transform c in grp.transform)
+            {
+                var p = c.position;
+                string where = p.z < 7.78f ? "SÂN TRƯỚC" : (p.z > 47.6f ? "sau nhà" : "TRONG/DƯỚI NHÀ ⚠");
+                sb.AppendLine($"      {c.name,-20} ({p.x:F1},{p.y:F1},{p.z:F1})  [{where}]");
+            }
+        }
+        // Property front edge (fence posts at very low Z)
+        var fence = walls.Where(w => w.bounds.center.z < 3f && w.bounds.size.y > 3f).ToList();
+        if (fence.Count > 0)
+        {
+            float fz = fence.Average(w => w.bounds.center.z);
+            sb.AppendLine($"  HÀNG RÀO/MÉP ĐẤT trước: Z≈{fz:F2} ({fence.Count} cọc) → sân sâu ≈ {7.78f - fz:F1}m");
+        }
+        sb.AppendLine();
+
         File.WriteAllText(OUT, sb.ToString());
         AssetDatabase.Refresh();
         Debug.Log($"[VoD] Geometry report written to {OUT}\n\n{sb}");
@@ -189,6 +212,18 @@ public static class VillaGeometryScan
         sv.rotation = Quaternion.LookRotation(Vector3.left, Vector3.up); // nhìn theo -X (vào cạnh phải)
         sv.size = 34f;
         sv.orthographic = false;
+        sv.Repaint();
+    }
+
+    [MenuItem("VoD/Diagnostic/View Top (Site Plan)")]
+    public static void ViewTop()
+    {
+        var sv = SceneView.lastActiveSceneView;
+        if (sv == null) return;
+        sv.pivot = new Vector3(31.7f, 33f, 27.6f);
+        sv.rotation = Quaternion.LookRotation(Vector3.down, Vector3.forward); // nhìn thẳng xuống, +Z lên trên
+        sv.size = 38f;
+        sv.orthographic = true;
         sv.Repaint();
     }
 
