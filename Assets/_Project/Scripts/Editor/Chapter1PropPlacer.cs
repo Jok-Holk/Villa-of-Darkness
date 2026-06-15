@@ -205,6 +205,16 @@ public static class Chapter1PropPlacer
                       Vector3 worldPos, Quaternion rot, Vector3 scale)
     {
         var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(assetPath);
+        // FBX fallback: khi glTFast chưa cài, thử .fbx cùng tên
+        if (prefab == null && assetPath.EndsWith(".glb"))
+        {
+            var fbxPath = assetPath.Replace(".glb", ".fbx");
+            prefab = AssetDatabase.LoadAssetAtPath<GameObject>(fbxPath);
+            // Đặc biệt: Furn_Cabinet_Locked.glb → Furn_Cabinet.fbx (tên khác)
+            if (prefab == null && assetPath.Contains("Furn_Cabinet_Locked"))
+                prefab = AssetDatabase.LoadAssetAtPath<GameObject>(
+                    assetPath.Replace("Furn_Cabinet_Locked.glb", "Furn_Cabinet.fbx"));
+        }
         if (prefab == null)
         {
             Debug.LogWarning($"[VoD PropPlacer] Asset not found: {assetPath}");

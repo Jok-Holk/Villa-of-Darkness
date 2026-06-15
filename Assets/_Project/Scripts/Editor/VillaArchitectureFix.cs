@@ -186,6 +186,128 @@ public static class VillaArchitectureFix
     }
 
     // ─────────────────────────────────────────────────────────────────────────
+    [MenuItem("VoD/Villa/6 - Add Exterior Decor")]
+    public static void AddExteriorDecor()
+    {
+        var group = GetOrCreate("_Exterior_Decor", null);
+
+        // ── Cột đèn lối vào (entrance lantern pillars) ─────────────────────
+        // Đặt 2 cột lồng đèn hai bên lối vào, Z≈16 (giữa cổng và cửa chính)
+        AddLanternPillar(group, 23.5f, Y_GROUND, 16f, "Lantern_L");
+        AddLanternPillar(group, 34.3f, Y_GROUND, 16f, "Lantern_R");
+
+        // ── Cây / bụi cây ngoài nhà (vegetation markers) ─────────────────
+        AddVegetation(group, 10f,  Y_GROUND, 15f, 1.2f, 2.5f, "Tree_FL");
+        AddVegetation(group, 47f,  Y_GROUND, 15f, 1.0f, 2.2f, "Tree_FR");
+        AddVegetation(group, 5f,   Y_GROUND, 32f, 0.8f, 1.5f, "Bush_SL_01");
+        AddVegetation(group, 5f,   Y_GROUND, 36f, 0.7f, 1.3f, "Bush_SL_02");
+        AddVegetation(group, 55f,  Y_GROUND, 30f, 0.9f, 1.8f, "Bush_SR_01");
+        AddVegetation(group, 58f,  Y_GROUND, 35f, 0.8f, 1.6f, "Bush_SR_02");
+        AddVegetation(group, 20f,  Y_GROUND, 12f, 1.5f, 3.0f, "Tree_BL");
+        AddVegetation(group, 38f,  Y_GROUND, 12f, 1.3f, 2.8f, "Tree_BR");
+
+        // ── Đường đá lát sân (stone path stepping stones) ────────────────
+        // Lối đi từ cổng Z=10 đến cửa chính Z=22, dọc theo X=28.9
+        for (int si = 0; si < 6; si++)
+        {
+            float sz = 11.5f + si * 1.8f;
+            AddSteppingStone(group, 28.9f, Y_GROUND, sz, $"PathStone_{si:00}");
+        }
+
+        // ── Chậu hoa sân trước (flower pots at entrance corners) ──────────
+        AddFlowerPot(group, 25f, Y_GROUND, 21f, "FlowerPot_L");
+        AddFlowerPot(group, 33f, Y_GROUND, 21f, "FlowerPot_R");
+
+        // ── Tường rào thấp (low boundary wall markers) ────────────────────
+        AddBoundaryWall(group, 8f,   Y_GROUND, 10f,  6f, 18f, "BoundaryWall_FL");
+        AddBoundaryWall(group, 48f,  Y_GROUND, 10f,  6f, 18f, "BoundaryWall_FR");
+
+        Debug.Log("[VoD] Exterior decor placed.");
+        MarkDirty();
+    }
+
+    // ── Exterior primitive builders ───────────────────────────────────────────
+
+    static void AddLanternPillar(GameObject parent, float x, float y, float z, string name)
+    {
+        var pivot = new GameObject(name);
+        pivot.transform.position = new Vector3(x, y, z);
+        pivot.transform.SetParent(parent.transform, true);
+        Undo.RegisterCreatedObjectUndo(pivot, name);
+
+        // Base pillar — stone cube 0.4×1.2m
+        var pillar = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        pillar.name = "Pillar";
+        pillar.transform.SetParent(pivot.transform, false);
+        pillar.transform.localPosition = new Vector3(0, 0.6f, 0);
+        pillar.transform.localScale = new Vector3(0.4f, 1.2f, 0.4f);
+        Undo.RegisterCreatedObjectUndo(pillar, "Pillar");
+
+        // Lantern cap — smaller cube on top
+        var cap = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        cap.name = "LanternCap";
+        cap.transform.SetParent(pivot.transform, false);
+        cap.transform.localPosition = new Vector3(0, 1.4f, 0);
+        cap.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
+        Undo.RegisterCreatedObjectUndo(cap, "LanternCap");
+    }
+
+    static void AddVegetation(GameObject parent, float x, float y, float z,
+                               float radius, float height, string name)
+    {
+        var go = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        go.name = name;
+        go.transform.position = new Vector3(x, y + height * 0.5f, z);
+        go.transform.localScale = new Vector3(radius * 2f, height, radius * 2f);
+        go.transform.SetParent(parent.transform, true);
+        // Đánh dấu là vegetation để dễ nhận biết
+        go.tag = "Untagged";
+        Undo.RegisterCreatedObjectUndo(go, name);
+
+        // Thân cây (trunk) cho cây cao
+        if (height > 2f)
+        {
+            var trunk = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            trunk.name = name + "_Trunk";
+            trunk.transform.position = new Vector3(x, y + height * 0.2f, z);
+            trunk.transform.localScale = new Vector3(0.15f, height * 0.25f, 0.15f);
+            trunk.transform.SetParent(parent.transform, true);
+            Undo.RegisterCreatedObjectUndo(trunk, name + "_Trunk");
+        }
+    }
+
+    static void AddSteppingStone(GameObject parent, float x, float y, float z, string name)
+    {
+        var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        go.name = name;
+        go.transform.position = new Vector3(x, y + 0.05f, z);
+        go.transform.localScale = new Vector3(0.8f, 0.1f, 0.6f);
+        go.transform.SetParent(parent.transform, true);
+        Undo.RegisterCreatedObjectUndo(go, name);
+    }
+
+    static void AddFlowerPot(GameObject parent, float x, float y, float z, string name)
+    {
+        var go = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+        go.name = name;
+        go.transform.position = new Vector3(x, y + 0.3f, z);
+        go.transform.localScale = new Vector3(0.4f, 0.3f, 0.4f);
+        go.transform.SetParent(parent.transform, true);
+        Undo.RegisterCreatedObjectUndo(go, name);
+    }
+
+    static void AddBoundaryWall(GameObject parent, float x, float y, float z,
+                                 float width, float depth, string name)
+    {
+        var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        go.name = name;
+        go.transform.position = new Vector3(x, y + 0.5f, z + depth * 0.5f);
+        go.transform.localScale = new Vector3(width, 1.0f, depth);
+        go.transform.SetParent(parent.transform, true);
+        Undo.RegisterCreatedObjectUndo(go, name);
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
     [MenuItem("VoD/Villa/5 - Rename Hierarchy")]
     public static void RenameHierarchy()
     {
@@ -230,13 +352,14 @@ public static class VillaArchitectureFix
     public static void RunAll()
     {
         if (!EditorUtility.DisplayDialog("VoD Architecture Fix",
-            "Chạy toàn bộ:\n1. Jalousie windows\n2. Balcony railings\n3. Interior doors\n4. Gate & well\n5. Rename hierarchy\n\nĐảm bảo Chapter1 đang mở.",
+            "Chạy toàn bộ:\n1. Jalousie windows\n2. Balcony railings\n3. Interior doors\n4. Gate & well\n5. Rename hierarchy\n6. Exterior decor\n\nĐảm bảo Chapter1 đang mở.",
             "Run All", "Cancel")) return;
 
         PlaceWindows();
         PlaceRailings();
         PlaceDoors();
         PlaceGateAndWell();
+        AddExteriorDecor();
         RenameHierarchy();
     }
 
@@ -313,6 +436,12 @@ public static class VillaArchitectureFix
     static GameObject LoadAndPlace(string assetPath, string goName, Vector3 pos, Quaternion rot, Vector3 scale)
     {
         var prefab = AssetDatabase.LoadAssetAtPath<GameObject>(assetPath);
+        // FBX fallback: nếu GLB chưa được import (cần glTFast), thử .fbx cùng tên
+        if (prefab == null && assetPath.EndsWith(".glb"))
+        {
+            var fbx = assetPath.Replace(".glb", ".fbx");
+            prefab = AssetDatabase.LoadAssetAtPath<GameObject>(fbx);
+        }
         if (prefab == null)
         {
             Debug.LogWarning($"[VoD] Not found: {assetPath}");
