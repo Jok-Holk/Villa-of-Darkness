@@ -28,6 +28,34 @@ public static class Chapter1PropPlacer
     const string HORROR   = "Assets/_Project/Models/Props/Horror/";
     const string KITCHEN  = "Assets/_Project/Models/Props/Kitchen/";
 
+    [MenuItem("VoD/Chapter1/Fix Missing Dining Table and Sofa")]
+    public static void FixMissingFurniture()
+    {
+        var rootGO = GameObject.Find("_Props_Chapter1");
+        if (rootGO == null) { Debug.LogWarning("[VoD] _Props_Chapter1 not found — run Place All Props first."); return; }
+
+        bool added = false;
+        if (GameObject.Find("DiningTable") == null)
+        {
+            var g = GetOrCreateGroup("DiningRoom_Props", rootGO);
+            Place(FURN + "Furn_Table_Dining.glb", "DiningTable", g,
+                  POS_DINING_ROOM, Rot(0, 0, 0), Vector3.one);
+            added = true;
+        }
+        if (GameObject.Find("Sofa_LR") == null)
+        {
+            var g = GetOrCreateGroup("LivingRoom_Props", rootGO);
+            Place(FURN + "Furn_Sofa_Colonial.glb", "Sofa_LR", g,
+                  POS_LIVING_ROOM + new Vector3(0, 0, 2f), Rot(0, 180, 0), Vector3.one);
+            added = true;
+        }
+        if (!added) { Debug.Log("[VoD] DiningTable and Sofa_LR already present — no changes made."); return; }
+
+        EditorUtility.SetDirty(rootGO);
+        UnityEditor.SceneManagement.EditorSceneManager.MarkAllScenesDirty();
+        Debug.Log("[VoD] Added missing dining table and/or sofa.");
+    }
+
     [MenuItem("VoD/Chapter1/Place All Props")]
     public static void PlaceAllProps()
     {
@@ -57,20 +85,22 @@ public static class Chapter1PropPlacer
     static void PlaceLivingRoom(GameObject parent)
     {
         var g = GetOrCreateGroup("LivingRoom_Props", parent);
-        Place(ARCH     + "Arch_Fireplace_Stone.glb",  "Fireplace",       g, POS_LIVING_ROOM + new Vector3(0, 0, -3f),     Quaternion.identity, Vector3.one);
-        Place(GAMEPLAY + "Prop_Candle_Brass.glb",     "Candle_LR_01",    g, POS_LIVING_ROOM + new Vector3(-1.5f, 0.8f, 1f),  Quaternion.identity, Vector3.one);
-        Place(GAMEPLAY + "Prop_Candle_Brass.glb",     "Candle_LR_02",    g, POS_LIVING_ROOM + new Vector3(1.5f,  0.8f, 1f),  Rot(0, 45, 0),       Vector3.one);
-        Place(DECOR    + "Prop_Lamp_TableOil.glb",    "OilLamp_LR",      g, POS_LIVING_ROOM + new Vector3(2f,    0.7f, -1.5f),Rot(0, 90, 0),       Vector3.one);
-        Place(DECOR    + "Prop_Portrait_Family.glb",  "Portrait_Family", g, POS_LIVING_ROOM + new Vector3(0,     2.5f, -3.5f),Rot(0, 0, 0),        Vector3.one);
-        Place(DECOR    + "Prop_Vase_Ceramic.glb",     "Vase_LR",         g, POS_LIVING_ROOM + new Vector3(-2f,   0.5f, 0.5f), Rot(0, 135, 0),      Vector3.one);
-        Place(FURN     + "Furn_Chair_Armchair.glb",   "Armchair_LR_01",  g, POS_LIVING_ROOM + new Vector3(2.5f,  0,    2.5f), Rot(0, -90, 0),      Vector3.one);
-        Place(FURN     + "Furn_Chair_Armchair.glb",   "Armchair_LR_02",  g, POS_LIVING_ROOM + new Vector3(-2.5f, 0,    2.5f), Rot(0, 90, 0),       Vector3.one);
+        Place(ARCH     + "Arch_Fireplace_Stone.glb",  "Fireplace",       g, POS_LIVING_ROOM + new Vector3(0, 0, -3f),      Quaternion.identity, Vector3.one);
+        Place(FURN     + "Furn_Sofa_Colonial.glb",    "Sofa_LR",         g, POS_LIVING_ROOM + new Vector3(0, 0, 2f),        Rot(0, 180, 0),      Vector3.one);
+        Place(FURN     + "Furn_Chair_Armchair.glb",   "Armchair_LR_01",  g, POS_LIVING_ROOM + new Vector3(3f,   0,    0),   Rot(0, -90, 0),      Vector3.one);
+        Place(FURN     + "Furn_Chair_Armchair.glb",   "Armchair_LR_02",  g, POS_LIVING_ROOM + new Vector3(-3f,  0,    0),   Rot(0, 90, 0),       Vector3.one);
+        Place(GAMEPLAY + "Prop_Candle_Brass.glb",     "Candle_LR_01",    g, POS_LIVING_ROOM + new Vector3(-1.5f, 0.8f, 1f), Quaternion.identity, Vector3.one);
+        Place(GAMEPLAY + "Prop_Candle_Brass.glb",     "Candle_LR_02",    g, POS_LIVING_ROOM + new Vector3(1.5f,  0.8f, 1f), Rot(0, 45, 0),       Vector3.one);
+        Place(DECOR    + "Prop_Lamp_TableOil.glb",    "OilLamp_LR",      g, POS_LIVING_ROOM + new Vector3(2f,   0.7f,-1.5f),Rot(0, 90, 0),       Vector3.one);
+        Place(DECOR    + "Prop_Portrait_Family.glb",  "Portrait_Family", g, POS_LIVING_ROOM + new Vector3(0,    2.5f,-3.5f),Rot(0, 0, 0),        Vector3.one);
+        Place(DECOR    + "Prop_Vase_Ceramic.glb",     "Vase_LR",         g, POS_LIVING_ROOM + new Vector3(-2f,  0.5f, 0.5f),Rot(0, 135, 0),      Vector3.one);
     }
 
     // ─── DINING ROOM ──────────────────────────────────────────────────────────
     static void PlaceDiningRoom(GameObject parent)
     {
         var g = GetOrCreateGroup("DiningRoom_Props", parent);
+        Place(FURN     + "Furn_Table_Dining.glb",     "DiningTable",     g, POS_DINING_ROOM + new Vector3(0, 0, 0),        Rot(0, 0, 0),   Vector3.one);
         Place(FURN     + "Furn_Sideboard_Dining.glb", "Sideboard_DR",    g, POS_DINING_ROOM + new Vector3(-3f, 0, 0),      Rot(0, 90, 0),  Vector3.one);
         Place(FURN     + "Furn_Chair_Dining.glb",     "Chair_DR_01",     g, POS_DINING_ROOM + new Vector3(-1.5f, 0, 1.5f), Rot(0, 0, 0),   Vector3.one);
         Place(FURN     + "Furn_Chair_Dining.glb",     "Chair_DR_02",     g, POS_DINING_ROOM + new Vector3(1.5f,  0, 1.5f), Rot(0, 0, 0),   Vector3.one);
