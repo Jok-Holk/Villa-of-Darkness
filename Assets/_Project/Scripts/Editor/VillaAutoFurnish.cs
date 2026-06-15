@@ -118,14 +118,84 @@ public static class VillaAutoFurnish
             ("cabinetBed",  -1.3f,  0.5f,   0f),
             ("drawers",      0f,   -0.8f,   0f),
         },
+        ["Kitchen"] = new (string, float, float, float)[]
+        {
+            ("kitchenFridge",  -1.5f,  1.8f,  90f),
+            ("kitchenStove",   -1.5f,  0.6f,  90f),
+            ("kitchenSink",    -1.5f, -0.6f,  90f),
+            ("table",           0.8f,  0.2f,   0f),
+            ("chair",           0.2f, -0.9f,   0f),
+            ("chair",           1.4f, -0.9f,   0f),
+            ("drawers",         1.8f,  1.5f, 270f),
+            ("plantMedium1",    1.8f, -1.5f,   0f),
+        },
+        ["Study"] = new (string, float, float, float)[]
+        {
+            ("desk",             0f,     1.2f, 180f),
+            ("chair",            0f,     0.4f,   0f),
+            ("bookcaseClosed",  -2.0f,   1.6f,  90f),
+            ("bookcaseClosed",  -2.0f,   0.2f,  90f),
+            ("bookcaseOpen",     2.0f,   1.6f, 270f),
+            ("lampRoundFloor",   1.8f,   0.5f,   0f),
+            ("loungeChair",     -1.5f,  -0.8f,  45f),
+            ("tableCoffee",     -0.6f,  -0.8f,   0f),
+            ("pottedPlant",     -2.0f,  -1.5f,   0f),
+        },
+        ["Library"] = new (string, float, float, float)[]
+        {
+            ("bookcaseClosed",  -2.2f,   1.6f,  90f),
+            ("bookcaseClosed",  -2.2f,   0.2f,  90f),
+            ("bookcaseClosed",  -2.2f,  -1.2f,  90f),
+            ("bookcaseOpen",     2.2f,   1.6f, 270f),
+            ("bookcaseOpen",     2.2f,   0.2f, 270f),
+            ("desk",             0f,     0.8f, 180f),
+            ("chair",            0f,     0.1f,   0f),
+            ("lampRoundFloor",   1.5f,   0.2f,   0f),
+            ("loungeChair",     -1.5f,  -1.0f,  90f),
+        },
+        ["ServantRoom"] = new (string, float, float, float)[]
+        {
+            ("bedSingle",    0f,    0.5f,   0f),
+            ("sideTable",   -0.8f,  0.5f,  90f),
+            ("chair",        0.8f, -0.8f,   0f),
+            ("drawers",      0.8f,  0.8f, 270f),
+        },
+        ["Storage"] = new (string, float, float, float)[]
+        {
+            ("cabinetBed",   0f,    0.5f,   0f),
+            ("cabinetBed",   1.3f,  0.5f,   0f),
+            ("drawers",     -1.3f,  0.5f, 180f),
+        },
+        ["Pantry"] = new (string, float, float, float)[]
+        {
+            ("cabinetBed",   0f,    0.7f,   0f),
+            ("cabinetBed",   1.3f,  0.7f,   0f),
+            ("cabinetBed",  -1.3f,  0.7f,   0f),
+            ("drawers",      0f,   -0.8f, 180f),
+        },
     };
 
-    // Corridor props: placed every CORRIDOR_STEP metres along any Hallway/Corridor object
+    // Corridor props — luxury colonial: console clusters, plants, seating, ceiling lights
     static readonly (string g, float dx, float dz, float ry)[] CORRIDOR_PROPS =
     {
-        ("sideTable",     0f,    0f,   0f),
-        ("lampRoundFloor",0f,   -1.2f, 0f),
-        ("pottedPlant",   0f,    0.4f, 0f),
+        // Console table + mirror niche
+        ("sideTableDrawers",  0f,   -1.8f,   0f),
+        ("bathroomMirror",    0f,   -1.8f,   0f),
+        // Flanking floor lamps
+        ("lampRoundFloor",    0.9f, -1.6f,   0f),
+        ("lampRoundFloor",   -0.9f, -1.6f, 180f),
+        // Central display plants
+        ("plantMedium1",      1.6f,  0.3f,   0f),
+        ("plantMedium2",     -1.6f,  0.3f,   0f),
+        ("pottedPlant",       0f,    0.4f,   0f),
+        // Seating nook
+        ("loungeChair",      -1.5f,  0.8f,  90f),
+        ("loungeChair",       1.5f,  0.8f, 270f),
+        ("tableCoffee",       0f,    0.8f,   0f),
+        // Rug underfoot
+        ("rugRectangle",      0f,    0f,    90f),
+        // Ceiling fixture above
+        ("lampSquareCeiling", 0f,    0f,     0f),
     };
 
     // ── Villa perimeter (from geometry scan, do NOT change) ───────────────
@@ -433,6 +503,109 @@ public static class VillaAutoFurnish
         Debug.Log("[AutoFurn] ✓ Window crowns + modillions added");
     }
 
+    [MenuItem("VoD/Auto/A — Add Bay Windows (vịnh cửa lồi ra ngoài)")]
+    static void AddBayWindows()
+    {
+        const float BW_DEPTH  = 0.55f;  // how far the bay protrudes from wall
+        const float BW_W      = 1.55f;  // Z width of bay
+        const float BW_WALL_T = 0.12f;  // side wall thickness
+        const float BW_CAP_H  = 0.14f;  // cap slab height
+
+        // Window bays — skip CENTER_Z (entrance pediment already there)
+        float[] winZ   = { CENTER_Z - 11f, CENTER_Z - 5f, CENTER_Z + 5f, CENTER_Z + 11f };
+        // (bottomY, topY) of window opening on each floor
+        (float bot, float top)[] wFloors = { (33.5f, 37.7f), (40.6f, 44.8f) };
+
+        var root    = new GameObject("Struct_BayWindows");
+        var matWall = AssetDatabase.LoadAssetAtPath<Material>($"{M_PATH}/Mat_Wall_Ochre.mat");
+        var matCap  = AssetDatabase.LoadAssetAtPath<Material>($"{M_PATH}/Mat_Cornice_White.mat");
+        Undo.RegisterCreatedObjectUndo(root, "BayWindows");
+
+        foreach (float wz in winZ)
+        foreach (var (bot, top) in wFloors)
+        {
+            float h  = top - bot;
+            float cy = bot + h * 0.5f;
+            float bx = FRONT_X - BW_DEPTH * 0.5f;  // centre of bay protrusion
+
+            // Front panel of bay (faces outward in -X)
+            var front = Slab(root.transform, $"Bay_Front_{wz:0}_{bot:0}",
+                new Vector3(FRONT_X - BW_DEPTH, cy, wz),
+                new Vector3(BW_WALL_T, h, BW_W));
+            if (matWall != null) front.GetComponent<Renderer>().sharedMaterial = matWall;
+
+            // Side return walls
+            foreach (float sz in new[] { wz - BW_W * 0.5f, wz + BW_W * 0.5f })
+            {
+                var side = Slab(root.transform, $"Bay_Side_{wz:0}_{sz:0}_{bot:0}",
+                    new Vector3(FRONT_X - BW_DEPTH * 0.5f, cy, sz),
+                    new Vector3(BW_DEPTH, h, BW_WALL_T));
+                if (matWall != null) side.GetComponent<Renderer>().sharedMaterial = matWall;
+            }
+
+            // Cap/hood on top of each bay
+            var cap = Slab(root.transform, $"Bay_Cap_{wz:0}_{bot:0}",
+                new Vector3(FRONT_X - BW_DEPTH * 0.5f, top + BW_CAP_H * 0.5f, wz),
+                new Vector3(BW_DEPTH + 0.08f, BW_CAP_H, BW_W + 0.12f));
+            if (matCap != null) cap.GetComponent<Renderer>().sharedMaterial = matCap;
+        }
+
+        MarkDirty();
+        Debug.Log($"[AutoFurn] ✓ {winZ.Length * wFloors.Length} bay windows added to front facade");
+    }
+
+    [MenuItem("VoD/Auto/B — Add Chimneys (ống khói)")]
+    static void AddChimneys()
+    {
+        const float CH_W  = 0.90f;  // chimney shaft width (square)
+        const float CH_H  = 4.80f;  // shaft height above roof
+        const float CAP_W = 1.15f;  // cap wider
+        const float CAP_H = 0.28f;
+
+        // 2 chimneys symmetric about CENTER_Z, placed toward back
+        float[] chZ = { CENTER_Z - 9f, CENTER_Z + 9f };
+        float   chX = BACK_X - 10f;  // deep inside roof footprint
+        float   chBaseY = Y_1F_TOP + 0.35f;
+
+        var root    = new GameObject("Struct_Chimneys");
+        var matW    = AssetDatabase.LoadAssetAtPath<Material>($"{M_PATH}/Mat_Perron_Granite.mat");
+        var matCap  = AssetDatabase.LoadAssetAtPath<Material>($"{M_PATH}/Mat_Cornice_White.mat");
+        Undo.RegisterCreatedObjectUndo(root, "Chimneys");
+
+        foreach (float cz in chZ)
+        {
+            float midY = chBaseY + CH_H * 0.5f;
+            // Shaft
+            var shaft = Slab(root.transform, $"Chimney_Shaft_{cz:0}",
+                new Vector3(chX, midY, cz),
+                new Vector3(CH_W, CH_H, CH_W));
+            if (matW != null) shaft.GetComponent<Renderer>().sharedMaterial = matW;
+
+            // Neck band
+            var neck = Slab(root.transform, $"Chimney_Neck_{cz:0}",
+                new Vector3(chX, chBaseY + CH_H - 0.45f, cz),
+                new Vector3(CH_W + 0.12f, 0.22f, CH_W + 0.12f));
+            if (matCap != null) neck.GetComponent<Renderer>().sharedMaterial = matCap;
+
+            // Cap
+            var cap = Slab(root.transform, $"Chimney_Cap_{cz:0}",
+                new Vector3(chX, chBaseY + CH_H + CAP_H * 0.5f, cz),
+                new Vector3(CAP_W, CAP_H, CAP_W));
+            if (matCap != null) cap.GetComponent<Renderer>().sharedMaterial = matCap;
+
+            // Pots (2 smaller stacks on top of cap)
+            foreach (float pz in new[] { cz - CH_W * 0.22f, cz + CH_W * 0.22f })
+            {
+                Slab(root.transform, $"Chimney_Pot_{cz:0}_{pz:0}",
+                    new Vector3(chX, chBaseY + CH_H + CAP_H + 0.28f, pz),
+                    new Vector3(0.24f, 0.55f, 0.24f));
+            }
+        }
+
+        MarkDirty();
+        Debug.Log($"[AutoFurn] ✓ {chZ.Length} chimneys added to roof");
+    }
+
     [MenuItem("VoD/Auto/0 — RUN ALL (materials + furniture + cornice + sills + ornaments)")]
     static void RunAll()
     {
@@ -445,6 +618,8 @@ public static class VillaAutoFurnish
         AddStringCourses();
         AddRusticatedBase();
         AddWindowCrownsAndModillions();
+        AddBayWindows();
+        AddChimneys();
         Debug.Log("[AutoFurn] ══ All steps complete ══");
     }
 
