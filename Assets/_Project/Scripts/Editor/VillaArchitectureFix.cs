@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEditor;
+using System;
 using System.Collections.Generic;
+using System.Text.RegularExpressions;
 
 /// <summary>
 /// Đặt model kiến trúc chính xác theo toán học dựa trên spatial scan villa.
@@ -25,15 +27,20 @@ public static class VillaArchitectureFix
     // Đặt cửa hơi ngoài mặt tường để mặt kính lộ ra (flush + 0.3m)
     const float FACE_OFFSET = 0.3f;
 
-    // Floor Y values (surface of each floor) — đã xác nhận đúng từ scan
+    // Floor Y values (surface of each floor) — xác nhận từ scan 2026-06-15
+    // Scan thực tế: GF slab Y[32.05..38.35], 1F slab Y[39.3..45.7], 2F slab Y[47.25..54.15]
     const float Y_GROUND   = 32.5f;
-    const float Y_1ST      = 40.0f;
-    const float Y_2ND      = 47.5f;
+    const float Y_1ST      = 39.5f;   // was 40.0 → actual 1F slab bottom = 39.3
+    const float Y_2ND      = 47.5f;   // actual 2F slab bottom = 47.25, close enough
 
     // Balcony/galerie front railing Y (mặt tiền -X)
-    const float BALCONY_RAILING_Y_1F  = 40.8f;
+    const float BALCONY_RAILING_Y_1F  = 40.3f;   // Y_1ST + 0.8
     const float BALCONY_RAILING_Y_2F  = 48.3f;
     const float RAILING_STEP = 2.0f;        // 1 piece mỗi 2m
+
+    // Railing GLB: scan group bounds 8.7m là khoảng cách GIỮA 2 row (1F+2F), không phải
+    // chiều cao piece. Piece thực tế ~1.1m — giữ scale gốc.
+    static readonly Vector3 RAILING_SCALE = Vector3.one;
 
     // Cửa chính — giữa mặt tiền -X (Z=CENTER_Z). KHÔNG đặt cửa sổ ở bay này.
     const float ENTRANCE_Z = CENTER_Z;
@@ -56,13 +63,13 @@ public static class VillaArchitectureFix
     // Pivot at center of model → lift by half scaled height so bottom sits on floor
     const float DOOR_Y_OFFSET = 1.15f;  // 0.998f/2 * 2.3f
 
-    // Blockout có tầng cao ~7.5m → cửa phải cao theo để giữ TỶ LỆ lịch sử (~55-60% tường).
-    // Cửa sổ jalousie tầng trên: ~1.3m rộng × 3.4m cao (GLB bounds 0.2156×1.0006×0.8170)
-    static readonly Vector3 WIN_SCALE    = new Vector3(6.0f, 3.4f, 0.18f);
-    // Cửa kính kiểu Pháp tầng trệt (mở ra galerie): cao gần trần, bệ sát sàn
-    static readonly Vector3 WIN_SCALE_GF = new Vector3(6.6f, 4.0f, 0.18f);
-    const float WIN_CENTER_UPPER = 2.20f;  // tâm cửa = sàn + 2.20 (bệ ~0.5m, cao 3.4m)
-    const float WIN_CENTER_GF    = 2.10f;  // tâm cửa Pháp = sàn + 2.10 (bệ sát sàn, cao 4.0m)
+    // Scan thực tế: tầng GF=6.3m, 1F=6.4m, 2F=6.9m (anti-pattern — đợi Tuấn Anh resize về 4m)
+    // → scale cửa ~70% tường để cửa gần trần (đặc trưng Đông Dương: cửa cao gần trần)
+    // GLB Arch_Window_Jalousie world size tại rotY=90: 1.29m rộng × h tall × 0.15m sâu
+    static readonly Vector3 WIN_SCALE    = new Vector3(6.0f, 4.5f, 0.18f);   // 4.5/6.4 = 70%
+    static readonly Vector3 WIN_SCALE_GF = new Vector3(6.6f, 5.0f, 0.18f);   // 5.0/6.3 = 79%
+    const float WIN_CENTER_UPPER = 3.0f;   // tâm = sàn + 3.0m → cửa spans [0.75..5.25m] trên sàn
+    const float WIN_CENTER_GF    = 2.8f;   // tâm GF = sàn + 2.8m → spans [0.3..5.3m] trên sàn
 
     // ─────────────────────────────────────────────────────────────────────────
     [MenuItem("VoD/Villa/1 - Fix Windows (Jalousie)")]
@@ -164,6 +171,7 @@ public static class VillaArchitectureFix
             go.name = $"{prefix}_{i:00}";
             go.transform.position = new Vector3(x, y, z);
             go.transform.rotation = rot;
+            go.transform.localScale = RAILING_SCALE;  // GLB native 8.7m → target 1.1m
             go.transform.SetParent(parent.transform, true);
             Undo.RegisterCreatedObjectUndo(go, go.name);
         }
@@ -265,9 +273,10 @@ public static class VillaArchitectureFix
         AddVegetation(group, FRONT_X - 1.2f, Y_GROUND, CENTER_Z - 12f, 0.9f, 1.6f, "Bush_FL");
         AddVegetation(group, FRONT_X - 1.2f, Y_GROUND, CENTER_Z + 12f, 0.9f, 1.6f, "Bush_FR");
 
-        // ── Cây bóng mát hai hông (đối xứng quanh tâm Z) ─────────────────
-        AddVegetation(group, CENTER_X, Y_GROUND, SIDE_ZLOW  - 4f, 1.3f, 4.0f, "Tree_SideA");
-        AddVegetation(group, CENTER_X, Y_GROUND, SIDE_ZHIGH + 4f, 1.3f, 4.0f, "Tree_SideB");
+        // ── Cây bóng mát hai góc sân trước (nơi sân trước gặp hông nhà) ─────
+        // X=4f = sân trước (-X side). KHÔNG dùng CENTER_X vì sẽ xuyên qua tường hông.
+        AddVegetation(group, 4f, Y_GROUND, SIDE_ZLOW  - 5f, 1.3f, 4.0f, "Tree_SideA");
+        AddVegetation(group, 4f, Y_GROUND, SIDE_ZHIGH + 5f, 1.3f, 4.0f, "Tree_SideB");
 
         Debug.Log("[VoD] Exterior decor placed (GLB only, front=-X, symmetric).");
         MarkDirty();
@@ -319,43 +328,202 @@ public static class VillaArchitectureFix
 
 
     // ─────────────────────────────────────────────────────────────────────────
+    [MenuItem("VoD/Villa/7 - Build Perron Steps")]
+    public static void BuildPerron()
+    {
+        var old = GameObject.Find("_Perron");
+        if (old != null) Undo.DestroyObjectImmediate(old);
+        var group = GetOrCreate("_Perron", null);
+
+        // Cửa chính ở (10.4, Y_GROUND+DOOR_Y_OFFSET, 27.6). Nền ngoài Y=32.5.
+        // 3 bậc × 0.3m cao × 0.55m sâu, mở rộng ra -X từ mặt tiền.
+        const int   N      = 3;
+        const float STEP_H = 0.3f;
+        const float STEP_D = 0.55f;
+        const float BASE_W = 5.5f;
+        const float TAPER  = 0.5f;   // bậc dưới rộng hơn mỗi bên 0.5m
+
+        for (int i = 0; i < N; i++)
+        {
+            // i=0 = bậc dưới nhất (sát mặt đất), i=N-1 = bậc trên cùng (sát ngưỡng cửa)
+            float w    = BASE_W + (N - 1 - i) * TAPER * 2f;
+            float posX = FRONT_X - (N - i) * STEP_D + STEP_D * 0.5f;
+            float posY = Y_GROUND + i * STEP_H + STEP_H * 0.5f;
+            var c = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            c.name = $"Perron_Step_{i}";
+            c.transform.position = new Vector3(posX, posY, CENTER_Z);
+            c.transform.localScale = new Vector3(STEP_D, STEP_H, w);
+            c.transform.SetParent(group.transform, true);
+            Undo.RegisterCreatedObjectUndo(c, c.name);
+        }
+
+        Debug.Log($"[VoD] Perron {N} bậc. Chọn → Tools > ProBuilder > ProBuilderize để edit chi tiết.");
+        MarkDirty();
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
+    [MenuItem("VoD/Villa/8 - Build Galerie Slabs")]
+    public static void BuildGalerie()
+    {
+        var old = GameObject.Find("_Galerie");
+        if (old != null) Undo.DestroyObjectImmediate(old);
+        var group = GetOrCreate("_Galerie", null);
+
+        const float DEPTH = 2.5f;    // sâu galerie tính từ mặt tiền ra -X
+        const float THICK = 0.3f;    // độ dày sàn
+        float len  = SIDE_ZHIGH - SIDE_ZLOW;  // chiều dài dọc Z = ~39.78m
+        float posX = FRONT_X - DEPTH * 0.5f;
+
+        // Sàn galerie tầng 1
+        var s1 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        s1.name = "Galerie_1F_Slab";
+        s1.transform.position  = new Vector3(posX, Y_1ST - THICK * 0.5f, CENTER_Z);
+        s1.transform.localScale = new Vector3(DEPTH, THICK, len);
+        s1.transform.SetParent(group.transform, true);
+        Undo.RegisterCreatedObjectUndo(s1, s1.name);
+
+        // Sàn galerie tầng 2
+        var s2 = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        s2.name = "Galerie_2F_Slab";
+        s2.transform.position  = new Vector3(posX, Y_2ND - THICK * 0.5f, CENTER_Z);
+        s2.transform.localScale = new Vector3(DEPTH, THICK, len);
+        s2.transform.SetParent(group.transform, true);
+        Undo.RegisterCreatedObjectUndo(s2, s2.name);
+
+        Debug.Log("[VoD] Galerie slabs built (1F + 2F). ProBuilderize để thêm chi tiết.");
+        MarkDirty();
+    }
+
+    // ─────────────────────────────────────────────────────────────────────────
     [MenuItem("VoD/Villa/5 - Rename Hierarchy")]
     public static void RenameHierarchy()
     {
-        var renames = new Dictionary<string, string>
+        // Root-level structural renames (exact match, parent == null)
+        var rootRenames = new Dictionary<string, string>
         {
-            { "ground floor",    "GroundFloor"       },
-            { "1st floor",       "FirstFloor"        },
-            { "2nd floor",       "SecondFloor"       },
-            { "BASEMENT",        "Basement"          },
-            { "OUTBUILDING",     "KitchenWing"       },
-            { "STAIR (1)",       "Staircase_Main"    },
-            { "STAIR (2)",       "Staircase_Side"    },
-            { "stair fence",     "StairRailing_A"    },
-            { "stair fence (1)", "StairRailing_B"    },
-            { "folding ladder",  "LadderFolding"     },
-            { "ladder (3)",      "LadderFixed"       },
-            { "Watch Tower",     "WatchTower"        },
-            { "well",            "Well"              },
-            { "Front yard",      "FrontYard"         },
-            { "Stone walkway",   "StonePath"         },
-            { "Wall, column",    "StructuralCore"    },
-            { "Floor",           "FloorGeometry"     },
-            { "' house pillar'", "SupportPillars"    },
+            { "ground floor",    "GroundFloor"    },
+            { "1st floor",       "FirstFloor"     },
+            { "2nd floor",       "SecondFloor"    },
+            { "BASEMENT",        "Basement"       },
+            { "OUTBUILDING",     "KitchenWing"    },
+            { "STAIR (1)",       "Staircase_Main" },
+            { "STAIR (2)",       "Staircase_Side" },
+            { "stair fence",     "StairRailing_A" },
+            { "stair fence (1)", "StairRailing_B" },
+            { "folding ladder",  "LadderFolding"  },
+            { "ladder (3)",      "LadderFixed"    },
+            { "Watch Tower",     "WatchTower"     },
+            { "well",            "Well"           },
+            { "Front yard",      "FrontYard"      },
+            { "Stone walkway",   "StonePath"      },
+            { "Wall, column",    "StructuralCore" },
+            { "Floor",           "FloorGeometry"  },
+            { "' house pillar'", "SupportPillars" },
+        };
+
+        // Any-depth renames: rooms (children of floor objects) + common prop names
+        var anyRenames = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+        {
+            // ── Phòng ──────────────────────────────────────────────────────
+            { "Linh's Room",       "Room_LinhBedroom"   },
+            { "Master Bedroom",    "Room_MasterBedroom" },
+            { "Mrs. Lan's Room",   "Room_MrsLanRoom"    },
+            { "Living Room",       "Room_LivingRoom"    },
+            { "Dining Room",       "Room_DiningRoom"    },
+            { "Study",             "Room_Study"         },
+            { "Kitchen",           "Room_Kitchen"       },
+            { "Hallway",           "Room_Hallway"       },
+            { "Storage",           "Room_Storage"       },
+            { "Guest Room",        "Room_GuestRoom"     },
+            { "Bathroom",          "Room_Bathroom"      },
+            // ── Đồ nội thất ────────────────────────────────────────────────
+            { "Double bed",        "Prop_Bed_Double"    },
+            { "Single bed",        "Prop_Bed_Single"    },
+            { "Heater",            "Prop_Heater"        },
+            { "table with mirroru","Prop_Table_Mirror"  }, // sửa typo gốc
+            { "table with mirror", "Prop_Table_Mirror"  },
+            { "wall mirror",       "Prop_Mirror_Wall"   },
+            { "Wall mirror",       "Prop_Mirror_Wall"   },
+            { "Wardrobe",          "Prop_Wardrobe"      },
+            { "wardrobe",          "Prop_Wardrobe"      },
+            { "Bookcase",          "Prop_Bookcase"      },
+            { "bookcase",          "Prop_Bookcase"      },
+            { "Fireplace",         "Prop_Fireplace"     },
+            { "Piano",             "Prop_Piano"         },
+            { "Bathtub",           "Prop_Bathtub"       },
+            { "bathtub",           "Prop_Bathtub"       },
         };
 
         int count = 0;
         foreach (var go in Object.FindObjectsOfType<GameObject>())
         {
-            if (renames.TryGetValue(go.name, out var newName) && go.transform.parent == null)
+            if (go == null) continue;
+            var n = go.name;
+
+            // Root-level exact rename
+            if (go.transform.parent == null && rootRenames.TryGetValue(n, out var rr))
             {
-                Undo.RecordObject(go, "Rename " + go.name);
-                go.name = newName;
-                count++;
+                Undo.RecordObject(go, "Rename"); go.name = rr; count++; continue;
             }
+            // Any-level exact rename (case-insensitive)
+            if (anyRenames.TryGetValue(n, out var ar))
+            {
+                Undo.RecordObject(go, "Rename"); go.name = ar; count++; continue;
+            }
+            // Strip Unity auto-suffix "(N)" and rename known types
+            string stripped = Regex.Replace(n, @"\s*\(\d+\)$", "").Trim();
+            if (!stripped.Equals(n, StringComparison.Ordinal) && anyRenames.TryGetValue(stripped, out var sr))
+            {
+                // Keep numeric index for de-duplication
+                var m = Regex.Match(n, @"\((\d+)\)$");
+                string idx = m.Success ? $"_{int.Parse(m.Groups[1].Value):00}" : "";
+                Undo.RecordObject(go, "Rename"); go.name = sr + idx; count++; continue;
+            }
+            // Generic prop patterns: lowercase "chair", "table (N)", "drawers (N)" etc.
+            RenameGenericProp(go, ref count);
         }
+
         Debug.Log($"[VoD] Renamed {count} hierarchy items.");
         MarkDirty();
+    }
+
+    static void RenameGenericProp(GameObject go, ref int count)
+    {
+        // lowercase / informal prop names → Prop_Xxx_NN
+        var patterns = new (string match, string prefix)[]
+        {
+            ("chair",    "Prop_Chair"),
+            ("table",    "Prop_Table"),
+            ("drawers",  "Prop_Drawer"),
+            ("drawer",   "Prop_Drawer"),
+            ("lamp",     "Prop_Lamp"),
+            ("vase",     "Prop_Vase"),
+            ("sofa",     "Prop_Sofa"),
+            ("couch",    "Prop_Sofa"),
+            ("cabinet",  "Prop_Cabinet"),
+            ("shelf",    "Prop_Shelf"),
+            ("rug",      "Prop_Rug"),
+            ("curtain",  "Prop_Curtain"),
+            ("plant",    "Prop_Plant"),
+            ("picture",  "Prop_Picture"),
+            ("painting", "Prop_Painting"),
+        };
+        var raw = go.name;
+        // Match "word" or "word (N)" patterns where first char is lowercase
+        if (!char.IsLower(raw[0])) return;
+        string lower = raw.ToLower();
+        var numM = Regex.Match(raw, @"\((\d+)\)$");
+        string idx = numM.Success ? $"_{int.Parse(numM.Groups[1].Value):00}" : "";
+        foreach (var (match, prefix) in patterns)
+        {
+            if (lower == match || lower.StartsWith(match + " "))
+            {
+                Undo.RecordObject(go, "Rename");
+                go.name = prefix + (idx.Length > 0 ? idx : "");
+                count++;
+                return;
+            }
+        }
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -363,7 +531,7 @@ public static class VillaArchitectureFix
     public static void RunAll()
     {
         if (!EditorUtility.DisplayDialog("VoD Architecture Fix",
-            "Chạy toàn bộ:\n1. Jalousie windows\n2. Balcony railings\n3. Interior doors\n4. Gate & well\n5. Rename hierarchy\n6. Exterior decor\n\nĐảm bảo Chapter1 đang mở.",
+            "Chạy toàn bộ:\n1. Jalousie windows\n2. Balcony railings\n3. Interior doors\n4. Gate & well\n5. Rename hierarchy\n6. Exterior decor\n7. Perron steps\n8. Galerie slabs\n\nĐảm bảo Chapter1 đang mở.",
             "Run All", "Cancel")) return;
 
         PlaceWindows();
@@ -371,6 +539,8 @@ public static class VillaArchitectureFix
         PlaceDoors();
         PlaceGateAndWell();
         AddExteriorDecor();
+        BuildPerron();
+        BuildGalerie();
         RenameHierarchy();
     }
 
