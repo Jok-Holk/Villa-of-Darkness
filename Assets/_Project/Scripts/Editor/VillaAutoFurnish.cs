@@ -271,7 +271,17 @@ public static class VillaAutoFurnish
         Debug.Log("[AutoFurn] ✓ Window sills added");
     }
 
-    [MenuItem("VoD/Auto/0 — RUN ALL (materials + furniture + cornice + sills)")]
+    [MenuItem("VoD/Auto/6 — Façade Ornaments (pilasters + quoins + pediment)")]
+    static void AddFacadeOrnaments()
+    {
+        AddPilasters();
+        AddQuoins();
+        AddEntrancePediment();
+        MarkDirty();
+        Debug.Log("[AutoFurn] ✓ Façade ornaments complete");
+    }
+
+    [MenuItem("VoD/Auto/0 — RUN ALL (materials + furniture + cornice + sills + ornaments)")]
     static void RunAll()
     {
         CreateMaterials();
@@ -279,7 +289,158 @@ public static class VillaAutoFurnish
         PopulateCorridors();
         AddCornices();
         AddWindowSills();
+        AddFacadeOrnaments();
         Debug.Log("[AutoFurn] ══ All steps complete ══");
+    }
+
+    // ── Pilasters (trụ giả) — vertical strips flanking each window bay ────────
+    static void AddPilasters()
+    {
+        const float PW = 0.50f, PD = 0.15f;  // pilaster width (Z) and depth (X)
+        const float CAP_H = 0.40f, CAP_EXTRA = 0.12f; // capital height, extra width
+
+        // 5 pilasters on front face creating 4 window bays across 40m facade
+        float[] pilZ = { SIDE_Z_LO + 6f, SIDE_Z_LO + 14f, CENTER_Z, SIDE_Z_HI - 14f, SIDE_Z_HI - 6f };
+
+        // floor slabs: (bottomY, topY)
+        (float bot, float top)[] floors = { (32.05f, Y_GF_TOP), (39.30f, Y_1F_TOP) };
+
+        var root    = new GameObject("Struct_PilasterGroup");
+        var matWall = AssetDatabase.LoadAssetAtPath<Material>($"{M_PATH}/Mat_Wall_Ochre.mat");
+        var matCap  = AssetDatabase.LoadAssetAtPath<Material>($"{M_PATH}/Mat_Cornice_White.mat");
+        Undo.RegisterCreatedObjectUndo(root, "Pilasters");
+
+        foreach (var (bot, top) in floors)
+        {
+            float h  = top - bot;
+            float cy = bot + h * 0.5f;
+
+            foreach (float pz in pilZ)
+            {
+                // Shaft
+                var shaft = Slab(root.transform, $"Pil_F_{pz:0}_{bot:0}",
+                    new Vector3(FRONT_X - PD * 0.5f, cy, pz),
+                    new Vector3(PD, h, PW));
+                if (matWall != null) shaft.GetComponent<Renderer>().sharedMaterial = matWall;
+
+                // Capital (slightly wider + white)
+                var cap = Slab(root.transform, $"Cap_F_{pz:0}_{bot:0}",
+                    new Vector3(FRONT_X - (PD + CAP_EXTRA) * 0.5f, top - CAP_H * 0.5f, pz),
+                    new Vector3(PD + CAP_EXTRA, CAP_H, PW + CAP_EXTRA));
+                if (matCap != null) cap.GetComponent<Renderer>().sharedMaterial = matCap;
+            }
+        }
+    }
+
+    // ── Quoins (đá góc) — alternating stone blocks at all 4 corners ──────────
+    static void AddQuoins()
+    {
+        const float QD    = 0.35f;   // protrusion from wall
+        const float GTALL = 0.65f;   // tall quoin height
+        const float GSHRT = 0.40f;   // short quoin height
+        const float GAP   = 0.05f;   // gap between quoins
+
+        var root   = new GameObject("Struct_QuoinGroup");
+        var matQ   = AssetDatabase.LoadAssetAtPath<Material>($"{M_PATH}/Mat_Perron_Granite.mat");
+        Undo.RegisterCreatedObjectUndo(root, "Quoins");
+
+        // 4 corners: (face-X, face-Z, sign-X, sign-Z)
+        var corners = new (float fx, float fz, float sx, float sz, string tag)[]
+        {
+            (FRONT_X, SIDE_Z_LO, -1f, -1f, "FL"),
+            (FRONT_X, SIDE_Z_HI, -1f,  1f, "FH"),
+            (BACK_X,  SIDE_Z_LO,  1f, -1f, "BL"),
+            (BACK_X,  SIDE_Z_HI,  1f,  1f, "BH"),
+        };
+
+        float startY = 32.05f, endY = Y_1F_TOP;
+
+        foreach (var (fx, fz, sx, sz, tag) in corners)
+        {
+            float y    = startY;
+            bool  tall = true;
+            int   idx  = 0;
+            while (y < endY - 0.1f)
+            {
+                float qh   = tall ? GTALL : GSHRT;
+                float longW = tall ? 1.60f : 1.10f;
+                float shrtW = tall ? 1.10f : 1.60f;
+                float cy    = y + qh * 0.5f;
+
+                // Quoin on the X-facing wall
+                var qx = Slab(root.transform, $"Q_{tag}_X{idx}",
+                    new Vector3(fx + sx * QD * 0.5f, cy, fz),
+                    new Vector3(QD, qh, shrtW));
+                if (matQ != null) qx.GetComponent<Renderer>().sharedMaterial = matQ;
+
+                // Quoin on the Z-facing wall (interlocks with X piece)
+                var qz = Slab(root.transform, $"Q_{tag}_Z{idx}",
+                    new Vector3(fx, cy, fz + sz * QD * 0.5f),
+                    new Vector3(longW, qh, QD));
+                if (matQ != null) qz.GetComponent<Renderer>().sharedMaterial = matQ;
+
+                y   += qh + GAP;
+                tall = !tall;
+                idx++;
+            }
+        }
+    }
+
+    // ── Entrance pediment (đầu hồi cổng) — triangular gable above portal ─────
+    static void AddEntrancePediment()
+    {
+        const float PED_W = 7.5f;   // base width (Z)
+        const float PED_H = 2.4f;   // triangle height (Y)
+        const float PED_D = 0.28f;  // protrusion from wall (X)
+        float posX   = FRONT_X - PED_D * 0.5f;
+        float baseY  = Y_1F_TOP + 0.45f;  // sits atop 1F cornice
+        float half   = PED_W * 0.5f;
+
+        var root   = new GameObject("Struct_EntrancePediment");
+        var matW   = AssetDatabase.LoadAssetAtPath<Material>($"{M_PATH}/Mat_Cornice_White.mat");
+        Undo.RegisterCreatedObjectUndo(root, "Pediment");
+
+        // 1. Entablature — wide horizontal base of the pediment
+        Slab(root.transform, "Ped_Entablature",
+             new Vector3(posX, baseY + 0.18f, CENTER_Z),
+             new Vector3(PED_D, 0.35f, PED_W + 0.6f));
+
+        // 2. Left raking cornice (angled line from bottom-left to apex)
+        float rakeLen = Mathf.Sqrt(PED_H * PED_H + half * half);
+        var   leftDir = new Vector3(0f, PED_H, half).normalized;
+        var   leftMid = new Vector3(posX, baseY + PED_H * 0.5f, CENTER_Z - half * 0.5f);
+        var   lRake   = Slab(root.transform, "Ped_RakeLeft", leftMid, new Vector3(PED_D - 0.06f, 0.22f, rakeLen));
+        lRake.transform.rotation = Quaternion.FromToRotation(Vector3.forward, leftDir);
+
+        // 3. Right raking cornice (mirror)
+        var  rightDir = new Vector3(0f, PED_H, -half).normalized;
+        var  rightMid = new Vector3(posX, baseY + PED_H * 0.5f, CENTER_Z + half * 0.5f);
+        var  rRake    = Slab(root.transform, "Ped_RakeRight", rightMid, new Vector3(PED_D - 0.06f, 0.22f, rakeLen));
+        rRake.transform.rotation = Quaternion.FromToRotation(Vector3.forward, rightDir);
+
+        // 4. Tympanum fill — flat wall panel inside the triangle (wall-coloured)
+        var matTym = AssetDatabase.LoadAssetAtPath<Material>($"{M_PATH}/Mat_Wall_Ochre.mat");
+        var tym    = Slab(root.transform, "Ped_Tympanum",
+                          new Vector3(FRONT_X - 0.05f, baseY + PED_H * 0.45f, CENTER_Z),
+                          new Vector3(0.08f, PED_H * 0.9f, PED_W * 0.78f));
+        if (matTym != null) tym.GetComponent<Renderer>().sharedMaterial = matTym;
+
+        // 5. Apex finial — decorative urn (small cylinder stack)
+        Slab(root.transform, "Ped_Finial_Base",
+             new Vector3(posX, baseY + PED_H + 0.22f, CENTER_Z),
+             new Vector3(PED_D + 0.12f, 0.18f, 0.55f));
+        Slab(root.transform, "Ped_Finial_Neck",
+             new Vector3(posX, baseY + PED_H + 0.50f, CENTER_Z),
+             new Vector3(PED_D,         0.30f, 0.30f));
+        Slab(root.transform, "Ped_Finial_Cap",
+             new Vector3(posX, baseY + PED_H + 0.72f, CENTER_Z),
+             new Vector3(PED_D + 0.08f, 0.14f, 0.45f));
+
+        // Apply white to all except tympanum (already assigned above)
+        if (matW != null)
+            foreach (var r in root.GetComponentsInChildren<Renderer>())
+                if (r.sharedMaterial == null || r.sharedMaterial != matTym)
+                    r.sharedMaterial = matW;
     }
 
     // ════════════════════════════════════════════════════════════════
@@ -306,7 +467,7 @@ public static class VillaAutoFurnish
              new Vector3(VILLA_W, h, d));
     }
 
-    static void Slab(Transform parent, string name, Vector3 pos, Vector3 scale)
+    static GameObject Slab(Transform parent, string name, Vector3 pos, Vector3 scale)
     {
         var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
         go.name = name;
@@ -314,6 +475,7 @@ public static class VillaAutoFurnish
         go.transform.position   = pos;
         go.transform.localScale = scale;
         UnityEngine.Object.DestroyImmediate(go.GetComponent<BoxCollider>());
+        return go;
     }
 
     static Vector3 GetFloorCenter(GameObject room)
