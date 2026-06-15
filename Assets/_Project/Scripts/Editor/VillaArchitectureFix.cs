@@ -197,6 +197,14 @@ public static class VillaArchitectureFix
     }
 
     // ─────────────────────────────────────────────────────────────────────────
+    [MenuItem("VoD/Villa/6b - Clear and Redo Exterior Decor")]
+    public static void ClearAndRedoExteriorDecor()
+    {
+        var old = GameObject.Find("_Exterior_Decor");
+        if (old != null) { Undo.DestroyObjectImmediate(old); }
+        AddExteriorDecor();
+    }
+
     [MenuItem("VoD/Villa/6 - Add Exterior Decor")]
     public static void AddExteriorDecor()
     {
@@ -228,10 +236,6 @@ public static class VillaArchitectureFix
         // ── Chậu hoa sân trước (flower pots at entrance corners) ──────────
         AddFlowerPot(group, 25f, Y_GROUND, 21f, "FlowerPot_L");
         AddFlowerPot(group, 33f, Y_GROUND, 21f, "FlowerPot_R");
-
-        // ── Tường rào thấp (low boundary wall markers) ────────────────────
-        AddBoundaryWall(group, 8f,   Y_GROUND, 10f,  6f, 18f, "BoundaryWall_FL");
-        AddBoundaryWall(group, 48f,  Y_GROUND, 10f,  6f, 18f, "BoundaryWall_FR");
 
         Debug.Log("[VoD] Exterior decor placed.");
         MarkDirty();
@@ -279,7 +283,8 @@ public static class VillaArchitectureFix
             var go = (GameObject)PrefabUtility.InstantiatePrefab(prefab);
             go.name = name;
             go.transform.position = new Vector3(x, y, z);
-            go.transform.localScale = Vector3.one * (height * 0.4f);
+            // Kenney models native height ~1.3m at scale 1; multiply to reach target height
+            go.transform.localScale = Vector3.one * (height * 1.2f);
             go.transform.SetParent(parent.transform, true);
             Undo.RegisterCreatedObjectUndo(go, name);
             return;
@@ -324,16 +329,6 @@ public static class VillaArchitectureFix
         Undo.RegisterCreatedObjectUndo(go, name);
     }
 
-    static void AddBoundaryWall(GameObject parent, float x, float y, float z,
-                                 float width, float depth, string name)
-    {
-        var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        go.name = name;
-        go.transform.position = new Vector3(x, y + 0.5f, z + depth * 0.5f);
-        go.transform.localScale = new Vector3(width, 1.0f, depth);
-        go.transform.SetParent(parent.transform, true);
-        Undo.RegisterCreatedObjectUndo(go, name);
-    }
 
     // ─────────────────────────────────────────────────────────────────────────
     [MenuItem("VoD/Villa/5 - Rename Hierarchy")]
