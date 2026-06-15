@@ -8,18 +8,19 @@ using System.Collections.Generic;
 /// </summary>
 public static class VillaArchitectureFix
 {
-    // ─── Building constants (đo THẬT từ VillaGeometryScan, 2026-06-15) ─────────
+    // ─── Building constants (đo THẬT + Jok xác nhận hướng, 2026-06-15) ────────
     // Footprint GroundFloor: X[10.7 .. 52.8]  Z[8.0 .. 47.2]  tâm X=31.7 Z=27.6
-    // Front facade Z≈7.78 | Back Z≈47.56 | Left X≈10.7 | Right X≈52.8
-    // Khối nhà ĐỐI XỨNG quanh trục giữa X=31.7 → mọi thứ phải mirror quanh đây.
+    // MẶT TIỀN THẬT = mặt -X (X≈10.7) — có ban công/loggia + lối vào dựng sẵn,
+    //   ĐỐI DIỆN nhà bếp phụ + giếng (ở +X). Trục nhà chạy dọc X.
+    //   → cửa mặt tiền/sau phân bố theo Z, đối xứng quanh CENTER_Z=27.6.
 
-    const float FRONT_Z    = 7.78f;   // mặt tiền (outer face), cửa quay -Z ra ngoài
-    const float BACK_Z     = 47.56f;  // mặt sau, cửa quay +Z
-    const float LEFT_X     = 10.7f;   // mặt trái, cửa quay -X
-    const float RIGHT_X    = 52.8f;   // mặt phải, cửa quay +X
+    const float FRONT_X    = 10.7f;   // MẶT TIỀN (-X), cửa quay -X (rotY=90)
+    const float BACK_X     = 52.8f;   // mặt sau (+X, phía bếp/giếng), quay +X (rotY=270)
+    const float SIDE_ZLOW  = 7.78f;   // hông -Z (rotY=180)
+    const float SIDE_ZHIGH = 47.56f;  // hông +Z (rotY=0)
 
-    const float CENTER_X   = 31.7f;   // trục đối xứng chính (front/back)
-    const float CENTER_Z   = 27.6f;   // trục đối xứng cạnh (left/right)
+    const float CENTER_X   = 31.7f;   // trục đối xứng hai hông
+    const float CENTER_Z   = 27.6f;   // trục đối xứng MẶT TIỀN/SAU (cửa phân bố theo Z)
 
     // Đặt cửa hơi ngoài mặt tường để mặt kính lộ ra (flush + 0.3m)
     const float FACE_OFFSET = 0.3f;
@@ -29,26 +30,19 @@ public static class VillaArchitectureFix
     const float Y_1ST      = 40.0f;
     const float Y_2ND      = 47.5f;
 
-    // Window center height above floor
-    const float WIN_HEIGHT_OFFSET = 2.0f;   // center of window = floor + 2m
-
-    // Balcony front railing (ban công nhô ngay trước mặt tiền)
+    // Balcony/galerie front railing Y (mặt tiền -X)
     const float BALCONY_RAILING_Y_1F  = 40.8f;
     const float BALCONY_RAILING_Y_2F  = 48.3f;
     const float RAILING_STEP = 2.0f;        // 1 piece mỗi 2m
 
-    // Main entrance — trục giữa nhà, KHÔNG đặt cửa sổ ở đây
-    const float ENTRANCE_X = CENTER_X;
-    const float ENTRANCE_CLEAR = 3.5f; // clear 3.5m hai bên cửa chính
+    // Cửa chính — giữa mặt tiền -X (Z=CENTER_Z). KHÔNG đặt cửa sổ ở bay này.
+    const float ENTRANCE_Z = CENTER_Z;
 
     // ─── Layout đối xứng theo PHÒNG (villa, không phải chung cư) ──────────────
-    // Mật độ thưa, nhịp ~6m, mỗi bay = 1 phòng. Thẳng hàng dọc cả 3 tầng.
-    // Mặt tiền: 3 bay mỗi bên + cửa chính giữa = 6 cửa/tầng (đôi trong cùng ôm cửa chính)
+    // Mặt tiền/sau (rộng ~39m theo Z): 3 bay mỗi bên + bay giữa (cửa chính/ban công)
     static readonly float[] FRONT_OFFSETS = { 5f, 11f, 17f };
-    // Cạnh: 3 cửa mỗi cạnh (gồm bay giữa quanh Z tâm)
-    static readonly float[] SIDE_OFFSETS  = { 0f, 11f };
-    // Mặt sau (hướng phụ/gia nhân): 4 cửa, không có bay giữa
-    static readonly float[] BACK_OFFSETS  = { 8f, 17f };
+    // Hông (rộng ~42m theo X): 4 cửa/tầng
+    static readonly float[] SIDE_OFFSETS  = { 8f, 16f };
 
     // Asset paths
     const string ARCH   = "Assets/_Project/Models/Props/Architecture/";
@@ -79,15 +73,15 @@ public static class VillaArchitectureFix
         if (existing != null) Undo.DestroyObjectImmediate(existing);
         var group = GetOrCreate("_Windows_Jalousie", null);
 
-        float frontZ = FRONT_Z - FACE_OFFSET;   // ra ngoài mặt tiền
-        float backZ  = BACK_Z  + FACE_OFFSET;
-        float leftX  = LEFT_X  - FACE_OFFSET;
-        float rightX = RIGHT_X + FACE_OFFSET;
+        float frontX = FRONT_X - FACE_OFFSET;    // ra ngoài mặt tiền -X
+        float backX  = BACK_X  + FACE_OFFSET;
+        float sideZA = SIDE_ZLOW  - FACE_OFFSET; // hông -Z
+        float sideZB = SIDE_ZHIGH + FACE_OFFSET; // hông +Z
 
-        // Cửa sổ X đối xứng quanh CENTER_X, dùng CHUNG cho cả 3 tầng → thẳng hàng dọc
-        var frontX = SymX(FRONT_OFFSETS);
-        var backX  = SymX(BACK_OFFSETS);
-        var sideZ  = Sym(CENTER_Z, SIDE_OFFSETS);
+        // Mặt tiền/sau: cửa phân bố theo Z, đối xứng quanh CENTER_Z, bỏ bay giữa (cửa chính)
+        var frontZs = Sym(CENTER_Z, FRONT_OFFSETS);
+        // Hông: cửa phân bố theo X, đối xứng quanh CENTER_X
+        var sideXs  = Sym(CENTER_X, SIDE_OFFSETS);
 
         // Tầng trệt = cửa kính Pháp cao (ra galerie); tầng trên = jalousie chuẩn
         var floors = new (string tag, float y, Vector3 scale)[] {
@@ -98,23 +92,23 @@ public static class VillaArchitectureFix
 
         foreach (var (tag, y, scale) in floors)
         {
-            // Mặt tiền (quay -Z) — bỏ bay trục giữa (cửa chính)
-            foreach (float wx in frontX)
-                PlaceWindow(group, wx, y, frontZ, Quaternion.Euler(0, 180, 0), $"Win_{tag}_Front_{(int)wx}", scale);
+            // Mặt tiền (-X, quay -X) — bỏ bay trục giữa (cửa chính + ban công dựng sẵn)
+            foreach (float z in frontZs)
+                PlaceWindow(group, frontX, y, z, Quaternion.Euler(0, 90, 0), $"Win_{tag}_Front_{(int)z}", scale);
 
-            // Mặt sau (quay +Z)
-            foreach (float bx in backX)
-                PlaceWindow(group, bx, y, backZ, Quaternion.Euler(0, 0, 0), $"Win_{tag}_Back_{(int)bx}", scale);
+            // Mặt sau (+X, quay +X)
+            foreach (float z in frontZs)
+                PlaceWindow(group, backX, y, z, Quaternion.Euler(0, -90, 0), $"Win_{tag}_Back_{(int)z}", scale);
 
-            // Cạnh trái (quay -X) / phải (quay +X) — đối xứng nhau
-            foreach (float sz in sideZ)
+            // Hông -Z (quay -Z) / hông +Z (quay +Z) — đối xứng nhau
+            foreach (float x in sideXs)
             {
-                PlaceWindow(group, leftX,  y, sz, Quaternion.Euler(0, 90, 0),  $"Win_{tag}_Left_{(int)sz}", scale);
-                PlaceWindow(group, rightX, y, sz, Quaternion.Euler(0, -90, 0), $"Win_{tag}_Right_{(int)sz}", scale);
+                PlaceWindow(group, x, y, sideZA, Quaternion.Euler(0, 180, 0), $"Win_{tag}_SideA_{(int)x}", scale);
+                PlaceWindow(group, x, y, sideZB, Quaternion.Euler(0, 0, 0),   $"Win_{tag}_SideB_{(int)x}", scale);
             }
         }
 
-        Debug.Log($"[VoD] Placed {group.transform.childCount} windows (room-based bays, GF French doors).");
+        Debug.Log($"[VoD] Placed {group.transform.childCount} windows (front=-X, room-based bays).");
         MarkDirty();
     }
 
@@ -132,9 +126,6 @@ public static class VillaArchitectureFix
         return r;
     }
 
-    /// <summary>Cửa sổ mặt tiền/sau đối xứng quanh CENTER_X.</summary>
-    static List<float> SymX(float[] offsets) => Sym(CENTER_X, offsets);
-
     // ─────────────────────────────────────────────────────────────────────────
     [MenuItem("VoD/Villa/2 - Fix Balcony Railings")]
     public static void PlaceRailings()
@@ -143,21 +134,39 @@ public static class VillaArchitectureFix
         if (existing != null) Undo.DestroyObjectImmediate(existing);
         var group = GetOrCreate("_Railings_Balcony", null);
 
-        // Ban công nhô trước mặt tiền (Z hơi ngoài tường), đối xứng quanh CENTER_X.
-        float railZ = FRONT_Z - 0.5f;
-        float xStart = CENTER_X - 19.5f;  // ≈12.2
-        float xEnd   = CENTER_X + 19.5f;  // ≈51.2
+        // Galerie/ban công chạy dọc mặt tiền -X (theo trục Z), đối xứng quanh CENTER_Z.
+        float railX  = FRONT_X - 0.5f;     // hơi ngoài mặt tiền
+        float zStart = CENTER_Z - 18f;     // ≈9.6
+        float zEnd   = CENTER_Z + 18f;     // ≈45.6
 
-        // 1F front railing
-        PlaceRailingRow(group, xStart, xEnd, BALCONY_RAILING_Y_1F, railZ,
-                        Quaternion.Euler(0, 90, 0), "Railing_1F_Front");
+        // 1F front railing (quay -X)
+        PlaceRailingRowZ(group, zStart, zEnd, BALCONY_RAILING_Y_1F, railX,
+                         Quaternion.Euler(0, 0, 0), "Railing_1F_Front");
 
         // 2F front railing
-        PlaceRailingRow(group, xStart, xEnd, BALCONY_RAILING_Y_2F, railZ,
-                        Quaternion.Euler(0, 90, 0), "Railing_2F_Front");
+        PlaceRailingRowZ(group, zStart, zEnd, BALCONY_RAILING_Y_2F, railX,
+                         Quaternion.Euler(0, 0, 0), "Railing_2F_Front");
 
-        Debug.Log($"[VoD] Placed {group.transform.childCount} railing sections (symmetric front balcony).");
+        Debug.Log($"[VoD] Placed {group.transform.childCount} railing sections (front -X galerie).");
         MarkDirty();
+    }
+
+    /// <summary>Đặt row railing dọc trục Z (cho mặt tiền -X).</summary>
+    static void PlaceRailingRowZ(GameObject parent, float zStart, float zEnd,
+                                  float y, float x, Quaternion rot, string prefix)
+    {
+        var asset = AssetDatabase.LoadAssetAtPath<GameObject>(ARCH + "Arch_Railing_Balcony.glb");
+        if (asset == null) { Debug.LogWarning("Arch_Railing_Balcony.glb not found"); return; }
+        int i = 0;
+        for (float z = zStart; z <= zEnd + 0.1f; z += RAILING_STEP, i++)
+        {
+            var go = (GameObject)PrefabUtility.InstantiatePrefab(asset);
+            go.name = $"{prefix}_{i:00}";
+            go.transform.position = new Vector3(x, y, z);
+            go.transform.rotation = rot;
+            go.transform.SetParent(parent.transform, true);
+            Undo.RegisterCreatedObjectUndo(go, go.name);
+        }
     }
 
     // ─────────────────────────────────────────────────────────────────────────
@@ -168,9 +177,9 @@ public static class VillaArchitectureFix
         if (existing != null) Undo.DestroyObjectImmediate(existing);
         var group = GetOrCreate("_Doors_Interior", null);
 
-        // Main entrance — trục giữa nhà thật (X=31.7), ngay mặt tiền (Z≈7.78)
-        PlaceDoor(group, ENTRANCE_X, Y_GROUND, FRONT_Z - FACE_OFFSET,
-                  Quaternion.Euler(0, 180, 0), "Door_MainEntrance",
+        // Main entrance — giữa mặt tiền -X (Z=27.6), cửa quay -X
+        PlaceDoor(group, FRONT_X - FACE_OFFSET, Y_GROUND, ENTRANCE_Z,
+                  Quaternion.Euler(0, 90, 0), "Door_MainEntrance",
                   ARCH + "Arch_Door_Interior.glb", isMain: true);
 
         // Ground floor interior doors (between rooms based on room positions)
@@ -203,23 +212,23 @@ public static class VillaArchitectureFix
         if (existing != null) Undo.DestroyObjectImmediate(existing);
         var group = GetOrCreate("_Exterior_Arch", null);
 
-        // Cổng trước — trên trục giữa, sát mép đất/hàng rào (Z≈0.8), mở vào sân
+        // Cổng trước — sân -X, trên trục cửa chính (Z=27.6), mở theo hướng vào +X
         var gate = LoadAndPlace(ARCH + "Arch_Gate_Colonial.glb", "Gate_Colonial_Main",
-                                new Vector3(CENTER_X, 32.5f, 0.8f), Quaternion.Euler(0, 0, 0), Vector3.one);
+                                new Vector3(3f, 32.5f, CENTER_Z), Quaternion.Euler(0, 90, 0), Vector3.one);
         if (gate) gate.transform.SetParent(group.transform, true);
 
-        // Well (there's already a "well" at (58,32,27) — place model over it)
+        // Giếng — phía +X (sân sau/gia nhân), giữ nguyên vị trí có sẵn
         var well = LoadAndPlace(ARCH + "Arch_Well_Stone.glb", "Well_Stone_Model",
                                 new Vector3(58.0f, 32.5f, 27.0f), Quaternion.Euler(0, 45, 0), Vector3.one);
         if (well) well.transform.SetParent(group.transform, true);
 
-        // Rèm rách hai bên sảnh — ngay sau cửa chính (Z≈8.6), đối xứng quanh trục giữa
+        // Rèm rách hai bên sảnh — ngay sau cửa chính -X, đối xứng quanh trục Z giữa
         var curtain1 = LoadAndPlace(ARCH + "Prop_Curtain_Torn.glb", "Curtain_Entrance_L",
-                                    new Vector3(CENTER_X - 4f, 35f, FRONT_Z + 0.8f), Quaternion.Euler(0, 0, 0), Vector3.one);
+                                    new Vector3(FRONT_X + 0.8f, 35f, CENTER_Z - 4f), Quaternion.Euler(0, 90, 0), Vector3.one);
         if (curtain1) curtain1.transform.SetParent(group.transform, true);
 
         var curtain2 = LoadAndPlace(ARCH + "Prop_Curtain_Torn.glb", "Curtain_Entrance_R",
-                                    new Vector3(CENTER_X + 4f, 35f, FRONT_Z + 0.8f), Quaternion.Euler(0, 0, 0), Vector3.one);
+                                    new Vector3(FRONT_X + 0.8f, 35f, CENTER_Z + 4f), Quaternion.Euler(0, 90, 0), Vector3.one);
         if (curtain2) curtain2.transform.SetParent(group.transform, true);
 
         Debug.Log("[VoD] Gate, well, exterior elements placed.");
@@ -240,126 +249,31 @@ public static class VillaArchitectureFix
     {
         var existing = GameObject.Find("_Exterior_Decor");
         if (existing != null) Undo.DestroyObjectImmediate(existing);
+        // Dọn luôn các placeholder cũ (perron/đèn/chậu/lối đá) nếu còn sót
+        var oldPerron = GameObject.Find("_Perron");
+        if (oldPerron != null) Undo.DestroyObjectImmediate(oldPerron);
         var group = GetOrCreate("_Exterior_Decor", null);
 
-        // Sân trước chỉ sâu ~7.7m (hàng rào Z≈0 → mặt tiền Z=7.78).
-        // Bố cục ĐỐI XỨNG trên trục giữa X=31.7: cổng → lối đá → perron → cửa.
+        // CHỈ dùng model GLB thật (cây/bụi Kenney). Không còn primitive placeholder.
+        // Mặt tiền = -X; bố cục đối xứng quanh trục cửa CENTER_Z=27.6.
 
-        // ── Lối đá trung tâm (từ cổng Z≈1 đến chân perron Z≈5.2) ──────────
-        for (int si = 0; si < 5; si++)
-        {
-            float sz = 1.6f + si * 0.9f;   // Z 1.6 → 5.2 dọc trục giữa
-            AddSteppingStone(group, CENTER_X, Y_GROUND, sz, $"PathStone_{si:00}");
-        }
+        // ── Cây cổ thụ hai góc sân trước -X (đối xứng quanh Z=27.6) ──────
+        AddVegetation(group, 3.5f, Y_GROUND, CENTER_Z - 15f, 1.4f, 4.5f, "Tree_FrontL");
+        AddVegetation(group, 3.5f, Y_GROUND, CENTER_Z + 15f, 1.4f, 4.5f, "Tree_FrontR");
 
-        // ── Đèn lồng cột hai bên đầu lối lên perron (đối xứng) ───────────
-        AddLanternPillar(group, CENTER_X - 3f, Y_GROUND, 5.2f, "Lantern_L");
-        AddLanternPillar(group, CENTER_X + 3f, Y_GROUND, 5.2f, "Lantern_R");
+        // ── Bụi cây nền móng dọc mặt tiền -X (đối xứng) ──────────────────
+        AddVegetation(group, FRONT_X - 1.2f, Y_GROUND, CENTER_Z - 12f, 0.9f, 1.6f, "Bush_FL");
+        AddVegetation(group, FRONT_X - 1.2f, Y_GROUND, CENTER_Z + 12f, 0.9f, 1.6f, "Bush_FR");
 
-        // ── Chậu hoa hai bên cửa chính, trên thềm (đối xứng) ─────────────
-        AddFlowerPot(group, CENTER_X - 2.3f, Y_GROUND, 7.1f, "FlowerPot_L");
-        AddFlowerPot(group, CENTER_X + 2.3f, Y_GROUND, 7.1f, "FlowerPot_R");
+        // ── Cây bóng mát hai hông (đối xứng quanh tâm Z) ─────────────────
+        AddVegetation(group, CENTER_X, Y_GROUND, SIDE_ZLOW  - 4f, 1.3f, 4.0f, "Tree_SideA");
+        AddVegetation(group, CENTER_X, Y_GROUND, SIDE_ZHIGH + 4f, 1.3f, 4.0f, "Tree_SideB");
 
-        // ── Cây cổ thụ hai góc sân trước (đối xứng, tránh trục lối đi) ────
-        AddVegetation(group, CENTER_X - 17f, Y_GROUND, 2.0f, 1.4f, 4.5f, "Tree_FrontL");
-        AddVegetation(group, CENTER_X + 17f, Y_GROUND, 2.0f, 1.4f, 4.5f, "Tree_FrontR");
-
-        // ── Bụi cây nền móng hai bên mặt tiền (đối xứng) ─────────────────
-        AddVegetation(group, CENTER_X - 14f, Y_GROUND, 7.3f, 0.9f, 1.6f, "Bush_FL");
-        AddVegetation(group, CENTER_X + 14f, Y_GROUND, 7.3f, 0.9f, 1.6f, "Bush_FR");
-
-        // ── Cây bóng mát hai cạnh hông (đối xứng quanh tâm Z) ────────────
-        AddVegetation(group, LEFT_X - 4f,  Y_GROUND, CENTER_Z - 8f, 1.3f, 4.0f, "Tree_SideL");
-        AddVegetation(group, RIGHT_X + 4f, Y_GROUND, CENTER_Z - 8f, 1.3f, 4.0f, "Tree_SideR");
-
-        Debug.Log("[VoD] Exterior decor placed (front-yard, symmetric).");
+        Debug.Log("[VoD] Exterior decor placed (GLB only, front=-X, symmetric).");
         MarkDirty();
     }
 
-    // ─────────────────────────────────────────────────────────────────────────
-    [MenuItem("VoD/Villa/7 - Build Perron (Entrance Portico)")]
-    public static void BuildPerron()
-    {
-        var existing = GameObject.Find("_Perron");
-        if (existing != null) Undo.DestroyObjectImmediate(existing);
-        var group = GetOrCreate("_Perron", null);
-
-        float doorZ     = FRONT_Z;          // 7.78 — mép thềm sát cửa
-        float frontEdge = FRONT_Z - 2.2f;   // 5.58 — mép ngoài thềm
-        float w         = 5.5f;             // bề ngang thềm/portico
-        float midZ      = (doorZ + frontEdge) / 2f;
-
-        // Thềm (landing) phẳng trước cửa
-        AddBox(group, "Perron_Landing", CENTER_X, Y_GROUND - 0.05f, midZ,
-               w, 0.2f, doorZ - frontEdge);
-
-        // 3 bậc tam cấp xuống sân
-        for (int i = 0; i < 3; i++)
-        {
-            float z = frontEdge - 0.35f * i - 0.2f;
-            float y = Y_GROUND - 0.18f * (i + 1);
-            AddBox(group, $"Perron_Step_{i}", CENTER_X, y, z, w, 0.18f, 0.42f);
-        }
-
-        // 2 cột trụ đỡ mái che (portico) — đối xứng
-        float colH = 4.2f;
-        AddColumn(group, "Perron_Col_L", CENTER_X - w / 2f + 0.5f, Y_GROUND, frontEdge + 0.4f, colH);
-        AddColumn(group, "Perron_Col_R", CENTER_X + w / 2f - 0.5f, Y_GROUND, frontEdge + 0.4f, colH);
-
-        // Mái che portico — tấm phẳng trên đầu cột, nhô ra che bậc
-        AddBox(group, "Perron_Roof", CENTER_X, Y_GROUND + colH + 0.15f, midZ,
-               w + 0.6f, 0.3f, (doorZ - frontEdge) + 1.2f);
-
-        Debug.Log("[VoD] Perron (entrance portico) built.");
-        MarkDirty();
-    }
-
-    // ── Exterior primitive builders ───────────────────────────────────────────
-
-    static void AddBox(GameObject parent, string name, float x, float y, float z,
-                        float sx, float sy, float sz)
-    {
-        var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        go.name = name;
-        go.transform.position = new Vector3(x, y, z);
-        go.transform.localScale = new Vector3(sx, sy, sz);
-        go.transform.SetParent(parent.transform, true);
-        Undo.RegisterCreatedObjectUndo(go, name);
-    }
-
-    static void AddColumn(GameObject parent, string name, float x, float y, float z, float height)
-    {
-        var go = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-        go.name = name;
-        go.transform.position = new Vector3(x, y + height / 2f, z);
-        go.transform.localScale = new Vector3(0.45f, height / 2f, 0.45f); // cylinder cao = 2×scaleY
-        go.transform.SetParent(parent.transform, true);
-        Undo.RegisterCreatedObjectUndo(go, name);
-    }
-
-    static void AddLanternPillar(GameObject parent, float x, float y, float z, string name)
-    {
-        var pivot = new GameObject(name);
-        pivot.transform.position = new Vector3(x, y, z);
-        pivot.transform.SetParent(parent.transform, true);
-        Undo.RegisterCreatedObjectUndo(pivot, name);
-
-        // Base pillar — stone cube 0.4×1.2m
-        var pillar = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        pillar.name = "Pillar";
-        pillar.transform.SetParent(pivot.transform, false);
-        pillar.transform.localPosition = new Vector3(0, 0.6f, 0);
-        pillar.transform.localScale = new Vector3(0.4f, 1.2f, 0.4f);
-        Undo.RegisterCreatedObjectUndo(pillar, "Pillar");
-
-        // Lantern cap — smaller cube on top
-        var cap = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        cap.name = "LanternCap";
-        cap.transform.SetParent(pivot.transform, false);
-        cap.transform.localPosition = new Vector3(0, 1.4f, 0);
-        cap.transform.localScale = new Vector3(0.3f, 0.3f, 0.3f);
-        Undo.RegisterCreatedObjectUndo(cap, "LanternCap");
-    }
+    // ── Exterior model placer (chỉ GLB thật, không primitive) ─────────────────
 
     static void AddVegetation(GameObject parent, float x, float y, float z,
                                float radius, float height, string name)
@@ -401,26 +315,6 @@ public static class VillaArchitectureFix
             trunk.transform.SetParent(parent.transform, true);
             Undo.RegisterCreatedObjectUndo(trunk, name + "_Trunk");
         }
-    }
-
-    static void AddSteppingStone(GameObject parent, float x, float y, float z, string name)
-    {
-        var go = GameObject.CreatePrimitive(PrimitiveType.Cube);
-        go.name = name;
-        go.transform.position = new Vector3(x, y + 0.05f, z);
-        go.transform.localScale = new Vector3(0.8f, 0.1f, 0.6f);
-        go.transform.SetParent(parent.transform, true);
-        Undo.RegisterCreatedObjectUndo(go, name);
-    }
-
-    static void AddFlowerPot(GameObject parent, float x, float y, float z, string name)
-    {
-        var go = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-        go.name = name;
-        go.transform.position = new Vector3(x, y + 0.3f, z);
-        go.transform.localScale = new Vector3(0.4f, 0.3f, 0.4f);
-        go.transform.SetParent(parent.transform, true);
-        Undo.RegisterCreatedObjectUndo(go, name);
     }
 
 
@@ -476,7 +370,6 @@ public static class VillaArchitectureFix
         PlaceRailings();
         PlaceDoors();
         PlaceGateAndWell();
-        BuildPerron();
         AddExteriorDecor();
         RenameHierarchy();
     }
