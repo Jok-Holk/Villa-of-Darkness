@@ -36,6 +36,7 @@ public class GazeTrigger : MonoBehaviour
                 if (_gazeTimer >= _settings.gazeThreshold)
                 {
                     OnGazeComplete?.Invoke();
+                    GameManager.Instance?.PlayerDead();
                     _gazeTimer = 0f; 
                 }
                 return;
@@ -44,4 +45,5 @@ public class GazeTrigger : MonoBehaviour
 
         _gazeTimer = 0f;
     }
+    
 }
