@@ -39,7 +39,11 @@ public class GameManager : MonoBehaviour
         _deathScreenUI = FindFirstObjectByType<DeathScreenUI>(FindObjectsInactive.Include);
         Debug.Log($"[GameManager] Scene loaded: {scene.name} | DeathScreenUI: {(_deathScreenUI != null ? "OK" : "NULL")}");
     }
-
+public void PlayerDead()
+    {
+        // Gọi lại hàm gốc ở dưới với tên mặc định
+        PlayerDead("Minh Khoa", "1979 – 2000");
+    }
     public void PlayerDead(string characterName = "Minh Khoa", string characterYears = "1979 – 2000")
     {
         Debug.Log("Player died");
