@@ -102,6 +102,10 @@ InitTestScene*.unity*
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
 
+# Team test scenes — không commit lên main
+Assets/_Project/Scenes/Chapter1_Test_*.unity
+Assets/_Project/Scenes/Chapter1_Test_*.unity.meta
+
 # Local project docs (không push lên public)
 *.md
 !README.md
