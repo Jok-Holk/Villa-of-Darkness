@@ -77,9 +77,9 @@ public static class VoD_OrganizeMaterials
                 string srcPath = $"{MAT_ROOT}/{name}.mat";
                 string dstPath = $"{MAT_ROOT}/{sub}/{name}.mat";
 
-                if (!System.IO.File.Exists(srcPath.Replace("Assets/", Application.dataPath + "/../")))
+                bool srcExists = AssetDatabase.LoadAssetAtPath<Material>(srcPath) != null;
+                if (!srcExists)
                 {
-                    // Có thể đã nằm ở subfolder rồi
                     if (AssetDatabase.LoadAssetAtPath<Material>(dstPath) != null)
                     { log.AppendLine($"  SKIP (already in {sub}/): {name}"); skipped++; }
                     else
