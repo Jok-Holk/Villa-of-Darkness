@@ -267,9 +267,20 @@ public static class VoD_FinalPatch
     {
         var cache = new Dictionary<string, Material>();
         Material GetMat(string name) {
-            string path = MAT_BASE + name + ".mat";
-            if (!cache.TryGetValue(path, out var m))
-                cache[path] = m = AssetDatabase.LoadAssetAtPath<Material>(path);
+            if (!cache.TryGetValue(name, out var m))
+            {
+                // Thử direct path trước
+                m = AssetDatabase.LoadAssetAtPath<Material>(MAT_BASE + name + ".mat");
+                // Fallback: tìm trong subfolders (sau khi VoD_OrganizeMaterials chạy)
+                if (m == null) {
+                    var guids = AssetDatabase.FindAssets($"t:Material {name}",
+                        new[] { "Assets/_Project/Materials" });
+                    if (guids.Length > 0)
+                        m = AssetDatabase.LoadAssetAtPath<Material>(
+                            AssetDatabase.GUIDToAssetPath(guids[0]));
+                }
+                cache[name] = m;
+            }
             return m;
         }
 
@@ -448,6 +459,7 @@ public static class VoD_FinalPatch
 
         foreach (var go in all)
         {
+            if (go == null) continue; // bị destroy khi parent tree xóa trước đó
             string n = go.name;
             bool isPlaceholder =
                 (n.StartsWith("driveway_") && (n.Contains("_L_") || n.Contains("_R_"))) ||
@@ -476,8 +488,19 @@ public static class VoD_FinalPatch
     }
 
     // ── 5c. Place PolyHaven nature + horror props ─────────────────────────────
-    static void DoPlaceModels()
+    static void DoPlaceModels(bool force = false)
     {
+        // force=true: xóa _Landscape_Plants cũ để replant mới hoàn toàn
+        if (force)
+        {
+            var oldLand = GameObject.Find("_Landscape_Plants");
+            if (oldLand != null)
+            {
+                Object.DestroyImmediate(oldLand);
+                Debug.Log("[VoD] _Landscape_Plants cleared for force replant.");
+            }
+        }
+
         // Thu thập tên đã tồn tại để tránh duplicate
         var existing = new HashSet<string>(
             Object.FindObjectsByType<GameObject>(FindObjectsInactive.Include, FindObjectsSortMode.None)
@@ -528,6 +551,44 @@ public static class VoD_FinalPatch
         }
 
         Debug.Log($"[VoD] Models placed={placed}, skipped(already exist)={skipped}, missing assets={missing}.");
+    }
+
+    // ── CLEANUP MENU ─────────────────────────────────────────────────────────────
+
+    [MenuItem("VoD/Cleanup/1 – Remove All Placeholder Trees (safe)")]
+    public static void ForceRemoveTrees()
+    {
+        var scene = EditorSceneManager.GetActiveScene();
+        if (!scene.path.Contains("Chapter1"))
+        { Debug.LogError("[VoD] Mở Chapter1.unity trước."); return; }
+        DoRemovePlaceholderTrees();
+        EditorSceneManager.MarkAllScenesDirty();
+        EditorSceneManager.SaveScene(scene);
+        Debug.Log("[VoD] Placeholder trees removed.");
+    }
+
+    [MenuItem("VoD/Cleanup/★ Force Replant (xóa cũ + đặt mới)")]
+    public static void ForceReplant()
+    {
+        var scene = EditorSceneManager.GetActiveScene();
+        if (!scene.path.Contains("Chapter1"))
+        { Debug.LogError("[VoD] Mở Chapter1.unity trước."); return; }
+
+        try
+        {
+            EditorUtility.DisplayProgressBar("VoD Force Replant", "Removing placeholder trees…", 0.2f);
+            DoRemovePlaceholderTrees();
+            EditorUtility.DisplayProgressBar("VoD Force Replant", "Clearing old landscape group…", 0.4f);
+            EditorUtility.DisplayProgressBar("VoD Force Replant", "Placing fresh props…", 0.6f);
+            DoPlaceModels(force: true);
+            EditorUtility.DisplayProgressBar("VoD Force Replant", "Saving…", 0.9f);
+            EditorSceneManager.MarkAllScenesDirty();
+            EditorSceneManager.SaveScene(scene);
+            AssetDatabase.Refresh();
+        }
+        finally { EditorUtility.ClearProgressBar(); }
+
+        Debug.Log("[VoD] ★ Force Replant xong — cây chết đặt mới, placeholder đã xóa.");
     }
 
     // ── 6. NavMesh — Unity 6.3 dùng NavMeshSurface (com.unity.ai.navigation 2.x) ─
