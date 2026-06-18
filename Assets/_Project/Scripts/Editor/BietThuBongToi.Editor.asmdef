@@ -4,6 +4,7 @@
     "references": [
         "BietThuBongToi.Runtime",
         "Unity.AI.Navigation",
+        "Unity.RenderPipelines.Universal.Runtime",
         "Unity.Formats.Fbx.Editor",
         "glTFast",
         "glTFast.Export"

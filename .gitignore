@@ -67,6 +67,14 @@ CrashDumps/
 Assets/_Recovery/
 Assets/_Recovery.meta
 
+# Raw download archives — không cần commit
+*.zip
+*.blend
+
+# Blender export traces
+_BlenderExport/
+Export/
+
 # Mono auto generated files
 mono_crash.*
 
