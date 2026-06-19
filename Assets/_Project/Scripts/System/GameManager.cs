@@ -40,6 +40,14 @@ public class GameManager : MonoBehaviour
         Debug.Log($"[GameManager] Scene loaded: {scene.name} | DeathScreenUI: {(_deathScreenUI != null ? "OK" : "NULL")}");
     }
 
+<<<<<<< HEAD
+=======
+    public void PlayerDead()
+    {
+        PlayerDead("Minh Khoa", "1979 – 2000");
+    }
+
+>>>>>>> c004a115986b3015959c8e75b2857ea8b7879cc2
     public void PlayerDead(string characterName = "Minh Khoa", string characterYears = "1979 – 2000")
     {
         Debug.Log("Player died");

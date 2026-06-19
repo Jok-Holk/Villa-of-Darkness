@@ -67,6 +67,17 @@ CrashDumps/
 Assets/_Recovery/
 Assets/_Recovery.meta
 
+<<<<<<< HEAD
+=======
+# Raw download archives — không cần commit
+*.zip
+*.blend
+
+# Blender export traces
+_BlenderExport/
+Export/
+
+>>>>>>> c004a115986b3015959c8e75b2857ea8b7879cc2
 # Mono auto generated files
 mono_crash.*
 
@@ -102,6 +113,13 @@ InitTestScene*.unity*
 # Auto-generated scenes by play mode tests
 /[Aa]ssets/[Ii]nit[Tt]est[Ss]cene*.unity*
 
+<<<<<<< HEAD
+=======
+# Team test scenes — không commit lên main
+Assets/_Project/Scenes/Chapter1_Test_*.unity
+Assets/_Project/Scenes/Chapter1_Test_*.unity.meta
+
+>>>>>>> c004a115986b3015959c8e75b2857ea8b7879cc2
 # Local project docs (không push lên public)
 *.md
 !README.md

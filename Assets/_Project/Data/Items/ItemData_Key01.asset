@@ -12,7 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c01db4d44d7b554a80c098c52d17818, type: 3}
   m_Name: ItemData_Key01
   m_EditorClassIdentifier: BietThuBongToi.Runtime::ItemData
+<<<<<<< HEAD
   itemId: key_01
+=======
+  itemId: Key_Skeleton
+>>>>>>> c004a115986b3015959c8e75b2857ea8b7879cc2
   itemName: "Ch\xECa Kho\xE1 C\u0169"
   description: "Ch\xECa kho\xE1 b\u1ED9ng b\u1EB1ng s\u1EAFt g\u1EC9. C\xF3 th\u1EC3
     m\u1EDF \u1ED5 kho\xE1 g\xEC \u0111\xF3."
