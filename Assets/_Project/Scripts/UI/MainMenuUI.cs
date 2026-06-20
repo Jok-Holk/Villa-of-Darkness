@@ -11,8 +11,6 @@ public class MainMenuUI : MonoBehaviour
 
     public void StartGame()
     {
-<<<<<<< HEAD
-=======
         // Bắt đầu lượt chơi mới — xóa toàn bộ tiến trình cũ (item, chapter, audio log)
         GameData.Reset();
 
@@ -23,7 +21,6 @@ public class MainMenuUI : MonoBehaviour
         else
             PlayerPrefs.DeleteAll(); // fallback nếu không có ItemPersistence trong scene MainMenu
 
->>>>>>> c004a115986b3015959c8e75b2857ea8b7879cc2
         GameManager.Instance?.LoadChapter(1);
         SceneManager.LoadScene("Chapter1");
     }
@@ -41,8 +38,4 @@ public class MainMenuUI : MonoBehaviour
     public void QuitGame()  { Application.Quit(); }
     public void Show() { gameObject.SetActive(true); OnMenuOpen.Invoke(); }
     public void Hide() { gameObject.SetActive(false); }
-<<<<<<< HEAD
 }
-=======
-}
->>>>>>> c004a115986b3015959c8e75b2857ea8b7879cc2

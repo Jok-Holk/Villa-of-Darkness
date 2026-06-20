@@ -15,19 +15,6 @@ public class GazeTrigger : MonoBehaviour
         if (_settings == null) return;
 
         Camera cam = Camera.main;
-<<<<<<< HEAD
-        if (cam == null) return;
-
-        Ray ray = new Ray(cam.transform.position, cam.transform.forward);
-        
-        // Sử dụng _settings.maxDistance để giới hạn tầm nhìn
-        if (Physics.Raycast(ray, out RaycastHit hit, _settings.maxDistance))
-        {
-            if (hit.collider != null && hit.collider.gameObject == gameObject)
-            {
-                _gazeTimer += Time.deltaTime;
-
-=======
         if (cam == null)
         {
             Debug.LogError("[Gaze Debug] KHÔNG tìm thấy Camera nào mang Tag MainCamera!");
@@ -50,7 +37,6 @@ public class GazeTrigger : MonoBehaviour
                 // Thêm Log ra Console để Phúc biết cơ chế tích lũy thời gian nhìn đang chạy tốt
                 Debug.Log($"[Gaze Debug] Đang nhìn vào Gương! Thời gian tích lũy: {_gazeTimer:F2}/{_settings.gazeThreshold} giây.");
 
->>>>>>> c004a115986b3015959c8e75b2857ea8b7879cc2
                 // Sử dụng warningThreshold từ settings
                 if (_gazeTimer >= _settings.warningThreshold && _gazeTimer < _settings.gazeThreshold)
                 {
@@ -60,10 +46,6 @@ public class GazeTrigger : MonoBehaviour
                 // Sử dụng gazeThreshold từ settings
                 if (_gazeTimer >= _settings.gazeThreshold)
                 {
-<<<<<<< HEAD
-                    OnGazeComplete?.Invoke();
-                    _gazeTimer = 0f; 
-=======
                     Debug.LogWarning("[Gaze Debug] Đã nhìn đủ thời gian! Kích hoạt kịch bản Die.");
                     
                     OnGazeComplete?.Invoke();
@@ -72,21 +54,16 @@ public class GazeTrigger : MonoBehaviour
 
                     // 🎯 SỬA LỖI 2: Ngắt script ngay lập tức khi chết để chống spam lặp vô hạn gây đơ máy
                     enabled = false; 
->>>>>>> c004a115986b3015959c8e75b2857ea8b7879cc2
                 }
                 return;
             }
         }
 
-<<<<<<< HEAD
-        _gazeTimer = 0f;
-=======
         // Nếu rời mắt khỏi gương, reset thời gian về 0
         if (_gazeTimer > 0f)
         {
             Debug.Log("[Gaze Debug] Đã rời mắt khỏi Gương! Reset thời gian nhìn.");
             _gazeTimer = 0f;
         }
->>>>>>> c004a115986b3015959c8e75b2857ea8b7879cc2
     }
 }

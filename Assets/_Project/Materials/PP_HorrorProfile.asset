@@ -1,7 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
-<<<<<<< HEAD
-=======
 --- !u!114 &-600921742164648966
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -30,7 +28,6 @@ MonoBehaviour:
   saturation:
     m_OverrideState: 0
     m_Value: 0
->>>>>>> c004a115986b3015959c8e75b2857ea8b7879cc2
 --- !u!114 &11400000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -44,15 +41,6 @@ MonoBehaviour:
   m_Name: PP_HorrorProfile
   m_EditorClassIdentifier: Unity.RenderPipelines.Core.Runtime::UnityEngine.Rendering.VolumeProfile
   components:
-<<<<<<< HEAD
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
-=======
   - {fileID: 1267898598285275092}
   - {fileID: 7061145676375147626}
   - {fileID: -600921742164648966}
@@ -134,4 +122,3 @@ MonoBehaviour:
   rounded:
     m_OverrideState: 0
     m_Value: 0
->>>>>>> c004a115986b3015959c8e75b2857ea8b7879cc2
