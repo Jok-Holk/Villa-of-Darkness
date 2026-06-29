@@ -12,9 +12,3 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: DialogueAsset
   m_EditorClassIdentifier: BietThuBongToi.Runtime::DialogueAsset
-  lines:
-  - speakerName: Amber
-    text: Want me to pick you up?
-    choices:
-    - text: Yeah, it's too far to walk
-    - text: No, I'll get a ride
