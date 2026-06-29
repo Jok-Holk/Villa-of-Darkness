@@ -89,15 +89,56 @@ public class DialogueUI : MonoBehaviour
 
     public void StartDialogue(DialogueAsset asset)
     {
+        if (asset == null)
+        {
+            Debug.LogWarning("DialogueUI: Không thể bắt đầu hội thoại vì DialogueAsset bị null.");
+            return;
+        }
+
         _asset      = asset;
         _lineIndex  = -1;
         dialoguePanel.SetActive(true);
         AdvanceLine();
     }
 
+    public bool IsDialogueOpen() => dialoguePanel != null && dialoguePanel.activeSelf;
+
+    public void AdvanceOrStartDialogue(DialogueAsset asset)
+    {
+        if (asset == null)
+        {
+            Debug.LogWarning("DialogueUI: Không thể tiến hành hội thoại vì DialogueAsset bị null.");
+            return;
+        }
+
+        if (!IsDialogueOpen() || _asset != asset)
+        {
+            StartDialogue(asset);
+            return;
+        }
+
+        if (_typing)
+        {
+            SkipTypewriter();
+        }
+        else if (_waitingForChoice)
+        {
+            ConfirmChoice();
+        }
+        else
+        {
+            AdvanceLine();
+        }
+    }
+
     public void CloseDialogue()
     {
         StopAllCoroutines();
+        _asset = null;
+        _lineIndex = -1;
+        _typing = false;
+        _waitingForNext = false;
+        _waitingForChoice = false;
         dialoguePanel.SetActive(false);
         ClearChoices();
         SetArrowVisible(false);
