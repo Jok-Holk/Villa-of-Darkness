@@ -20,24 +20,6 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Project/Scenes/Chapter4.unity
     guid: e6a54b4c06dc4d84d99fdf76f6ee7aa4
-  - enabled: 0
-    path: Assets/_Project/Scenes/Zones/Chapter1_Zone_Struct.unity
-    guid: 839f48284a72b1a4d8b032ab644c4baa
-  - enabled: 0
-    path: Assets/_Project/Scenes/Zones/Chapter1_Zone_GF_Decor.unity
-    guid: 7859c7c1789d30c48bc72e1c198c5d9f
-  - enabled: 0
-    path: Assets/_Project/Scenes/Zones/Chapter1_Zone_L1_Decor.unity
-    guid: cf2119eb8c8a7dc4ba1d673536c2d111
-  - enabled: 0
-    path: Assets/_Project/Scenes/Zones/Chapter1_Zone_L2_Decor.unity
-    guid: f8c19753d88ffa24dab47ba1ad5803b1
-  - enabled: 0
-    path: Assets/_Project/Scenes/Zones/Chapter1_Zone_Exterior.unity
-    guid: 4b0ae58f610b2f64791f3e1b3ce0250a
-  - enabled: 0
-    path: Assets/_Project/Scenes/Zones/Chapter1_Zone_UI_FX.unity
-    guid: 9501392c81ab5fa4f89fb4f02715a4f9
   m_configObjects:
     com.unity.input.settings.actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   m_UseUCBPForAssetBundles: 0
