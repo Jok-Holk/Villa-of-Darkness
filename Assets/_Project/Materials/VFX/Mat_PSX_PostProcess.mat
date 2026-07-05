@@ -25,10 +25,10 @@ Material:
     m_TexEnvs: []
     m_Ints: []
     m_Floats:
-    - _ColorDepth: 32
-    - _DitherStrength: 0.55
-    - _PixelDivisor: 4
-    - _ScanlineStrength: 0.1
+    - _ColorDepth: 48
+    - _DitherStrength: 0.15
+    - _PixelDivisor: 3
+    - _ScanlineStrength: 0.06
     m_Colors: []
   m_BuildTextureStacks: []
   m_AllowLocking: 1

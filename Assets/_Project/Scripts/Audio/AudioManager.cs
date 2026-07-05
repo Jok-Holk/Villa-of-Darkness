@@ -6,7 +6,8 @@ public class AudioManager : MonoBehaviour
 
     [SerializeField] private AudioSource _bgmSource;
     [SerializeField] private AudioSource _sfxSource;
-    [SerializeField] private float _bgmVolume = 1f; 
+    [SerializeField] private float _bgmVolume = 1f;
+    private float _sfxVolumeScale = 1f;
 
     private void Awake()
     {
@@ -42,12 +43,17 @@ public class AudioManager : MonoBehaviour
     public void PlaySFX(AudioClip clip)
     {
         if (clip != null && _sfxSource != null)
-            _sfxSource.PlayOneShot(clip);
+            _sfxSource.PlayOneShot(clip, _sfxVolumeScale);
     }
 
     public void PlaySFX(AudioClip clip, float volume)
     {
         if (clip != null && _sfxSource != null)
-            _sfxSource.PlayOneShot(clip, Mathf.Clamp01(volume));
+            _sfxSource.PlayOneShot(clip, Mathf.Clamp01(volume) * _sfxVolumeScale);
+    }
+
+    public void SetSFXVolume(float v)
+    {
+        _sfxVolumeScale = Mathf.Clamp01(v);
     }
 }

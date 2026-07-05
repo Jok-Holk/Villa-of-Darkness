@@ -22,7 +22,7 @@ using UnityEngine.Events;
 ///       - StartExamineFromInventory() tự bật Renderer → xem được.
 ///       - StopExamine() tắt lại Renderer → sạch.
 /// </summary>
-public class ExamineItem : MonoBehaviour
+public class ExamineItem : MonoBehaviour, IInteractable
 {
     [Header("Settings")]
     [SerializeField] private float _examineDistance = 0.6f;
@@ -54,6 +54,17 @@ public class ExamineItem : MonoBehaviour
     private bool[]     _rendererStates;
 
     public bool IsExamining => _isExamining;
+
+    /// <summary>
+    /// IInteractable — cho phép InteractionSystem (raycast E) gọi trực tiếp khi player
+    /// đứng gần và nhìn vào item. Trước đây ExamineItem không implement interface này
+    /// nên KHÔNG BAO GIỜ được raycast tìm thấy — đây là lý do "soi 3D" không hoạt động
+    /// khi tương tác trực tiếp từ scene dù code StartExamine() đã đúng.
+    /// Nếu GameObject này còn có PickupItem enabled (item nhặt-rồi-soi-sau), PickupItem
+    /// vẫn được ưu tiên xử lý trước theo thứ tự component — Interact() ở đây chỉ có tác
+    /// dụng cho item soi-tại-chỗ (không nhặt được), đúng use case "Proxy riêng" mô tả ở trên.
+    /// </summary>
+    public void Interact() => StartExamine();
 
     // ─── UPDATE ────────────────────────────────────────────────────────────────
     private void Update()

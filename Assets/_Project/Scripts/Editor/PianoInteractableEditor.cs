@@ -50,6 +50,26 @@ public class PianoInteractableEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_wrongNoteClip"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_sequenceCompleteClip"));
 
+        // Input — A/D chọn phím, Space chơi ← MỚI
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("Input — A/D chọn phím, Space chơi", EditorStyles.boldLabel);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_playableKeys"),
+            new GUIContent("Playable Keys", "Kéo đúng thứ tự trái→phải: Key_Do, Key_Re, Key_Mi, Key_Fa, Key_Sol, Key_La, Key_Si"), true);
+
+        // Bark — lời thoại ngắn khi bấm đúng ← MỚI
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("Bark — lời thoại ngắn khi bấm đúng", EditorStyles.boldLabel);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_correctProgressBarks"),
+            new GUIContent("Correct Progress Barks"), true);
+
+        // Note Label 3D — bám theo phím ← MỚI
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("Note Label — chữ 3D bám theo phím", EditorStyles.boldLabel);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_noteLabelText"),
+            new GUIContent("Note Label Text (3D)"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_noteLabelOffset"),
+            new GUIContent("Offset (X/Y/Z)"));
+
         // Ghost Spawn
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Ghost Spawn", EditorStyles.boldLabel);

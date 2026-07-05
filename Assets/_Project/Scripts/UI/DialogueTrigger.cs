@@ -8,17 +8,11 @@ public class DialogueTrigger : MonoBehaviour
     [Tooltip("Kéo cái DialogueAsset bạn vừa tạo vào đây")]
     public DialogueAsset dialogueAsset;
 
-    // Hàm Update kiểm tra phím bấm mỗi khung hình
-    void Update()
-    {
-        // Kiểm tra nếu người chơi nhấn phím Space xuống
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            if (dialogueUI == null) return;
-
-            dialogueUI.AdvanceOrStartDialogue(dialogueAsset);
-        }
-    }
+    // KHÔNG lắng nghe Space ở đây nữa — DialogueUI.Update() đã tự xử lý advance/skip/choice
+    // cho hội thoại ĐANG MỞ. Nếu mỗi DialogueTrigger trong scene đều tự lắng nghe Space toàn cục,
+    // bấm Space ở bất kỳ đâu có thể vô tình StartDialogue() một asset không liên quan tới vị trí
+    // player đang đứng — đây là nguyên nhân gây "spam" hội thoại ngẫu nhiên.
+    // PlayDialogue() dưới đây chỉ nên được gọi từ bên ngoài (TriggerZone.OnTriggered, InteractionSystem, nút UI).
 
     // Hàm kích hoạt hội thoại ban đầu (Vẫn giữ nguyên để nút Button click bằng chuột gọi được)
     public void PlayDialogue()

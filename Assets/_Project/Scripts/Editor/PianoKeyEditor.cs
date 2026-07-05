@@ -32,12 +32,9 @@ public class PianoKeyEditor : Editor
                 new GUIContent("Note (gán Note Definition để dùng dropdown)"));
         }
 
-        // ── KeyCode ───────────────────────────────────────────────────────────
-        EditorGUILayout.PropertyField(
-            serializedObject.FindProperty("_keyCode"),
-            new GUIContent("Key Code", "Phím bàn phím để nhấn note này khi đang trong piano mode"));
-
         // ── Piano reference ───────────────────────────────────────────────────
+        // KHÔNG còn field "_keyCode" — input giờ do PianoInteractable điều khiển tập trung
+        // (A/D chọn phím, Space chơi), PianoKey chỉ nhận lệnh Highlight()/Press() từ ngoài.
         EditorGUILayout.PropertyField(
             serializedObject.FindProperty("_piano"),
             new GUIContent("Piano"));
@@ -47,6 +44,14 @@ public class PianoKeyEditor : Editor
         EditorGUILayout.LabelField("Audio", EditorStyles.boldLabel);
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_keyClip"),
             new GUIContent("Key Clip", "Âm thanh phát khi nhấn phím này"));
+
+        // ── Highlight ─────────────────────────────────────────────────────────
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("Highlight", EditorStyles.boldLabel);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_renderer"),
+            new GUIContent("Renderer", "Để trống thì tự lấy Renderer trên object này"));
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_highlightEmissiveColor"),
+            new GUIContent("Highlight Color"));
 
         // ── Animation fields ──────────────────────────────────────────────────
         EditorGUILayout.Space();

@@ -19,11 +19,18 @@ public class SanityPostProcess : MonoBehaviour
 
     private void Awake()
     {
-        _volume.profile.TryGet(out _grain);
-        _volume.profile.TryGet(out _chromatic);
-        _volume.profile.TryGet(out _colorAdj);
-        _volume.profile.TryGet(out _vignette);
-        _volume.profile.TryGet(out _lensDistort);
+        if (_volume == null || _volume.profile == null)
+        {
+            Debug.LogWarning($"[SanityPostProcess] '{gameObject.name}' chưa gán _volume (hoặc Volume chưa có Profile) — hiệu ứng Sanity blur/grain sẽ không chạy. Gán field 'Volume' trong Inspector.");
+        }
+        else
+        {
+            _volume.profile.TryGet(out _grain);
+            _volume.profile.TryGet(out _chromatic);
+            _volume.profile.TryGet(out _colorAdj);
+            _volume.profile.TryGet(out _vignette);
+            _volume.profile.TryGet(out _lensDistort);
+        }
 
         if (_sanitySystem != null)
             _sanitySystem.OnLevelChanged.AddListener(OnLevelChanged);

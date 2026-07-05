@@ -22,7 +22,11 @@ public class MainMenuUI : MonoBehaviour
             PlayerPrefs.DeleteAll(); // fallback nếu không có ItemPersistence trong scene MainMenu
 
         GameManager.Instance?.LoadChapter(1);
-        SceneManager.LoadScene("Chapter1");
+
+        if (ScreenFader.Instance != null)
+            ScreenFader.Instance.FadeToScene("Chapter1");
+        else
+            SceneManager.LoadScene("Chapter1"); // fallback nếu quên gắn ScreenFader trong scene
     }
     public void OpenSettings()
     {

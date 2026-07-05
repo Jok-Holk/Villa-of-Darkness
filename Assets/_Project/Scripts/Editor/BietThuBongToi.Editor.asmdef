@@ -5,9 +5,13 @@
         "BietThuBongToi.Runtime",
         "Unity.AI.Navigation",
         "Unity.RenderPipelines.Universal.Runtime",
+        "GUID:df380645f10b7bc4b97d4f5eb6303d95",
         "Unity.Formats.Fbx.Editor",
         "glTFast",
-        "glTFast.Export"
+        "glTFast.Export",
+        "Unity.TextMeshPro",
+        "Unity.TextMeshPro.Editor",
+        "GUID:e6a84587b0355414caa39877de2dd2bd"
     ],
     "includePlatforms": [
         "Editor"
