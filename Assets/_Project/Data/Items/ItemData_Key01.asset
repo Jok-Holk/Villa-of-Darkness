@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c01db4d44d7b554a80c098c52d17818, type: 3}
   m_Name: ItemData_Key01
   m_EditorClassIdentifier: BietThuBongToi.Runtime::ItemData
-  itemId: Key_Skeleton
-  itemName: "Ch\xECa Kho\xE1 C\u0169"
+  itemId: key_skeleton
+  itemName: "Ch\xECa kho\xE1 c\u0169"
   description: "Ch\xECa kho\xE1 b\u1ED9ng b\u1EB1ng s\u1EAFt g\u1EC9. C\xF3 th\u1EC3
     m\u1EDF \u1ED5 kho\xE1 g\xEC \u0111\xF3."
-  icon: {fileID: 0}
-  slotBorderColor: {r: 1, g: 1, b: 1, a: 1}
+  icon: {fileID: 21300000, guid: 36063be54c1c0c04bbb94c9e8661969d, type: 3}
+  slotBorderColor: {r: 0.9716981, g: 0.22459061, b: 0.22459061, a: 1}
   monologueClip: {fileID: 0}
-  isKeyItem: 0
+  isKeyItem: 1
