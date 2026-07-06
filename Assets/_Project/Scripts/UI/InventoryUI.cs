@@ -12,7 +12,7 @@ public class InventoryUI : MonoBehaviour
     [SerializeField] private PlayerController _playerController;
 
     [Header("Xem 3D item từ túi đồ")]
-    [Tooltip("itemId → ExamineItem proxy. Click item → xem 3D → E → về lại túi đồ.")]
+    [Tooltip("itemId → ExamineItem proxy. Click item → xem 3D → Chuột Phải → về lại túi đồ.")]
     [SerializeField] private ExamineItemEntry[] _examineRegistry;
 
     [System.Serializable]
@@ -22,9 +22,14 @@ public class InventoryUI : MonoBehaviour
         public ExamineItem examineItem;
     }
 
+    [Header("Sử dụng — cầm tay trái")]
+    [Tooltip("Kéo HandheldItemController trên Player vào đây.")]
+    [SerializeField] private HandheldItemController _handheldController;
+
     private Image[]    _slotIcons;
     private TMP_Text[] _slotLabels;
     private Image[]    _slotBorders;
+    private Button[]   _slotUseButtons; 
 
     private static readonly Color _iconFilledColor = Color.white;
     private static readonly Color _iconEmptyColor  = new Color(0.267f, 0.267f, 0.267f, 1f);
@@ -32,7 +37,6 @@ public class InventoryUI : MonoBehaviour
     private bool _isOpen = false;
     public bool IsOpen => _isOpen;
 
-    // BUG FIX 5: track xem có examine đang chạy không để chặn Tab
     private ExamineItem _activeExamine = null;
     public  bool IsExamining => _activeExamine != null && _activeExamine.IsExamining;
 
@@ -52,10 +56,11 @@ public class InventoryUI : MonoBehaviour
         Transform grid = transform.Find("Grid");
         if (grid == null) return;
 
-        int count    = grid.childCount;
-        _slotIcons   = new Image[count];
-        _slotLabels  = new TMP_Text[count];
-        _slotBorders = new Image[count];
+        int count       = grid.childCount;
+        _slotIcons      = new Image[count];
+        _slotLabels     = new TMP_Text[count];
+        _slotBorders    = new Image[count];
+        _slotUseButtons = new Button[count];
 
         for (int i = 0; i < count; i++)
         {
@@ -65,13 +70,22 @@ public class InventoryUI : MonoBehaviour
             _slotBorders[i] = slot.GetComponent<Image>();
 
             int captured = i;
+
             Button btn = slot.GetComponent<Button>();
             if (btn != null)
                 btn.onClick.AddListener(() => OnSlotClicked(captured));
+
+            Transform useBtnTransform = slot.Find("UseButton");
+            if (useBtnTransform != null)
+            {
+                Button useBtn = useBtnTransform.GetComponent<Button>();
+                _slotUseButtons[i] = useBtn;
+                if (useBtn != null)
+                    useBtn.onClick.AddListener(() => OnUseButtonClicked(captured));
+            }
         }
     }
 
-    // ─── PUBLIC API ────────────────────────────────────────────────────────────
     public void Toggle()
     {
         if (_isOpen) Close();
@@ -97,8 +111,6 @@ public class InventoryUI : MonoBehaviour
 
     public void Close()
     {
-        // BUG FIX 3: Nếu đang có examine chạy, dừng examine trước, KHÔNG đóng inventory ngay.
-        // ReopenAfterExamine sẽ KHÔNG được gọi vì ta xóa listener trước.
         if (_activeExamine != null && _activeExamine.IsExamining)
         {
             _activeExamine.OnExamineEnd.RemoveListener(ReopenAfterExamine);
@@ -118,7 +130,6 @@ public class InventoryUI : MonoBehaviour
         OnClose.Invoke();
     }
 
-    // ─── REFRESH ───────────────────────────────────────────────────────────────
     public void Refresh()
     {
         if (_slotIcons == null) CacheSlots();
@@ -159,6 +170,12 @@ public class InventoryUI : MonoBehaviour
                     _slotBorders[i].color = data.isKeyItem
                         ? new Color(1f, 0.85f, 0f)
                         : new Color(0.1f, 0.1f, 0.1f);
+
+                if (_slotUseButtons[i] != null)
+                {
+                    bool showUse = data != null && data.isUsable;
+                    _slotUseButtons[i].gameObject.SetActive(showUse);
+                }
             }
             else
             {
@@ -169,11 +186,13 @@ public class InventoryUI : MonoBehaviour
                     _slotIcons[i].color  = _iconEmptyColor;
                 }
                 if (_slotBorders[i] != null) _slotBorders[i].color = new Color(0.1f, 0.1f, 0.1f);
+
+                if (_slotUseButtons[i] != null)
+                    _slotUseButtons[i].gameObject.SetActive(false);
             }
         }
     }
 
-    // ─── ON ITEM CLICKED ───────────────────────────────────────────────────────
     public void OnItemClicked(string itemId)
     {
         ItemData data = _inventorySystem?.GetItemData(itemId);
@@ -196,50 +215,56 @@ public class InventoryUI : MonoBehaviour
         {
             if (entry.itemId != itemId || entry.examineItem == null) continue;
 
-            // Ẩn panel inventory tạm thời — _isOpen giữ nguyên true
-            gameObject.SetActive(false);
+            // ĐÃ SỬA: Tắt item cũ nếu đang xem dở để soi item mới
+            if (_activeExamine != null && _activeExamine.IsExamining)
+            {
+                _activeExamine.OnExamineEnd.RemoveListener(ReopenAfterExamine);
+                _activeExamine.StopExamine();
+            }
 
-            // BUG FIX 3: Lưu lại examine đang active để Tab/Close có thể kiểm tra
             _activeExamine = entry.examineItem;
 
-            // Đăng ký callback — RemoveListener trước để không bị double-register
             entry.examineItem.OnExamineEnd.RemoveListener(ReopenAfterExamine);
             entry.examineItem.OnExamineEnd.AddListener(ReopenAfterExamine);
 
-            // StartExamineFromInventory() tự gọi SetActive(true) bên trong
+            // ĐÃ SỬA: Xóa dòng gameObject.SetActive(false) để UI giữ nguyên
             entry.examineItem.StartExamineFromInventory();
             return true;
         }
         return false;
     }
 
-    /// <summary>
-    /// Gọi khi ExamineItem.OnExamineEnd fire (player nhấn E thoát xem).
-    /// Mở lại panel inventory, player vẫn locked.
-    /// </summary>
     private void ReopenAfterExamine()
     {
-        // BUG FIX 3: Xóa listener + reset active examine ngay khi callback chạy
         if (_activeExamine != null)
         {
             _activeExamine.OnExamineEnd.RemoveListener(ReopenAfterExamine);
             _activeExamine = null;
         }
 
-        _isOpen = true;
-        gameObject.SetActive(true);
-
-        if (_playerController != null)
-            _playerController.SetInputEnabled(false);
-
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible   = true;
-
         Refresh();
-        Debug.Log("[InventoryUI] Mở lại sau khi thoát xem.");
     }
 
-    // ─── INTERNAL ──────────────────────────────────────────────────────────────
+    public void OnUseButtonClicked(int slotIndex)
+    {
+        if (Time.frameCount == _lastClickFrame) return;
+        _lastClickFrame = Time.frameCount;
+
+        List<string> items = _inventorySystem != null
+            ? _inventorySystem.GetAllItems()
+            : new List<string>();
+
+        if (slotIndex >= items.Count) return;
+
+        string   itemId = items[slotIndex];
+        ItemData data    = _inventorySystem?.GetItemData(itemId);
+
+        if (data == null || !data.isUsable) return;
+        if (_handheldController == null) return;
+
+        _handheldController.Equip(data);
+    }
+
     private void OnSlotClicked(int slotIndex)
     {
         if (Time.frameCount == _lastClickFrame) return;

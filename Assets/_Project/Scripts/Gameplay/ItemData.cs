@@ -33,4 +33,20 @@ public class ItemData : ScriptableObject
     [Header("Thuộc tính")]
     [Tooltip("Di vật quan trọng — không thể bỏ khỏi túi")]
     public bool isKeyItem = false;
+
+    // ── MỚI: Sử dụng / cầm tay ──────────────────────────────────────────────
+    [Header("Sử dụng — Cầm lên tay trái (MỚI)")]
+    [Tooltip("Item này có dùng được không (bấm nút 'Sử dụng' trong Inventory).\n" +
+             "Ví dụ: đèn cầy, chìa khoá, gương... KHÔNG áp dụng cho giấy tờ chỉ để đọc.")]
+    public bool isUsable = false;
+
+    [Tooltip("Prefab sẽ được Instantiate và gắn vào tay trái player khi bấm 'Sử dụng'.\n" +
+             "Đây LUÔN LÀ BẢN SAO (Instantiate) — KHÔNG đụng tới item gốc trong túi/scene, " +
+             "nên item KHÔNG BAO GIỜ bị mất/destroy khi Use.")]
+    public GameObject handHeldPrefab;
+
+    [Header("Examine trong túi đồ (MỚI)")]
+    [Tooltip("Item này có thể/cần xem 3D (xoay để đọc mật khẩu, xem chi tiết...) khi click trong Inventory.\n" +
+             "Nếu true, nhớ đăng ký entry tương ứng trong InventoryUI._examineRegistry.")]
+    public bool isExaminable = false;
 }

@@ -6,8 +6,20 @@ public class DoorController : MonoBehaviour, IInteractable
     [SerializeField] private bool _isOpen   = false;
     [SerializeField] private bool _isLocked = false;
 
-    [Header("Animation")]
+    [Header("Cài đặt Loại cửa")]
+    [Tooltip("Tick vào nếu đây là ngăn kéo (trượt). Bỏ tick nếu là cửa phòng (xoay).")]
+    [SerializeField] private bool _isDrawer = false;
+    
+    [Tooltip("Tick vào nếu muốn cửa/ngăn kéo TỰ ĐỘNG KHÓA sau khi đóng lại.")]
+    [SerializeField] private bool _autoLockOnClose = false; // <-- TÍNH NĂNG MỚI THÊM VÀO
+    
+    [Header("Animation - Ngăn kéo (Position)")]
+    [SerializeField] private Vector3 _slideOffset = new Vector3(0, 0, 0.4f);
+
+    [Header("Animation - Cửa cánh (Rotation)")]
     [SerializeField] private float _openAngle = 90f;
+    
+    [Header("Animation - Tốc độ chung")]
     [SerializeField] private float _animSpeed = 3f;
 
     public UnityEvent OnDoorOpen  = new UnityEvent();
@@ -17,26 +29,41 @@ public class DoorController : MonoBehaviour, IInteractable
     private Quaternion _openRot;
     private Quaternion _targetRot;
 
+    private Vector3 _closedPos;
+    private Vector3 _openPos;
+    private Vector3 _targetPos;
+
     private int _lastInteractFrame = -1;
 
     private void Start()
     {
         _closedRot = transform.localRotation;
         _openRot   = Quaternion.Euler(transform.localEulerAngles + new Vector3(0, _openAngle, 0));
+        
+        _closedPos = transform.localPosition;
+        _openPos   = _closedPos + _slideOffset;
+
         _targetRot = _isOpen ? _openRot : _closedRot;
+        _targetPos = _isOpen ? _openPos : _closedPos;
     }
 
     private void Update()
     {
-        transform.localRotation = Quaternion.Lerp(
-            transform.localRotation, _targetRot, Time.deltaTime * _animSpeed);
+        if (_isDrawer)
+        {
+            transform.localPosition = Vector3.Lerp(
+                transform.localPosition, _targetPos, Time.deltaTime * _animSpeed);
+        }
+        else
+        {
+            transform.localRotation = Quaternion.Lerp(
+                transform.localRotation, _targetRot, Time.deltaTime * _animSpeed);
+        }
     }
 
-    // ─── IInteractable — player nhấn E trực tiếp vào cửa ─────────────────────
     public void Interact()
     {
-        // _isLocked chỉ chặn player nhấn E trực tiếp
-        // KHÔNG chặn Open() / Close() gọi từ code
+        // Bị khóa thì không cho bấm E tác động trực tiếp
         if (_isLocked) return;
 
         if (Time.frameCount == _lastInteractFrame) return;
@@ -45,57 +72,52 @@ public class DoorController : MonoBehaviour, IInteractable
         Toggle();
     }
 
-    // ─── PUBLIC API ───────────────────────────────────────────────────────────
-
-    /// <summary>
-    /// Mở cửa trực tiếp từ code (ItemLock, cutscene...).
-    /// Không bị _isLocked hay frame guard chặn.
-    /// </summary>
     public void Open()
     {
         if (_isOpen) return;
         _isOpen    = true;
-        _targetRot = _openRot;
-        Debug.Log("[Door] Mở (Open)");
+        
+        _targetRot = _openRot; 
+        _targetPos = _openPos; 
+        
+        Debug.Log("[Door] Mở tủ");
         OnDoorOpen.Invoke();
     }
 
-    /// <summary>Đóng cửa trực tiếp từ code.</summary>
     public void Close()
     {
         if (!_isOpen) return;
         _isOpen    = false;
+        
         _targetRot = _closedRot;
-        Debug.Log("[Door] Đóng (Close)");
+        _targetPos = _closedPos;
+        
+        Debug.Log("[Door] Đóng tủ");
         OnDoorClose.Invoke();
+
+        // TỰ ĐỘNG CHỐT KHÓA NẾU ĐƯỢC TICK
+        if (_autoLockOnClose)
+        {
+            SetLocked(true);
+            Debug.Log("[Door] Tủ đã tự động chốt khóa!");
+        }
     }
 
-    /// <summary>Toggle đóng/mở — dùng nội bộ bởi Interact().</summary>
     public void Toggle()
     {
-        _isOpen = !_isOpen;
         if (_isOpen)
         {
-            _targetRot = _openRot;
-            Debug.Log("[Door] Mở");
-            OnDoorOpen.Invoke();
+            Close(); // Gọi hàm Close để tận dụng tính năng Auto Lock
         }
         else
         {
-            _targetRot = _closedRot;
-            Debug.Log("[Door] Đóng");
-            OnDoorClose.Invoke();
+            Open();
         }
     }
 
-    /// <summary>
-    /// Giữ lại để tương thích với các file test cũ.
-    /// Lock chỉ chặn player nhấn E — không chặn Open()/Close() từ code.
-    /// </summary>
     public void SetLocked(bool state)
     {
         _isLocked = state;
-        Debug.Log($"[Door] SetLocked({state})");
     }
 
     public bool IsOpen   => _isOpen;

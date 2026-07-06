@@ -9,8 +9,12 @@ public class InventorySystem : MonoBehaviour
 {
     [Header("Kéo tất cả ItemData asset vào đây")]
     [SerializeField] private ItemData[] _itemDatabase;
-
+    
+    [Header("Liên kết tay cầm")]
+    [SerializeField] private HandheldItemController _handheldController;
+    
     public ItemEvent OnItemAdded = new ItemEvent();
+    public ItemEvent OnItemRemoved = new ItemEvent(); // Cần khai báo thêm event này để UI biết mà load lại
 
     // ─── ITEM DATABASE ─────────────────────────────────────────────────────────
     /// <summary>Tìm ItemData theo itemId.</summary>
@@ -42,7 +46,20 @@ public class InventorySystem : MonoBehaviour
             Debug.Log($"[Inventory] {id} là di vật quan trọng, không thể bỏ.");
             return;
         }
-        GameData.collectedItems.Remove(id);
+
+        if (GameData.collectedItems.Contains(id))
+        {
+            GameData.collectedItems.Remove(id);
+
+            // ── ĐÂY LÀ ĐOẠN LOGIC GIÚP CẤT ĐỒ KHỎI TAY ──
+            if (_handheldController != null && _handheldController.CurrentItemId == id)
+            {
+                _handheldController.Unequip();
+            }
+
+            if (OnItemRemoved != null) OnItemRemoved.Invoke(id);
+            Debug.Log($"[Inventory] Đã xóa: {id}");
+        }
     }
 
     public bool HasItem(string id) => GameData.collectedItems.Contains(id);
@@ -63,6 +80,7 @@ public class InventorySystem : MonoBehaviour
     private void TestClearAll()
     {
         GameData.collectedItems.Clear();
+        if (_handheldController != null) _handheldController.Unequip();
         Debug.Log("[Inventory] Cleared all items");
     }
 }
