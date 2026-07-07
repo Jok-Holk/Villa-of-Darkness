@@ -201233,7 +201233,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: abbab25f2d496f446b650d063494a0f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: BietThuBongToi.Runtime::SanitySystem
-  _sanity: 1
+  _sanity: 0.5
   _data: {fileID: 11400000, guid: c8dddf1cb27019345b9c950ca7a6be60, type: 2}
   OnSanityChanged:
     m_PersistentCalls:
@@ -320019,7 +320019,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: BietThuBongToi.Runtime::SanitySystem
   _sanity: 0.5
-  _data: {fileID: 11400000, guid: 689b14eb237507d4fb97a1dcf685d8ab, type: 2}
+  _data: {fileID: 11400000, guid: c8dddf1cb27019345b9c950ca7a6be60, type: 2}
   OnSanityChanged:
     m_PersistentCalls:
       m_Calls: []

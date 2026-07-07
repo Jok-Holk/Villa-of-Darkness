@@ -24,7 +24,7 @@ public class MainMenuUI : MonoBehaviour
         GameManager.Instance?.LoadChapter(1);
 
         if (ScreenFader.Instance != null)
-            ScreenFader.Instance.FadeToScene("Chapter1");
+            ScreenFader.Instance.FadeToScene("Tan-Audio");
         else
             SceneManager.LoadScene("Chapter1"); // fallback nếu quên gắn ScreenFader trong scene
     }
