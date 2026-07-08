@@ -11,10 +11,6 @@ public class HideSpot : MonoBehaviour, IInteractable
     [SerializeField] private DoorController _door;
     [SerializeField] private float _doorWaitTime = 0.4f; // thời gian chờ cửa xoay xong
 
-    [Header("Peek Camera")]
-    [SerializeField] private Camera _peekCamera;
-    [SerializeField] private GameObject _peekUI; // Canvas khe hở, có thể để trống nếu chưa làm
-
     private bool _playerIsHiding = false;
     private Vector3 _playerReturnPosition;
     private int _hideFrame = -1;
@@ -34,9 +30,6 @@ public class HideSpot : MonoBehaviour, IInteractable
     {
         if (_playerController == null)
             _playerController = FindAnyObjectByType<PlayerController>();
-
-        if (_peekCamera != null) _peekCamera.enabled = false;
-        if (_peekUI != null) _peekUI.SetActive(false);
     }
 
     private void Update()
@@ -98,15 +91,6 @@ public class HideSpot : MonoBehaviour, IInteractable
         }
         yield return new WaitForSeconds(_doorWaitTime);
 
-        // 4. BẬT PEEK CAMERA
-        if (_peekCamera != null)
-        {
-            var mainCam = _playerController != null ? _playerController.GetComponentInChildren<Camera>() : null;
-            if (mainCam != null) mainCam.enabled = false;
-            _peekCamera.enabled = true;
-        }
-        if (_peekUI != null) _peekUI.SetActive(true);
-
         _playerIsHiding = true;
         _isBusy = false;
         Debug.Log($"[HideSpot] VÀO TỦ — AnyPlayerHiding = {AnyPlayerHiding}");
@@ -116,15 +100,6 @@ public class HideSpot : MonoBehaviour, IInteractable
     private IEnumerator ExitRoutine()
     {
         _isBusy = true;
-
-        // 1. TẮT PEEK CAMERA
-        if (_peekCamera != null)
-        {
-            var mainCam = _playerController != null ? _playerController.GetComponentInChildren<Camera>() : null;
-            if (mainCam != null) mainCam.enabled = true;
-            _peekCamera.enabled = false;
-        }
-        if (_peekUI != null) _peekUI.SetActive(false);
 
         // 2. MỞ CỬA
         if (_door != null) _door.Open();
