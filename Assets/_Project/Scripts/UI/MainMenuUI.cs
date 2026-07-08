@@ -24,9 +24,9 @@ public class MainMenuUI : MonoBehaviour
         GameManager.Instance?.LoadChapter(1);
 
         if (ScreenFader.Instance != null)
-            ScreenFader.Instance.FadeToScene("Chapter1");
+            ScreenFader.Instance.FadeToScene("TestQA");
         else
-            SceneManager.LoadScene("Chapter1"); // fallback nếu quên gắn ScreenFader trong scene
+            SceneManager.LoadScene("TestQA"); // fallback nếu quên gắn ScreenFader trong scene
     }
     public void OpenSettings()
     {

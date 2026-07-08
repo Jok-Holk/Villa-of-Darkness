@@ -16,7 +16,7 @@ MonoBehaviour:
   itemName: "Ch\xECa Kho\xE1 C\u0169"
   description: "Ch\xECa kho\xE1 b\u1ED9ng b\u1EB1ng s\u1EAFt g\u1EC9. C\xF3 th\u1EC3
     m\u1EDF \u1ED5 kho\xE1 g\xEC \u0111\xF3."
-  icon: {fileID: 0}
-  slotBorderColor: {r: 1, g: 1, b: 1, a: 1}
+  icon: {fileID: -2074074793, guid: cbbfcad68476c9b4ba2fe44a2aa7463b, type: 3}
+  slotBorderColor: {r: 0.8608246, g: 0.89433956, b: 0.4302954, a: 1}
   monologueClip: {fileID: 0}
-  isKeyItem: 0
+  isKeyItem: 1

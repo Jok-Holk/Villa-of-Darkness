@@ -16,7 +16,7 @@ MonoBehaviour:
   itemName: "H\u1ED9p Nh\u1EA1c \u0110\u1ED3ng"
   description: "H\u1ED9p nh\u1EA1c c\u1ED5. \u0110\xE2y l\xE0 th\u1EE9 c\u1EA3 gia
     \u0111\xECnh \u0110\u1EB7ng \u0111\xE3 t\xECm ki\u1EBFm."
-  icon: {fileID: 0}
-  slotBorderColor: {r: 1, g: 0.9372188, b: 0, a: 1}
+  icon: {fileID: 1449628292, guid: 142674097d0921643a2db45ebcf5d256, type: 3}
+  slotBorderColor: {r: 0.9622642, g: 0.96136427, b: 0.9568174, a: 1}
   monologueClip: {fileID: 0}
-  isKeyItem: 1
+  isKeyItem: 0
