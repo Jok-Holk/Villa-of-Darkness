@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.Events;
 
 public class HideSpot : MonoBehaviour, IInteractable
@@ -6,35 +7,41 @@ public class HideSpot : MonoBehaviour, IInteractable
     [SerializeField] private PlayerController _playerController;
     [SerializeField] private Transform _hidePosition;
 
+    [Header("Door")]
+    [SerializeField] private DoorController _door;
+    [SerializeField] private float _doorWaitTime = 0.4f; // thời gian chờ cửa xoay xong
+
+    [Header("Peek Camera")]
+    [SerializeField] private Camera _peekCamera;
+    [SerializeField] private GameObject _peekUI; // Canvas khe hở, có thể để trống nếu chưa làm
+
     private bool _playerIsHiding = false;
     private Vector3 _playerReturnPosition;
     private int _hideFrame = -1;
+    private bool _isBusy = false;
 
-    // Biến static lưu lại frame vừa tương tác để chống lỗi double trigger (bị hút ngược vào lại)
     private static int _lastInteractFrame = -1;
+    private static HideSpot _currentActive;
 
     public UnityEvent OnHide   = new UnityEvent();
     public UnityEvent OnReveal = new UnityEvent();
 
     public bool IsPlayerHiding => _playerIsHiding;
-
-    private static HideSpot _currentActive;
-
     public static bool AnyPlayerHiding =>
         _currentActive != null && _currentActive._playerIsHiding;
 
     private void Start()
     {
-        // Tự động tìm Player trên Scene nếu bạn quên kéo vào Inspector
         if (_playerController == null)
-        {
             _playerController = FindAnyObjectByType<PlayerController>();
-        }
+
+        if (_peekCamera != null) _peekCamera.enabled = false;
+        if (_peekUI != null) _peekUI.SetActive(false);
     }
 
     private void Update()
     {
-        if (!_playerIsHiding) return;
+        if (!_playerIsHiding || _isBusy) return;
         if (!Input.GetKeyDown(KeyCode.E)) return;
         if (Time.frameCount == _hideFrame) return;
         Interact();
@@ -42,67 +49,112 @@ public class HideSpot : MonoBehaviour, IInteractable
 
     public void Interact()
     {
-        // NẾU TRONG CÙNG 1 FRAME MÀ GỌI LẠI HÀM NÀY (Do InteractionSystem quét trúng) -> BỎ QUA KHÔNG XỬ LÝ
+        if (_isBusy) return;
         if (Time.frameCount == _lastInteractFrame) return;
         _lastInteractFrame = Time.frameCount;
 
-        _playerIsHiding = !_playerIsHiding;
-
-        if (_playerIsHiding)
-        {
-            _currentActive = this;
-            _hideFrame     = Time.frameCount;
-
-            if (_playerController != null)
-            {
-                _playerReturnPosition = _playerController.transform.position;
-
-                // 1. TẮT CharacterController và Collider TRƯỚC KHI DỊCH CHUYỂN
-                var cc = _playerController.GetComponent<CharacterController>();
-                if (cc != null) cc.enabled = false;
-
-                var col = _playerController.GetComponent<Collider>();
-                if (col != null) col.enabled = false;
-
-                // 2. DỊCH CHUYỂN VÀO CHỖ TRỐN (SAU KHI ĐÃ TẮT VẬT LÝ)
-                Vector3 hidePos = _hidePosition != null
-                    ? _hidePosition.position
-                    : transform.position;
-                _playerController.transform.position = hidePos;
-                
-                // FIX: Chỉ khóa di chuyển WASD, không khóa xoay chuột (Camera vẫn quay được tự do khi trốn)
-                _playerController.SetMovementEnabled(false); 
-            }
-
-            Debug.Log($"[HideSpot] VÀO GIƯỜNG — AnyPlayerHiding = {AnyPlayerHiding}");
-            OnHide.Invoke();
-        }
+        if (!_playerIsHiding)
+            StartCoroutine(EnterRoutine());
         else
+            StartCoroutine(ExitRoutine());
+    }
+
+    private IEnumerator EnterRoutine()
+    {
+        _isBusy = true;
+        _currentActive = this;
+        _hideFrame = Time.frameCount;
+
+        // 1. MỞ CỬA trước
+        if (_door != null)
         {
-            if (_currentActive == this) _currentActive = null;
-
-            if (_playerController != null)
-            {
-                // 1. ĐẢM BẢO CharacterController ĐANG TẮT ĐỂ CÓ THỂ DỊCH CHUYỂN
-                var cc = _playerController.GetComponent<CharacterController>();
-                if (cc != null) cc.enabled = false;
-
-                // 2. DỊCH CHUYỂN VỀ VỊ TRÍ CŨ bên ngoài giường
-                _playerController.transform.position = _playerReturnPosition;
-
-                // 3. BẬT LẠI CharacterController VÀ COLLIDER SAU KHI ĐÃ ĐẾN NƠI AN TOÀN
-                if (cc != null) cc.enabled = true;
-                
-                var col = _playerController.GetComponent<Collider>();
-                if (col != null) col.enabled = true;
-
-                // Bật lại toàn bộ hệ thống Input điều khiển như cũ
-                _playerController.SetInputEnabled(true);
-            }
-
-            Debug.Log($"[HideSpot] THOÁT GIƯỜNG — AnyPlayerHiding = {AnyPlayerHiding}");
-            OnReveal.Invoke();
+            Debug.Log("[HideSpot] Gọi Door.Open()");
+            _door.Open();
         }
+        yield return new WaitForSeconds(_doorWaitTime);
+
+        // 2. TELEPORT PLAYER VÀO TRONG
+        if (_playerController != null)
+        {
+            _playerReturnPosition = _playerController.transform.position;
+
+            var cc = _playerController.GetComponent<CharacterController>();
+            if (cc != null) cc.enabled = false;
+
+            var col = _playerController.GetComponent<Collider>();
+            if (col != null) col.enabled = false;
+
+            Vector3 hidePos = _hidePosition != null ? _hidePosition.position : transform.position;
+            _playerController.transform.position = hidePos;
+
+            _playerController.SetMovementEnabled(false);
+        }
+
+        // 3. ĐÓNG CỬA LẠI
+        if (_door != null)
+        {
+            Debug.Log("[HideSpot] Gọi Door.Close()");
+            _door.Close();
+        }
+        yield return new WaitForSeconds(_doorWaitTime);
+
+        // 4. BẬT PEEK CAMERA
+        if (_peekCamera != null)
+        {
+            var mainCam = _playerController != null ? _playerController.GetComponentInChildren<Camera>() : null;
+            if (mainCam != null) mainCam.enabled = false;
+            _peekCamera.enabled = true;
+        }
+        if (_peekUI != null) _peekUI.SetActive(true);
+
+        _playerIsHiding = true;
+        _isBusy = false;
+        Debug.Log($"[HideSpot] VÀO TỦ — AnyPlayerHiding = {AnyPlayerHiding}");
+        OnHide.Invoke();
+    }
+
+    private IEnumerator ExitRoutine()
+    {
+        _isBusy = true;
+
+        // 1. TẮT PEEK CAMERA
+        if (_peekCamera != null)
+        {
+            var mainCam = _playerController != null ? _playerController.GetComponentInChildren<Camera>() : null;
+            if (mainCam != null) mainCam.enabled = true;
+            _peekCamera.enabled = false;
+        }
+        if (_peekUI != null) _peekUI.SetActive(false);
+
+        // 2. MỞ CỬA
+        if (_door != null) _door.Open();
+        yield return new WaitForSeconds(_doorWaitTime);
+
+        // 3. TELEPORT PLAYER RA NGOÀI
+        if (_playerController != null)
+        {
+            var cc = _playerController.GetComponent<CharacterController>();
+            if (cc != null) cc.enabled = false;
+
+            _playerController.transform.position = _playerReturnPosition;
+
+            if (cc != null) cc.enabled = true;
+
+            var col = _playerController.GetComponent<Collider>();
+            if (col != null) col.enabled = true;
+
+            _playerController.SetInputEnabled(true);
+        }
+
+        // 4. ĐÓNG CỬA LẠI
+        if (_door != null) _door.Close();
+        yield return new WaitForSeconds(_doorWaitTime);
+
+        if (_currentActive == this) _currentActive = null;
+        _playerIsHiding = false;
+        _isBusy = false;
+        Debug.Log($"[HideSpot] THOÁT TỦ — AnyPlayerHiding = {AnyPlayerHiding}");
+        OnReveal.Invoke();
     }
 
     private void OnDestroy()
