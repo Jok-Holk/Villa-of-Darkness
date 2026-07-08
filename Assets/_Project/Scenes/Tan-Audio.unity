@@ -3308,9 +3308,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a73a7fde82335fa44a1c078a5325410f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: BietThuBongToi.Runtime::HeadbobSystem
-  Amount: 0.01
-  Frequency: 4.5
-  Smooth: 100
+  Amount: 0.005
+  Frequency: 3
+  Smooth: 40
 --- !u!1 &2075464940
 GameObject:
   m_ObjectHideFlags: 0
