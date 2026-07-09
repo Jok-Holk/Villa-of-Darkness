@@ -1,9 +1,7 @@
 {
   "dependencies": {
     "com.gamelovers.mcp-unity": "https://github.com/CoderGamester/mcp-unity.git",
-    "com.unity.universal-forwardplus-volumetric": "https://github.com/mseonKim/URP-VolumetricFog-ForwardPlus.git",
-    "com.whinarn.unitymeshsimplifier": "https://github.com/Unity-Technologies/UnityMeshSimplifier.git",
-    "com.wooshii.hierarchydecorator": "https://github.com/WooshiiDev/HierarchyDecorator.git",
+    "com.unity.2d.sprite": "1.0.0",
     "com.unity.ai.navigation": "2.0.11",
     "com.unity.cloud.gltfast": "6.9.0",
     "com.unity.collab-proxy": "2.11.4",
@@ -17,7 +15,10 @@
     "com.unity.test-framework": "1.6.0",
     "com.unity.timeline": "1.8.11",
     "com.unity.ugui": "2.0.0",
+    "com.unity.universal-forwardplus-volumetric": "https://github.com/mseonKim/URP-VolumetricFog-ForwardPlus.git",
     "com.unity.visualscripting": "1.9.10",
+    "com.whinarn.unitymeshsimplifier": "https://github.com/Unity-Technologies/UnityMeshSimplifier.git",
+    "com.wooshii.hierarchydecorator": "https://github.com/WooshiiDev/HierarchyDecorator.git",
     "com.unity.modules.accessibility": "1.0.0",
     "com.unity.modules.adaptiveperformance": "1.0.0",
     "com.unity.modules.ai": "1.0.0",
