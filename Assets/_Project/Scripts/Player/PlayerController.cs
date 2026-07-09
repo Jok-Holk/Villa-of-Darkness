@@ -10,19 +10,26 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private Transform _cameraTransform;
 
     private CharacterController _cc;
+    private Animator _anim; // Khai báo Animator
+    
     private float _xRotation;
     private bool  _isCrouching;
+    private float _speedParameter = 0f; // Biến tạm để làm mượt chuyển động của Animator
 
     // ─── INPUT FLAGS ──────────────────────────────────────────────────────────
     private bool _movementEnabled = true;
     private bool _lookEnabled     = true;
 
     private void Awake()
-    {
-        _cc = GetComponent<CharacterController>();
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible   = false;
-    }
+{
+    _cc = GetComponent<CharacterController>();
+    
+    // SỬA DÒNG NÀY: Đổi từ GetComponent thành GetComponentInChildren
+    _anim = GetComponentInChildren<Animator>(); 
+    
+    Cursor.lockState = CursorLockMode.Locked;
+    Cursor.visible   = false;
+}
 
     private void Update()
     {
@@ -30,6 +37,9 @@ public class PlayerController : MonoBehaviour
         if (_lookEnabled)     HandleMouseLook();
         if (_movementEnabled) HandleMovement();
         if (_movementEnabled) HandleCrouch(); // guard bằng _movementEnabled — không crouch khi input bị lock
+        
+        // Luôn cập nhật Animator để đồng bộ trạng thái thực tế
+        UpdateAnimator(); 
     }
 
     private void HandleMouseLook()
@@ -49,7 +59,7 @@ public class PlayerController : MonoBehaviour
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
-        float speed = _isCrouching                       ? _crouchSpeed
+        float speed = _isCrouching                    ? _crouchSpeed
                     : Input.GetKey(KeyCode.LeftShift)    ? _runSpeed
                     : _walkSpeed;
 
@@ -64,6 +74,51 @@ public class PlayerController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.C))
             _isCrouching = !_isCrouching;
+    }
+
+    private void UpdateAnimator()
+    {
+        if (_anim == null) return;
+
+        // Nếu input di chuyển bị tắt (ví dụ đang trong cutscene), ép nhân vật về trạng thái đứng im
+        if (!_movementEnabled)
+        {
+            _speedParameter = Mathf.Lerp(_speedParameter, 0f, Time.deltaTime * 5f);
+            _anim.SetFloat("Speed", _speedParameter);
+            _anim.SetBool("IsCrouching", _isCrouching);
+            return;
+        }
+
+        // Kiểm tra xem người chơi có đang bấm nút di chuyển WASD không
+        float h = Input.GetAxis("Horizontal");
+        float v = Input.GetAxis("Vertical");
+        bool isMoving = (Mathf.Abs(h) > 0.1f || Mathf.Abs(v) > 0.1f);
+
+        float targetSpeed = 0f;
+
+        if (isMoving)
+        {
+            if (_isCrouching)
+            {
+                targetSpeed = 1f; // Crouch Walk (Trong Blend Tree: Crouch Idle = 0, Crouch Walk = 1)
+            }
+            else
+            {
+                // Nếu đè Shift thì ra dáng Chạy (Speed = 2), không thì Đi bộ (Speed = 1)
+                targetSpeed = Input.GetKey(KeyCode.LeftShift) ? 2f : 1f;
+            }
+        }
+        else
+        {
+            targetSpeed = 0f; // Đứng im (Idle hoặc Crouch Idle)
+        }
+
+        // Làm mượt giá trị Speed để animation chuyển đổi mượt mà, không bị giật
+        _speedParameter = Mathf.Lerp(_speedParameter, targetSpeed, Time.deltaTime * 6f);
+        
+        // Truyền các giá trị vào Animator Controller
+        _anim.SetFloat("Speed", _speedParameter);
+        _anim.SetBool("IsCrouching", _isCrouching);
     }
 
     // ─── PUBLIC API ───────────────────────────────────────────────────────────

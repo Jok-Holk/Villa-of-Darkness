@@ -24,9 +24,9 @@ public class MainMenuUI : MonoBehaviour
         GameManager.Instance?.LoadChapter(1);
 
         if (ScreenFader.Instance != null)
-            ScreenFader.Instance.FadeToScene("Thuan_ItemSetup");
+            ScreenFader.Instance.FadeToScene("Tan-Audio");
         else
-            SceneManager.LoadScene("Thuan_ItemSetup"); // fallback nếu quên gắn ScreenFader trong scene
+            SceneManager.LoadScene("Tan-Audio"); // fallback nếu quên gắn ScreenFader trong scene
     }
     public void OpenSettings()
     {

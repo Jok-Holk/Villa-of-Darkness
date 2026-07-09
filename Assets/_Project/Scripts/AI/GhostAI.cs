@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.AI;
 
+[RequireComponent(typeof(NavMeshAgent))]
+[RequireComponent(typeof(Animator))] // ĐẢM BẢO: Luôn có Animator đi kèm
 public class GhostAI : MonoBehaviour
 {
     public enum State { Patrol, Investigate, Chase, Kill }
@@ -25,6 +27,9 @@ public class GhostAI : MonoBehaviour
     [SerializeField] private float _killDelay = 0.5f;
 
     private NavMeshAgent _agent;
+    private Animator     _anim;           // THÊM: Biến điều khiển Animator
+    private float        _speedParameter; // THÊM: Biến làm mượt chuyển động Blend Tree
+
     private State        _currentState = State.Patrol;
     private int          _waypointIndex;
     private Transform    _player;
@@ -35,7 +40,8 @@ public class GhostAI : MonoBehaviour
 
     private void Awake()
     {
-        _agent  = GetComponent<NavMeshAgent>();
+        _agent = GetComponent<NavMeshAgent>();
+        _anim  = GetComponent<Animator>(); // THÊM: Lấy thành phần Animator
         _player = GameObject.FindWithTag("Player")?.transform;
         
         // Lưu giá trị ban đầu để dùng SetAlertMode()
@@ -56,7 +62,11 @@ public class GhostAI : MonoBehaviour
             case State.Patrol:      UpdatePatrol();      break;
             case State.Investigate: UpdateInvestigate(); break;
             case State.Chase:       UpdateChase();       break;
+            case State.Kill:        UpdateKill();        break; // THÊM: Cập nhật trạng thái Kill nếu cần
         }
+
+        // Cập nhật hoạt ảnh dựa trên trạng thái và vận tốc thực tế
+        UpdateAnimationTransitions();
     }
 
     private void UpdatePatrol()
@@ -81,6 +91,7 @@ public class GhostAI : MonoBehaviour
     {
         if (_agent == null) return;
 
+        // Khi đi tới điểm nghi vấn, nó sẽ đứng im tìm kiếm
         if (_agent.remainingDistance < 0.5f)
         {
             _investigateTimer += Time.deltaTime;
@@ -106,6 +117,13 @@ public class GhostAI : MonoBehaviour
             _agent.SetDestination(_player.position);
     }
 
+    private void UpdateKill()
+    {
+        // Khi đang thực hiện Jumpscare/Kill, bắt con ma đứng im tại chỗ
+        if (_agent != null && _agent.isOnNavMesh)
+            _agent.ResetPath();
+    }
+
     private void EnterPatrol()
     {
         _currentState = State.Patrol;
@@ -127,13 +145,52 @@ public class GhostAI : MonoBehaviour
         if (_agent != null) _agent.speed = _chaseSpeed;
     }
 
+    /// <summary>
+    /// THÊM: Tính toán và cập nhật giá trị Speed truyền vào Blend Tree của Mixamo
+    /// </summary>
+    private void UpdateAnimationTransitions()
+    {
+        if (_anim == null) return;
+
+        float targetSpeedValue = 0f;
+
+        // Kiểm tra xem con ma thực tế có đang di chuyển tịnh tiến không
+        bool isMoving = _agent != null && _agent.velocity.magnitude > 0.1f && _agent.remainingDistance > _agent.stoppingDistance;
+
+        if (_currentState == State.Kill)
+        {
+            targetSpeedValue = 0f; // Bắt buộc về Idle khi đang giết Player
+        }
+        else if (isMoving)
+        {
+            // Nếu ở trạng thái Đuổi theo (Chase) -> Ép lên mức 2 (Chạy điên cuồng)
+            if (_currentState == State.Chase)
+            {
+                targetSpeedValue = 2f;
+            }
+            // Nếu đang đi tuần (Patrol) hoặc đang đi bộ tới điểm kiểm tra (Investigate) -> Mức 1 (Đi lê lết)
+            else
+            {
+                targetSpeedValue = 1f;
+            }
+        }
+        else
+        {
+            // Trường hợp đứng im (Hết điểm tuần / Đang đứng ngó nghiêng ở điểm điều tra) -> Mức 0 (Idle ngó nghiêng)
+            targetSpeedValue = 0f;
+        }
+
+        // Tạo nội suy mượt mà để con ma đổi từ đi sang chạy không bị giật khung xương
+        _speedParameter = Mathf.Lerp(_speedParameter, targetSpeedValue, Time.deltaTime * 5f);
+        
+        // Đẩy thông số vào Blend Tree
+        _anim.SetFloat("Speed", _speedParameter);
+    }
+
     private bool CanDetectPlayer()
     {
         if (_player == null) return false;
 
-        // SỬA LỖI TẠI ĐÂY: Thay vì gọi HideSpot.IsPlayerHiding (gây lỗi static)
-        // Chúng ta check component HideSpot trực tiếp từ Player (nếu người chơi có gắn script này khi trốn)
-        // Hoặc sử dụng cách an toàn nhất trong dự án của bạn:
         var hideComponent = _player.GetComponent<HideSpot>();
         if (hideComponent != null && hideComponent.IsPlayerHiding) return false;
 
@@ -153,13 +210,10 @@ public class GhostAI : MonoBehaviour
     {
         if (_player == null) return false;
 
-        // SỬA LỖI TẠI ĐÂY TƯƠNG TỰ:
         var hideComponent = _player.GetComponent<HideSpot>();
         if (hideComponent != null && hideComponent.IsPlayerHiding) return false;
 
         Rigidbody playerRb = _player.GetComponent<Rigidbody>();
-        
-        // CẬP NHẬT THEO CẢNH BÁO UNITY MỚI: Dùng linearVelocity thay cho velocity để hết cảnh báo vàng
         float playerVelocity = (playerRb != null) ? playerRb.linearVelocity.magnitude : 0f;
 
         float walkThreshold = 2.0f;
@@ -187,7 +241,7 @@ public class GhostAI : MonoBehaviour
     private void OnTriggerStay(Collider other)
     {
         if (!other.CompareTag("Player")) return;
-        if (_hasKilled) return; // THÊM: đã kill rồi thì bỏ qua
+        if (_hasKilled) return; // Đã kill rồi thì bỏ qua
 
         if (HideSpot.AnyPlayerHiding)
         {
@@ -199,7 +253,7 @@ public class GhostAI : MonoBehaviour
         if (_killTimer >= _killDelay)
         {
             Debug.Log("[GhostAI] KILL!");
-            _hasKilled    = true; // THÊM: đánh dấu đã kill
+            _hasKilled    = true; // Đánh dấu đã kill
             _killTimer    = 0f;
             _currentState = State.Kill;
             GameManager.Instance?.PlayerDead();
