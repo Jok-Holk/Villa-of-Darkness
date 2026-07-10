@@ -54,6 +54,11 @@ public class PickupItem : MonoBehaviour, IInteractable
         if (_examineItem == null) _examineItem = GetComponent<ExamineItem>();
     }
 
+    private void Start()
+    {
+        if (_inventorySystem == null) _inventorySystem = InventorySystem.Instance;
+    }
+
     // ─── IInteractable ─────────────────────────────────────────────────────
     public void Interact()
     {

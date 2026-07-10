@@ -7,6 +7,11 @@ public class GhostProximitySanity : MonoBehaviour
 
     private bool _playerInRange = false;
 
+    private void Start()
+    {
+        if (_sanitySystem == null) _sanitySystem = SanitySystem.Instance;
+    }
+
     private void Update()
     {
         if (!_playerInRange) return;

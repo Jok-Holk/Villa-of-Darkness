@@ -38,20 +38,34 @@ public class GameManager : MonoBehaviour
         // ĐÃ SỬA DÒNG 40: Đồng bộ cách tìm kiếm mới khi load scene
         _deathScreenUI = FindFirstObjectByType<DeathScreenUI>(FindObjectsInactive.Include);
         Debug.Log($"[GameManager] Scene loaded: {scene.name} | DeathScreenUI: {(_deathScreenUI != null ? "OK" : "NULL")}");
+
+        // Retry (PlayerRespawn) load lại scene — nếu đã có checkpoint thì đưa Player về đúng vị trí đó
+        // thay vì vị trí spawn mặc định của scene. Chưa có checkpoint nào thì bỏ qua, giữ hành vi cũ.
+        if (_pendingCheckpointRestore && CheckpointManager.HasCheckpoint && PlayerController.Instance != null)
+        {
+            CheckpointManager.Restore(PlayerController.Instance.transform);
+        }
+        _pendingCheckpointRestore = false;
     }
+
+    private bool _pendingCheckpointRestore = false;
 
     public void PlayerDead()
     {
-        PlayerDead("Minh Khoa", "1979 – 2000");
+        PlayerDead("Nguyễn Minh Khoa", "1979 – 2000");
     }
 
-    public void PlayerDead(string characterName = "Minh Khoa", string characterYears = "1979 – 2000")
+    public void PlayerDead(string characterName = "Nguyễn Minh Khoa", string characterYears = "1979 – 2000")
     {
         Debug.Log("Player died");
-        Time.timeScale   = 0f;  
+        Time.timeScale   = 0f;
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible   = true;
+
+        // Time.timeScale=0 chặn được di chuyển (Move dùng Time.deltaTime) nhưng KHÔNG chặn xoay camera
+        // bằng chuột (Input.GetAxis không phụ thuộc deltaTime) — cần tắt input tay như DialogueUI đang làm.
+        PlayerController.Instance?.SetInputEnabled(false);
 
         if (_deathScreenUI != null)
             _deathScreenUI.Show(characterName, characterYears);
@@ -63,7 +77,9 @@ public class GameManager : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible   = false;
-        Time.timeScale   = 1f;   
+        Time.timeScale   = 1f;
+
+        _pendingCheckpointRestore = true;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 

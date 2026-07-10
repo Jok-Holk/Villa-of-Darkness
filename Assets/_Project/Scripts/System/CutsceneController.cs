@@ -14,6 +14,11 @@ public class CutsceneController : MonoBehaviour
     private bool _isPlaying = false;
     public bool IsPlaying => _isPlaying;
 
+    private void Start()
+    {
+        if (_player == null) _player = PlayerController.Instance;
+    }
+
     public void Play()
     {
         if (_isPlaying) return;

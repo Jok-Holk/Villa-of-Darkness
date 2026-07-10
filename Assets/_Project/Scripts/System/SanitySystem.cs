@@ -3,6 +3,8 @@ using UnityEngine.Events;
 
 public class SanitySystem : MonoBehaviour
 {
+    public static SanitySystem Instance { get; private set; }
+
     public enum SanityLevel { High, Medium, Low, Critical }
 
     [SerializeField] private float _sanity = 1f;
@@ -15,6 +17,16 @@ public class SanitySystem : MonoBehaviour
     private bool _isInSafeZone = false;
     private float _checkTimer = 0f;
     private const float CHECK_INTERVAL = 0.2f;  // check mỗi 200ms
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this) Instance = null;
+    }
 
     private void Update()
     {

@@ -41,6 +41,11 @@ public class WellDeathSequence : MonoBehaviour
     private CanvasGroup _screenFadeCanvas;
     private bool _deathSequenceTriggered = false;
 
+    private void Start()
+    {
+        if (_playerController == null) _playerController = PlayerController.Instance;
+    }
+
     private void OnEnable()
     {
         if (_gazeTrigger != null)

@@ -29,7 +29,9 @@ public class HideSpot : MonoBehaviour, IInteractable
     private void Start()
     {
         if (_playerController == null)
-            _playerController = FindAnyObjectByType<PlayerController>();
+            _playerController = PlayerController.Instance != null
+                ? PlayerController.Instance
+                : FindAnyObjectByType<PlayerController>();
     }
 
     private void Update()

@@ -1,7 +1,6 @@
 using UnityEngine;
 #if UNITY_EDITOR
 using UnityEditor;
-using UnityEditor.AI;
 #endif
 
 /// <summary>
@@ -13,7 +12,6 @@ using UnityEditor.AI;
 public class GameOptimizationManager : MonoBehaviour
 {
     [Header("Đánh dấu Static — cờ nào sẽ được bật")]
-    public bool markNavigationStatic = true;
     public bool markOccluderStatic = true;
     public bool markOccludeeStatic = true;
     public bool markBatchingStatic = true;
@@ -37,7 +35,6 @@ public class GameOptimizationManager : MonoBehaviour
         int count = 0, skipped = 0;
 
         StaticEditorFlags flagsToAdd = 0;
-        if (markNavigationStatic) flagsToAdd |= StaticEditorFlags.NavigationStatic;
         if (markOccluderStatic) flagsToAdd |= StaticEditorFlags.OccluderStatic;
         if (markOccludeeStatic) flagsToAdd |= StaticEditorFlags.OccludeeStatic;
         if (markBatchingStatic) flagsToAdd |= StaticEditorFlags.BatchingStatic;
@@ -75,15 +72,7 @@ public class GameOptimizationManager : MonoBehaviour
         Debug.Log($"[GameOptimizationManager] Đã đánh dấu Static cho {count} object (cờ: {flagsToAdd}), bỏ qua {skipped} object có script tương tác/di chuyển.");
     }
 
-    [ContextMenu("2. Bake NavMesh")]
-    public void BakeNavMesh()
-    {
-        Debug.Log("[GameOptimizationManager] Bắt đầu bake NavMesh...");
-        NavMeshBuilder.BuildNavMesh();
-        Debug.Log("[GameOptimizationManager] Bake NavMesh xong.");
-    }
-
-    [ContextMenu("3. Bake Occlusion Culling (theo thông số phía trên)")]
+    [ContextMenu("2. Bake Occlusion Culling (theo thông số phía trên)")]
     public void BakeOcclusionCulling()
     {
         StaticOcclusionCulling.smallestOccluder = smallestOccluder;
@@ -98,7 +87,7 @@ public class GameOptimizationManager : MonoBehaviour
             Debug.LogWarning("[GameOptimizationManager] Bake thất bại/huỷ — kiểm tra Console.");
     }
 
-    [ContextMenu("4. Xoá Occlusion Culling Data Đã Bake")]
+    [ContextMenu("3. Xoá Occlusion Culling Data Đã Bake")]
     public void ClearOcclusionCulling()
     {
         StaticOcclusionCulling.Clear();

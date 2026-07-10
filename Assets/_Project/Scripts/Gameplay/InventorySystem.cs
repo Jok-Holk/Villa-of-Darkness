@@ -7,14 +7,31 @@ public class ItemEvent : UnityEvent<string> { }
 
 public class InventorySystem : MonoBehaviour
 {
+    public static InventorySystem Instance { get; private set; }
+
     [Header("Kéo tất cả ItemData asset vào đây")]
     [SerializeField] private ItemData[] _itemDatabase;
-    
-    [Header("Liên kết tay cầm")]
+
+    [Header("Liên kết tay cầm — để trống thì tự lấy HandheldItemController.Instance lúc chạy")]
     [SerializeField] private HandheldItemController _handheldController;
-    
+
     public ItemEvent OnItemAdded = new ItemEvent();
     public ItemEvent OnItemRemoved = new ItemEvent(); // Cần khai báo thêm event này để UI biết mà load lại
+
+    private void Awake()
+    {
+        Instance = this;
+    }
+
+    private void Start()
+    {
+        if (_handheldController == null) _handheldController = HandheldItemController.Instance;
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this) Instance = null;
+    }
 
     // ─── ITEM DATABASE ─────────────────────────────────────────────────────────
     /// <summary>Tìm ItemData theo itemId.</summary>

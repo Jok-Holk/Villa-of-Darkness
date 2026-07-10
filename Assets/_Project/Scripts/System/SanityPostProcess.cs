@@ -32,6 +32,14 @@ public class SanityPostProcess : MonoBehaviour
             _volume.profile.TryGet(out _lensDistort);
         }
 
+    }
+
+    private void Start()
+    {
+        // Dùng Start() (chạy sau mọi Awake()) để SanitySystem.Instance đã kịp gán
+        // xong trước khi fallback + đăng ký lắng nghe — tránh race condition thứ tự Awake.
+        if (_sanitySystem == null) _sanitySystem = SanitySystem.Instance;
+
         if (_sanitySystem != null)
             _sanitySystem.OnLevelChanged.AddListener(OnLevelChanged);
     }

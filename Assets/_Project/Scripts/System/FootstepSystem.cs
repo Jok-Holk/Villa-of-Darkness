@@ -24,8 +24,18 @@ public class FootstepSystem : MonoBehaviour
         [Tooltip("Tên PhysicMaterial khớp — phân biệt hoa thường, ví dụ: Wood, Brick, Dirt")]
         public string materialName;
 
-        [Tooltip("List âm thanh bước chân cho surface này — sẽ random mỗi bước")]
+        [Tooltip("List âm thanh bước chân cho surface này — phát TUẦN HOÀN (round-robin) chứ không random,\nđể tránh lặp trùng clip 2 bước liên tiếp (random thuần với 2 clip có 50% khả năng lặp).")]
         public AudioClip[] clips;
+
+        private int _cycleIndex; // không serialize — chỉ là state runtime để tuần hoàn
+
+        public AudioClip NextClip()
+        {
+            if (clips == null || clips.Length == 0) return null;
+            var clip = clips[_cycleIndex % clips.Length];
+            _cycleIndex++;
+            return clip;
+        }
     }
 
     [Header("Surface Profiles — thứ tự ưu tiên: khớp tên trước, fallback sau")]
@@ -35,17 +45,9 @@ public class FootstepSystem : MonoBehaviour
     [SerializeField] private AudioClip[] _defaultClips;
 
     [Header("Step Settings")]
-    [Tooltip("Thời gian giữa 2 bước chân khi đi bộ (giây)")]
-    [SerializeField] private float _walkStepInterval = 0.5f;
-    [Tooltip("Thời gian giữa 2 bước chân khi chạy (giây)")]
-    [SerializeField] private float _runStepInterval  = 0.3f;
-    [Tooltip("Thời gian giữa 2 bước chân khi khom (giây)")]
-    [SerializeField] private float _crouchStepInterval = 0.75f;
-    [Tooltip("Ngưỡng vận tốc tối thiểu để phát tiếng bước (tránh phát khi đứng yên)")]
-    [SerializeField] private float _minMoveSpeed = 0.1f;
     [Tooltip("Volume của bước chân")]
     [Range(0f, 1f)]
-    [SerializeField] private float _footstepVolume = 0.6f;
+    [SerializeField] private float _footstepVolume = 0.35f;
 
     [Header("Raycast")]
     [Tooltip("Độ dài raycast xuống đất — nên bằng khoảng cách từ pivot xuống đất + 0.1")]
@@ -57,9 +59,7 @@ public class FootstepSystem : MonoBehaviour
     [SerializeField] private CharacterController _cc;
 
     // ─── Private State ────────────────────────────────────────────────────────
-    private float _stepTimer = 0f;
-    private bool  _isRunning = false;
-    private bool  _isCrouching = false;
+    private int _defaultClipIndex = 0; // tuần hoàn riêng cho _defaultClips (không nằm trong SurfaceProfile)
 
     // ─── INIT ─────────────────────────────────────────────────────────────────
     private void Awake()
@@ -67,33 +67,13 @@ public class FootstepSystem : MonoBehaviour
         if (_cc == null) _cc = GetComponent<CharacterController>();
     }
 
-    // ─── UPDATE ───────────────────────────────────────────────────────────────
-    private void Update()
-    {
-        if (_cc == null) return;
-        if (!_cc.isGrounded)   return;  // đang nhảy / rơi → không phát tiếng
-
-        // Lấy vận tốc ngang để biết có đang di chuyển không
-        Vector3 horizontalVel = new Vector3(_cc.velocity.x, 0f, _cc.velocity.z);
-        if (horizontalVel.magnitude < _minMoveSpeed) return; // đứng yên
-
-        // Phát hiện trạng thái run / crouch từ input
-        _isCrouching = Input.GetKey(KeyCode.C);
-        _isRunning   = !_isCrouching && Input.GetKey(KeyCode.LeftShift);
-
-        float interval = _isCrouching ? _crouchStepInterval
-                       : _isRunning   ? _runStepInterval
-                       : _walkStepInterval;
-
-        _stepTimer += Time.deltaTime;
-        if (_stepTimer < interval) return;
-
-        _stepTimer = 0f;
-        PlayFootstep();
-    }
+    // Không còn tự đếm timer riêng nữa — HeadbobSystem (cùng gốc Player) là nguồn nhịp duy nhất,
+    // tự gọi PlayFootstepNow() đúng lúc sóng bob chạm đáy. Trước đây 2 timer độc lập (bob theo
+    // Time.time, footstep theo interval riêng) chạy lệch nhau, đôi lúc còn dính đôi tiếng liên tiếp.
 
     // ─── PLAY ─────────────────────────────────────────────────────────────────
-    private void PlayFootstep()
+    /// <summary>Gọi từ HeadbobSystem đúng lúc camera chạm đáy sóng bob — đảm bảo audio và hình luôn khớp.</summary>
+    public void PlayFootstepNow()
     {
         AudioClip clip = GetClipForCurrentSurface();
         if (clip == null) return;
@@ -121,21 +101,23 @@ public class FootstepSystem : MonoBehaviour
                     // So sánh không phân biệt hoa thường cho an toàn
                     if (profile.materialName.Equals(matName, System.StringComparison.OrdinalIgnoreCase))
                     {
-                        return PickRandom(profile.clips);
+                        return profile.NextClip();
                     }
                 }
             }
         }
 
-        // Không khớp material nào → fallback
-        return PickRandom(_defaultClips);
+        // Không khớp material nào → fallback, cũng tuần hoàn thay vì random
+        return PickCyclic(_defaultClips);
     }
 
     // ─── HELPER ───────────────────────────────────────────────────────────────
-    private AudioClip PickRandom(AudioClip[] clips)
+    private AudioClip PickCyclic(AudioClip[] clips)
     {
         if (clips == null || clips.Length == 0) return null;
-        return clips[Random.Range(0, clips.Length)];
+        var clip = clips[_defaultClipIndex % clips.Length];
+        _defaultClipIndex++;
+        return clip;
     }
 
     // ─── EDITOR DEBUG ─────────────────────────────────────────────────────────

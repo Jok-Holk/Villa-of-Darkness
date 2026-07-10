@@ -1,17 +1,8 @@
 using UnityEngine;
 using UnityEditor;
-using UnityEditor.AI;
 
 public static class VoD_BakeOptimization
 {
-    [MenuItem("VoD/Optimize/Bake NavMesh")]
-    public static void BakeNavMesh()
-    {
-        Debug.Log("[VoD] Bắt đầu bake NavMesh...");
-        NavMeshBuilder.BuildNavMesh();
-        Debug.Log("[VoD] Bake NavMesh xong.");
-    }
-
     [MenuItem("VoD/Optimize/Bake Occlusion Culling")]
     public static void BakeOcclusionCulling()
     {
@@ -23,7 +14,7 @@ public static class VoD_BakeOptimization
             Debug.LogWarning("[VoD] Occlusion Culling bake thất bại hoặc bị huỷ — kiểm tra Console để biết lý do (thường do chưa có object nào đánh dấu Occluder/Occludee Static, hoặc scene quá nhỏ để cần culling).");
     }
 
-    [MenuItem("VoD/Optimize/Mark All Static Geometry (Navigation + Occlusion)")]
+    [MenuItem("VoD/Optimize/Mark All Static Geometry (Occlusion)")]
     public static void MarkStaticGeometry()
     {
         // Đánh dấu Navigation Static + Occluder/Occludee Static cho toàn bộ MeshRenderer trong scene
@@ -55,12 +46,12 @@ public static class VoD_BakeOptimization
             }
 
             StaticEditorFlags flags = GameObjectUtility.GetStaticEditorFlags(r.gameObject);
-            flags |= StaticEditorFlags.NavigationStatic | StaticEditorFlags.OccluderStatic | StaticEditorFlags.OccludeeStatic | StaticEditorFlags.BatchingStatic;
+            flags |= StaticEditorFlags.OccluderStatic | StaticEditorFlags.OccludeeStatic | StaticEditorFlags.BatchingStatic;
             GameObjectUtility.SetStaticEditorFlags(r.gameObject, flags);
             count++;
         }
 
-        Debug.Log($"[VoD] Đã đánh dấu Static cho {count} object (Navigation + Occluder + Occludee + Batching), bỏ qua {skipped} object có script tương tác/di chuyển để không làm hỏng gameplay. " +
-                  "Giờ chạy 'VoD → Optimize → Bake NavMesh' và 'Bake Occlusion Culling'.");
+        Debug.Log($"[VoD] Đã đánh dấu Static cho {count} object (Occluder + Occludee + Batching), bỏ qua {skipped} object có script tương tác/di chuyển để không làm hỏng gameplay. " +
+                  "Giờ chạy 'VoD → Optimize → Bake Occlusion Culling'. NavMesh bake làm thủ công qua Window > AI > Navigation.");
     }
 }

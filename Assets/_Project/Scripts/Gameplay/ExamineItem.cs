@@ -46,6 +46,11 @@ public class ExamineItem : MonoBehaviour, IInteractable
         if (_linkedPickupItem == null) _linkedPickupItem = GetComponent<PickupItem>();
     }
 
+    private void Start()
+    {
+        if (_playerController == null) _playerController = PlayerController.Instance;
+    }
+
     public void Interact() 
     {
         if (Time.time - _lastStopTime < 0.25f) return;
@@ -132,6 +137,8 @@ public class ExamineItem : MonoBehaviour, IInteractable
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible   = true;
 
+        SetBackdropActive(true);
+
         OnExamineStart.Invoke();
     }
 
@@ -185,6 +192,9 @@ public class ExamineItem : MonoBehaviour, IInteractable
             Cursor.lockState = CursorLockMode.None;
             Cursor.visible   = true;
         }
+
+        SetBackdropActive(false);
+
         OnExamineEnd.Invoke();
     }
 
@@ -221,7 +231,20 @@ public class ExamineItem : MonoBehaviour, IInteractable
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible   = false;
 
+        SetBackdropActive(false);
+
         _isExamining         = false;
         _openedFromInventory = false;
+    }
+
+    // Che nền gameplay phía sau item khi soi 3D — tách biệt hẳn khỏi thế giới game.
+    // Backdrop là 1 Cube mỏng đặt cố định trước Camera.main (xem VoD/Fix/17), luôn tồn tại sẵn trong scene, tắt/bật theo trạng thái examine.
+    private static void SetBackdropActive(bool active)
+    {
+        Camera cam = Camera.main;
+        if (cam == null) return;
+
+        Transform backdrop = cam.transform.Find("ExamineBackdrop");
+        if (backdrop != null) backdrop.gameObject.SetActive(active);
     }
 }

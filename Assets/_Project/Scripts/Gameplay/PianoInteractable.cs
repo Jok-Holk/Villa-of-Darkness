@@ -89,6 +89,12 @@ public class PianoInteractable : MonoBehaviour, IInteractable
         _cam = Camera.main;
     }
 
+    private void Start()
+    {
+        if (_playerController == null) _playerController = PlayerController.Instance;
+        if (_inventorySystem == null)  _inventorySystem  = InventorySystem.Instance;
+    }
+
     // ─── UPDATE — A/D chọn phím, Space chơi, E thoát piano mode ───────────────
     private void Update()
     {

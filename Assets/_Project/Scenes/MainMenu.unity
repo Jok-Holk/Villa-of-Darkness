@@ -17,7 +17,7 @@ RenderSettings:
   m_Fog: 0
   m_FogColor: {r: 0.06, g: 0.07, b: 0.09, a: 1}
   m_FogMode: 2
-  m_FogDensity: 0.07
+  m_FogDensity: 0.05
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -1489,6 +1489,50 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 310058950}
   m_CullTransparentMesh: 1
+--- !u!1 &332758208
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 332758210}
+  - component: {fileID: 332758209}
+  m_Layer: 0
+  m_Name: GameManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &332758209
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 332758208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7624326bff1f18448b5613dfc62f1c14, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BietThuBongToi.Runtime::GameManager
+--- !u!4 &332758210
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 332758208}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 164.046, y: 0.53, z: 478.89}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &371165778
 GameObject:
   m_ObjectHideFlags: 0
@@ -1629,12 +1673,12 @@ MonoBehaviour:
   fogEnabled: 0
   fogColor: {r: 0.06, g: 0.07, b: 0.09, a: 1}
   fogMode: 2
-  fogDensity: 0.07
+  fogDensity: 0.05
   linearFogStart: 0
   linearFogEnd: 300
   useDarkNightSkybox: 0
   brightSkybox: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
-  brightSkyboxExposure: 2
+  brightSkyboxExposure: 5
   brightSkyboxTint: {r: 1, g: 1, b: 1, a: 1}
   darkNightSkybox: {fileID: 2100000, guid: 2c8560894c794c34b840110c97da1b3f, type: 2}
   darkSkyboxExposure: 0.1
@@ -1820,7 +1864,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56df3223c32c3514c8c8b91729c13581, type: 3}
   m_Name: 
   m_EditorClassIdentifier: BietThuBongToi.Runtime::GameOptimizationManager
-  markNavigationStatic: 1
   markOccluderStatic: 1
   markOccludeeStatic: 1
   markBatchingStatic: 1
@@ -2402,7 +2445,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 2147483647
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!154 &572789553
 TerrainCollider:
@@ -2434,7 +2477,7 @@ Terrain:
   m_Enabled: 1
   serializedVersion: 6
   m_TerrainData: {fileID: 15600000, guid: 8cce1bc7c4d92504a9e6a9c87035512e, type: 2}
-  m_TreeDistance: 220
+  m_TreeDistance: 400
   m_TreeBillboardDistance: 220
   m_TreeCrossFadeLength: 0
   m_TreeMaximumFullLODCount: 350
@@ -2473,7 +2516,7 @@ Transform:
   m_GameObject: {fileID: 572789552}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -218.5, y: -34.38, z: -171.1}
+  m_LocalPosition: {x: -218.5, y: -34, z: -171.1}
   m_LocalScale: {x: 1, y: 1, z: 1.2464}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -4555,7 +4598,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 30
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &1144651573
 Transform:
@@ -4566,7 +4609,7 @@ Transform:
   m_GameObject: {fileID: 1144651572}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 111.76, y: 32.338203, z: 27.595}
+  m_LocalPosition: {x: 111.76, y: 32.56, z: 27.595}
   m_LocalScale: {x: 12.274097, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -5879,6 +5922,54 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1319099065}
   m_CullTransparentMesh: 1
+--- !u!1 &1366810997
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1366810999}
+  - component: {fileID: 1366810998}
+  m_Layer: 0
+  m_Name: UIAudioManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1366810998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1366810997}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d0a7f41a491fe44ab1fef6c83223354, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: BietThuBongToi.Runtime::UIAudioManager
+  clickClips:
+  - {fileID: 8300000, guid: 0d384f898556b8a4099288246cf43319, type: 3}
+  - {fileID: 8300000, guid: 9f7c2c40607baa44cbcf6961cf5b018b, type: 3}
+  volume: 0.6
+--- !u!4 &1366810999
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1366810997}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1368550756
 GameObject:
   m_ObjectHideFlags: 0
@@ -6518,7 +6609,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 55
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -6544,14 +6635,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1454754658}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.15304591, y: -0.6903456, z: 0.15304591, w: 0.6903456}
-  m_LocalPosition: {x: 70, y: -30, z: -30.85}
+  m_LocalRotation: {x: 0.1710646, y: -0.6861027, z: 0.1710646, w: 0.6861027}
+  m_LocalPosition: {x: 70, y: -28, z: -30.85}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1611572026}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 25, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 28, y: -90, z: 0}
 --- !u!114 &1454754662
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6610,12 +6701,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: BietThuBongToi.Runtime::MainMenuCameraFlythrough
   _scenes:
   - label: "C\u1EA3nh 1 \u2014 \u0110\u01B0\u1EDDng m\xF2n"
-    startPosition: {x: 70, y: -30, z: -30.85}
-    startRotation: {x: 25, y: -90, z: 0}
-    endPosition: {x: -130, y: -30, z: -30.85}
-    endRotation: {x: 25, y: -90, z: 0}
-    travelDuration: 20
-    fadeDuration: 3
+    startPosition: {x: 70, y: -28, z: -30.85}
+    startRotation: {x: 28, y: -90, z: 0}
+    endPosition: {x: -130, y: -28, z: -30.85}
+    endRotation: {x: 28, y: -90, z: 0}
+    travelDuration: 25
+    fadeDuration: 2.5
   - label: "C\u1EA3nh 2 \u2014 Cam ngang khu r\u1EEBng"
     startPosition: {x: 70, y: -30, z: -30.85}
     startRotation: {x: 15, y: 0, z: 0}
@@ -6769,7 +6860,7 @@ AudioDistortionFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1454754658}
   m_Enabled: 1
-  m_DistortionLevel: 0.5
+  m_DistortionLevel: 0.3
 --- !u!1 &1538968423
 GameObject:
   m_ObjectHideFlags: 0
@@ -8284,7 +8375,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 30
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!4 &1795564372
 Transform:
@@ -8295,7 +8386,7 @@ Transform:
   m_GameObject: {fileID: 1795564371}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -1.5, y: 32.338203, z: 27.595}
+  m_LocalPosition: {x: -1.5, y: 32.56, z: 27.595}
   m_LocalScale: {x: 10.39121, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9877,7 +9968,7 @@ GameObject:
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 30
+  m_StaticEditorFlags: 0
   m_IsActive: 1
 --- !u!23 &2136612187
 MeshRenderer:
@@ -9945,7 +10036,7 @@ Transform:
   m_GameObject: {fileID: 2136612185}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -93.73, y: 32.338203, z: 27.595}
+  m_LocalPosition: {x: -93.73, y: 32.56, z: 27.595}
   m_LocalScale: {x: 8.060253, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9968,3 +10059,5 @@ SceneRoots:
   - {fileID: 485437678}
   - {fileID: 1009035545}
   - {fileID: 810700723}
+  - {fileID: 332758210}
+  - {fileID: 1366810999}

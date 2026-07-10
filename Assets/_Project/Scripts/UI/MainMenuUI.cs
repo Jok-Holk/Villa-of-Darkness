@@ -21,12 +21,14 @@ public class MainMenuUI : MonoBehaviour
         else
             PlayerPrefs.DeleteAll(); // fallback nếu không có ItemPersistence trong scene MainMenu
 
-        GameManager.Instance?.LoadChapter(1);
+        // Chỉ set currentChapter — KHÔNG gọi GameManager.LoadChapter() ở đây vì nó tự
+        // SceneManager.LoadScene() ngay lập tức, load trùng với ScreenFader/SceneManager bên dưới.
+        GameData.currentChapter = 1;
 
         if (ScreenFader.Instance != null)
-            ScreenFader.Instance.FadeToScene("Tan-Audio");
+            ScreenFader.Instance.FadeToScene("Chapter1");
         else
-            SceneManager.LoadScene("Tan-Audio"); // fallback nếu quên gắn ScreenFader trong scene
+            SceneManager.LoadScene("Chapter1"); // fallback nếu quên gắn ScreenFader trong scene
     }
     public void OpenSettings()
     {

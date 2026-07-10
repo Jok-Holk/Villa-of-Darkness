@@ -10,6 +10,11 @@ public class InventoryTabHandler : MonoBehaviour
 {
     [SerializeField] private InventoryUI _inventoryUI;
 
+    private void Start()
+    {
+        if (_inventoryUI == null) _inventoryUI = InventoryUI.Instance;
+    }
+
     private void Update()
     {
         if (!Input.GetKeyDown(KeyCode.Tab)) return;

@@ -7,6 +7,12 @@ public class GhostAI : MonoBehaviour
 {
     public enum State { Patrol, Investigate, Chase, Kill }
 
+    // Chưa thoát khỏi sự bám đuổi — chặn mở Inventory trong lúc này (xem InventoryUI.Open()).
+    public static bool AnyGhostChasing { get; private set; }
+
+    // Bắn 1 lần đúng lúc chuyển sang Chase (không spam mỗi frame) — InventoryUI lắng nghe để tự đóng ngay nếu đang mở.
+    public static event System.Action OnPlayerSpotted;
+
     [Header("Waypoints")]
     [SerializeField] private Transform[] _waypoints;
 
@@ -53,6 +59,12 @@ public class GhostAI : MonoBehaviour
     private void OnEnable()
     {
         _hasKilled = false;
+    }
+
+    private void OnDisable()
+    {
+        // Tránh treo cờ AnyGhostChasing=true mãi mãi nếu ghost bị tắt/destroy giữa lúc đang Chase.
+        if (_currentState == State.Chase) AnyGhostChasing = false;
     }
 
     private void Update()
@@ -126,23 +138,29 @@ public class GhostAI : MonoBehaviour
 
     private void EnterPatrol()
     {
-        _currentState = State.Patrol;
+        _currentState    = State.Patrol;
+        AnyGhostChasing  = false;
         if (_agent != null) _agent.speed = _patrolSpeed;
     }
 
     private void EnterInvestigate(Vector3 pos)
     {
-        _currentState      = State.Investigate;
-        _lastKnownPosition = pos;
-        _investigateTimer  = 0f;
+        _currentState       = State.Investigate;
+        AnyGhostChasing     = false; // mất dấu, chỉ còn nghi ngờ — chưa hẳn "bám đuổi" nữa
+        _lastKnownPosition  = pos;
+        _investigateTimer   = 0f;
         if (_agent != null && _agent.isOnNavMesh)
             _agent.SetDestination(pos);
     }
 
     private void EnterChase()
     {
-        _currentState = State.Chase;
+        bool justSpotted = _currentState != State.Chase;
+        _currentState   = State.Chase;
+        AnyGhostChasing = true;
         if (_agent != null) _agent.speed = _chaseSpeed;
+
+        if (justSpotted) OnPlayerSpotted?.Invoke();
     }
 
     /// <summary>

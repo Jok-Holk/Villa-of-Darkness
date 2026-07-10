@@ -22,6 +22,12 @@ public class ItemLock : MonoBehaviour, IInteractable
 
     private bool _isUnlocked = false;
 
+    private void Start()
+    {
+        if (_inventorySystem == null)    _inventorySystem    = InventorySystem.Instance;
+        if (_handheldController == null) _handheldController = HandheldItemController.Instance;
+    }
+
     public void Interact()
     {
         if (_isUnlocked) return;

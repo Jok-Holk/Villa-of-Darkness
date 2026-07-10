@@ -3,6 +3,8 @@ using UnityEngine;
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
 {
+    public static PlayerController Instance { get; private set; }
+
     [SerializeField] private float _walkSpeed        = 3f;
     [SerializeField] private float _runSpeed         = 6f;
     [SerializeField] private float _crouchSpeed      = 1.5f;
@@ -22,14 +24,21 @@ public class PlayerController : MonoBehaviour
 
     private void Awake()
 {
+    Instance = this;
+
     _cc = GetComponent<CharacterController>();
-    
+
     // SỬA DÒNG NÀY: Đổi từ GetComponent thành GetComponentInChildren
-    _anim = GetComponentInChildren<Animator>(); 
-    
+    _anim = GetComponentInChildren<Animator>();
+
     Cursor.lockState = CursorLockMode.Locked;
     Cursor.visible   = false;
 }
+
+    private void OnDestroy()
+    {
+        if (Instance == this) Instance = null;
+    }
 
     private void Update()
     {

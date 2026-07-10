@@ -23,6 +23,9 @@ public class DialogueLine
     public string text;
     public List<DialogueChoice> choices = new List<DialogueChoice>();
 
+    [Tooltip("Có giọng lồng tiếng (VO) → hiện dạng phụ đề tinh giản. Không tick → nội tâm/ghi chú, hiện dạng popup khung, dừng lại đọc.")]
+    public bool hasVoice = true;
+
     public bool HasChoices => choices != null && choices.Count > 0;
 }
 
@@ -38,13 +41,29 @@ public class DialogueAsset : ScriptableObject
 
 public class DialogueUI : MonoBehaviour
 {
-    [Header("References")]
+    [Header("References — panel gốc, luôn active khi có hội thoại đang chạy")]
     public GameObject dialoguePanel;
-    public TextMeshProUGUI speakerText;
-    public TextMeshProUGUI bodyText;
-    public GameObject confirmArrow;          // mũi tên đỏ ▼ nhấp nháy (tên field khớp object "ConfirmArrow" trong Hierarchy)
+
+    [Header("Kiểu Phụ đề (VO) — dùng khi DialogueLine.hasVoice = true. Tinh giản, không khung, nền mờ.")]
+    public GameObject subtitleView;
+    public TextMeshProUGUI subtitleSpeakerText;
+    public TextMeshProUGUI subtitleBodyText;
+    public GameObject subtitleConfirmArrow;
+
+    [Header("Kiểu Popup khung (nội tâm/ghi chú, không giọng) — hasVoice = false. Nền dimmed, đóng khung, dừng lại đọc.")]
+    public GameObject popupView;
+    public TextMeshProUGUI popupSpeakerText;
+    public TextMeshProUGUI popupBodyText;
+    public GameObject popupConfirmArrow;
+
+    [Header("Choices — dùng chung 1 container, tự chuyển sang view đang active")]
     public Transform choiceContainer;        // parent của các dòng choice
     public GameObject choicePrefab;          // prefab: 1 TextMeshProUGUI
+
+    // Gán lại mỗi dòng theo view đang active (xem SetActiveView) — không wire tay trong Inspector.
+    TextMeshProUGUI speakerText;
+    TextMeshProUGUI bodyText;
+    GameObject confirmArrow;
 
     [Header("Typewriter")]
     [Range(0.01f, 0.1f)]
@@ -77,6 +96,9 @@ public class DialogueUI : MonoBehaviour
     Coroutine _blinkRoutine;
     List<TextMeshProUGUI> _choiceRows = new List<TextMeshProUGUI>();
 
+    // Pool các dòng choice — tái sử dụng GameObject thay vì Instantiate/Destroy mỗi lần đổi node thoại.
+    List<GameObject> _choicePool = new List<GameObject>();
+
     // ── Input mapping ──────────────────────────────────────
     // Works with both old and new Input System via polling.
     bool PressAdvance()  => Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.Return);
@@ -98,6 +120,13 @@ public class DialogueUI : MonoBehaviour
         _asset      = asset;
         _lineIndex  = -1;
         dialoguePanel.SetActive(true);
+
+        // Thoại = pop-up chặn hẳn gameplay (khác Inventory — Tab không pause).
+        // Đứng nói chuyện không nên bị ma bắt/mất tập trung giữa chừng.
+        Time.timeScale = 0f;
+        PlayerController.Instance?.SetInputEnabled(false);
+        InteractionSystem.IsInputBlocked = true;
+
         AdvanceLine();
     }
 
@@ -142,6 +171,10 @@ public class DialogueUI : MonoBehaviour
         dialoguePanel.SetActive(false);
         ClearChoices();
         SetArrowVisible(false);
+
+        Time.timeScale = 1f;
+        PlayerController.Instance?.SetInputEnabled(true);
+        InteractionSystem.IsInputBlocked = false;
     }
 
     // ─────────────────────────────────────────────────────
@@ -191,6 +224,7 @@ public class DialogueUI : MonoBehaviour
         }
 
         var line = _asset.lines[_lineIndex];
+        SetActiveView(line.hasVoice);
         speakerText.text = line.speakerName;
         SetArrowVisible(false);
         ClearChoices();
@@ -200,6 +234,22 @@ public class DialogueUI : MonoBehaviour
 
         if (_typeRoutine != null) StopCoroutine(_typeRoutine);
         _typeRoutine = StartCoroutine(TypeLine(line));
+    }
+
+    // Chuyển đổi giữa 2 kiểu hiển thị theo DialogueLine.hasVoice — cho phép 1 cuộc hội
+    // thoại trộn cả dòng có giọng (phụ đề) và dòng nội tâm/ghi chú (popup khung).
+    void SetActiveView(bool hasVoice)
+    {
+        subtitleView.SetActive(hasVoice);
+        popupView.SetActive(!hasVoice);
+
+        speakerText  = hasVoice ? subtitleSpeakerText  : popupSpeakerText;
+        bodyText     = hasVoice ? subtitleBodyText     : popupBodyText;
+        confirmArrow = hasVoice ? subtitleConfirmArrow : popupConfirmArrow;
+
+        Transform targetParent = hasVoice ? subtitleView.transform : popupView.transform;
+        if (choiceContainer.parent != targetParent)
+            choiceContainer.SetParent(targetParent, false);
     }
 
     // ─────────────────────────────────────────────────────
@@ -247,12 +297,12 @@ public class DialogueUI : MonoBehaviour
             if (!bodyText.textInfo.characterInfo[i].isVisible)
                 continue;
 
-            _activeReveals.Add(new CharReveal { charIndex = i, startTime = Time.time });
-            yield return new WaitForSeconds(charDelay);
+            _activeReveals.Add(new CharReveal { charIndex = i, startTime = Time.unscaledTime });
+            yield return new WaitForSecondsRealtime(charDelay);
         }
 
         // Đợi animation của ký tự cuối cùng hoàn tất trước khi coi như "xong".
-        yield return new WaitForSeconds(charRevealDuration);
+        yield return new WaitForSecondsRealtime(charRevealDuration);
 
         FinishLine(line);
     }
@@ -280,7 +330,7 @@ public class DialogueUI : MonoBehaviour
             for (int r = _activeReveals.Count - 1; r >= 0; r--)
             {
                 var reveal = _activeReveals[r];
-                float t = (Time.time - reveal.startTime) / charRevealDuration;
+                float t = (Time.unscaledTime - reveal.startTime) / charRevealDuration;
 
                 if (t >= 1f)
                 {
@@ -442,7 +492,7 @@ public class DialogueUI : MonoBehaviour
         // (không cần fade mượt cho icon mũi tên, ảnh tham khảo cũng là nhấp nháy dạng on/off).
         while (true)
         {
-            yield return new WaitForSeconds(blinkInterval * 0.5f);
+            yield return new WaitForSecondsRealtime(blinkInterval * 0.5f);
             confirmArrow.SetActive(!confirmArrow.activeSelf);
         }
     }
@@ -458,7 +508,18 @@ public class DialogueUI : MonoBehaviour
 
         for (int i = 0; i < choices.Count; i++)
         {
-            var go  = Instantiate(choicePrefab, choiceContainer);
+            GameObject go;
+            if (i < _choicePool.Count)
+            {
+                go = _choicePool[i];
+                go.SetActive(true);
+            }
+            else
+            {
+                go = Instantiate(choicePrefab, choiceContainer);
+                _choicePool.Add(go);
+            }
+
             var tmp = go.GetComponentInChildren<TextMeshProUGUI>();
             _choiceRows.Add(tmp);
 
@@ -473,13 +534,13 @@ public class DialogueUI : MonoBehaviour
     IEnumerator PopInRow(Transform row, float extraDelay)
     {
         row.localScale = Vector3.zero;
-        if (extraDelay > 0f) yield return new WaitForSeconds(extraDelay);
+        if (extraDelay > 0f) yield return new WaitForSecondsRealtime(extraDelay);
 
         float duration = 0.15f;
         float t = 0f;
         while (t < duration)
         {
-            t += Time.deltaTime;
+            t += Time.unscaledDeltaTime;
             float s = EaseOutQuad(Mathf.Clamp01(t / duration));
             row.localScale = Vector3.one * s;
             yield return null;
@@ -517,8 +578,9 @@ public class DialogueUI : MonoBehaviour
 
     void ClearChoices()
     {
-        foreach (Transform t in choiceContainer)
-            Destroy(t.gameObject);
+        // Ẩn thay vì Destroy — pool giữ lại để dùng cho lượt thoại kế tiếp (tránh Instantiate/Destroy liên tục).
+        foreach (var go in _choicePool)
+            go.SetActive(false);
         _choiceRows.Clear();
     }
 }
