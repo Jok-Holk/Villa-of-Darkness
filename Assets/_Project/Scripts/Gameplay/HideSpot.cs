@@ -11,8 +11,13 @@ public class HideSpot : MonoBehaviour, IInteractable
     [SerializeField] private DoorController _door;
     [SerializeField] private float _doorWaitTime = 0.4f; // thời gian chờ cửa xoay xong
 
+    [Header("Cinematic — lướt camera thay vì teleport thẳng")]
+    [Tooltip("Thời gian lướt camera vào/ra (giây) — KHÔNG phải teleport tức thì nữa")]
+    [SerializeField] private float _slideDuration = 0.6f;
+
     private bool _playerIsHiding = false;
     private Vector3 _playerReturnPosition;
+    private Quaternion _playerReturnRotation;
     private int _hideFrame = -1;
     private bool _isBusy = false;
 
@@ -60,6 +65,9 @@ public class HideSpot : MonoBehaviour, IInteractable
         _currentActive = this;
         _hideFrame = Time.frameCount;
 
+        // Khoá cả move+look trong lúc lướt camera — tránh chuột người chơi giằng co với lerp xoay.
+        if (_playerController != null) _playerController.SetInputEnabled(false);
+
         // 1. MỞ CỬA trước
         if (_door != null)
         {
@@ -68,10 +76,12 @@ public class HideSpot : MonoBehaviour, IInteractable
         }
         yield return new WaitForSeconds(_doorWaitTime);
 
-        // 2. TELEPORT PLAYER VÀO TRONG
+        // 2. LƯỚT CAMERA VÀO (không teleport) — position + rotation cùng lerp, rotation lấy theo đúng
+        // hướng của _hidePosition (thường xoay ngược 180° để nhìn ra khe cửa — set sẵn trong Editor).
         if (_playerController != null)
         {
             _playerReturnPosition = _playerController.transform.position;
+            _playerReturnRotation = _playerController.transform.rotation;
 
             var cc = _playerController.GetComponent<CharacterController>();
             if (cc != null) cc.enabled = false;
@@ -79,17 +89,32 @@ public class HideSpot : MonoBehaviour, IInteractable
             var col = _playerController.GetComponent<Collider>();
             if (col != null) col.enabled = false;
 
-            Vector3 hidePos = _hidePosition != null ? _hidePosition.position : transform.position;
-            _playerController.transform.position = hidePos;
+            Vector3 fromPos = _playerController.transform.position;
+            Quaternion fromRot = _playerController.transform.rotation;
+            Vector3 toPos = _hidePosition != null ? _hidePosition.position : transform.position;
+            Quaternion toRot = _hidePosition != null ? _hidePosition.rotation : fromRot;
 
-            _playerController.SetMovementEnabled(false);
+            float t = 0f;
+            while (t < _slideDuration)
+            {
+                t += Time.deltaTime;
+                float k = t / _slideDuration;
+                _playerController.transform.SetPositionAndRotation(
+                    Vector3.Lerp(fromPos, toPos, k),
+                    Quaternion.Slerp(fromRot, toRot, k));
+                yield return null;
+            }
+            _playerController.transform.SetPositionAndRotation(toPos, toRot);
+
+            // Đã vào hẳn — mở lại camera look (nhìn quanh qua khe cửa được), vẫn khoá di chuyển.
+            _playerController.SetLookEnabled(true);
         }
 
-        // 3. ĐÓNG CỬA LẠI
+        // 3. HÉ CỬA LẠI (không đóng kín — đúng style trốn, chừa khe nhìn ra ngoài)
         if (_door != null)
         {
-            Debug.Log("[HideSpot] Gọi Door.Close()");
-            _door.Close();
+            Debug.Log("[HideSpot] Gọi Door.SetAjar()");
+            _door.SetAjar();
         }
         yield return new WaitForSeconds(_doorWaitTime);
 
@@ -103,17 +128,33 @@ public class HideSpot : MonoBehaviour, IInteractable
     {
         _isBusy = true;
 
-        // 2. MỞ CỬA
+        // Khoá lại move+look trong lúc lướt camera ra.
+        if (_playerController != null) _playerController.SetInputEnabled(false);
+
+        // 1. HÉ CỬA MỞ HẲN RA
         if (_door != null) _door.Open();
         yield return new WaitForSeconds(_doorWaitTime);
 
-        // 3. TELEPORT PLAYER RA NGOÀI
+        // 2. LƯỚT CAMERA RA NGOÀI (không teleport), rotation trả về đúng hướng lúc vào
         if (_playerController != null)
         {
             var cc = _playerController.GetComponent<CharacterController>();
             if (cc != null) cc.enabled = false;
 
-            _playerController.transform.position = _playerReturnPosition;
+            Vector3 fromPos = _playerController.transform.position;
+            Quaternion fromRot = _playerController.transform.rotation;
+
+            float t = 0f;
+            while (t < _slideDuration)
+            {
+                t += Time.deltaTime;
+                float k = t / _slideDuration;
+                _playerController.transform.SetPositionAndRotation(
+                    Vector3.Lerp(fromPos, _playerReturnPosition, k),
+                    Quaternion.Slerp(fromRot, _playerReturnRotation, k));
+                yield return null;
+            }
+            _playerController.transform.SetPositionAndRotation(_playerReturnPosition, _playerReturnRotation);
 
             if (cc != null) cc.enabled = true;
 
@@ -123,7 +164,7 @@ public class HideSpot : MonoBehaviour, IInteractable
             _playerController.SetInputEnabled(true);
         }
 
-        // 4. ĐÓNG CỬA LẠI
+        // 3. ĐÓNG CỬA HẲN LẠI
         if (_door != null) _door.Close();
         yield return new WaitForSeconds(_doorWaitTime);
 

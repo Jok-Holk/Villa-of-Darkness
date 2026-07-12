@@ -38,6 +38,7 @@ public class FlashlightController : MonoBehaviour
     public UnityEvent OnBatteryEmpty = new UnityEvent();
 
     public bool IsOn => _isOn;
+    public float BatteryLevel01 => _batteryLevel;
 
     // ─── INIT ──────────────────────────────────────────────────────────────────
     private void Awake()

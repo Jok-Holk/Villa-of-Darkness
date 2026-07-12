@@ -18,6 +18,9 @@ public class DoorController : MonoBehaviour, IInteractable
 
     [Header("Animation - Cửa cánh (Rotation)")]
     [SerializeField] private float _openAngle = 90f;
+
+    [Header("Hé cửa (dùng khi trốn — không đóng kín hẳn để có khe hở nhìn ra ngoài)")]
+    [SerializeField] private float _ajarAngle = 15f;
     
     [Header("Animation - Tốc độ chung")]
     [SerializeField] private float _animSpeed = 3f;
@@ -27,6 +30,7 @@ public class DoorController : MonoBehaviour, IInteractable
 
     private Quaternion _closedRot;
     private Quaternion _openRot;
+    private Quaternion _ajarRot;
     private Quaternion _targetRot;
 
     private Vector3 _closedPos;
@@ -39,7 +43,8 @@ public class DoorController : MonoBehaviour, IInteractable
     {
         _closedRot = transform.localRotation;
         _openRot   = Quaternion.Euler(transform.localEulerAngles + new Vector3(0, _openAngle, 0));
-        
+        _ajarRot   = Quaternion.Euler(transform.localEulerAngles + new Vector3(0, _ajarAngle, 0));
+
         _closedPos = transform.localPosition;
         _openPos   = _closedPos + _slideOffset;
 
@@ -101,6 +106,14 @@ public class DoorController : MonoBehaviour, IInteractable
             SetLocked(true);
             Debug.Log("[Door] Tủ đã tự động chốt khóa!");
         }
+    }
+
+    // Hé cửa (dùng khi player đang trốn) — không đóng kín, giữ 1 khe hở nhỏ để nhìn ra ngoài.
+    public void SetAjar()
+    {
+        _isOpen    = true; // coi như đang mở 1 phần — Interact() thường (Toggle) sẽ đóng kín nếu bấm nhầm
+        _targetRot = _ajarRot;
+        _targetPos = _openPos; // ngăn kéo (nếu có) vẫn coi hé = mở, không dùng cho cửa cánh
     }
 
     public void Toggle()
