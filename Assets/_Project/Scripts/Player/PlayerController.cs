@@ -150,4 +150,11 @@ public class PlayerController : MonoBehaviour
     {
         _lookEnabled = enabled;
     }
+
+    /// <summary>Đồng bộ lại góc pitch nội bộ sau khi script khác (vd IntroManager) tự xoay camera bằng
+    /// tay lúc _lookEnabled=false — tránh camera "giật" về góc cũ ngay khung hình đầu tiên mouse-look chạy lại.</summary>
+    public void SetPitch(float xRotationDegrees)
+    {
+        _xRotation = xRotationDegrees;
+    }
 }

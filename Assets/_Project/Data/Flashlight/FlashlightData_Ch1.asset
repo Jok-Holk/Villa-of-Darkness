@@ -13,10 +13,16 @@ MonoBehaviour:
   m_Name: FlashlightData_Ch1
   m_EditorClassIdentifier: BietThuBongToi.Runtime::FlashlightData
   drainRate: 0.005
-  maxIntensity: 1.425
-  spotAngle: 70
-  innerSpotAngle: 35
-  range: 30
+  startBatteryLevel: 1
+  maxIntensity: 75
+  spotAngle: 25
+  innerSpotAngle: 7.5
+  range: 22
+  lightColor: {r: 1, g: 0.97, b: 0.88, a: 1}
+  shadowType: 2
+  shadowStrength: 1
+  shadowBias: 0.05
+  shadowNormalBias: 0.4
   shakeRecoverAmount: 0.1
   shakeCooldown: 5
   shakeDrainPause: 3
@@ -24,3 +30,21 @@ MonoBehaviour:
   flickerMediumThresh: 0.5
   flickerLowThresh: 0.3
   flickerCriticalThresh: 0.15
+  stableIntensityMultMin: 0.7
+  mediumIntensityMult: 0.65
+  lowIntensityMult: 0.4
+  criticalIntensityMult: 0.2
+  mediumFlickerChance: 0.003
+  mediumFlickerCount: 2
+  mediumFlickerDuration: 0.05
+  lowFlickerChance: 0.005
+  lowFlickerCount: 1
+  lowFlickerDuration: 0.15
+  criticalFlickerChance: 0.01
+  criticalFlickerCount: 2
+  criticalFlickerDuration: 0.2
+  raisedLocalPos: {x: 0.35, y: -0.25, z: 0.5}
+  loweredLocalPos: {x: 0.35, y: -0.7, z: 0.5}
+  raiseLowerDuration: 0.25
+  aimConvergeDistance: 9
+  aimSmoothSpeed: 10

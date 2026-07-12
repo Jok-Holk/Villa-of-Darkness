@@ -1670,7 +1670,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9eba5689b53eebb41b07b4075de6dc62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: BietThuBongToi.Runtime::FogManager
-  fogEnabled: 0
+  ambientIntensity: 1
+  ambientMode: 0
+  ambientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
+  ambientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
+  ambientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
+  reflectionIntensity: 1
+  directionalLight: {fileID: 96261494}
+  directionalLightIntensity: 0.06
+  directionalLightColor: {r: 0.3, g: 0.35, b: 0.5, a: 1}
+  fogEnabled: 1
   fogColor: {r: 0.06, g: 0.07, b: 0.09, a: 1}
   fogMode: 2
   fogDensity: 0.05

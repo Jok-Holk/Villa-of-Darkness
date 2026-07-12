@@ -6,10 +6,6 @@ public class GazeTrigger : MonoBehaviour
     [SerializeField] private GazeSettings _settings; // Kéo file GazeSettings vào đây
     private float _gazeTimer = 0f;
 
-    [Header("Debug")]
-    [Tooltip("Bật để in log chi tiết mỗi frame: raycast trúng gì, có settings chưa, v.v. Tắt đi khi đã chạy ổn để đỡ spam Console.")]
-    [SerializeField] private bool _verboseDebug = true;
-
     public UnityEvent OnGazeComplete;
     public UnityEvent OnGazeWarning;
 
@@ -40,21 +36,10 @@ public class GazeTrigger : MonoBehaviour
         // Sử dụng _settings.maxDistance để giới hạn tầm nhìn
         if (Physics.Raycast(ray, out RaycastHit hit, _settings.maxDistance))
         {
-            if (_verboseDebug)
-            {
-                // In ra chính xác raycast đang trúng object nào — chỗ này giúp phát hiện ngay
-                // nếu tia bị vật khác (VD: thành giếng đá) che mất trước khi chạm tới điểm cần nhìn.
-                Debug.Log($"[Gaze Debug] Raycast HIT: '{hit.collider.gameObject.name}' cách {hit.distance:F2}m. " +
-                          $"(GazeTrigger này đang gắn trên object '{gameObject.name}')");
-            }
-
             // 🎯 SỬA LỖI 1: Check xem vật thể bị bắn trúng có phải chính nó HOẶC là con cháu bên trong nó không
             if (hit.collider != null && (hit.collider.gameObject == gameObject || hit.collider.transform.IsChildOf(transform)))
             {
                 _gazeTimer += Time.deltaTime;
-
-                // Thêm Log ra Console để Phúc biết cơ chế tích lũy thời gian nhìn đang chạy tốt
-                Debug.Log($"[Gaze Debug] Đang nhìn vào Gương! Thời gian tích lũy: {_gazeTimer:F2}/{_settings.gazeThreshold} giây.");
 
                 // Sử dụng warningThreshold từ settings
                 if (_gazeTimer >= _settings.warningThreshold && _gazeTimer < _settings.gazeThreshold)
@@ -86,10 +71,6 @@ public class GazeTrigger : MonoBehaviour
         }
 
         // Nếu rời mắt khỏi gương, reset thời gian về 0
-        if (_gazeTimer > 0f)
-        {
-            Debug.Log("[Gaze Debug] Đã rời mắt khỏi Gương! Reset thời gian nhìn.");
-            _gazeTimer = 0f;
-        }
+        _gazeTimer = 0f;
     }
 }

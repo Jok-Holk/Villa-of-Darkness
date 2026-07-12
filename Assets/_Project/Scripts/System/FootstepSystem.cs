@@ -45,9 +45,16 @@ public class FootstepSystem : MonoBehaviour
     [SerializeField] private AudioClip[] _defaultClips;
 
     [Header("Step Settings")]
-    [Tooltip("Volume của bước chân")]
+    [Tooltip("Volume bước chân lúc đi bộ (tốc độ = Walk Speed Ref)")]
     [Range(0f, 1f)]
-    [SerializeField] private float _footstepVolume = 0.35f;
+    [SerializeField] private float _walkVolume = 0.085f;
+    [Tooltip("Volume bước chân lúc chạy (tốc độ = Run Speed Ref)")]
+    [Range(0f, 1f)]
+    [SerializeField] private float _runVolume = 0.125f;
+    [Tooltip("Tốc độ tương ứng Walk Volume — khớp _walkSpeed trên PlayerController")]
+    [SerializeField] private float _walkSpeedRef = 1.5f;
+    [Tooltip("Tốc độ tương ứng Run Volume — khớp _runSpeed trên PlayerController")]
+    [SerializeField] private float _runSpeedRef = 3f;
 
     [Header("Raycast")]
     [Tooltip("Độ dài raycast xuống đất — nên bằng khoảng cách từ pivot xuống đất + 0.1")]
@@ -72,16 +79,22 @@ public class FootstepSystem : MonoBehaviour
     // Time.time, footstep theo interval riêng) chạy lệch nhau, đôi lúc còn dính đôi tiếng liên tiếp.
 
     // ─── PLAY ─────────────────────────────────────────────────────────────────
-    /// <summary>Gọi từ HeadbobSystem đúng lúc camera chạm đáy sóng bob — đảm bảo audio và hình luôn khớp.</summary>
-    public void PlayFootstepNow()
+    /// <summary>Gọi từ HeadbobSystem đúng lúc camera chạm đáy sóng bob — đảm bảo audio và hình luôn khớp.
+    /// speed = tốc độ thật lúc đó (dùng nội suy Walk Volume ↔ Run Volume theo Walk/Run Speed Ref).</summary>
+    public void PlayFootstepNow(float speed = -1f)
     {
         AudioClip clip = GetClipForCurrentSurface();
         if (clip == null) return;
         if (AudioManager.Instance == null) return;
 
-        // Dùng internal PlayOneShot với volume tùy chỉnh nếu có,
-        // hoặc gọi PlaySFX (volume do AudioSource quyết định)
-        AudioManager.Instance.PlaySFX(clip, _footstepVolume);
+        float volume = _walkVolume;
+        if (speed >= 0f)
+        {
+            float t = Mathf.InverseLerp(_walkSpeedRef, _runSpeedRef, speed);
+            volume = Mathf.Lerp(_walkVolume, _runVolume, t);
+        }
+
+        AudioManager.Instance.PlaySFX(clip, volume);
     }
 
     // ─── SURFACE DETECTION ────────────────────────────────────────────────────

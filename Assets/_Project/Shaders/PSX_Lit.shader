@@ -3,6 +3,11 @@
 // với đèn pin như PSX_PostProcess (camera-level) trước đây.
 // Hiệu ứng PSX: (1) rung đỉnh vertex trong clip-space (giả affine/thiếu độ chính xác float của PS1),
 // (2) lượng tử hoá màu theo Bayer dither NGAY TRONG shader vật thể (không phải sau khi mọi thứ đã lên hình).
+// Fog (thêm 2026-07-11): fog khoảng cách cổ điển của Unity (RenderSettings, FogManager.cs) KHÔNG hề biết
+// tới ánh sáng — chỉ trộn theo khoảng cách camera thuần tuý. Để đèn pin "xuyên" được qua fog, tự tính riêng
+// mức đóng góp của additional light (đèn pin) lên từng pixel rồi GIẢM hệ số trộn fog cục bộ tại đó — vùng
+// đèn pin rọi mạnh sẽ ít bị fog nuốt màu hơn hẳn xung quanh, dù không phải volumetric fog thật (không có
+// chùm sáng lơ lửng trong không khí, chỉ bề mặt trong tia sáng rõ hơn).
 Shader "VoD/PSX_Lit"
 {
     Properties
@@ -13,6 +18,7 @@ Shader "VoD/PSX_Lit"
         _DitherStrength  ("Dither Strength", Range(0,1)) = 0.15
         _VertexSnap      ("Vertex Snap (độ rung PS1, đơn vị grid trong clip-space)", Range(0,32)) = 10
         _Smoothness      ("Smoothness", Range(0,1)) = 0.1
+        _FlashlightFogPierce ("Flashlight Fog Pierce (0 = tắt, càng cao đèn càng xuyên fog mạnh)", Range(0,3)) = 1.5
     }
 
     SubShader
@@ -33,6 +39,7 @@ Shader "VoD/PSX_Lit"
             #pragma multi_compile _ _ADDITIONAL_LIGHTS_VERTEX _ADDITIONAL_LIGHTS
             #pragma multi_compile _ _ADDITIONAL_LIGHT_SHADOWS
             #pragma multi_compile _ _SHADOWS_SOFT
+            #pragma multi_compile_fog
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
@@ -51,6 +58,7 @@ Shader "VoD/PSX_Lit"
                 float3 normalWS   : TEXCOORD1;
                 float3 positionWS : TEXCOORD2;
                 float4 shadowCoord: TEXCOORD3;
+                float  fogCoord    : TEXCOORD4;
             };
 
             TEXTURE2D(_BaseMap); SAMPLER(sampler_BaseMap);
@@ -60,6 +68,7 @@ Shader "VoD/PSX_Lit"
             float  _DitherStrength;
             float  _VertexSnap;
             float  _Smoothness;
+            float  _FlashlightFogPierce;
 
             Varyings vert(Attributes IN)
             {
@@ -80,6 +89,9 @@ Shader "VoD/PSX_Lit"
                 OUT.normalWS = TransformObjectToWorldNormal(IN.normalOS);
                 OUT.positionWS = vpi.positionWS;
                 OUT.shadowCoord = GetShadowCoord(vpi);
+                // Dùng positionCS.z GỐC (trước khi vertex-snap PSX) để fog tính theo độ sâu thật,
+                // không bị nhiễu theo lưới rung PS1.
+                OUT.fogCoord = ComputeFogFactor(vpi.positionCS.z);
                 return OUT;
             }
 
@@ -114,13 +126,25 @@ Shader "VoD/PSX_Lit"
                 // Ánh sáng môi trường tối thiểu để không có mặt nào đen tuyệt đối
                 lighting += 0.08;
 
+                // Tổng "mức đóng góp" của additional light (đèn pin/đèn phòng) lên pixel này — dùng riêng
+                // để đẩy lùi fog cục bộ bên dưới, tách biệt khỏi lighting màu (light.color có thể tối,
+                // nhưng vẫn cần biết CÓ tia sáng chiếu tới hay không).
+                float additionalLightInfluence = 0;
+
 #if defined(_ADDITIONAL_LIGHTS)
                 uint pixelLightCount = GetAdditionalLightsCount();
                 for (uint lightIndex = 0u; lightIndex < pixelLightCount; lightIndex++)
                 {
                     Light light = GetAdditionalLight(lightIndex, IN.positionWS);
-                    lighting += light.color * light.distanceAttenuation * light.shadowAttenuation
-                                * saturate(dot(normalWS, light.direction));
+                    float ndotl = saturate(dot(normalWS, light.direction));
+                    // URP dùng nghịch đảo BÌNH PHƯƠNG khoảng cách thật (đúng vật lý) cho falloff — càng
+                    // lại gần nguồn sáng, độ sáng tăng theo cấp số cực đoan, nên đèn pin (luôn cầm sát vật)
+                    // hay bị cháy trắng ở cự ly gần. Built-in RP đời cũ dùng falloff mềm hơn nhiều (gần như
+                    // tuyến tính). Lấy sqrt() của distanceAttenuation (~1/d²) sẽ ra ~1/d — mềm gần giống
+                    // Built-in RP, không cháy sáng cực đoan ở cự ly gần nữa, mà vẫn tắt dần đúng ở Range.
+                    float softAtten = sqrt(saturate(light.distanceAttenuation));
+                    lighting += light.color * softAtten * light.shadowAttenuation * ndotl;
+                    additionalLightInfluence += softAtten * light.shadowAttenuation * ndotl;
                 }
 #endif
 
@@ -133,6 +157,12 @@ Shader "VoD/PSX_Lit"
                 float dither = (BayerDither(screenPos) - 0.5) * _DitherStrength / depth;
                 color.rgb = saturate(color.rgb + dither);
                 color.rgb = floor(color.rgb * depth + 0.5) / depth;
+
+                // Đèn pin đẩy lùi fog cục bộ: vùng được chiếu mạnh → hệ số fog giảm → ít bị nuốt màu hơn.
+                // _FlashlightFogPierce=0 tắt hẳn hiệu ứng này (fog chạy thuần theo khoảng cách như cũ).
+                float fogPierce = saturate(additionalLightInfluence * _FlashlightFogPierce);
+                float effectiveFog = IN.fogCoord * (1 - fogPierce);
+                color.rgb = MixFog(color.rgb, effectiveFog);
 
                 return color;
             }

@@ -1,902 +1,739 @@
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.TextCore.LowLevel;
-using TMPro;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine.SceneManagement;
-using System.Linq;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 using System.Text;
-using System.Text.RegularExpressions;
+using System.IO;
 using System.Collections.Generic;
+using TMPro;
 
-// Bộ tool chẩn đoán/sửa lỗi scene còn dùng lại được lâu dài.
-// Các nút một-lần-dùng-xong (rebuild scene, fix layout inventory qua nhiều bản, fix rig/material/audio listener,
-// import PauseMenu/DeathScreen...) đã hoàn thành nhiệm vụ và bị dọn khỏi file này — xem lịch sử git nếu cần xem lại.
+// Các tool VoD/Temp/* chạy tay trong Unity Editor (không qua MCP). Đã dọn bớt các tool 1 lần đã hoàn
+// thành nhiệm vụ (import/fix xong rồi) — xem lịch sử git nếu cần xem lại. Chỉ giữ tool debug/utility còn
+// đang cần dùng lặp lại.
 public static class VoD_MergeChapter1Scenes
 {
-    [MenuItem("VoD/Temp/Preview DeathScreen (không cần Play)")]
-    public static void PreviewDeathScreenNoPlay()
+    // GameObject.Find() BỎ QUA object đang inactive — dùng search đệ quy có include inactive.
+    private static GameObject FindByNameIncludingInactive(string name)
     {
-        var deathUI = Object.FindFirstObjectByType<DeathScreenUI>(FindObjectsInactive.Include);
-        if (deathUI == null) { Debug.LogError("[VoD] Không tìm thấy DeathScreenUI."); return; }
-
-        var so = new SerializedObject(deathUI);
-
-        GameObject panelGO = so.FindProperty("deathScreenPanel").objectReferenceValue as GameObject;
-        if (panelGO != null) panelGO.SetActive(true);
-
-        void ActivateAndFade(string fieldName, float alpha)
+        foreach (var root in SceneManager.GetActiveScene().GetRootGameObjects())
         {
-            var comp = so.FindProperty(fieldName).objectReferenceValue as Component;
-            if (comp == null) return;
-            comp.gameObject.SetActive(true);
-            var g = comp.GetComponent<Graphic>();
-            if (g != null) { Color c = g.color; c.a = alpha; g.color = c; }
+            var found = FindDeep(root.transform, name);
+            if (found != null) return found.gameObject;
         }
-
-        ActivateAndFade("vignetteImage", 1f);
-        ActivateAndFade("apparitionImage", 0.4f); // preview tĩnh — không random ẩn hiện như lúc Play thật
-
-        var quoteText = so.FindProperty("quoteText").objectReferenceValue as TMP_Text;
-        if (quoteText != null && string.IsNullOrEmpty(quoteText.text))
-            quoteText.text = "\"Nguyễn Minh Khoa, 1979 – 2000...\""; // text mẫu, edit-mode Show() thật không chạy nên rỗng
-
-        // Vignette cần texture để hiện — edit-mode không chạy Awake() nên chưa có texture. Sinh tạm bằng reflection.
-        // Hàm giờ có thêm tham số centerYRatio — đọc đúng giá trị field "vignetteCenterY" Jok đang chỉnh trong Inspector.
-        var voidMethod = typeof(DeathScreenUI).GetMethod("GenerateVignetteTexture", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-        var vignetteImg = so.FindProperty("vignetteImage").objectReferenceValue as RawImage;
-        var centerYProp = so.FindProperty("vignetteCenterY");
-        float centerY = centerYProp != null ? centerYProp.floatValue : 0.82f;
-        if (vignetteImg != null && vignetteImg.texture == null && voidMethod != null)
-        {
-            var tex = voidMethod.Invoke(null, new object[] { 192, 108, centerY }) as Texture2D;
-            vignetteImg.texture = tex;
-            vignetteImg.color = Color.white;
-        }
-        var apparitionImg = so.FindProperty("apparitionImage").objectReferenceValue as RawImage;
-        var appMethod = typeof(DeathScreenUI).GetMethod("GenerateApparitionTexture", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-        if (apparitionImg != null && apparitionImg.texture == null && appMethod != null)
-        {
-            var tex = appMethod.Invoke(null, new object[] { 96, 138 }) as Texture2D;
-            apparitionImg.texture = tex;
-        }
-
-        Debug.Log("[VoD] Đã bật preview DeathScreen ở Edit Mode (không cần Play) — KHÔNG chạy được hiệu ứng động (rung sắc/chớp/pulse nút, cần Play thật). Nhớ chạy \"Stop Preview\" trước khi Save Scene để không lưu nhầm trạng thái preview.");
+        return null;
     }
 
-    [MenuItem("VoD/Temp/Stop Preview DeathScreen")]
-    public static void StopPreviewDeathScreen()
+    private static Transform FindDeep(Transform t, string name)
     {
-        var deathUI = Object.FindFirstObjectByType<DeathScreenUI>(FindObjectsInactive.Include);
-        if (deathUI == null) { Debug.LogError("[VoD] Không tìm thấy DeathScreenUI."); return; }
-
-        var so = new SerializedObject(deathUI);
-        GameObject panelGO = so.FindProperty("deathScreenPanel").objectReferenceValue as GameObject;
-        if (panelGO != null) panelGO.SetActive(false);
-
-        string[] fields = { "vignetteImage", "apparitionImage", "whiteFlash" };
-        foreach (var f in fields)
-        {
-            var comp = so.FindProperty(f).objectReferenceValue as Component;
-            if (comp != null) comp.gameObject.SetActive(false);
-        }
-
-        Debug.Log("[VoD] Đã tắt preview — về đúng trạng thái ẩn mặc định trước khi Save Scene.");
-    }
-
-    [MenuItem("VoD/Temp/Enter Play Mode")]
-    public static void EnterPlayModeForTest() { EditorApplication.isPlaying = true; }
-
-    [MenuItem("VoD/Temp/Exit Play Mode")]
-    public static void ExitPlayModeForTest() { EditorApplication.isPlaying = false; }
-
-    // MCP hay timeout khi đọc GameObject qua get_gameobject — thay vì query từng cái qua MCP (chậm, hay treo),
-    // tool này quét 1 lần, ghi hết ra file text ở root project. Jok bấm nút này trong Unity (không qua MCP),
-    // Claude đọc file bằng Read tool bình thường — nhanh và ổn định hơn nhiều so với gọi MCP lặp lại.
-    [MenuItem("VoD/Temp/Scan DeathScreen Report")]
-    public static void ScanDeathScreenReport()
-    {
-        var sb = new StringBuilder();
-        sb.AppendLine("═══ VoD DeathScreen Diagnostic Report ═══");
-        sb.AppendLine($"Screen.width x height (runtime): {Screen.width} x {Screen.height}");
-        sb.AppendLine($"Screen.currentResolution: {Screen.currentResolution}");
-        sb.AppendLine($"Application.isPlaying: {Application.isPlaying}");
-
-        // Kích thước Game View thật (khác Screen.width/height khi ở Editor, không maximize) — lấy qua reflection
-        // vì Unity không public API này.
-        try
-        {
-            var gameViewType = System.Type.GetType("UnityEditor.GameView,UnityEditor");
-            var getSizeMethod = gameViewType.GetMethod("GetSizeOfMainGameView",
-                System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Static);
-            var size = (Vector2)getSizeMethod.Invoke(null, null);
-            sb.AppendLine($"GameView.GetSizeOfMainGameView(): {size.x} x {size.y}");
-        }
-        catch (System.Exception e) { sb.AppendLine($"GameView size: lỗi đọc ({e.Message})"); }
-
-        void DumpRect(string label, Component c)
-        {
-            if (c == null) { sb.AppendLine($"[{label}] NULL — không gán trong Inspector"); return; }
-            var rt = c.GetComponent<RectTransform>();
-            if (rt == null) { sb.AppendLine($"[{label}] không có RectTransform"); return; }
-            var g = c.GetComponent<Graphic>();
-            sb.AppendLine($"[{label}] activeSelf={c.gameObject.activeSelf} activeInHierarchy={c.gameObject.activeInHierarchy}");
-            sb.AppendLine($"    anchorMin={rt.anchorMin} anchorMax={rt.anchorMax} pivot={rt.pivot}");
-            sb.AppendLine($"    sizeDelta={rt.sizeDelta} anchoredPosition={rt.anchoredPosition}");
-            sb.AppendLine($"    offsetMin={rt.offsetMin} offsetMax={rt.offsetMax} rect={rt.rect}");
-            sb.AppendLine($"    localScale={rt.localScale} lossyScale={rt.lossyScale}");
-            if (g != null) sb.AppendLine($"    color={g.color} raycastTarget={g.raycastTarget}");
-            if (c is RawImage ri) sb.AppendLine($"    texture={(ri.texture != null ? $"{ri.texture.width}x{ri.texture.height}" : "NULL")} uvRect={ri.uvRect}");
-        }
-
-        var canvas = Object.FindFirstObjectByType<Canvas>();
-        if (canvas != null)
-        {
-            var crt = canvas.GetComponent<RectTransform>();
-            sb.AppendLine($"[Canvas] renderMode={canvas.renderMode} pixelRect={canvas.pixelRect} scaleFactor={canvas.scaleFactor}");
-            sb.AppendLine($"    rect={crt.rect} sizeDelta={crt.sizeDelta}");
-            var scaler = canvas.GetComponent<CanvasScaler>();
-            if (scaler != null)
-                sb.AppendLine($"    CanvasScaler: uiScaleMode={scaler.uiScaleMode} referenceResolution={scaler.referenceResolution} matchWidthOrHeight={scaler.matchWidthOrHeight}");
-        }
-
-        var deathUI = Object.FindFirstObjectByType<DeathScreenUI>(FindObjectsInactive.Include);
-        if (deathUI == null) { Debug.LogError("[VoD] Không tìm thấy DeathScreenUI."); return; }
-        DumpRect("DeathScreen (root)", deathUI);
-
-        var so = new SerializedObject(deathUI);
-        string[] fieldsToScan = {
-            "deathScreenPanel", "glitchNoise", "scanlineStrip",
-            "mastheadText", "headlineText", "subText", "quoteText",
-            "vignetteImage", "apparitionImage", "whiteFlash",
-            "headlineGhostR", "headlineGhostC"
-        };
-        foreach (var f in fieldsToScan)
-        {
-            var prop = so.FindProperty(f);
-            var obj = prop != null ? prop.objectReferenceValue : null;
-            Component comp = obj as Component;
-            if (comp == null && obj is GameObject go) comp = go.transform;
-            DumpRect(f, comp);
-        }
-
-        string path = System.IO.Path.Combine(Application.dataPath, "../VoD_DeathScreenReport.txt");
-        System.IO.File.WriteAllText(path, sb.ToString());
-        Debug.Log($"[VoD] Đã ghi report ra: {path}\n\n{sb}");
-    }
-
-    // Root cause tìm được từ report: DeathScreenPanel.localScale = 0.81 (cruft, không phải 1) khiến toàn bộ
-    // con của nó (Masthead/Headline/SubText/Quote/GlitchNoise/ScanlineStrip) bị co 81%, để lại viền trống quanh
-    // màn hình dù RectTransform stretch full đúng. Vignette/Apparition/WhiteFlash không bị vì chúng là con của
-    // Canvas trực tiếp, không phải con của DeathScreenPanel.
-    [MenuItem("VoD/Temp/Fix DeathScreenPanel Scale To 1")]
-    public static void FixDeathScreenPanelScale()
-    {
-        var deathUI = Object.FindFirstObjectByType<DeathScreenUI>(FindObjectsInactive.Include);
-        if (deathUI == null) { Debug.LogError("[VoD] Không tìm thấy DeathScreenUI."); return; }
-
-        var so = new SerializedObject(deathUI);
-        var panelGO = so.FindProperty("deathScreenPanel").objectReferenceValue as GameObject;
-        if (panelGO == null) { Debug.LogError("[VoD] deathScreenPanel field rỗng."); return; }
-
-        Vector3 before = panelGO.transform.localScale;
-        panelGO.transform.localScale = Vector3.one;
-        EditorUtility.SetDirty(panelGO);
-        Debug.Log($"[VoD] DeathScreenPanel.localScale: {before} → {panelGO.transform.localScale}. Nhớ Save Scene.");
-    }
-
-    // Import font AmaticSC-Bold.ttf (Jok tải về D:\...\Downloads\Amatic_SC_extracted) vào project, tạo TMP Font Asset
-    // theo đúng cách đã xác nhận ăn (Merienda trước đó) — CreateAsset trực tiếp thay vì CopySerialized (CopySerialized
-    // làm hỏng glyph-rect mapping, "nát bét" — bài học cũ). Rồi gán font mới cho toàn bộ text/button của DeathScreen.
-    [MenuItem("VoD/Temp/Import AmaticSC Font And Apply To DeathScreen")]
-    public static void ImportAmaticFontAndApply()
-    {
-        string sourcePath = @"C:\Users\Admin\Downloads\Amatic_SC_extracted\AmaticSC-Bold.ttf";
-        if (!System.IO.File.Exists(sourcePath))
-        {
-            Debug.LogError($"[VoD] Không tìm thấy file font ở {sourcePath}. Kiểm tra lại đường dẫn giải nén.");
-            return;
-        }
-
-        string destDir = "Assets/_Project/Fonts/AmaticSC";
-        if (!AssetDatabase.IsValidFolder(destDir))
-            AssetDatabase.CreateFolder("Assets/_Project/Fonts", "AmaticSC");
-
-        string destTtf = destDir + "/AmaticSC-Bold.ttf";
-        System.IO.File.Copy(sourcePath, destTtf, true);
-        AssetDatabase.ImportAsset(destTtf, ImportAssetOptions.ForceUpdate);
-
-        var sourceFont = AssetDatabase.LoadAssetAtPath<Font>(destTtf);
-        if (sourceFont == null) { Debug.LogError("[VoD] Import .ttf thất bại — không load được Font asset."); return; }
-
-        string fontAssetPath = destDir + "/AmaticSC-Bold SDF.asset";
-        var existing = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(fontAssetPath);
-        if (existing != null) AssetDatabase.DeleteAsset(fontAssetPath);
-
-        var newFontAsset = TMP_FontAsset.CreateFontAsset(
-            sourceFont, 90, 9, GlyphRenderMode.SDFAA, 2048, 2048,
-            AtlasPopulationMode.Dynamic, true);
-        AssetDatabase.CreateAsset(newFontAsset, fontAssetPath);
-        if (newFontAsset.atlasTextures != null && newFontAsset.atlasTextures.Length > 0)
-            AssetDatabase.AddObjectToAsset(newFontAsset.atlasTextures[0], newFontAsset);
-        AssetDatabase.AddObjectToAsset(newFontAsset.material, newFontAsset);
-        AssetDatabase.SaveAssets();
-
-        var deathUI = Object.FindFirstObjectByType<DeathScreenUI>(FindObjectsInactive.Include);
-        if (deathUI == null) { Debug.LogError("[VoD] Không tìm thấy DeathScreenUI."); return; }
-        var so = new SerializedObject(deathUI);
-
-        int changed = 0;
-        void ApplyFont(string fieldName)
-        {
-            var prop = so.FindProperty(fieldName);
-            var t = prop?.objectReferenceValue as TMP_Text;
-            if (t == null) return;
-            t.font = newFontAsset;
-            EditorUtility.SetDirty(t);
-            changed++;
-        }
-
-        ApplyFont("mastheadText");
-        ApplyFont("headlineText");
-        ApplyFont("subText");
-        ApplyFont("quoteText");
-        ApplyFont("headlineGhostR");
-        ApplyFont("headlineGhostC");
-
-        void ApplyFontToButton(string fieldName)
-        {
-            var prop = so.FindProperty(fieldName);
-            var btn = prop?.objectReferenceValue as Button;
-            if (btn == null) return;
-            var t = btn.GetComponentInChildren<TMP_Text>(true);
-            if (t == null) return;
-            t.font = newFontAsset;
-            EditorUtility.SetDirty(t);
-            changed++;
-        }
-
-        ApplyFontToButton("retryButton");
-        ApplyFontToButton("menuButton");
-
-        Debug.Log($"[VoD] Đã tạo font asset '{fontAssetPath}' và gán cho {changed} TMP_Text/Button trong DeathScreen. Nhớ Save Scene.");
-    }
-
-    // Report cho thấy thứ tự sibling hiện tại: Masthead...ButtonRow rồi mới tới GlitchNoise/ScanlineStrip cuối cùng
-    // — nghĩa là lớp nhiễu đang VẼ ĐÈ LÊN chữ/nút (child sau cùng vẽ trên cùng trong uGUI). Đổi lại: đưa
-    // GlitchNoise + ScanlineStrip lên làm 2 con đầu tiên để chữ/nút luôn nổi trên lớp pixel.
-    [MenuItem("VoD/Temp/Reorder DeathScreen - Text Above Glitch")]
-    public static void ReorderTextAboveGlitch()
-    {
-        var deathUI = Object.FindFirstObjectByType<DeathScreenUI>(FindObjectsInactive.Include);
-        if (deathUI == null) { Debug.LogError("[VoD] Không tìm thấy DeathScreenUI."); return; }
-        var so = new SerializedObject(deathUI);
-
-        var glitchNoise = so.FindProperty("glitchNoise").objectReferenceValue as Component;
-        var scanline = so.FindProperty("scanlineStrip").objectReferenceValue as Component;
-        if (glitchNoise == null || scanline == null) { Debug.LogError("[VoD] Thiếu glitchNoise/scanlineStrip."); return; }
-
-        glitchNoise.transform.SetSiblingIndex(0);
-        scanline.transform.SetSiblingIndex(1);
-        EditorUtility.SetDirty(glitchNoise.gameObject);
-        EditorUtility.SetDirty(scanline.gameObject);
-
-        Debug.Log("[VoD] Đã đưa GlitchNoise + ScanlineStrip xuống dưới cùng (sibling 0,1) — chữ/nút giờ vẽ đè lên trên. Nhớ Save Scene.");
-    }
-
-    // Vấn đề design Jok chỉ ra: Masthead/Headline/SubText đang dùng CHUNG 1 màu kem-vàng #E9DCC0 — không có
-    // phân cấp, mắt không biết nhìn đâu trước. Quote (tên + năm nạn nhân — dòng đáng lẽ là cú đấm cảm xúc nhất)
-    // lại là màu xám mờ nhất, ngược hoàn toàn với vai trò của nó. Fix: Masthead/SubText mờ xuống (chỉ là info phụ),
-    // Headline sáng nhất giữ nguyên vai trò tiêu đề chính, Quote đổi sang đỏ máu để trở thành điểm nhấn thật.
-    [MenuItem("VoD/Temp/Fix DeathScreen Text Color Hierarchy")]
-    public static void FixTextColorHierarchy()
-    {
-        var deathUI = Object.FindFirstObjectByType<DeathScreenUI>(FindObjectsInactive.Include);
-        if (deathUI == null) { Debug.LogError("[VoD] Không tìm thấy DeathScreenUI."); return; }
-        var so = new SerializedObject(deathUI);
-
-        void SetColor(string fieldName, Color c)
-        {
-            var t = so.FindProperty(fieldName)?.objectReferenceValue as TMP_Text;
-            if (t == null) { Debug.LogWarning($"[VoD] Thiếu field {fieldName}"); return; }
-            t.color = c;
-            EditorUtility.SetDirty(t);
-        }
-
-        SetColor("mastheadText", new Color(0.55f, 0.51f, 0.44f)); // #8C8270 — mờ xuống, chỉ là chrome/context
-        SetColor("headlineText", new Color(0.95f, 0.90f, 0.79f)); // #F2E6C9 — sáng nhất, tiêu đề chính
-        SetColor("subText",      new Color(0.60f, 0.57f, 0.50f)); // #9A9280 — mờ, info phụ
-        SetColor("quoteText",    new Color(0.70f, 0.22f, 0.17f)); // #B33A2C — đỏ máu, điểm nhấn cảm xúc
-
-        Debug.Log("[VoD] Đã sửa phân cấp màu: Masthead/SubText mờ, Headline sáng, Quote đỏ máu làm điểm nhấn. Nhớ Save Scene.");
-    }
-
-    // Feedback Jok: Quote (tên nạn nhân) vẫn chìm dù đã đỏ — do size quá nhỏ (42) so với Headline (112).
-    // 2 button quá nhỏ/thấp, "lọt khỏm". Tăng cả 2 lên, đồng thời nâng ButtonRow lên một chút cho đỡ dồn sát đáy.
-    [MenuItem("VoD/Temp/Boost Quote Size And Button Scale")]
-    public static void BoostQuoteAndButtons()
-    {
-        var deathUI = Object.FindFirstObjectByType<DeathScreenUI>(FindObjectsInactive.Include);
-        if (deathUI == null) { Debug.LogError("[VoD] Không tìm thấy DeathScreenUI."); return; }
-        var so = new SerializedObject(deathUI);
-
-        var quoteText = so.FindProperty("quoteText")?.objectReferenceValue as TMP_Text;
-        if (quoteText != null)
-        {
-            quoteText.fontSize = 62f;                 // 42 → 62, tăng hẳn để không bị chìm cạnh Headline (112)
-            quoteText.fontStyle = FontStyles.Bold;
-            quoteText.characterSpacing = 2f;           // giảm bớt spacing cũ (4) vì size đã to hơn nhiều
-            EditorUtility.SetDirty(quoteText);
-        }
-        else Debug.LogWarning("[VoD] Thiếu quoteText.");
-
-        var retryButton = so.FindProperty("retryButton")?.objectReferenceValue as Button;
-        var menuButton  = so.FindProperty("menuButton")?.objectReferenceValue as Button;
-
-        void BoostButton(Button btn)
-        {
-            if (btn == null) return;
-            var rt = btn.GetComponent<RectTransform>();
-            rt.sizeDelta = new Vector2(300f, 96f);
-            var txt = btn.GetComponentInChildren<TMP_Text>(true);
-            if (txt != null) { txt.fontSize = 34f; EditorUtility.SetDirty(txt); }
-            EditorUtility.SetDirty(rt);
-        }
-
-        BoostButton(retryButton);
-        BoostButton(menuButton);
-
-        // ButtonRow là cha trực tiếp của 2 nút — lấy qua transform.parent thay vì field riêng (không có field).
-        if (retryButton != null)
-        {
-            var buttonRow = retryButton.transform.parent;
-            var rowRt = buttonRow.GetComponent<RectTransform>();
-            rowRt.sizeDelta = new Vector2(700f, 110f);
-            rowRt.anchoredPosition = new Vector2(rowRt.anchoredPosition.x, -420f); // -460 → -420, nâng lên khỏi đáy
-            var hlg = buttonRow.GetComponent<HorizontalLayoutGroup>();
-            if (hlg != null) hlg.spacing = 40f;
-            EditorUtility.SetDirty(buttonRow.gameObject);
-        }
-
-        Debug.Log("[VoD] Đã tăng size Quote (62, bold) + 2 button (300x96, font 34) + nâng ButtonRow lên -420. Nhớ Save Scene.");
-    }
-
-    // Feedback tiếp: SubText quá nhỏ, và từ SubText trở xuống (SubText/Quote/ButtonRow) đang dồn quá thấp.
-    // Nâng cả khối lên +100 nhưng GIỮ NGUYÊN khoảng cách tương đối giữa 3 phần tử (đã tune trước đó khớp mockup).
-    [MenuItem("VoD/Temp/Raise Lower Block And Enlarge SubText")]
-    public static void RaiseLowerBlockAndEnlargeSubText()
-    {
-        var deathUI = Object.FindFirstObjectByType<DeathScreenUI>(FindObjectsInactive.Include);
-        if (deathUI == null) { Debug.LogError("[VoD] Không tìm thấy DeathScreenUI."); return; }
-        var so = new SerializedObject(deathUI);
-
-        var subText   = so.FindProperty("subText")?.objectReferenceValue as TMP_Text;
-        var quoteText = so.FindProperty("quoteText")?.objectReferenceValue as TMP_Text;
-        var retryButton = so.FindProperty("retryButton")?.objectReferenceValue as Button;
-
-        const float delta = 100f;
-
-        if (subText != null)
-        {
-            subText.fontSize = 38f; // 30 → 38
-            var rt = subText.GetComponent<RectTransform>();
-            rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, rt.anchoredPosition.y + delta);
-            EditorUtility.SetDirty(subText);
-            EditorUtility.SetDirty(rt);
-        }
-        else Debug.LogWarning("[VoD] Thiếu subText.");
-
-        if (quoteText != null)
-        {
-            var rt = quoteText.GetComponent<RectTransform>();
-            rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, rt.anchoredPosition.y + delta);
-            EditorUtility.SetDirty(rt);
-        }
-        else Debug.LogWarning("[VoD] Thiếu quoteText.");
-
-        if (retryButton != null)
-        {
-            var buttonRow = retryButton.transform.parent;
-            var rowRt = buttonRow.GetComponent<RectTransform>();
-            rowRt.anchoredPosition = new Vector2(rowRt.anchoredPosition.x, rowRt.anchoredPosition.y + delta);
-            EditorUtility.SetDirty(buttonRow.gameObject);
-        }
-        else Debug.LogWarning("[VoD] Thiếu retryButton (để tìm ButtonRow qua parent).");
-
-        Debug.Log("[VoD] Đã nâng SubText/Quote/ButtonRow lên +100, SubText fontSize 30→38. Nhớ Save Scene.");
-    }
-
-    // Feedback: SubText + Quote màu quá mờ (#9A9280 / #B33A2C trước đó), lúc màn hình nhấp nháy (glitch/flash)
-    // 2 dòng này bị lọt/chìm hẳn. Sáng lên: SubText sáng thêm nhiều hơn (đang mờ nhất trong 4 dòng),
-    // Quote sáng/đậm thêm một chút (đã có màu đỏ riêng biệt rồi nên chỉ cần tăng nhẹ).
-    [MenuItem("VoD/Temp/Brighten SubText And Quote Colors")]
-    public static void BrightenSubTextAndQuoteColors()
-    {
-        var deathUI = Object.FindFirstObjectByType<DeathScreenUI>(FindObjectsInactive.Include);
-        if (deathUI == null) { Debug.LogError("[VoD] Không tìm thấy DeathScreenUI."); return; }
-        var so = new SerializedObject(deathUI);
-
-        var subText   = so.FindProperty("subText")?.objectReferenceValue as TMP_Text;
-        var quoteText = so.FindProperty("quoteText")?.objectReferenceValue as TMP_Text;
-
-        if (subText != null)
-        {
-            subText.color = new Color(0.80f, 0.76f, 0.66f); // #CCC2A8 — sáng hẳn lên, tránh chìm khi nhấp nháy
-            EditorUtility.SetDirty(subText);
-        }
-        else Debug.LogWarning("[VoD] Thiếu subText.");
-
-        if (quoteText != null)
-        {
-            quoteText.color = new Color(0.85f, 0.30f, 0.22f); // #D94D38 — đỏ sáng/đậm hơn 1 nấc so với #B33A2C cũ
-            EditorUtility.SetDirty(quoteText);
-        }
-        else Debug.LogWarning("[VoD] Thiếu quoteText.");
-
-        Debug.Log("[VoD] Đã sáng màu SubText (#CCC2A8) và Quote (#D94D38). Nhớ Save Scene.");
-    }
-
-    // Report xác nhận +100 trước đã áp dụng đúng (subText -157→-57, quote -264→-164) nhưng vẫn còn khoảng
-    // trống rất lớn tới Headline (Y=209) — 266px, chiếm gần 1/4 chiều cao canvas — nên mắt thấy "không nhít".
-    // Lần này nâng dứt khoát +160 nữa để khoảng trống co lại còn ~106px, rõ rệt hơn hẳn.
-    [MenuItem("VoD/Temp/Raise Lower Block Again (+160)")]
-    public static void RaiseLowerBlockAgain()
-    {
-        var deathUI = Object.FindFirstObjectByType<DeathScreenUI>(FindObjectsInactive.Include);
-        if (deathUI == null) { Debug.LogError("[VoD] Không tìm thấy DeathScreenUI."); return; }
-        var so = new SerializedObject(deathUI);
-
-        var subText     = so.FindProperty("subText")?.objectReferenceValue as TMP_Text;
-        var quoteText   = so.FindProperty("quoteText")?.objectReferenceValue as TMP_Text;
-        var retryButton = so.FindProperty("retryButton")?.objectReferenceValue as Button;
-
-        const float delta = 160f;
-
-        void Shift(Component c)
-        {
-            if (c == null) return;
-            var rt = c.GetComponent<RectTransform>();
-            rt.anchoredPosition = new Vector2(rt.anchoredPosition.x, rt.anchoredPosition.y + delta);
-            EditorUtility.SetDirty(rt);
-        }
-
-        Shift(subText);
-        Shift(quoteText);
-        if (retryButton != null) Shift(retryButton.transform.parent.GetComponent<RectTransform>());
-
-        Debug.Log("[VoD] Đã nâng thêm +160 nữa (SubText/Quote/ButtonRow). Nhớ Save Scene.");
-    }
-
-    [MenuItem("VoD/Fix/1 - Scan Duplicate Objects")]
-    public static void ScanDuplicates()
-    {
-        Scene activeScene = SceneManager.GetActiveScene();
-        var groups = new Dictionary<string, List<GameObject>>();
-
-        foreach (GameObject root in activeScene.GetRootGameObjects())
-        {
-            // "Prop_X (1)" và "Prop_X" đều gom về chung 1 nhóm
-            string baseName = Regex.Replace(root.name, @"\s*\(\d+\)$", "");
-            if (!groups.ContainsKey(baseName))
-                groups[baseName] = new List<GameObject>();
-            groups[baseName].Add(root);
-        }
-
-        var duplicateGroups = groups.Where(g => g.Value.Count > 1).ToList();
-
-        if (duplicateGroups.Count == 0)
-        {
-            Debug.Log("[VoD] Không thấy object trùng tên nào ở cấp root trong scene hiện tại.");
-            return;
-        }
-
-        Debug.Log($"[VoD] ═══ Tìm thấy {duplicateGroups.Count} nhóm object trùng tên — chi tiết bên dưới ═══");
-
-        foreach (var group in duplicateGroups)
-        {
-            var sb = new StringBuilder();
-            sb.AppendLine($"[VoD] ── Nhóm \"{group.Key}\" — {group.Value.Count} bản ──");
-
-            foreach (GameObject go in group.Value)
-            {
-                sb.AppendLine($"  • \"{go.name}\" tại vị trí {go.transform.position}, active={go.activeSelf}");
-
-                var scriptComponents = go.GetComponentsInChildren<Component>(true).Where(c => c != null && !(c is Transform)).ToList();
-                sb.AppendLine($"      Tổng component (kể cả con): {scriptComponents.Count}");
-
-                foreach (var comp in scriptComponents)
-                {
-                    string flag = (comp is Behaviour beh && !beh.enabled) ? " [DISABLED]" : "";
-                    sb.AppendLine($"      - {comp.GetType().Name}{flag} (trên: {comp.gameObject.name})");
-                }
-            }
-
-            Debug.Log(sb.ToString());
-        }
-
-        Debug.Log("[VoD] ═══ Hết — so sánh xong tự chọn bản nào giữ, bản nào xoá tay trong Hierarchy ═══");
-    }
-
-    [MenuItem("VoD/Fix/2 - Scan Missing References (All Scripts)")]
-    public static void ScanMissingReferences()
-    {
-        Scene activeScene = SceneManager.GetActiveScene();
-        int totalMissing = 0;
-
-        foreach (GameObject root in activeScene.GetRootGameObjects())
-        {
-            foreach (MonoBehaviour mb in root.GetComponentsInChildren<MonoBehaviour>(true))
-            {
-                if (mb == null) continue; // chính script bị missing (mất source code) cũng tính
-                var so = new SerializedObject(mb);
-                var prop = so.GetIterator();
-                bool enterChildren = true;
-                while (prop.NextVisible(enterChildren))
-                {
-                    enterChildren = true;
-                    if (prop.propertyType != SerializedPropertyType.ObjectReference) continue;
-                    if (prop.objectReferenceValue == null && prop.objectReferenceInstanceIDValue != 0)
-                    {
-                        // objectReferenceInstanceIDValue != 0 nghĩa là CÓ trỏ tới 1 object nhưng object đó
-                        // đã bị xoá/mất — khác với để trống (None) từ đầu.
-                        Debug.LogWarning($"[VoD] MISSING REF: \"{mb.gameObject.name}\" ({mb.GetType().Name}).{prop.name} đang trỏ vào object đã bị xoá.", mb);
-                        totalMissing++;
-                    }
-                }
-            }
-        }
-
-        Debug.Log(totalMissing == 0
-            ? "[VoD] Scan xong — không thấy reference nào bị mất trên toàn scene."
-            : $"[VoD] Scan xong — tìm thấy {totalMissing} reference bị mất (xem các dòng cảnh báo phía trên, mỗi dòng bấm vào sẽ nhảy tới đúng object).");
-    }
-
-    private static string GetPath(Transform t)
-    {
-        string path = t.name;
-        while (t.parent != null)
-        {
-            t = t.parent;
-            path = t.name + "/" + path;
-        }
-        return path;
-    }
-
-    [MenuItem("VoD/Fix/3 - Fix Selected Object's Redundant MeshCollider Lag")]
-    public static void FixSelectedMeshColliderLag()
-    {
-        GameObject target = Selection.activeGameObject;
-        if (target == null)
-        {
-            Debug.LogError("[VoD] Chưa chọn object nào trong Hierarchy. Chọn object (VD Player hoặc GhostCube) rồi chạy lại.");
-            return;
-        }
-
-        CharacterController cc = target.GetComponent<CharacterController>();
-        MeshCollider mc = target.GetComponent<MeshCollider>();
-
-        SkinnedMeshRenderer smr = target.GetComponentInChildren<SkinnedMeshRenderer>(true);
-        if (smr != null && smr.sharedMesh != null)
-        {
-            Debug.Log($"[VoD] Mesh trên \"{target.name}\" (\"{smr.sharedMesh.name}\"): {smr.sharedMesh.triangles.Length / 3:N0} tam giác, {smr.sharedMesh.vertexCount:N0} vertex.");
-        }
-
-        if (target.transform.localScale != Vector3.one)
-        {
-            Debug.LogWarning($"[VoD] \"{target.name}\".localScale = {target.transform.localScale} — khác (1,1,1), có thể ảnh hưởng tính toán physics/camera. Kiểm tra có chủ đích không trước khi sửa.");
-        }
-
-        if (cc == null)
-        {
-            Debug.LogError($"[VoD] \"{target.name}\" không có CharacterController — KHÔNG xoá MeshCollider (có thể đang cần nó thật). Dừng, kiểm tra tay.");
-            return;
-        }
-
-        if (mc == null)
-        {
-            Debug.Log($"[VoD] \"{target.name}\" không có MeshCollider — không cần làm gì thêm.");
-            return;
-        }
-
-        Debug.Log($"[VoD] Xác nhận: \"{target.name}\" có CharacterController (đã lo va chạm di chuyển) + MeshCollider thừa (mesh {(mc.sharedMesh != null ? mc.sharedMesh.triangles.Length / 3 : 0):N0} tam giác dùng làm collision) → MeshCollider này gây \"Fast Midphase\" warning + lag.");
-
-        Undo.DestroyObjectImmediate(mc);
-        Debug.Log($"[VoD] Đã xoá MeshCollider thừa trên \"{target.name}\". CharacterController vẫn lo va chạm di chuyển bình thường.");
-
-        EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-    }
-
-    // Object không bao giờ nên prefab hoá — hệ thống/singleton/gameplay-core, không phải đồ vật rời.
-    private static readonly string[] PrefabExcludeNames =
-    {
-        "Player", "Main Camera", "Directional Light", "Terrain", "GhostCube", "Canvas",
-        "EventSystem", "GlobalVolume", "InventorySystem_GO", "Plane", "AmbientZone_Hallway"
-    };
-
-    [MenuItem("VoD/Fix/4 - Scan ALL Prefab Candidates (toàn scene)")]
-    public static void ScanAllPrefabCandidates()
-    {
-        Scene activeScene = SceneManager.GetActiveScene();
-        var candidates = new List<GameObject>();
-        CollectCandidates(activeScene.GetRootGameObjects(), candidates);
-
-        Debug.Log($"[VoD] ═══ Tìm thấy {candidates.Count} object có thể prefab hoá (có Renderer, chưa phải prefab instance) ═══");
-        foreach (var go in candidates)
-        {
-            bool alreadyPrefab = PrefabUtility.GetPrefabAssetType(go) != PrefabAssetType.NotAPrefab;
-            Debug.Log($"  • {GetPath(go.transform)}{(alreadyPrefab ? "  [ĐÃ LÀ PREFAB, bỏ qua khi convert]" : "")}");
-        }
-    }
-
-    [MenuItem("VoD/Fix/5 - Convert ALL Safe Objects To Prefabs (toàn scene)")]
-    public static void ConvertAllSafeToPrefabs()
-    {
-        const string prefabFolder = "Assets/_Project/Prefabs/AutoConverted";
-        if (!AssetDatabase.IsValidFolder(prefabFolder))
-        {
-            AssetDatabase.CreateFolder("Assets/_Project/Prefabs", "AutoConverted");
-        }
-
-        Scene activeScene = SceneManager.GetActiveScene();
-        var candidates = new List<GameObject>();
-        CollectCandidates(activeScene.GetRootGameObjects(), candidates);
-
-        int converted = 0, skippedPrefab = 0, skippedRef = 0;
-
-        foreach (GameObject go in candidates)
-        {
-            if (PrefabUtility.GetPrefabAssetType(go) != PrefabAssetType.NotAPrefab)
-            {
-                skippedPrefab++;
-                continue;
-            }
-
-            // Kiểm tra an toàn: script nào tham chiếu ra ngoài chính hierarchy object này không.
-            bool hasSceneRef = false;
-            string sceneRefDetail = "";
-            foreach (MonoBehaviour mb in go.GetComponentsInChildren<MonoBehaviour>(true))
-            {
-                if (mb == null) continue;
-                var so = new SerializedObject(mb);
-                var prop = so.GetIterator();
-                bool enterChildren = true;
-                while (prop.NextVisible(enterChildren))
-                {
-                    enterChildren = true;
-                    if (prop.propertyType != SerializedPropertyType.ObjectReference) continue;
-                    var val = prop.objectReferenceValue;
-                    if (val == null || prop.propertyPath.Contains(".Array.data[")) continue;
-
-                    bool isOutsideOwnHierarchy = val is Component c && !c.transform.IsChildOf(go.transform);
-                    bool isSceneObject = val is GameObject g && g.scene.IsValid() && !g.transform.IsChildOf(go.transform);
-
-                    if (isOutsideOwnHierarchy || isSceneObject)
-                    {
-                        hasSceneRef = true;
-                        sceneRefDetail = $"{mb.GetType().Name}.{prop.name} → \"{val.name}\"";
-                        break;
-                    }
-                }
-                if (hasSceneRef) break;
-            }
-
-            if (hasSceneRef)
-            {
-                Debug.LogWarning($"[VoD] BỎ QUA \"{GetPath(go.transform)}\" — có tham chiếu ra ngoài scene ({sceneRefDetail}). Không prefab hoá liều.");
-                skippedRef++;
-                continue;
-            }
-
-            string safeName = go.name.Replace(" ", "_").Replace("(", "").Replace(")", "");
-            string path = $"{prefabFolder}/{safeName}.prefab";
-            if (AssetDatabase.LoadAssetAtPath<GameObject>(path) != null)
-                path = AssetDatabase.GenerateUniqueAssetPath(path);
-
-            PrefabUtility.SaveAsPrefabAssetAndConnect(go, path, InteractionMode.UserAction);
-            Debug.Log($"[VoD] Đã prefab hoá \"{GetPath(go.transform)}\" → \"{path}\".");
-            converted++;
-        }
-
-        EditorSceneManager.MarkSceneDirty(activeScene);
-        Debug.Log($"[VoD] Xong — prefab hoá {converted} object mới. Bỏ qua {skippedPrefab} (đã là prefab sẵn) + {skippedRef} (có tham chiếu scene, xem cảnh báo phía trên).");
-    }
-
-    private static void CollectCandidates(GameObject[] roots, List<GameObject> result)
-    {
-        foreach (GameObject root in roots)
-            CollectCandidatesRecursive(root, result, isTopLevel: true);
-    }
-
-    private static void CollectCandidatesRecursive(GameObject go, List<GameObject> result, bool isTopLevel)
-    {
-        if (PrefabExcludeNames.Contains(go.name)) return;
-        if (go.name.StartsWith("──")) // nhóm tổ chức Hierarchy (ENVIRONMENT/FURNITURE/PROPS...) — không phải đồ vật
-        {
-            foreach (Transform child in go.transform)
-                CollectCandidatesRecursive(child.gameObject, result, isTopLevel: true);
-            return;
-        }
-
-        bool hasRenderer = go.GetComponent<MeshRenderer>() != null || go.GetComponent<SkinnedMeshRenderer>() != null;
-        if (hasRenderer && isTopLevel)
-        {
-            result.Add(go);
-            return; // không đi sâu vào con của 1 candidate đã nhận (tránh prefab lồng prefab)
-        }
-
-        // Object không có Renderer ở cấp này (VD 1 group rỗng) — vẫn duyệt tiếp xuống con tìm candidate
-        if (!hasRenderer)
-        {
-            foreach (Transform child in go.transform)
-                CollectCandidatesRecursive(child.gameObject, result, isTopLevel: true);
-        }
-    }
-
-    [MenuItem("VoD/Fix/6 - Scan Chapter1 Ending Setup (kiểm tra flow kết thúc chương)")]
-    public static void ScanChapter1Ending()
-    {
-        var sb = new StringBuilder();
-        sb.AppendLine("[VoD] ═══ Scan flow kết thúc Chapter1 ═══");
-
-        var gameManager = Object.FindFirstObjectByType<GameManager>(FindObjectsInactive.Include);
-        sb.AppendLine(gameManager != null
-            ? $"  • GameManager: CÓ trong scene ({GetPath(gameManager.transform)})"
-            : "  • GameManager: KHÔNG có trong scene hiện tại (chỉ tồn tại nếu load từ MainMenu qua DontDestroyOnLoad).");
-
-        var triggerZones = Object.FindObjectsByType<TriggerZone>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        sb.AppendLine($"  • TriggerZone trong scene: {triggerZones.Length}");
-        foreach (var tz in triggerZones)
-            sb.AppendLine($"      - {GetPath(tz.transform)}");
-
-        var gazeTriggers = Object.FindObjectsByType<GazeTrigger>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        sb.AppendLine($"  • GazeTrigger trong scene: {gazeTriggers.Length}");
-        foreach (var gt in gazeTriggers)
-            sb.AppendLine($"      - {GetPath(gt.transform)}");
-
-        var wellDeath = Object.FindObjectsByType<WellDeathSequence>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        sb.AppendLine($"  • WellDeathSequence trong scene: {wellDeath.Length}");
-        foreach (var w in wellDeath)
-            sb.AppendLine($"      - {GetPath(w.transform)}");
-
-        var cutscenes = Object.FindObjectsByType<CutsceneController>(FindObjectsInactive.Include, FindObjectsSortMode.None);
-        sb.AppendLine($"  • CutsceneController trong scene: {cutscenes.Length}");
-        foreach (var cs in cutscenes)
-            sb.AppendLine($"      - {GetPath(cs.transform)}");
-
-        // Kiểm tra Build Settings còn scene nào ngoài MainMenu/Chapter1 không (Chapter2-4 đã bị xoá khỏi git).
-        var buildScenes = EditorBuildSettings.scenes;
-        sb.AppendLine($"  • Scene trong Build Settings ({buildScenes.Length}):");
-        foreach (var s in buildScenes)
-            sb.AppendLine($"      - [{(s.enabled ? "ON " : "OFF")}] {s.path}");
-
-        sb.AppendLine("  → Không tìm thấy TriggerZone/logic nào gọi GameManager.LoadChapter(2) trong toàn bộ codebase (đã grep) — nghĩa là hiện KHÔNG có màn hình/flow kết thúc Chapter1 nào được wire, dù chơi xong nội dung vẫn có thể đi lại tự do, không có gì xảy ra.");
-
-        Debug.Log(sb.ToString());
-    }
-
-    [MenuItem("VoD/Fix/7 - Clear External Refs + Convert 3 Props Còn Sót (Key01/Portrait/Frame)")]
-    public static void ClearExternalRefsOnSkippedProps()
-    {
-        string[] names = { "Prop_Key01_Skeleton", "Prop_Portrait_Family", "Prop_Frame_Portrait" };
-        int cleared = 0;
-
-        foreach (string name in names)
-        {
-            GameObject go = GameObject.Find(name);
-            if (go == null)
-            {
-                Debug.LogWarning($"[VoD] Không tìm thấy \"{name}\" — bỏ qua.");
-                continue;
-            }
-
-            foreach (MonoBehaviour mb in go.GetComponentsInChildren<MonoBehaviour>(true))
-            {
-                if (mb == null) continue;
-                var so = new SerializedObject(mb);
-                var prop = so.GetIterator();
-                bool enterChildren = true;
-                bool changed = false;
-
-                while (prop.NextVisible(enterChildren))
-                {
-                    enterChildren = true;
-                    if (prop.propertyType != SerializedPropertyType.ObjectReference) continue;
-                    var val = prop.objectReferenceValue;
-                    if (val == null || prop.propertyPath.Contains(".Array.data[")) continue;
-
-                    bool isOutsideOwnHierarchy = val is Component c && !c.transform.IsChildOf(go.transform);
-                    bool isSceneObject = val is GameObject g && g.scene.IsValid() && !g.transform.IsChildOf(go.transform);
-
-                    if (isOutsideOwnHierarchy || isSceneObject)
-                    {
-                        Debug.Log($"[VoD] Xoá tham chiếu ra ngoài scene: \"{mb.gameObject.name}\" ({mb.GetType().Name}).{prop.name} (đang trỏ \"{val.name}\") — tự resolve qua Instance lúc chạy.");
-                        prop.objectReferenceValue = null;
-                        changed = true;
-                        cleared++;
-                    }
-                }
-
-                if (changed)
-                {
-                    Undo.RecordObject(mb, "Clear external refs before prefab-ify");
-                    so.ApplyModifiedProperties();
-                }
-            }
-        }
-
-        EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
-        Debug.Log($"[VoD] Đã dọn {cleared} tham chiếu ra ngoài scene trên 3 Prop. Chạy tiếp \"5 - Convert ALL Safe Objects To Prefabs\" để prefab hoá nốt.");
-    }
-
-    [MenuItem("VoD/Fix/8 - Import PauseMenu + DeathScreen (từ TestQA)")]
-    public static void ImportPauseMenuAndDeathScreen()
-    {
-        Scene activeScene = SceneManager.GetActiveScene();
-        if (activeScene.name != "Chapter1")
-        {
-            Debug.LogError("[VoD] Cần mở Chapter1.unity làm scene chính trước khi chạy tool này.");
-            return;
-        }
-
-        GameObject canvasGO = GameObject.Find("Canvas");
-        if (canvasGO == null) { Debug.LogError("[VoD] Không tìm thấy Canvas trong Chapter1."); return; }
-
-        Transform oldPause = canvasGO.transform.Find("PauseMenu");
-        if (oldPause != null) Undo.DestroyObjectImmediate(oldPause.gameObject);
-        Transform oldDeath = canvasGO.transform.Find("DeathScreen");
-        if (oldDeath != null) Undo.DestroyObjectImmediate(oldDeath.gameObject);
-
-        // Dùng scene test của nhóm (TestQA) — không lấy từ Chapter1_backup nữa.
-        string sourcePath = "Assets/_Project/Scenes/TestQA.unity";
-        Scene sourceScene = EditorSceneManager.OpenScene(sourcePath, OpenSceneMode.Additive);
-
-        GameObject sourcePause = null, sourceDeath = null;
-        foreach (GameObject root in sourceScene.GetRootGameObjects())
-        {
-            if (sourcePause == null) sourcePause = FindDeepByName(root.transform, "PauseMenu");
-            if (sourceDeath == null) sourceDeath = FindDeepByName(root.transform, "DeathScreen");
-        }
-
-        int imported = 0;
-        if (sourcePause != null)
-        {
-            var copy = Object.Instantiate(sourcePause);
-            copy.name = "PauseMenu";
-            SceneManager.MoveGameObjectToScene(copy, activeScene);
-            copy.transform.SetParent(canvasGO.transform, false);
-            Undo.RegisterCreatedObjectUndo(copy, "Import PauseMenu");
-            imported++;
-        }
-        else Debug.LogWarning("[VoD] Không tìm thấy GameObject \"PauseMenu\" trong TestQA.");
-
-        if (sourceDeath != null)
-        {
-            var copy = Object.Instantiate(sourceDeath);
-            copy.name = "DeathScreen";
-            SceneManager.MoveGameObjectToScene(copy, activeScene);
-            copy.transform.SetParent(canvasGO.transform, false);
-            Undo.RegisterCreatedObjectUndo(copy, "Import DeathScreen");
-            imported++;
-        }
-        else Debug.LogWarning("[VoD] Không tìm thấy GameObject \"DeathScreen\" trong TestQA.");
-
-        EditorSceneManager.CloseScene(sourceScene, true);
-        SceneManager.SetActiveScene(activeScene);
-
-        EditorSceneManager.MarkSceneDirty(activeScene);
-        Debug.Log($"[VoD] Đã import {imported}/2 panel (PauseMenu, DeathScreen) từ TestQA vào Canvas của Chapter1 hiện tại. Cả 2 script đều tự-chứa (không tham chiếu object ngoài), nên copy trực tiếp là an toàn — không cần relink gì thêm.");
-    }
-
-    private static GameObject FindDeepByName(Transform t, string name)
-    {
-        if (t.name == name) return t.gameObject;
+        if (t.name == name) return t;
         foreach (Transform child in t)
         {
-            var found = FindDeepByName(child, name);
+            var found = FindDeep(child, name);
             if (found != null) return found;
         }
         return null;
     }
 
+    // Test nhanh hiệu ứng post-process/shake đổi theo nấc mà KHÔNG cần đứng gần ma — bấm lúc đang Play,
+    // mỗi lần bấm trừ 20% để đi qua từng nấc trong SanityData (100→80→60→40→20→0), xem chuyển tiếp
+    // grain/vignette/chromatic/rung camera trông thế nào ở mỗi mốc.
+    [MenuItem("VoD/Temp/Debug - Drain Sanity 20%")]
+    public static void DebugDrainSanity()
+    {
+        if (!Application.isPlaying) { Debug.LogError("[VoD] Chỉ dùng được lúc đang Play Mode."); return; }
+        if (SanitySystem.Instance == null) { Debug.LogError("[VoD] Không tìm thấy SanitySystem.Instance — chưa vào Play hoặc scene thiếu SanitySystem."); return; }
+
+        SanitySystem.Instance.DecreaseSanity(0.2f);
+        Debug.Log($"[VoD] Sanity: {SanitySystem.Instance.GetSanity() * 100f:F0}% — nấc \"{SanitySystem.Instance.GetCurrentLevelName()}\".");
+    }
+
+    [MenuItem("VoD/Temp/Debug - Restore Sanity To Full")]
+    public static void DebugRestoreSanity()
+    {
+        if (!Application.isPlaying) { Debug.LogError("[VoD] Chỉ dùng được lúc đang Play Mode."); return; }
+        if (SanitySystem.Instance == null) { Debug.LogError("[VoD] Không tìm thấy SanitySystem.Instance."); return; }
+
+        SanitySystem.Instance.IncreaseSanity(1f);
+        Debug.Log($"[VoD] Sanity: {SanitySystem.Instance.GetSanity() * 100f:F0}%.");
+    }
+
+    // Quét toàn bộ RenderSettings, mọi Light, mọi Camera (culling mask giải mã tên layer), mọi Volume +
+    // toàn bộ field trong Profile, URP Pipeline Asset đang active thật sự (Graphics vs Quality có thể
+    // lệch nhau), FogManager, FlashlightController. Xuất ra file text ở project root, đọc thẳng bằng Read
+    // tool thay vì gọi MCP lặp lại nhiều lần — dùng lại được bất cứ khi nào nghi ngờ lighting/pipeline.
+    [MenuItem("VoD/Temp/SCAN TOÀN BỘ Lighting + Settings (export 1 file)")]
+    public static void ScanFullLightingReport()
+    {
+        var sb = new StringBuilder();
+        Scene activeScene = SceneManager.GetActiveScene();
+        sb.AppendLine("=== VoD FULL LIGHTING SCAN ===");
+        sb.AppendLine($"Scene: {activeScene.name} ({activeScene.path})");
+        sb.AppendLine($"Time: {System.DateTime.Now}");
+        sb.AppendLine();
+
+        // ---------- RenderSettings ----------
+        sb.AppendLine("--- RenderSettings ---");
+        sb.AppendLine($"fog = {RenderSettings.fog}");
+        sb.AppendLine($"fogMode = {RenderSettings.fogMode}");
+        sb.AppendLine($"fogColor = {RenderSettings.fogColor}");
+        sb.AppendLine($"fogDensity = {RenderSettings.fogDensity}");
+        sb.AppendLine($"fogStartDistance = {RenderSettings.fogStartDistance}");
+        sb.AppendLine($"fogEndDistance = {RenderSettings.fogEndDistance}");
+        sb.AppendLine($"ambientMode = {RenderSettings.ambientMode}");
+        sb.AppendLine($"ambientIntensity = {RenderSettings.ambientIntensity}");
+        sb.AppendLine($"ambientLight = {RenderSettings.ambientLight}");
+        sb.AppendLine($"ambientSkyColor = {RenderSettings.ambientSkyColor}");
+        sb.AppendLine($"ambientEquatorColor = {RenderSettings.ambientEquatorColor}");
+        sb.AppendLine($"ambientGroundColor = {RenderSettings.ambientGroundColor}");
+        sb.AppendLine($"reflectionIntensity = {RenderSettings.reflectionIntensity}");
+        sb.AppendLine($"defaultReflectionMode = {RenderSettings.defaultReflectionMode}");
+        sb.AppendLine($"skybox = {(RenderSettings.skybox != null ? RenderSettings.skybox.name : "null")}");
+        sb.AppendLine($"sun (RenderSettings.sun) = {(RenderSettings.sun != null ? RenderSettings.sun.name : "null")}");
+        sb.AppendLine();
+
+        // ---------- QualitySettings / Pipeline Asset đang active thật sự ----------
+        sb.AppendLine("--- Quality / Render Pipeline Asset đang active ---");
+        sb.AppendLine($"QualitySettings.names[QualitySettings.GetQualityLevel()] = {QualitySettings.names[QualitySettings.GetQualityLevel()]}");
+        var qualityRPA = QualitySettings.renderPipeline;
+        var graphicsRPA = GraphicsSettings.defaultRenderPipeline;
+        var currentRPA = GraphicsSettings.currentRenderPipeline;
+        sb.AppendLine($"QualitySettings.renderPipeline (override theo Quality tier) = {(qualityRPA != null ? qualityRPA.name : "null (dùng Graphics default)")}");
+        sb.AppendLine($"GraphicsSettings.defaultRenderPipeline = {(graphicsRPA != null ? graphicsRPA.name : "null")}");
+        sb.AppendLine($"GraphicsSettings.currentRenderPipeline (cái ĐANG thực sự dùng để render) = {(currentRPA != null ? currentRPA.name : "null")}");
+
+        var urpAsset = currentRPA as UniversalRenderPipelineAsset;
+        if (urpAsset == null) urpAsset = (qualityRPA as UniversalRenderPipelineAsset) ?? (graphicsRPA as UniversalRenderPipelineAsset);
+        if (urpAsset != null)
+        {
+            sb.AppendLine($"  => Dump chi tiết asset: {urpAsset.name}");
+            var urpSO = new SerializedObject(urpAsset);
+            var lightsMode = urpSO.FindProperty("m_AdditionalLightsRenderingMode");
+            var lightsShadow = urpSO.FindProperty("m_AdditionalLightShadowsSupported");
+            sb.AppendLine($"  additionalLightsRenderingMode = {(lightsMode != null ? lightsMode.enumValueIndex + " (" + (lightsMode.enumValueIndex < lightsMode.enumDisplayNames.Length ? lightsMode.enumDisplayNames[lightsMode.enumValueIndex] : "?") + ")" : "?")}  ⚠️ enum này KHÔNG theo thứ tự trực quan 0/1/2 — luôn verify qua UI Project Settings > Quality thật, đừng tin số suông (đã dính bug thật vì việc này).");
+            sb.AppendLine($"  additionalLightShadowsSupported = {(lightsShadow != null ? lightsShadow.boolValue.ToString() : "?")}");
+
+            var rendererList = urpSO.FindProperty("m_RendererDataList");
+            var defaultIdx = urpSO.FindProperty("m_DefaultRendererIndex");
+            sb.AppendLine($"  m_DefaultRendererIndex = {(defaultIdx != null ? defaultIdx.intValue.ToString() : "?")}");
+            if (rendererList != null)
+            {
+                for (int i = 0; i < rendererList.arraySize; i++)
+                {
+                    var rd = rendererList.GetArrayElementAtIndex(i).objectReferenceValue as ScriptableRendererData;
+                    sb.AppendLine($"  Renderer[{i}] = {(rd != null ? rd.name : "null")}{(defaultIdx != null && defaultIdx.intValue == i ? "  <== DEFAULT" : "")}");
+                    if (rd != null)
+                    {
+                        foreach (var feature in rd.rendererFeatures)
+                        {
+                            if (feature == null) { sb.AppendLine("      [feature bị null/missing script!]"); continue; }
+                            sb.AppendLine($"      Feature: {feature.GetType().Name} (\"{feature.name}\") active={feature.isActive}");
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            sb.AppendLine("  !! Không tìm thấy UniversalRenderPipelineAsset nào đang active — có thể đang chạy Built-in RP!");
+        }
+        sb.AppendLine();
+
+        // ---------- Toàn bộ Light trong scene ----------
+        var allLights = Object.FindObjectsByType<Light>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        sb.AppendLine($"--- Lights trong scene ({allLights.Length}) ---");
+        foreach (var l in allLights)
+        {
+            string path = GetHierarchyPath(l.transform);
+            int layerIdx = l.gameObject.layer;
+            sb.AppendLine($"[{path}]");
+            sb.AppendLine($"  type={l.type} enabled={l.enabled} activeSelf={l.gameObject.activeSelf} activeInHierarchy={l.gameObject.activeInHierarchy}");
+            sb.AppendLine($"  layer={layerIdx} ({LayerMask.LayerToName(layerIdx)})  cullingMask(light riêng)={l.cullingMask}");
+            sb.AppendLine($"  intensity={l.intensity} range={l.range} spotAngle={l.spotAngle} innerSpotAngle={l.innerSpotAngle} color={l.color}");
+            sb.AppendLine($"  shadows={l.shadows} shadowStrength={l.shadowStrength}");
+            sb.AppendLine($"  position(world)={l.transform.position} rotation(euler)={l.transform.rotation.eulerAngles}");
+        }
+        sb.AppendLine();
+
+        // ---------- Toàn bộ Camera trong scene ----------
+        var allCameras = Object.FindObjectsByType<Camera>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        sb.AppendLine($"--- Cameras trong scene ({allCameras.Length}) ---");
+        foreach (var cam in allCameras)
+        {
+            string path = GetHierarchyPath(cam.transform);
+            sb.AppendLine($"[{path}]");
+            sb.AppendLine($"  enabled={cam.enabled} activeInHierarchy={cam.gameObject.activeInHierarchy} depth={cam.depth} clearFlags={cam.clearFlags}");
+            sb.AppendLine($"  cullingMask=0b{System.Convert.ToString(cam.cullingMask, 2)} ({cam.cullingMask}) -> layers included: {DecodeLayerMask(cam.cullingMask)}");
+            sb.AppendLine($"  fieldOfView={cam.fieldOfView} nearClip={cam.nearClipPlane} farClip={cam.farClipPlane}");
+            var camData = cam.GetUniversalAdditionalCameraData();
+            if (camData != null)
+            {
+                sb.AppendLine($"  URP renderType={camData.renderType}");
+                if (camData.renderType == CameraRenderType.Base && camData.cameraStack != null && camData.cameraStack.Count > 0)
+                {
+                    sb.AppendLine($"  cameraStack ({camData.cameraStack.Count}): {string.Join(", ", camData.cameraStack.ConvertAll(c => c != null ? c.name : "null"))}");
+                }
+            }
+        }
+        sb.AppendLine();
+
+        // ---------- Cross-check: Light nào bị loại khỏi cullingMask của Camera Base nào ----------
+        sb.AppendLine("--- Cross-check: Light có bị Camera cullingMask loại không ---");
+        foreach (var cam in allCameras)
+        {
+            var camData = cam.GetUniversalAdditionalCameraData();
+            if (camData != null && camData.renderType != CameraRenderType.Base) continue; // chỉ xét Base, Overlay không tự quyết định light
+            foreach (var l in allLights)
+            {
+                bool included = (cam.cullingMask & (1 << l.gameObject.layer)) != 0;
+                if (!included)
+                    sb.AppendLine($"  !! Camera \"{GetHierarchyPath(cam.transform)}\" KHÔNG bao gồm layer của Light \"{GetHierarchyPath(l.transform)}\" (layer {l.gameObject.layer}/{LayerMask.LayerToName(l.gameObject.layer)}) => light này KHÔNG chiếu sáng được gì camera này render.");
+            }
+        }
+        sb.AppendLine();
+
+        // ---------- Toàn bộ Volume + Profile ----------
+        var allVolumes = Object.FindObjectsByType<Volume>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        sb.AppendLine($"--- Volumes trong scene ({allVolumes.Length}) ---");
+        foreach (var v in allVolumes)
+        {
+            string path = GetHierarchyPath(v.transform);
+            sb.AppendLine($"[{path}]");
+            sb.AppendLine($"  enabled={v.enabled} activeInHierarchy={v.gameObject.activeInHierarchy} isGlobal={v.isGlobal} weight={v.weight} priority={v.priority} blendDistance={v.blendDistance}");
+            var profile = v.sharedProfile != null ? v.sharedProfile : v.profile;
+            if (profile == null) { sb.AppendLine("  !! profile = null"); continue; }
+            string profilePath = AssetDatabase.GetAssetPath(profile);
+            sb.AppendLine($"  profile = {profile.name}  ({profilePath})");
+            foreach (var comp in profile.components)
+            {
+                if (comp == null) { sb.AppendLine("    [component bị null/missing script!]"); continue; }
+                sb.AppendLine($"    * {comp.GetType().Name}  active={comp.active}");
+                var compSO = new SerializedObject(comp);
+                DumpSerializedObjectFlat(sb, compSO, "        ");
+            }
+        }
+        sb.AppendLine();
+
+        // ---------- FogManager ----------
+        var fogMgr = Object.FindFirstObjectByType<FogManager>(FindObjectsInactive.Include);
+        sb.AppendLine("--- FogManager ---");
+        if (fogMgr == null) sb.AppendLine("  !! Không tìm thấy FogManager trong scene.");
+        else
+        {
+            sb.AppendLine($"  [{GetHierarchyPath(fogMgr.transform)}] enabled={fogMgr.enabled} activeInHierarchy={fogMgr.gameObject.activeInHierarchy}");
+            DumpSerializedObjectFlat(sb, new SerializedObject(fogMgr), "    ");
+        }
+        sb.AppendLine();
+
+        // ---------- FlashlightController ----------
+        var flashlight = Object.FindFirstObjectByType<FlashlightController>(FindObjectsInactive.Include);
+        sb.AppendLine("--- FlashlightController ---");
+        if (flashlight == null) sb.AppendLine("  !! Không tìm thấy FlashlightController trong scene.");
+        else
+        {
+            sb.AppendLine($"  [{GetHierarchyPath(flashlight.transform)}] enabled={flashlight.enabled} activeInHierarchy={flashlight.gameObject.activeInHierarchy}");
+            DumpSerializedObjectFlat(sb, new SerializedObject(flashlight), "    ");
+        }
+        sb.AppendLine();
+
+        string outPath = Path.Combine(Application.dataPath, "..", "VoD_LightingReport.txt");
+        File.WriteAllText(outPath, sb.ToString());
+        Debug.Log($"[VoD] Đã xuất scan report ra: {outPath}");
+    }
+
+    private static string GetHierarchyPath(Transform t)
+    {
+        string path = t.name;
+        while (t.parent != null) { t = t.parent; path = t.name + "/" + path; }
+        return path;
+    }
+
+    private static string DecodeLayerMask(int mask)
+    {
+        var names = new List<string>();
+        for (int i = 0; i < 32; i++)
+        {
+            if ((mask & (1 << i)) == 0) continue;
+            string n = LayerMask.LayerToName(i);
+            names.Add(string.IsNullOrEmpty(n) ? $"#{i}" : n);
+        }
+        return string.Join(", ", names);
+    }
+
+    // Duyệt phẳng toàn bộ SerializedProperty (kể cả field lồng bên trong struct như VolumeParameter<T>.m_Value)
+    // để không cần biết trước tên field cụ thể của từng loại component/script — dùng chung cho mọi thứ.
+    private static void DumpSerializedObjectFlat(StringBuilder sb, SerializedObject so, string indent)
+    {
+        var prop = so.GetIterator();
+        bool enter = true;
+        while (prop.NextVisible(enter))
+        {
+            enter = true;
+            string n = prop.name;
+            if (n == "m_Script" || n == "m_ObjectHideFlags" || n == "m_CorrespondingSourceObject" ||
+                n == "m_PrefabInstance" || n == "m_PrefabAsset" || n == "m_GameObject" ||
+                n == "m_EditorHideFlags" || n == "m_EditorClassIdentifier") continue;
+            if (prop.propertyType == SerializedPropertyType.Generic) continue; // struct/array container, giá trị thật nằm ở children
+            sb.AppendLine($"{indent}{prop.propertyPath} = {SerializedPropertyValueToString(prop)}");
+        }
+    }
+
+    private static string SerializedPropertyValueToString(SerializedProperty p)
+    {
+        switch (p.propertyType)
+        {
+            case SerializedPropertyType.Integer: return p.intValue.ToString();
+            case SerializedPropertyType.Boolean: return p.boolValue.ToString();
+            case SerializedPropertyType.Float: return p.floatValue.ToString("F4");
+            case SerializedPropertyType.String: return p.stringValue;
+            case SerializedPropertyType.Color: return p.colorValue.ToString();
+            case SerializedPropertyType.ObjectReference: return p.objectReferenceValue != null ? p.objectReferenceValue.name : "null";
+            case SerializedPropertyType.Enum: return (p.enumValueIndex >= 0 && p.enumValueIndex < p.enumDisplayNames.Length) ? p.enumDisplayNames[p.enumValueIndex] : p.enumValueIndex.ToString();
+            case SerializedPropertyType.Vector2: return p.vector2Value.ToString();
+            case SerializedPropertyType.Vector3: return p.vector3Value.ToString();
+            case SerializedPropertyType.Vector4: return p.vector4Value.ToString();
+            case SerializedPropertyType.LayerMask: return p.intValue.ToString();
+            default: return $"({p.propertyType})";
+        }
+    }
+
+    // glTFast (importer cho .glb, dùng cho toàn bộ đồ nội thất Kenney) không có tuỳ chọn "Smooth Normals"
+    // như FBX importer — kèm việc Kenney export vertex tách rời ở từng cạnh (cố ý để hỗ trợ flat shading),
+    // nên đèn pin chiếu vào là thấy rõ từng mặt phẳng thay vì loang mượt. Xử lý trực tiếp trên mesh: gộp
+    // vertex trùng vị trí (dù đang tách rời trong buffer), blend normal GỐC (không tự tính lại qua cross
+    // product — dễ sai hướng do winding order không đồng nhất), tạo mesh mới rồi gán vào Object đang chọn.
+    [MenuItem("VoD/Temp/Smooth Normals cho Object đang chọn")]
+    public static void SmoothNormalsForSelected()
+    {
+        var go = Selection.activeGameObject;
+        if (go == null) { Debug.LogError("[VoD] Chưa chọn GameObject nào trong Hierarchy."); return; }
+
+        // Xử lý luôn cả object con — nhiều prop ghép từ nhiều mesh riêng (khung giường/nệm/gối...).
+        var meshFilters = go.GetComponentsInChildren<MeshFilter>(true);
+        if (meshFilters.Length == 0) { Debug.LogError("[VoD] Object đang chọn (và con) không có MeshFilter/mesh nào."); return; }
+
+        int done = 0;
+        foreach (var mf in meshFilters)
+        {
+            if (mf.sharedMesh == null) continue;
+            SmoothNormalsOnMeshFilter(mf);
+            done++;
+        }
+
+        EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+        Debug.Log($"[VoD] Đã làm mượt normal cho {done}/{meshFilters.Length} mesh trong \"{go.name}\" (và con). Nhớ Save Scene rồi Play thử.");
+    }
+
+    // Áp dụng hàng loạt cho toàn bộ 2 group Furniture + Props luôn, khỏi phải chọn tay từng object — dùng
+    // lại được mỗi khi thêm đồ nội thất mới vào scene.
+    [MenuItem("VoD/Temp/Smooth Normals cho TOÀN BỘ Furniture + Props")]
+    public static void SmoothNormalsForFurnitureAndProps()
+    {
+        string[] groupNames = { "── FURNITURE (HideSpot/Decor) ──", "── PROPS ──" };
+        int totalMeshes = 0;
+
+        foreach (var groupName in groupNames)
+        {
+            var group = FindByNameIncludingInactive(groupName);
+            if (group == null) { Debug.LogWarning($"[VoD] Không tìm thấy group \"{groupName}\" — bỏ qua."); continue; }
+
+            var meshFilters = group.GetComponentsInChildren<MeshFilter>(true);
+            int done = 0;
+            foreach (var mf in meshFilters)
+            {
+                if (mf.sharedMesh == null) continue;
+                SmoothNormalsOnMeshFilter(mf);
+                done++;
+            }
+            totalMeshes += done;
+            Debug.Log($"[VoD] Group \"{groupName}\": làm mượt {done}/{meshFilters.Length} mesh.");
+        }
+
+        EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+        Debug.Log($"[VoD] XONG — tổng cộng {totalMeshes} mesh đã được làm mượt normal trong Furniture + Props. Có thể mất vài giây nếu nhiều mesh. Nhớ Save Scene rồi Play thử.");
+    }
+
+    // "Đèn xuyên tường/tủ" — nghi phạm số 1 là MeshRenderer của vật cản đang tắt Cast Shadows (glTFast/
+    // import mặc định đôi khi để Off), nên đèn Realtime chiếu thẳng qua như không có gì cản dù model vẫn
+    // hiện bình thường. Quét + bật Cast Shadows = On hàng loạt cho Furniture + Props — dùng lại được mỗi
+    // khi thêm đồ mới vào scene.
+    [MenuItem("VoD/Temp/Scan + Bật Cast Shadows cho TOÀN BỘ Furniture + Props")]
+    public static void FixCastShadowsForFurnitureAndProps()
+    {
+        string[] groupNames = { "── FURNITURE (HideSpot/Decor) ──", "── PROPS ──" };
+        int totalOff = 0, totalChecked = 0;
+        var sb = new StringBuilder();
+        sb.AppendLine("=== Scan Cast Shadows — Furniture + Props ===");
+
+        foreach (var groupName in groupNames)
+        {
+            var group = FindByNameIncludingInactive(groupName);
+            if (group == null) { Debug.LogWarning($"[VoD] Không tìm thấy group \"{groupName}\" — bỏ qua."); continue; }
+
+            var renderers = group.GetComponentsInChildren<MeshRenderer>(true);
+            foreach (var mr in renderers)
+            {
+                totalChecked++;
+                if (mr.shadowCastingMode == ShadowCastingMode.Off)
+                {
+                    sb.AppendLine($"  TẮT shadow -> BẬT lại: [{GetHierarchyPath(mr.transform)}]");
+                    Undo.RecordObject(mr, "Fix Cast Shadows");
+                    mr.shadowCastingMode = ShadowCastingMode.On;
+                    totalOff++;
+                }
+            }
+        }
+
+        EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+        sb.AppendLine($"XONG — đã bật lại Cast Shadows cho {totalOff}/{totalChecked} MeshRenderer đang tắt. Nhớ Save Scene rồi Play thử.");
+        Debug.Log(sb.ToString());
+    }
+
+    private static void SmoothNormalsOnMeshFilter(MeshFilter mf)
+    {
+        var srcMesh = mf.sharedMesh;
+        var verts = srcMesh.vertices;
+        var origNormals = srcMesh.normals;
+
+        Vector3Int RoundKey(Vector3 v) => new Vector3Int(
+            Mathf.RoundToInt(v.x * 10000f),
+            Mathf.RoundToInt(v.y * 10000f),
+            Mathf.RoundToInt(v.z * 10000f));
+
+        var posGroups = new Dictionary<Vector3Int, List<int>>();
+        for (int i = 0; i < verts.Length; i++)
+        {
+            var key = RoundKey(verts[i]);
+            if (!posGroups.TryGetValue(key, out var list)) { list = new List<int>(); posGroups[key] = list; }
+            list.Add(i);
+        }
+
+        // Ngưỡng góc mượt chuẩn (~60°, giống Blender/Maya mặc định): mỗi vertex chỉ gộp normal của các
+        // vertex khác CHUNG VỊ TRÍ có góc lệch DƯỚI ngưỡng so với chính normal gốc của nó — cạnh sắc
+        // (góc > ngưỡng, ví dụ góc bàn) giữ nguyên facet, chỉ mặt cong nhẹ mới mượt vào nhau.
+        const float smoothingAngleDeg = 60f;
+        float cosThreshold = Mathf.Cos(smoothingAngleDeg * Mathf.Deg2Rad);
+
+        var smoothNormals = new Vector3[verts.Length];
+        for (int i = 0; i < verts.Length; i++)
+        {
+            Vector3 myNormal = origNormals[i];
+            Vector3 sum = Vector3.zero;
+            foreach (int vi in posGroups[RoundKey(verts[i])])
+                if (Vector3.Dot(origNormals[vi], myNormal) >= cosThreshold)
+                    sum += origNormals[vi];
+
+            smoothNormals[i] = sum.sqrMagnitude > 0.0001f ? sum.normalized : myNormal;
+        }
+
+        var newMesh = Object.Instantiate(srcMesh);
+        newMesh.name = srcMesh.name + "_Smooth";
+        newMesh.normals = smoothNormals;
+
+        string dir = "Assets/_Project/Models/VFX";
+        if (!AssetDatabase.IsValidFolder(dir))
+        {
+            if (!AssetDatabase.IsValidFolder("Assets/_Project/Models")) AssetDatabase.CreateFolder("Assets/_Project", "Models");
+            AssetDatabase.CreateFolder("Assets/_Project/Models", "VFX");
+        }
+        string path = AssetDatabase.GenerateUniqueAssetPath($"{dir}/{newMesh.name}.asset");
+        AssetDatabase.CreateAsset(newMesh, path);
+
+        Undo.RecordObject(mf, "Smooth Normals");
+        mf.sharedMesh = newMesh;
+    }
+
+    private static void SetIfEmpty(SerializedObject so, string propName, Object value)
+    {
+        var prop = so.FindProperty(propName);
+        if (prop == null) { Debug.LogWarning($"[VoD] Không tìm thấy field \"{propName}\" trên IntroManager."); return; }
+        if (prop.objectReferenceValue == null) prop.objectReferenceValue = value;
+    }
+
+    // ConfirmArrow hiện chỉ là icon nhỏ (mũi tên/ký tự "v") — chỉ hiện SAU khi typewriter gõ xong (đã
+    // đúng logic sẵn trong SubtitleDialogueView/PopupDialogueView.FinishLine → AdvanceOrSkip). Đổi text
+    // rõ ràng + nới rộng box để không bị wrap/crop, giữ nguyên anchor/pivot hiện có (chỉ đổi sizeDelta.x).
+    //
+    // ĐÃ THỬ 3 FONT, CẢ 3 CRASH — NHƯNG toàn bộ test trước giờ đều làm trong EDIT MODE (chưa từng bấm
+    // Play thật, chỉ bật tay GameObject lên xem). Rất có thể đây là hạn chế biết trước của TMP: Dynamic
+    // atlas cần proper init qua Awake/OnEnable lúc Play mới chạy đúng, rebuild Canvas ngoài Play Mode qua
+    // script dễ hit lỗi này dù font hoàn toàn ổn (JustMeAgainDownHere/AmaticSC-Bold vẫn hiện chữ bình
+    // thường khi CHƠI GAME THẬT trước giờ — đó là lý do Jok thấy "trước đó dùng được"). Quay lại thử
+    // JustMeAgainDownHere SDF + dấu tiếng Việt — lần này PHẢI bấm Play thật để test, không chỉ xem Edit
+    // Mode. Xem [[project_tmp_font_vietnamese_glyph_bug]].
+    [MenuItem("VoD/Temp/Đổi Confirm Arrow thành hint \"Nhấn Space\"")]
+    public static void SetupSpaceContinueHint()
+    {
+        var subtitleViewGO = FindByNameIncludingInactive("SubtitleView");
+        var popupViewGO    = FindByNameIncludingInactive("PopupView");
+        if (subtitleViewGO == null) { Debug.LogError("[VoD] Không tìm thấy \"SubtitleView\" trong scene."); return; }
+        if (popupViewGO == null) { Debug.LogError("[VoD] Không tìm thấy \"PopupView\" trong scene."); return; }
+
+        const string hintText = "Nhấn [ SPACE ] để tiếp tục";
+
+        string fontPath = "Assets/_Project/Fonts/JustMeAgainDownHere SDF.asset";
+        var vietnameseFont = AssetDatabase.LoadAssetAtPath<TMP_FontAsset>(fontPath);
+        if (vietnameseFont == null) Debug.LogWarning($"[VoD] Không tìm thấy font ở {fontPath} — giữ nguyên font cũ, chỉ đổi text.");
+
+        var subtitleArrow = FindDeep(subtitleViewGO.transform, "ConfirmArrow");
+        ApplySpaceHint(subtitleArrow, hintText, 340f, vietnameseFont);
+
+        var popupArrow = FindDeep(popupViewGO.transform, "ConfirmArrow");
+        ApplySpaceHint(popupArrow, hintText, 340f, vietnameseFont);
+
+        EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+        Debug.Log("[VoD] Đã đổi ConfirmArrow sang \"Nhấn [ SPACE ] để tiếp tục\" (font JustMeAgainDownHere SDF). QUAN TRỌNG: Save Scene rồi BẤM PLAY THẬT để test (không chỉ xem Scene/Game view ở Edit Mode) — Console có thể vẫn báo lỗi 1 lần lúc Edit Mode rebuild, nhưng cái cần biết là lúc Play có bị crash/lỗi không.");
+    }
+
+    private static void ApplySpaceHint(Transform arrow, string text, float newWidth, TMP_FontAsset font)
+    {
+        if (arrow == null) { Debug.LogWarning("[VoD] Không tìm thấy ConfirmArrow để đổi hint."); return; }
+
+        var tmp = arrow.GetComponent<TextMeshProUGUI>();
+        if (tmp == null) { Debug.LogWarning($"[VoD] \"{arrow.name}\" không có TextMeshProUGUI."); return; }
+
+        Undo.RecordObject(tmp, "Space Continue Hint");
+        if (font != null) tmp.font = font;
+        tmp.text = text;
+
+        var rt = arrow.GetComponent<RectTransform>();
+        if (rt != null)
+        {
+            Undo.RecordObject(rt, "Space Continue Hint");
+            var size = rt.sizeDelta;
+            size.x = newWidth;
+            rt.sizeDelta = size;
+        }
+    }
+
+    // BUG THẬT: DialogueAsset_Ch1_Intro.asset viết tay YAML với "m_Script: {fileID: 0} +
+    // m_EditorClassIdentifier" (tưởng nhầm là pattern an toàn giống DialogueAsset.asset gốc) — xác nhận
+    // qua Object Picker trong Inspector: Unity KHÔNG liệt kê được asset nào kiểu DialogueAsset viết theo
+    // kiểu này, kể cả file gốc. Tool này tạo lại đúng cách qua ScriptableObject.CreateInstance +
+    // AssetDatabase.CreateAsset (Unity tự ghi đúng m_Script, không đoán fileID tay nữa), rồi wire lại vào
+    // IntroManager.introDialogue. Xoá + tạo lại nên GUID sẽ đổi — không sao vì chỉ IntroManager tham
+    // chiếu tới asset này (không phải file DialogueAsset.asset gốc, không đụng gameplay khác).
+    [MenuItem("VoD/Temp/Fix - Tạo lại DialogueAsset_Ch1_Intro (m_Script đúng cách)")]
+    public static void RecreateIntroDialogueAsset()
+    {
+        string path = "Assets/_Project/Data/Dialogue/Chapter1/DialogueAsset_Ch1_Intro.asset";
+
+        if (AssetDatabase.LoadAssetAtPath<Object>(path) != null)
+            AssetDatabase.DeleteAsset(path);
+
+        // Câu "À... cửa sổ phòng ăn mở rồi..." (KH-INTRO-03 gốc) bị bỏ khỏi đây — Jok xác nhận nó chỉ nên
+        // chạy khi tương tác với vật thể thật trong scene (chưa chốt gắn vào đâu, để sau), không phải
+        // thoại tuần tự trong cutscene. Dòng đầu "Cuối cùng cũng đến nơi rồi." là ĐỀ XUẤT MỚI của Claude
+        // (không có trong KỊCH_BẢN_LỒNG_TIẾNG_v1.md) — thêm nhịp thở/cảm xúc ngay lúc camera reveal xong,
+        // trước khi vào câu thoại thuyết minh — Jok tự chỉnh lại nếu không ưng.
+        var asset = ScriptableObject.CreateInstance<DialogueAsset>();
+        asset.lines = new List<DialogueLine>
+        {
+            new DialogueLine { speakerName = "Minh Khoa", text = "Cuối cùng cũng đến nơi rồi.", hasVoice = true },
+            new DialogueLine { speakerName = "Minh Khoa", text = "Biệt thự Đỗ Gia. Năm 1945, kiến trúc sư Pháp phối hợp ông Đỗ Văn Minh.", hasVoice = true },
+            new DialogueLine { speakerName = "Minh Khoa", text = "Đề tài tốt nghiệp của mình không thể thiếu cái này.", hasVoice = true },
+            new DialogueLine { speakerName = "Minh Khoa", text = "Chụp nhanh vài tấm, phác thảo mặt tiền, rồi về. Không dám ở lại đêm đâu.", hasVoice = true },
+        };
+
+        AssetDatabase.CreateAsset(asset, path);
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+
+        var introGO = FindByNameIncludingInactive("IntroManager");
+        if (introGO == null) { Debug.LogError("[VoD] Không tìm thấy \"IntroManager\" trong scene — tạo asset xong nhưng chưa wire được, tự kéo tay vào."); return; }
+
+        var introComp = introGO.GetComponent<IntroManager>();
+        if (introComp == null) { Debug.LogError("[VoD] \"IntroManager\" không có component IntroManager."); return; }
+
+        var so = new SerializedObject(introComp);
+        var prop = so.FindProperty("introDialogue");
+        prop.objectReferenceValue = asset;
+
+        // Tăng thời gian rotation camera reveal (2s → 3s) — nặng nề/từ từ hơn cho cảm giác điện ảnh,
+        // đúng yêu cầu gốc "nặng nề từ từ có chủ ý" thay vì đổi tuỳ tiện, chỉ nới thêm 1s.
+        var revealProp = so.FindProperty("revealRotationDuration");
+        if (revealProp != null) revealProp.floatValue = 3f;
+
+        so.ApplyModifiedProperties();
+
+        EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+        Debug.Log("[VoD] Đã tạo lại DialogueAsset_Ch1_Intro (4 câu, bỏ câu cửa sổ, thêm câu mở đầu mới) + wire vào IntroManager.introDialogue + tăng revealRotationDuration lên 3s. Nhớ Save Scene rồi Play thử.");
+    }
+
+    // Dựng UI cho EyelidBlink — 2 panel đen (nửa trên/nửa dưới màn hình) trượt ra/vào giả mí mắt, thay
+    // cho ScreenFader (alpha fade phẳng) trong đúng đoạn "chớp đen" của IntroManager. Panel dựng ở trạng
+    // thái MỞ (trượt ra ngoài, không che gì) mặc định — để nếu Jok bật "Skip Intro Entirely" test phần
+    // khác thì màn hình không bị đen vĩnh viễn (IntroManager tự SnapClosed() lúc RunIntro() bắt đầu).
+    [MenuItem("VoD/Temp/Dựng EyelidBlink (2 panel mí mắt trên/dưới)")]
+    public static void SetupEyelidBlink()
+    {
+        var dialoguePanel = FindByNameIncludingInactive("DialoguePanel");
+        if (dialoguePanel == null) { Debug.LogError("[VoD] Không tìm thấy \"DialoguePanel\" để xác định Canvas."); return; }
+
+        var canvasGO = dialoguePanel.transform.parent != null ? dialoguePanel.transform.parent.gameObject : null;
+        if (canvasGO == null || canvasGO.GetComponent<Canvas>() == null)
+        {
+            Debug.LogError("[VoD] Không tìm thấy Canvas cha của \"DialoguePanel\".");
+            return;
+        }
+
+        var existing = FindByNameIncludingInactive("EyelidBlink");
+        GameObject rootGO;
+        EyelidBlink eyelidComp;
+        RectTransform topRT, bottomRT;
+
+        if (existing != null)
+        {
+            rootGO = existing;
+            eyelidComp = rootGO.GetComponent<EyelidBlink>();
+            if (eyelidComp == null) eyelidComp = rootGO.AddComponent<EyelidBlink>();
+            topRT = FindDeep(rootGO.transform, "TopPanel")?.GetComponent<RectTransform>();
+            bottomRT = FindDeep(rootGO.transform, "BottomPanel")?.GetComponent<RectTransform>();
+            if (topRT == null) topRT = CreateEyelidPanel(rootGO.transform, "TopPanel", new Vector2(0f, 0.5f), new Vector2(1f, 1f));
+            if (bottomRT == null) bottomRT = CreateEyelidPanel(rootGO.transform, "BottomPanel", new Vector2(0f, 0f), new Vector2(1f, 0.5f));
+            Debug.Log("[VoD] Đã có \"EyelidBlink\" trong scene — dùng lại, chỉ kiểm tra/tạo lại panel còn thiếu.");
+        }
+        else
+        {
+            rootGO = new GameObject("EyelidBlink");
+            Undo.RegisterCreatedObjectUndo(rootGO, "Create EyelidBlink");
+            rootGO.transform.SetParent(canvasGO.transform, false);
+            var rootRT = rootGO.AddComponent<RectTransform>();
+            rootRT.anchorMin = Vector2.zero;
+            rootRT.anchorMax = Vector2.one;
+            rootRT.offsetMin = Vector2.zero;
+            rootRT.offsetMax = Vector2.zero;
+
+            eyelidComp = rootGO.AddComponent<EyelidBlink>();
+            topRT = CreateEyelidPanel(rootGO.transform, "TopPanel", new Vector2(0f, 0.5f), new Vector2(1f, 1f));
+            bottomRT = CreateEyelidPanel(rootGO.transform, "BottomPanel", new Vector2(0f, 0f), new Vector2(1f, 0.5f));
+        }
+
+        // Luôn ở TRÊN CÙNG trong Canvas (che hết DialoguePanel/HUD) — hiển thị đúng lúc cinematic chạy.
+        rootGO.transform.SetAsLastSibling();
+
+        // Trạng thái MỞ mặc định (trượt ra ngoài, không che gì) — an toàn nếu skip intro.
+        Canvas.ForceUpdateCanvases();
+        topRT.anchoredPosition = new Vector2(0f, topRT.rect.height);
+        bottomRT.anchoredPosition = new Vector2(0f, -bottomRT.rect.height);
+
+        var eyelidSO = new SerializedObject(eyelidComp);
+        SetIfEmpty(eyelidSO, "topPanel", topRT);
+        SetIfEmpty(eyelidSO, "bottomPanel", bottomRT);
+        eyelidSO.ApplyModifiedProperties();
+
+        // Wire vào IntroManager.eyelidBlink
+        var introGO = FindByNameIncludingInactive("IntroManager");
+        if (introGO != null)
+        {
+            var introComp = introGO.GetComponent<IntroManager>();
+            if (introComp != null)
+            {
+                var introSO = new SerializedObject(introComp);
+                SetIfEmpty(introSO, "eyelidBlink", eyelidComp);
+                introSO.ApplyModifiedProperties();
+            }
+        }
+        else
+        {
+            Debug.LogWarning("[VoD] Không tìm thấy \"IntroManager\" — đã dựng EyelidBlink xong nhưng chưa wire được, tự kéo tay vào field \"Eyelid Blink\".");
+        }
+
+        EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+        Debug.Log("[VoD] Đã dựng EyelidBlink (2 panel TopPanel/BottomPanel, trạng thái mở mặc định) + wire vào IntroManager. Nhớ Save Scene rồi Play thử.");
+    }
+
+    private static RectTransform CreateEyelidPanel(Transform parent, string name, Vector2 anchorMin, Vector2 anchorMax)
+    {
+        var go = new GameObject(name, typeof(RectTransform), typeof(UnityEngine.UI.Image));
+        Undo.RegisterCreatedObjectUndo(go, "Create Eyelid Panel");
+        go.transform.SetParent(parent, false);
+
+        var rt = go.GetComponent<RectTransform>();
+        rt.anchorMin = anchorMin;
+        rt.anchorMax = anchorMax;
+        rt.offsetMin = Vector2.zero;
+        rt.offsetMax = Vector2.zero;
+        rt.anchoredPosition = Vector2.zero;
+
+        var img = go.GetComponent<UnityEngine.UI.Image>();
+        img.color = Color.black;
+        img.raycastTarget = true;
+
+        return rt;
+    }
+
+    // Dựng khung UI dùng chung cho mọi IInteractable (Piano/HideSpot/ExamineItem/PickupItem/vải đỏ...):
+    // tâm màn hình có 1 ô vuông trắng đặt tạm (Phúc thay bằng sprite tròn thật) + chữ "E" bên dưới,
+    // 2 cái nằm chung 1 container "PromptRoot" được InteractPromptUI.Show()/Hide() bật tắt theo raycast hover
+    // trong InteractionSystem.cs. Root "InteractPrompt" LUÔN active (để Awake/Update chạy) — chỉ "PromptRoot" con bị tắt.
+    [MenuItem("VoD/Temp/Setup - Interact Prompt UI (E + tâm tròn)")]
+    public static void SetupInteractPromptUI()
+    {
+        GameObject canvasGO = FindByNameIncludingInactive("Canvas");
+        if (canvasGO == null) { Debug.LogError("[VoD] Không tìm thấy Canvas trong scene."); return; }
+
+        GameObject existing = FindByNameIncludingInactive("InteractPrompt");
+        if (existing != null)
+        {
+            Debug.LogWarning("[VoD] 'InteractPrompt' đã tồn tại — xoá đối tượng cũ trước nếu muốn dựng lại từ đầu.");
+            return;
+        }
+
+        var root = new GameObject("InteractPrompt", typeof(RectTransform));
+        Undo.RegisterCreatedObjectUndo(root, "Create InteractPrompt");
+        root.transform.SetParent(canvasGO.transform, false);
+        var rootRt = root.GetComponent<RectTransform>();
+        rootRt.anchorMin = Vector2.zero;
+        rootRt.anchorMax = Vector2.one;
+        rootRt.offsetMin = Vector2.zero;
+        rootRt.offsetMax = Vector2.zero;
+
+        var promptRoot = new GameObject("PromptRoot", typeof(RectTransform));
+        promptRoot.transform.SetParent(root.transform, false);
+        var promptRt = promptRoot.GetComponent<RectTransform>();
+        promptRt.anchorMin = new Vector2(0.5f, 0.5f);
+        promptRt.anchorMax = new Vector2(0.5f, 0.5f);
+        promptRt.pivot = new Vector2(0.5f, 0.5f);
+        promptRt.anchoredPosition = Vector2.zero;
+        promptRt.sizeDelta = new Vector2(60, 60);
+
+        // Placeholder tâm tròn — Phúc thay Image này bằng sprite tròn trắng thật, chỉnh size/style tự do.
+        var dotGO = new GameObject("Dot", typeof(RectTransform), typeof(UnityEngine.UI.Image));
+        dotGO.transform.SetParent(promptRoot.transform, false);
+        var dotRt = dotGO.GetComponent<RectTransform>();
+        dotRt.anchorMin = new Vector2(0.5f, 0.6f);
+        dotRt.anchorMax = new Vector2(0.5f, 0.6f);
+        dotRt.pivot = new Vector2(0.5f, 0.5f);
+        dotRt.anchoredPosition = Vector2.zero;
+        dotRt.sizeDelta = new Vector2(6, 6);
+        var dotImg = dotGO.GetComponent<UnityEngine.UI.Image>();
+        dotImg.color = Color.white;
+
+        var labelGO = new GameObject("KeyLabel", typeof(RectTransform), typeof(TextMeshProUGUI));
+        labelGO.transform.SetParent(promptRoot.transform, false);
+        var labelRt = labelGO.GetComponent<RectTransform>();
+        labelRt.anchorMin = new Vector2(0.5f, 0.6f);
+        labelRt.anchorMax = new Vector2(0.5f, 0.6f);
+        labelRt.pivot = new Vector2(0.5f, 1f);
+        labelRt.anchoredPosition = new Vector2(0, -14);
+        labelRt.sizeDelta = new Vector2(40, 30);
+        var label = labelGO.GetComponent<TextMeshProUGUI>();
+        label.text = "E";
+        label.fontSize = 22;
+        label.alignment = TextAlignmentOptions.Center;
+        label.color = Color.white;
+
+        promptRoot.SetActive(false);
+
+        var promptScript = root.AddComponent<InteractPromptUI>();
+        var so = new SerializedObject(promptScript);
+        so.FindProperty("promptRoot").objectReferenceValue = promptRoot;
+        so.FindProperty("keyLabel").objectReferenceValue = label;
+        so.ApplyModifiedProperties();
+
+        EditorSceneManager.MarkSceneDirty(SceneManager.GetActiveScene());
+        Debug.Log("[VoD] Đã dựng InteractPrompt (Canvas/InteractPrompt/PromptRoot/Dot+KeyLabel). Phúc thay Image 'Dot' bằng sprite tròn trắng thật là xong.");
+    }
 }

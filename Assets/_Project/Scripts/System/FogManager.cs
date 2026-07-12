@@ -1,13 +1,31 @@
 using UnityEngine;
 
 /// <summary>
-/// Gắn vào GameObject "LightingManager" trong scene để chỉnh Fog (RenderSettings, theo khoảng cách camera)
-/// VÀ Skybox trực tiếp qua Inspector — đổi giá trị là thấy ngay trong Scene view/Game view, không cần vào
-/// Window > Rendering > Lighting hay chạy script mỗi lần. Chạy cả trong Edit Mode (ExecuteAlways) lẫn Play Mode.
+/// Gắn vào GameObject "LightingManager" trong scene — nơi DUY NHẤT để chỉnh toàn bộ ánh sáng thế giới:
+/// Ambient (RenderSettings), Directional Light (mặt trăng), Fog, và Skybox — đổi giá trị là thấy ngay
+/// trong Scene view/Game view, không cần vào Window > Rendering > Lighting hay chỉnh rải rác nhiều chỗ.
+/// Chạy cả trong Edit Mode (ExecuteAlways) lẫn Play Mode.
 /// </summary>
 [ExecuteAlways]
 public class FogManager : MonoBehaviour
 {
+    [Header("Ambient (RenderSettings) — ánh sáng môi trường gián tiếp, phủ đều mọi góc khuất")]
+    [Tooltip("Nhân với màu Ambient Sky/Equator/Ground bên dưới (hoặc màu Skybox nếu Ambient Mode = Skybox)")]
+    public float ambientIntensity = 1f;
+    public UnityEngine.Rendering.AmbientMode ambientMode = UnityEngine.Rendering.AmbientMode.Skybox;
+    [Tooltip("Chỉ có tác dụng khi Ambient Mode = Trilight hoặc Flat")]
+    public Color ambientSkyColor = new Color(0.212f, 0.227f, 0.259f, 1f);
+    public Color ambientEquatorColor = new Color(0.114f, 0.125f, 0.133f, 1f);
+    public Color ambientGroundColor = new Color(0.047f, 0.043f, 0.035f, 1f);
+    [Tooltip("Độ rõ của phản chiếu môi trường (từ Skybox) lên vật liệu bóng/kim loại")]
+    public float reflectionIntensity = 0.3f;
+
+    [Header("Directional Light (Moonlight) — nguồn sáng chính chiếu lên toàn bộ hình học")]
+    [Tooltip("Để trống sẽ tự tìm Directional Light đầu tiên trong scene lúc Enable")]
+    public Light directionalLight;
+    public float directionalLightIntensity = 0.6f;
+    public Color directionalLightColor = new Color(0.3f, 0.35f, 0.5f, 1f);
+
     [Header("Fog cổ điển (RenderSettings) — theo khoảng cách camera")]
     public bool fogEnabled = true;
     public Color fogColor = new Color(0.06f, 0.07f, 0.09f, 1f);
@@ -36,12 +54,34 @@ public class FogManager : MonoBehaviour
     [Tooltip("Tint riêng cho Dark Night Skybox")]
     public Color darkSkyboxTint = new Color(0.48f, 0.48f, 0.5f, 0.5f);
 
-    private void OnEnable() => Apply();
+    private void OnEnable()
+    {
+        if (directionalLight == null)
+        {
+            foreach (var l in FindObjectsByType<Light>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+                if (l.type == LightType.Directional) { directionalLight = l; break; }
+        }
+        Apply();
+    }
     private void OnValidate() => Apply();
 
     private void Apply()
     {
-        // Play Mode LUÔN bật fog (đúng game thật), Edit Mode theo đúng checkbox Jok để (tắt được để edit map cho dễ nhìn).
+        RenderSettings.ambientMode = ambientMode;
+        RenderSettings.ambientIntensity = ambientIntensity;
+        RenderSettings.ambientSkyColor = ambientSkyColor;
+        RenderSettings.ambientEquatorColor = ambientEquatorColor;
+        RenderSettings.ambientGroundColor = ambientGroundColor;
+        RenderSettings.reflectionIntensity = reflectionIntensity;
+
+        if (directionalLight != null)
+        {
+            directionalLight.intensity = directionalLightIntensity;
+            directionalLight.color = directionalLightColor;
+        }
+
+        // Play Mode LUÔN bật fog (đúng game thật) bất kể checkbox — checkbox chỉ còn tác dụng lúc Edit Mode
+        // để tắt tạm cho dễ nhìn map lúc dựng scene.
         RenderSettings.fog = Application.isPlaying || fogEnabled;
         RenderSettings.fogColor = fogColor;
         RenderSettings.fogMode = fogMode;

@@ -5,15 +5,17 @@ public class SanitySystem : MonoBehaviour
 {
     public static SanitySystem Instance { get; private set; }
 
-    public enum SanityLevel { High, Medium, Low, Critical }
-
     [SerializeField] private float _sanity = 1f;
     [SerializeField] private SanityData _data;
 
     public UnityEvent OnSanityChanged = new UnityEvent();
-    public UnityEvent<SanityLevel> OnLevelChanged = new UnityEvent<SanityLevel>();
+    // Bắn ra INDEX trong SanityData.levels (nguồn duy nhất định nghĩa số nấc) — trước đây bắn enum
+    // SanityLevel 4 giá trị cứng trong khi SanityData có 5 nấc, ép (int)level làm index khiến nấc nặng
+    // nhất (index 4) không bao giờ chọn tới được + ngưỡng chuyển nấc lệch hẳn so với ngưỡng drain rate
+    // thật. Giờ chỉ còn 1 nguồn: GetCurrentLevelIndex() quét thẳng _data.levels.
+    public UnityEvent<int> OnLevelChanged = new UnityEvent<int>();
 
-    private SanityLevel _currentLevel = SanityLevel.High;
+    private int  _currentLevelIndex = 0;
     private bool _isInSafeZone = false;
     private float _checkTimer = 0f;
     private const float CHECK_INTERVAL = 0.2f;  // check mỗi 200ms
@@ -72,36 +74,38 @@ public class SanitySystem : MonoBehaviour
         CheckLevelChange();
     }
 
-    public SanityLevel GetLevel()
-    {
-        if (_sanity > 0.75f) return SanityLevel.High;
-        if (_sanity > 0.40f) return SanityLevel.Medium;
-        if (_sanity > 0.10f) return SanityLevel.Low;
-        return SanityLevel.Critical;
-    }
-
     public float GetSanity() => _sanity;
+
+    /// <summary>Index trong _data.levels khớp % sanity hiện tại — nguồn duy nhất cho cả drain rate lẫn visual.</summary>
+    public int GetCurrentLevelIndex()
+    {
+        if (_data == null || _data.levels.Length == 0) return 0;
+
+        float sanityPercent = _sanity * 100f;
+        for (int i = 0; i < _data.levels.Length; i++)
+        {
+            var level = _data.levels[i];
+            if (sanityPercent <= level.sanityMax && sanityPercent >= level.sanityMin)
+                return i;
+        }
+        return _data.levels.Length - 1; // fallback: rơi ra ngoài mọi khoảng (lỗi làm tròn ở biên) → coi là nấc nặng nhất
+    }
 
     public SanityLevelSettings GetCurrentSettings()
     {
         if (_data == null || _data.levels.Length == 0) return default;
-
-        float sanityPercent = _sanity * 100f;
-        foreach (var level in _data.levels)
-        {
-            if (sanityPercent <= level.sanityMax && sanityPercent >= level.sanityMin)
-                return level;
-        }
-        return _data.levels[_data.levels.Length - 1];
+        return _data.levels[GetCurrentLevelIndex()];
     }
+
+    public string GetCurrentLevelName() => GetCurrentSettings().levelName;
 
     private void CheckLevelChange()
     {
-        SanityLevel newLevel = GetLevel();
-        if (newLevel != _currentLevel)
+        int newIndex = GetCurrentLevelIndex();
+        if (newIndex != _currentLevelIndex)
         {
-            _currentLevel = newLevel;
-            OnLevelChanged?.Invoke(_currentLevel);
+            _currentLevelIndex = newIndex;
+            OnLevelChanged?.Invoke(_currentLevelIndex);
         }
     }
 }

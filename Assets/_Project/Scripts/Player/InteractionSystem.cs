@@ -7,33 +7,42 @@ public class InteractionSystem : MonoBehaviour
 
     public static bool IsInputBlocked = false;
 
+    private IInteractable _currentTarget;
+
     private void Update()
     {
-        if (IsInputBlocked) return;
-        if (HideSpot.AnyPlayerHiding) return;
-        if (Input.GetKeyDown(KeyCode.E))
-            TryInteract();
+        if (IsInputBlocked || HideSpot.AnyPlayerHiding)
+        {
+            SetCurrentTarget(null);
+            return;
+        }
+
+        SetCurrentTarget(RaycastForInteractable());
+
+        if (_currentTarget != null && Input.GetKeyDown(KeyCode.E))
+            _currentTarget.Interact();
     }
 
-    private void TryInteract()
+    private void SetCurrentTarget(IInteractable target)
+    {
+        if (target == _currentTarget) return;
+        _currentTarget = target;
+        if (target != null) InteractPromptUI.Instance?.Show();
+        else InteractPromptUI.Instance?.Hide();
+    }
+
+    private IInteractable RaycastForInteractable()
     {
         Transform origin = Camera.main != null ? Camera.main.transform : transform;
         Ray ray = new Ray(origin.position, origin.forward);
-        Debug.DrawRay(origin.position, origin.forward * _interactRange, Color.red, 0.5f);
 
-        if (!Physics.Raycast(ray, out RaycastHit hit, _interactRange, _interactLayer)) return;
-
-        Debug.Log($"[Interact] Hit: {hit.collider.gameObject.name}");
+        if (!Physics.Raycast(ray, out RaycastHit hit, _interactRange, _interactLayer)) return null;
 
         IInteractable target = FindEnabledInteractable(hit.collider.gameObject);
-
         if (target == null && hit.collider.transform.parent != null)
             target = FindEnabledInteractable(hit.collider.transform.parent.gameObject);
 
-        if (target == null)
-            Debug.Log($"[Interact] Không tìm thấy IInteractable enabled trên {hit.collider.gameObject.name}");
-
-        target?.Interact();
+        return target;
     }
 
     private IInteractable FindEnabledInteractable(GameObject go)

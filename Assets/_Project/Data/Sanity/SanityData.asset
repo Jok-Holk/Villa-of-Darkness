@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: SanityData
   m_EditorClassIdentifier: BietThuBongToi.Runtime::SanityData
   levels:
-  - levelName: 100
-    sanityMin: 80
+  - levelName: On dinh
+    sanityMin: 70
     sanityMax: 100
     drainRate: 0
     traumaTarget: 0
@@ -24,58 +24,58 @@ MonoBehaviour:
     chromatic: 0
     saturation: 0
     exposure: 0
-    vignette: 0.15
+    vignette: 0.12
     lensDistort: 0
-  - levelName: 80
-    sanityMin: 60
-    sanityMax: 80
-    drainRate: 0.004
-    traumaTarget: 0.25
-    shakeIntensityX: 1.5
-    shakeIntensityY: 0.5
-    grain: 0.18
-    chromatic: 0.04
-    saturation: -10
-    exposure: -0.5
-    vignette: 0.32
-    lensDistort: 0
-  - levelName: 60
-    sanityMin: 40
-    sanityMax: 60
+  - levelName: Bat an
+    sanityMin: 45
+    sanityMax: 70
     drainRate: 0.006
-    traumaTarget: 0.45
-    shakeIntensityX: 2.5
-    shakeIntensityY: 1
-    grain: 0.28
+    traumaTarget: 0.2
+    shakeIntensityX: 0.8
+    shakeIntensityY: 0.3
+    grain: 0.15
+    chromatic: 0.05
+    saturation: -12
+    exposure: -0.4
+    vignette: 0.3
+    lensDistort: 0
+  - levelName: Hoang loan
+    sanityMin: 25
+    sanityMax: 45
+    drainRate: 0.01
+    traumaTarget: 0.4
+    shakeIntensityX: 1.8
+    shakeIntensityY: 0.7
+    grain: 0.3
     chromatic: 0.15
-    saturation: -30
+    saturation: -32
     exposure: -1
-    vignette: 0.45
-    lensDistort: -0.1
-  - levelName: 40
-    sanityMin: 20
-    sanityMax: 40
-    drainRate: 0.009
-    traumaTarget: 0.7
-    shakeIntensityX: 3.5
-    shakeIntensityY: 1.5
-    grain: 0.6
-    chromatic: 0.35
-    saturation: -55
-    exposure: -1.8
-    vignette: 0.62
-    lensDistort: -0.28
-  - levelName: 20
+    vignette: 0.48
+    lensDistort: -0.08
+  - levelName: Mat kiem soat
+    sanityMin: 10
+    sanityMax: 25
+    drainRate: 0.016
+    traumaTarget: 0.65
+    shakeIntensityX: 3
+    shakeIntensityY: 1.2
+    grain: 0.55
+    chromatic: 0.32
+    saturation: -58
+    exposure: -1.9
+    vignette: 0.66
+    lensDistort: -0.22
+  - levelName: Dien loan
     sanityMin: 0
-    sanityMax: 20
-    drainRate: 0.014
+    sanityMax: 10
+    drainRate: 0.024
     traumaTarget: 1
-    shakeIntensityX: 5
-    shakeIntensityY: 2
-    grain: 0.92
-    chromatic: 0.7
-    saturation: -90
-    exposure: -3.8
-    vignette: 0.88
-    lensDistort: -0.48
-  recoveryRate: 0
+    shakeIntensityX: 4
+    shakeIntensityY: 1.6
+    grain: 0.85
+    chromatic: 0.6
+    saturation: -85
+    exposure: -3.2
+    vignette: 0.85
+    lensDistort: -0.42
+  recoveryRate: 0.05

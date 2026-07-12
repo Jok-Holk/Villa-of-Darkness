@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 0}
+  m_Name: DialogueAsset_Ch1_Intro
+  m_EditorClassIdentifier: BietThuBongToi.Runtime::DialogueAsset
+  lines:
+  - speakerName: Minh Khoa
+    text: "Cu\u1ED1i c\xF9ng c\u0169ng \u0111\u1EBFn n\u01A1i r\u1ED3i."
+    hasVoice: 1
+  - speakerName: Minh Khoa
+    text: "Bi\u1EC7t th\u1EF1 \u0110\u1ED7 Gia. N\u0103m 1945, ki\u1EBFn tr\xFAc
+      s\u01B0 Ph\xE1p ph\u1ED1i h\u1EE3p \xF4ng \u0110\u1ED7 V\u0103n Minh."
+    hasVoice: 1
+  - speakerName: Minh Khoa
+    text: "\u0110\u1EC1 t\xE0i t\u1ED1t nghi\u1EC7p c\u1EE7a m\xECnh kh\xF4ng th\u1EC3
+      thi\u1EBFu c\xE1i n\xE0y."
+    hasVoice: 1
+  - speakerName: Minh Khoa
+    text: "Ch\u1EE5p nhanh v\xE0i t\u1EA5m, ph\xE1c th\u1EA3o m\u1EB7t ti\u1EC1n,
+      r\u1ED3i v\u1EC1. Kh\xF4ng d\xE1m \u1EDF l\u1EA1i \u0111\xEAm \u0111\xE2u."
+    hasVoice: 1

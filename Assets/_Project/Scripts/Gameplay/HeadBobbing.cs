@@ -40,6 +40,11 @@ public class HeadbobSystem : MonoBehaviour
     [Range(0f, 0.5f)]
     public float MinSpeedThreshold = 0.1f;
 
+    [Header("Debug")]
+    [Tooltip("Bật lên để in log velocity/isGrounded/smoothedSpeed mỗi 0.5s lúc Play — xem Console")]
+    [SerializeField] private bool _debugLog = false;
+    private float _debugLogTimer;
+
     private Vector3 _startLocalPos;
     private CharacterController _cc;
     private FootstepSystem _footstepSystem;
@@ -47,6 +52,7 @@ public class HeadbobSystem : MonoBehaviour
     private float _smoothedSpeed; // DUY NHẤT lái cả pha (_tBob) lẫn biên độ — không còn state tách rời
     private float _prevAbsSin;
     private bool  _prevRising;
+    private Vector3 _prevPosition;
 
     private const float TwoPi = Mathf.PI * 2f;
 
@@ -59,24 +65,34 @@ public class HeadbobSystem : MonoBehaviour
             Debug.LogWarning("[HeadbobSystem] Không tìm thấy CharacterController ở parent — head bob sẽ không chạy.");
         if (_footstepSystem == null)
             Debug.LogWarning("[HeadbobSystem] Không tìm thấy FootstepSystem ở parent — sẽ không có SFX bước chân.");
+        if (_cc != null) _prevPosition = _cc.transform.position;
     }
 
     private void LateUpdate()
     {
         if (_cc == null) return;
 
-        Vector3 horizontalVel = new Vector3(_cc.velocity.x, 0f, _cc.velocity.z);
+        // ĐO tốc độ thật bằng ĐỘ DỜI VỊ TRÍ mỗi frame thay vì đọc _cc.velocity — log debug cho thấy
+        // _cc.velocity đọc = 0 ở phần lớn frame dù đang đi liên tục (tBob vẫn tăng đều), tức bản thân
+        // property này nhiễu/không đáng tin ở project này (đúng như comment cũ từng cảnh báo). Độ dời vị
+        // trí thật (currentPos - prevPos) là con số CHẮC CHẮN đúng, không phụ thuộc cách CharacterController
+        // tính velocity nội bộ — hết hẳn nguồn nhiễu gốc, không cần vá thêm bộ lọc/hệ số nào nữa.
+        Vector3 currentPos = _cc.transform.position;
+        Vector3 delta = currentPos - _prevPosition;
+        _prevPosition = currentPos;
+        Vector3 horizontalVel = new Vector3(delta.x, 0f, delta.z) / Mathf.Max(Time.deltaTime, 0.0001f);
         float   rawSpeed      = _cc.isGrounded ? horizontalVel.magnitude : 0f;
 
-        // 1 biến làm mượt duy nhất — thay thế cả _blend lẫn cờ _isMoving của bản trước.
-        _smoothedSpeed = Mathf.MoveTowards(_smoothedSpeed, rawSpeed, SmoothRate * Time.deltaTime * Mathf.Max(rawSpeed, 1f));
+        // Vẫn giữ lọc bất đối xứng nhẹ (attack nhanh/release chậm) để hình bob không giật — giờ tín hiệu
+        // đầu vào đã sạch nên không cần hệ số attack cực cao như lúc còn vá nhiễu _cc.velocity nữa.
+        float rate = rawSpeed > _smoothedSpeed ? SmoothRate * 3f : SmoothRate;
+        float smoothFactor = 1f - Mathf.Exp(-rate * Time.deltaTime);
+        _smoothedSpeed = Mathf.Lerp(_smoothedSpeed, rawSpeed, smoothFactor);
 
-        bool active = _smoothedSpeed > MinSpeedThreshold;
+        bool  active   = _smoothedSpeed > MinSpeedThreshold;
         // Biên độ giảm dần mượt về 0 quanh ngưỡng thay vì cắt cứng — tránh giật khi lởn vởn sát ngưỡng.
         float ampScale = Mathf.Clamp01(_smoothedSpeed / Mathf.Max(MinSpeedThreshold * 2f, 0.001f));
 
-        // Pha tăng theo CHÍNH _smoothedSpeed (không phải speed thô) — cùng 1 biến lái cả 2 thứ nên
-        // không bao giờ lệch pha so với biên độ nữa.
         _tBob += Time.deltaTime * _smoothedSpeed;
 
         // Bọc pha về [0, 2π/BobFrequency) — tránh mất độ chính xác float sau phiên chơi dài.
@@ -89,7 +105,7 @@ public class HeadbobSystem : MonoBehaviour
 
         bool rising = absSin > _prevAbsSin;
         if (_prevRising && !rising && active)
-            _footstepSystem?.PlayFootstepNow();
+            _footstepSystem?.PlayFootstepNow(_smoothedSpeed); // truyền tốc độ thật để volume tự nội suy walk/run
         _prevRising = rising;
         _prevAbsSin = absSin;
 
@@ -98,5 +114,15 @@ public class HeadbobSystem : MonoBehaviour
         pos.x =  Mathf.Cos(phase) * BobAmplitude * 0.5f * ampScale;
 
         transform.localPosition = _startLocalPos + pos;
+
+        if (_debugLog)
+        {
+            _debugLogTimer += Time.deltaTime;
+            if (_debugLogTimer >= 0.5f)
+            {
+                _debugLogTimer = 0f;
+                Debug.Log($"[HeadBob Debug] cc.velocity={_cc.velocity} horizontalMag={horizontalVel.magnitude:F2} isGrounded={_cc.isGrounded} rawSpeed={rawSpeed:F2} smoothedSpeed={_smoothedSpeed:F2} tBob={_tBob:F2} active={active}");
+            }
+        }
     }
 }

@@ -188,8 +188,18 @@ public class SettingsUI : MonoBehaviour
         if (confirmDiscardPanel != null) confirmDiscardPanel.SetActive(false);
     }
 
+    // Panel này giờ dùng chung ở cả MainMenu lẫn PauseMenu (Chapter1). Ở Chapter1, SettingPanel được đặt
+    // làm ANH EM (sibling) với PauseMenu (cùng con của Canvas) — không phải con cháu — nên
+    // GetComponentInParent<PauseMenuUI>() không tìm ra được (chỉ tìm tổ tiên, không tìm anh em).
+    // Dùng FindFirstObjectByType làm phương án 2 để không phụ thuộc vị trí đặt trong hierarchy.
     private void CloseSettingsNow()
     {
-        GetComponentInParent<MainMenuUI>(true)?.CloseSettings();
+        var mainMenu = GetComponentInParent<MainMenuUI>(true);
+        if (mainMenu != null) { mainMenu.CloseSettings(); return; }
+
+        var pauseMenu = GetComponentInParent<PauseMenuUI>(true);
+        if (pauseMenu != null) { pauseMenu.CloseSettings(); return; }
+
+        Object.FindFirstObjectByType<PauseMenuUI>(FindObjectsInactive.Include)?.CloseSettings();
     }
 }

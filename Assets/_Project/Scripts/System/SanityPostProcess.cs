@@ -44,10 +44,9 @@ public class SanityPostProcess : MonoBehaviour
             _sanitySystem.OnLevelChanged.AddListener(OnLevelChanged);
     }
 
-    private void OnLevelChanged(SanitySystem.SanityLevel level)
+    private void OnLevelChanged(int index)
     {
-        // Chuyển đổi Enum cũ sang index (0, 1, 2, 3...) để đọc Array trong Data
-        _currentIndex = (int)level; 
+        _currentIndex = index;
     }
 
     private void Update()
