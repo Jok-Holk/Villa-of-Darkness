@@ -45,7 +45,7 @@ public class DeathScreenUI : MonoBehaviour
 
     [Header("Nội dung cố định")]
     [SerializeField] private string masthead    = "ĐÀ LẠT THỜI BÁO  ·  14/3/2000";
-    [SerializeField] private string headline    = "PHÓNG VIÊN MẤT TÍCH TẠI BIỆT THỰ ĐỖ GIA";
+    [SerializeField] private string headline    = "SINH VIÊN MẤT TÍCH TẠI BIỆT THỰ ĐỖ GIA";
     [SerializeField] private string subContent  = "Nguồn tin từ Công an Lâm Đồng xác nhận\ntrường hợp mất tích bí ẩn vào đêm 13/3.";
 
     // ── Buttons (thêm mới) ────────────────────────────────────────────────────
