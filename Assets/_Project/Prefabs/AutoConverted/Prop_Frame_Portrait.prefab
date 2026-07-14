@@ -236,7 +236,6 @@ GameObject:
   - component: {fileID: 5238842620489665253}
   - component: {fileID: 1577558262271777}
   - component: {fileID: 1140950586507979326}
-  - component: {fileID: 4858142346686948658}
   m_Layer: 8
   m_Name: Prop_Frame_Portrait
   m_TagString: Interactable
@@ -339,28 +338,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.20941712, y: 0.91980875, z: 1.0015988}
   m_Center: {x: -0.00018600374, y: 0.0002937615, z: 0.00028681755}
---- !u!114 &4858142346686948658
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4387979862693586622}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4e6c21c2597e7544695d12a7a7110fcc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: BietThuBongToi.Runtime::ExamineItem
-  _examineDistance: 0.6
-  _inventoryExamineOffset: {x: 0.35, y: -0.05, z: 0.6}
-  _rotateSpeed: 4
-  _examineRotationOffset: {x: -5.64, y: -87.456, z: 10.757}
-  _playerController: {fileID: 0}
-  _linkedPickupItem: {fileID: 0}
-  _pickupKey: 114
-  OnExamineStart:
-    m_PersistentCalls:
-      m_Calls: []
-  OnExamineEnd:
-    m_PersistentCalls:
-      m_Calls: []
