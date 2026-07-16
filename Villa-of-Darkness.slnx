@@ -28,7 +28,6 @@
   <Project Path="Unity.PerformanceTesting.csproj" />
   <Project Path="glTFast.Export.csproj" />
   <Project Path="Unity.Burst.Editor.csproj" />
-  <Project Path="Phase1.Tests.csproj" />
   <Project Path="Unity.Rider.Editor.csproj" />
   <Project Path="Unity.VisualScripting.State.csproj" />
   <Project Path="Unity.AI.Navigation.Updater.csproj" />
@@ -57,7 +56,6 @@
   <Project Path="Unity.VisualScripting.DocCodeExamples.csproj" />
   <Project Path="Autodesk.Fbx.Editor.csproj" />
   <Project Path="Unity.PlasticSCM.Editor.Entities.csproj" />
-  <Project Path="Phase2.Tests.csproj" />
   <Project Path="Unity.Collections.Editor.csproj" />
   <Project Path="Autodesk.Fbx.BuildTestAssets.csproj" />
 </Solution>
