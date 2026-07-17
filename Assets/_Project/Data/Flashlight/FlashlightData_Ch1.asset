@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8cd5d610fb20834c9161b0d746886db, type: 3}
   m_Name: FlashlightData_Ch1
   m_EditorClassIdentifier: BietThuBongToi.Runtime::FlashlightData
-  drainRate: 0.005
+  drainRate: 0.1
   startBatteryLevel: 1
   maxIntensity: 75
   spotAngle: 25
