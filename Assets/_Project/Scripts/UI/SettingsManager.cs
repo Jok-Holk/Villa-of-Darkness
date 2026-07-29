@@ -8,6 +8,8 @@ public class SettingsManager : MonoBehaviour
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
+        transform.SetParent(null); // DontDestroyOnLoad chỉ chạy được với root object -- object này có thể đang
+        // nằm dưới divider "= MANAGERS" trong Hierarchy (chỉ để gọn lúc edit), tự tách ra root lúc runtime.
         DontDestroyOnLoad(gameObject);
         LoadSettings();
     }
@@ -26,8 +28,7 @@ public class SettingsManager : MonoBehaviour
     }
     public void SetVoiceVolume(float value)
     {
-        // Game hiện chưa có audio thoại (dialogue chỉ hiện text) — lưu giá trị để
-        // hệ thống voice line sau này đọc, chưa có gì để áp dụng ngay bây giờ.
+        AudioManager.Instance?.SetVoiceVolume(value);
         PlayerPrefs.SetFloat("VoiceVolume", value);
     }
     public void SetSFXVolume(float value)

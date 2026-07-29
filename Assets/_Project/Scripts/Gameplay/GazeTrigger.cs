@@ -9,6 +9,11 @@ public class GazeTrigger : MonoBehaviour
     public UnityEvent OnGazeComplete;
     public UnityEvent OnGazeWarning;
 
+    // THÊM 2026-07-27: Cho phép hệ thống khác (VD MirrorReflection chớp nháy sáng/tối theo nhịp đếm ngược)
+    // đọc được tiến trình gaze hiện tại mà không cần tự raycast lại từ đầu.
+    public float GazeTimer     => _gazeTimer;
+    public float GazeThreshold => _settings != null ? _settings.gazeThreshold : 0f;
+
     private void Awake()
     {
         // Cảnh báo sớm ngay khi scene load nếu quên gán Settings, thay vì im lặng suốt Update()

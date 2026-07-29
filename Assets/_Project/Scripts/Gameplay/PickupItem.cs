@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using System.Collections;
 
 /// <summary>
 /// Gắn lên object nhặt được ngoài scene.
@@ -23,10 +24,13 @@ using UnityEngine.Events;
 ///   GameObject vào _examineItem. Phía ExamineItem cũng cần kéo ngược lại
 ///   PickupItem này vào _linkedPickupItem của nó.
 /// </summary>
-public class PickupItem : MonoBehaviour, IInteractable
+public class PickupItem : MonoBehaviour, IInteractable, IInteractableLabel
 {
     [Header("Item")]
     [SerializeField] private ItemData _itemData;
+
+    [Header("Nhãn hiện lên UI tương tác (VD \"Mảnh giấy\", \"Chìa khoá\"...)")]
+    [SerializeField] private string _interactLabel = "Vật phẩm";
 
     [Header("References")]
     [SerializeField] private InventorySystem _inventorySystem;
@@ -45,9 +49,14 @@ public class PickupItem : MonoBehaviour, IInteractable
     [Tooltip("ExamineItem trên CÙNG GameObject này — dùng khi _requireExamineFirst = true.")]
     [SerializeField] private ExamineItem _examineItem;
 
+    [Header("Suy nghĩ TRƯỚC khi mở Examine (tuỳ chọn, chỉ áp dụng khi _requireExamineFirst = true)")]
+    [Tooltip("Để trống thì mở Examine ngay như cũ. Có gán thì chạy xong lời thoại/suy nghĩ này mới tự mở Examine liền sau, không cần bấm E lại.")]
+    [SerializeField] private DialogueAsset _preExamineThought;
+
     private bool _hasBeenPickedUp = false;
     public bool HasBeenPickedUp => _hasBeenPickedUp;
     public ItemData Data => _itemData;
+    public string InteractLabel => _interactLabel;
 
     private void Reset()
     {
@@ -86,12 +95,30 @@ public class PickupItem : MonoBehaviour, IInteractable
                 return;
             }
 
+            if (_preExamineThought != null && DialogueUI.Instance != null)
+            {
+                StartCoroutine(RunPreExamineThoughtThenExamine());
+                return;
+            }
+
             Debug.Log($"[PickupItem] {gameObject.name} — cần Examine trước. Đang mở xem...");
             _examineItem.StartExamine();
             return;
         }
 
         DoPickup();
+    }
+
+    // Chạy 1 câu suy nghĩ ngắn (Popup, không giọng) TRƯỚC, đợi đóng hẳn rồi mới mở Examine 360° -- đúng
+    // yêu cầu "lồng suy nghĩ nhân vật trước khi soi xét". DialogueUI đã tự khoá input trong lúc thoại chạy,
+    // không cần khoá thêm gì ở đây.
+    private IEnumerator RunPreExamineThoughtThenExamine()
+    {
+        DialogueUI.Instance.StartDialogue(_preExamineThought);
+        while (DialogueUI.Instance != null && DialogueUI.Instance.IsDialogueOpen())
+            yield return null;
+
+        _examineItem.StartExamine();
     }
 
     /// <summary>
@@ -145,5 +172,19 @@ public class PickupItem : MonoBehaviour, IInteractable
 
         foreach (var c in GetComponentsInChildren<Collider>())
             c.enabled = true;
+    }
+
+    /// <summary>
+    /// Gọi lúc scene vừa load xong (InventorySystem.Start()) cho item MÀ NGƯỜI CHƠI ĐÃ CÓ SẴN trong
+    /// GameData.collectedItems TỪ TRƯỚC (VD Retry/reload) -- chỉ ẩn object trong world cho khớp trạng thái
+    /// đã nhặt, KHÔNG gọi lại AddItem/SFX/OnPickedUp (item vốn đã có trong túi rồi, không phải nhặt mới).
+    /// Không có cơ chế này thì mỗi lần scene reload, object nhặt được sẽ "hồi sinh" hiện lại trong map dù
+    /// vẫn đang nằm trong túi đồ -- lộ ra 2 bản cùng lúc (1 trong túi, 1 vẫn đứng ngoài world).
+    /// </summary>
+    public void SyncAlreadyPickedUp()
+    {
+        if (_hasBeenPickedUp) return;
+        _hasBeenPickedUp = true;
+        HideInScene();
     }
 }

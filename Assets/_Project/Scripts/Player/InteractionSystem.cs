@@ -27,7 +27,11 @@ public class InteractionSystem : MonoBehaviour
     {
         if (target == _currentTarget) return;
         _currentTarget = target;
-        if (target != null) InteractPromptUI.Instance?.Show();
+        if (target != null)
+        {
+            string label = (target as IInteractableLabel)?.InteractLabel;
+            InteractPromptUI.Instance?.Show(label);
+        }
         else InteractPromptUI.Instance?.Hide();
     }
 

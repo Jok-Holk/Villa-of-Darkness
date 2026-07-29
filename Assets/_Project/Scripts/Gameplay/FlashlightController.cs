@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.SceneManagement;
 using System.Collections;
 
 // ExecuteAlways để LateUpdate() (canh hướng đèn theo camera) chạy cả lúc Edit Mode — trước đây chỉ chạy
@@ -12,7 +13,8 @@ public class FlashlightController : MonoBehaviour
 
     [Header("Light")]
     [SerializeField] private Light _light;
-    [SerializeField] private bool  _isOn = false;
+    [Tooltip("Mặc định CẦM SẴN trên tay ngay từ đầu game -- không phụ thuộc vào việc chạy intro hay skip thẳng tới checkpoint nào, luôn nhất quán 1 chỗ duy nhất thay vì phải tự SetOn(true) rải rác ở từng điểm vào cảnh.")]
+    [SerializeField] private bool  _isOn = true;
 
     [Header("Model — hạ xuống/ẩn khi tắt, đưa lên/hiện khi bật")]
     [SerializeField] private Transform _modelTransform;
@@ -21,19 +23,27 @@ public class FlashlightController : MonoBehaviour
     [Tooltip("Để trống sẽ tự lấy Camera.main")]
     [SerializeField] private Camera _aimCamera;
 
-    [Header("Debug")]
-    [Tooltip("Bật lên để in log so sánh rotation Camera vs Light mỗi 0.5s lúc Play — xem Console")]
-    [SerializeField] private bool _debugLogAim = false;
-    private float _debugLogTimer = 0f;
+    [Header("SFX")]
+    [Tooltip("Tiếng lắc đèn pin lúc bấm T — audio dài ~3s nên animation lắc bên dưới cũng kéo dài khớp theo")]
+    [SerializeField] private AudioClip _shakeSfx;
 
     private float _batteryLevel       = 1f;
     private float _drainPauseTimer    = 0f;
     private bool  _eventFired         = false;
     private bool  _isFlickering       = false;
     private bool  _isShaking          = false;
+    private bool  _flashlightHintShown = false;
+    private bool  _wasBatteryLow       = false;
+
+    // Hint "T lắc pin" chỉ dạy 2 lần đầu là đủ nhớ (Jok yêu cầu) -- lặp lại vô hạn như trước sẽ làm phiền
+    // người chơi đã quen. Riêng CHỈ cần ở Chapter1 (chương dạy cơ chế đèn pin), các chương sau người chơi
+    // đã biết rồi nên không hiện nữa dù pin có xuống thấp.
+    private const string ShakeHintCountKey = "VoD_Hint_t_shake_count";
+    private const int    ShakeHintMaxCount = 2;
     private Quaternion _modelBaseLocalRotation;
     private Coroutine _raiseLowerRoutine;
     private Coroutine _shakeAnimRoutine;
+    private Coroutine _flickerRoutine;
 
     public UnityEvent OnBatteryEmpty = new UnityEvent();
 
@@ -92,8 +102,32 @@ public class FlashlightController : MonoBehaviour
 
         if (_drainPauseTimer > 0f) _drainPauseTimer -= Time.deltaTime;
 
-        if (Input.GetKeyDown(KeyCode.F)) Toggle();
-        if (Input.GetKeyDown(KeyCode.T)) TryShake();
+        // BUG THẬT: FlashlightController trước đây nghe phím F/T vô điều kiện, không check
+        // InteractionSystem.IsInputBlocked -- InventoryUI CŨNG dùng F làm phím tắt bàn phím cho "Sử dụng"
+        // (khác nút chuột OnUseButtonClicked), nên mở Inventory bấm F để dùng chìa khoá vô tình BẤM TRÙNG
+        // luôn cả Toggle() đèn pin. Giờ chặn hẳn input đèn pin trong lúc input đang bị khoá (Inventory,
+        // Dialogue, Piano mode, Examine...).
+        if (!InteractionSystem.IsInputBlocked)
+        {
+            if (Input.GetKeyDown(KeyCode.F)) Toggle();
+            if (Input.GetKeyDown(KeyCode.T)) TryShake();
+
+            // Frame ĐẦU TIÊN người chơi thật sự có quyền điều khiển (qua khỏi Intro/thoại mở màn) -- dạy
+            // ngay F bật/tắt đèn pin, 1 lần duy nhất là đủ nhớ suốt game.
+            if (!_flashlightHintShown)
+            {
+                _flashlightHintShown = true;
+                TutorialHintUI.Instance.ShowOnce("f_flashlight", "F", "Bật / tắt đèn pin");
+            }
+        }
+
+        // Pin vừa TỤT XUỐNG mức yếu (medium threshold) -- nhắc T lắc hồi pin. Bắt cạnh chuyển trạng thái
+        // (không phải mỗi frame) nên chỉ hiện lại đúng lúc pin MỚI xuống yếu, không phải liên tục mỗi frame
+        // trong khi vẫn đang yếu -- và hiện LẶP LẠI mỗi lần rơi vào tình huống này (không chỉ 1 lần cho cả game).
+        bool isBatteryLow = _isOn && _batteryLevel <= _data.flickerMediumThresh;
+        if (isBatteryLow && !_wasBatteryLow)
+            TryShowShakeHint();
+        _wasBatteryLow = isBatteryLow;
 
         if (_batteryLevel <= 0f)
         {
@@ -105,12 +139,27 @@ public class FlashlightController : MonoBehaviour
             return;
         }
 
-        if (_isOn && _drainPauseTimer <= 0f)
+        // SỬA 2026-07-27: Trước đây pin vẫn tụt đều dù đang mở Inventory/Dialogue/Examine/Piano (Time.timeScale
+        // không đóng băng những lúc đó) -- người chơi mở túi đồ xem xét lâu 1 chút là mất pin oan, dù không hề
+        // đang thật sự "chơi". Chặn drain bằng đúng cờ IsInputBlocked đã dùng để chặn F/T ở trên.
+        if (_isOn && _drainPauseTimer <= 0f && !InteractionSystem.IsInputBlocked)
             _batteryLevel -= _data.drainRate * Time.deltaTime;
 
         // Đang chơi animation lắc (T) thì để ShakeAnimationRoutine() toàn quyền quyết định intensity
         // (ép về 0 trong lúc lắc) — không cho UpdateLightState() đè cường độ thật lên mỗi frame.
         if (!_isShaking) UpdateLightState();
+    }
+
+    private void TryShowShakeHint()
+    {
+        if (SceneManager.GetActiveScene().name != "Chapter1") return;
+
+        int count = PlayerPrefs.GetInt(ShakeHintCountKey, 0);
+        if (count >= ShakeHintMaxCount) return;
+
+        PlayerPrefs.SetInt(ShakeHintCountKey, count + 1);
+        PlayerPrefs.Save();
+        TutorialHintUI.Instance.ShowRepeating("T", "Lắc để hồi pin");
     }
 
     // ─── AIM (chạy sau Update của camera để không giật 1 frame) ─────────────────
@@ -145,20 +194,6 @@ public class FlashlightController : MonoBehaviour
             _light.transform.rotation = Quaternion.Slerp(_light.transform.rotation, targetRot, Time.deltaTime * _data.aimSmoothSpeed);
         else
             _light.transform.rotation = targetRot;
-
-        if (_debugLogAim && Application.isPlaying)
-        {
-            _debugLogTimer += Time.deltaTime;
-            if (_debugLogTimer >= 0.5f)
-            {
-                _debugLogTimer = 0f;
-                float angle = Vector3.Angle(_light.transform.forward, _aimCamera.transform.forward);
-                Debug.Log(
-                    $"[Đèn Pin Debug] Camera euler={_aimCamera.transform.eulerAngles} forward={_aimCamera.transform.forward}\n" +
-                    $"[Đèn Pin Debug] Light  euler={_light.transform.eulerAngles} forward={_light.transform.forward}\n" +
-                    $"[Đèn Pin Debug] Góc lệch={angle:F1}°  |  Light pos={_light.transform.position} intensity={_light.intensity:F2} range={_light.range} spotAngle={_light.spotAngle} isOn={_isOn} battery={_batteryLevel * 100f:F0}%");
-            }
-        }
     }
 
     // ─── TOGGLE ────────────────────────────────────────────────────────────────
@@ -176,6 +211,8 @@ public class FlashlightController : MonoBehaviour
             if (_modelTransform != null) _modelTransform.localRotation = _modelBaseLocalRotation;
         }
 
+        StopFlicker();
+
         _isOn = !_isOn;
         if (!_isOn) SetLightIntensity(0f);
         SanitySystem.Instance?.SetSafeZone(_isOn);
@@ -185,8 +222,6 @@ public class FlashlightController : MonoBehaviour
             if (_raiseLowerRoutine != null) StopCoroutine(_raiseLowerRoutine);
             _raiseLowerRoutine = StartCoroutine(RaiseOrLower(_isOn));
         }
-
-        Debug.Log($"[Đèn Pin] {(_isOn ? "BẬT" : "TẮT")} — Pin: {_batteryLevel * 100f:F0}%");
     }
 
     // ─── SET ON/OFF (dùng khi hệ thống khác cần ép trạng thái, vd tạm tắt khi vào tương tác) ──
@@ -194,6 +229,9 @@ public class FlashlightController : MonoBehaviour
     {
         if (_isOn == on) return;
         if (on && _batteryLevel <= 0f) return; // hết pin thì không ép bật lại được
+
+        StopFlicker();
+
         _isOn = on;
         if (!_isOn) SetLightIntensity(0f);
         SanitySystem.Instance?.SetSafeZone(_isOn);
@@ -244,7 +282,8 @@ public class FlashlightController : MonoBehaviour
 
         AddBattery(_data.shakeRecoverAmount);
         _drainPauseTimer = _data.shakeDrainPause;
-        Debug.Log($"[Đèn Pin] Lắc! +{_data.shakeRecoverAmount * 100f:F0}% → {_batteryLevel * 100f:F0}%");
+
+        if (_shakeSfx != null) AudioManager.Instance?.PlaySFX(_shakeSfx);
 
         if (_modelTransform != null)
         {
@@ -271,7 +310,9 @@ public class FlashlightController : MonoBehaviour
 
         yield return RotateOverTime(baseRot, upRot, 0.15f);
 
-        const int   shakeCount     = 4;
+        // shakeCount=16 (thay vì 4 trước đây) để tổng animation ~2.9s (0.15 lên + 16*0.16 lắc + 0.15 xuống),
+        // khớp với độ dài audio SFX_FlashlightShake ~3s thay vì kết thúc animation giữa chừng lúc audio còn đang phát.
+        const int   shakeCount     = 16;
         const float shakeAmplitude = 15f;
         const float shakeStepTime  = 0.08f;
         for (int i = 0; i < shakeCount; i++)
@@ -327,20 +368,34 @@ public class FlashlightController : MonoBehaviour
         {
             // Medium → nhấp nháy nhẹ
             SetLightIntensity(max * _data.mediumIntensityMult);
-            if (Random.value < _data.mediumFlickerChance) StartCoroutine(Flicker(_data.mediumFlickerCount, _data.mediumFlickerDuration));
+            if (Random.value < _data.mediumFlickerChance) _flickerRoutine = StartCoroutine(Flicker(_data.mediumFlickerCount, _data.mediumFlickerDuration));
         }
         else if (_batteryLevel > _data.flickerCriticalThresh)
         {
             // Low → nhấp nháy mạnh
             SetLightIntensity(max * _data.lowIntensityMult);
-            if (Random.value < _data.lowFlickerChance) StartCoroutine(Flicker(_data.lowFlickerCount, _data.lowFlickerDuration));
+            if (Random.value < _data.lowFlickerChance) _flickerRoutine = StartCoroutine(Flicker(_data.lowFlickerCount, _data.lowFlickerDuration));
         }
         else
         {
             // Critical → rất yếu
             SetLightIntensity(max * _data.criticalIntensityMult);
-            if (Random.value < _data.criticalFlickerChance) StartCoroutine(Flicker(_data.criticalFlickerCount, _data.criticalFlickerDuration));
+            if (Random.value < _data.criticalFlickerChance) _flickerRoutine = StartCoroutine(Flicker(_data.criticalFlickerCount, _data.criticalFlickerDuration));
         }
+    }
+
+    // Huỷ coroutine Flicker() đang chạy dở (nếu có) -- BUG THẬT gây "đèn pin lâu lâu biến mất/tự sáng vô cớ":
+    // Flicker() trước đây KHÔNG lưu reference, nên khi hệ thống khác (Piano tắt đèn tạm, v.v.) gọi SetOn()/
+    // Toggle() ép đổi trạng thái NGAY GIỮA LÚC đang nhấp nháy (pin yếu), coroutine cũ vẫn tự chạy tiếp vòng
+    // lặp riêng của nó và tự ý SetLightIntensity(orig) bật sáng lại, bất kể _isOn vừa bị đổi ở nơi khác.
+    private void StopFlicker()
+    {
+        if (_flickerRoutine != null)
+        {
+            StopCoroutine(_flickerRoutine);
+            _flickerRoutine = null;
+        }
+        _isFlickering = false;
     }
 
     // ─── FLICKER ───────────────────────────────────────────────────────────────
@@ -357,6 +412,7 @@ public class FlashlightController : MonoBehaviour
             yield return new WaitForSeconds(0.05f);
         }
         _isFlickering = false;
+        _flickerRoutine = null;
     }
 
     // ─── HELPER ────────────────────────────────────────────────────────────────

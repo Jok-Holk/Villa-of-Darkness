@@ -1,10 +1,11 @@
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 
 /// <summary>
 /// Gắn vào GameObject "LightingManager" trong scene — nơi DUY NHẤT để chỉnh toàn bộ ánh sáng thế giới:
-/// Ambient (RenderSettings), Directional Light (mặt trăng), Fog, và Skybox — đổi giá trị là thấy ngay
-/// trong Scene view/Game view, không cần vào Window > Rendering > Lighting hay chỉnh rải rác nhiều chỗ.
-/// Chạy cả trong Edit Mode (ExecuteAlways) lẫn Play Mode.
+/// Ambient (RenderSettings), Directional Light (mặt trăng), Fog, Skybox, và hiệu ứng PSX (post-process
+/// toàn màn hình) — đổi giá trị là thấy ngay trong Scene view/Game view, không cần vào Window >
+/// Rendering > Lighting hay chỉnh rải rác nhiều chỗ. Chạy cả trong Edit Mode (ExecuteAlways) lẫn Play Mode.
 /// </summary>
 [ExecuteAlways]
 public class FogManager : MonoBehaviour
@@ -23,8 +24,11 @@ public class FogManager : MonoBehaviour
     [Header("Directional Light (Moonlight) — nguồn sáng chính chiếu lên toàn bộ hình học")]
     [Tooltip("Để trống sẽ tự tìm Directional Light đầu tiên trong scene lúc Enable")]
     public Light directionalLight;
+    [Tooltip("Cường độ lúc Edit Mode -- để sáng hơn cho dễ nhìn dựng scene, KHÔNG phải giá trị thật trong game")]
     public float directionalLightIntensity = 0.6f;
-    public Color directionalLightColor = new Color(0.3f, 0.35f, 0.5f, 1f);
+    [Tooltip("Cường độ THẬT lúc Play Mode (đúng game thật, tối) -- luôn được áp bất kể giá trị bên trên, cùng cách \"Application.isPlaying\" đã dùng cho fog/skybox/PSX")]
+    public float playModeDirectionalLightIntensity = 0.1f;
+    public Color directionalLightColor = new Color(0.56f, 0.59f, 0.68f, 1f);
 
     [Header("Fog cổ điển (RenderSettings) — theo khoảng cách camera")]
     public bool fogEnabled = true;
@@ -54,6 +58,12 @@ public class FogManager : MonoBehaviour
     [Tooltip("Tint riêng cho Dark Night Skybox")]
     public Color darkSkyboxTint = new Color(0.48f, 0.48f, 0.5f, 0.5f);
 
+    [Header("Hiệu ứng PSX (FullScreenPassRendererFeature trên URP Renderer Data)")]
+    [Tooltip("Kéo TẤT CẢ Renderer Data của 3 mức đồ hoạ Low/Medium/High vào đây (VD PC_Renderer.asset, Mobile_Renderer.asset) -- vì SettingsManager đổi Quality Level theo PlayerPrefs \"GraphicsQuality\" lúc runtime, mỗi mức có thể dùng Renderer Data khác nhau, phải bật/tắt PSX trên MỌI renderer để chắc chắn dù người chơi chọn mức nào PSX vẫn hoạt động")]
+    public UniversalRendererData[] rendererDataList;
+    [Tooltip("Bật = áp PSX lúc Play Mode (đúng game thật), tự TẮT lúc Edit Mode thường (đỡ khó nhìn lúc dựng scene) -- không cần vào Renderer Data bật/tắt tay nữa")]
+    public bool psxEffectEnabled = true;
+
     private void OnEnable()
     {
         if (directionalLight == null)
@@ -76,7 +86,10 @@ public class FogManager : MonoBehaviour
 
         if (directionalLight != null)
         {
-            directionalLight.intensity = directionalLightIntensity;
+            // Play Mode LUÔN dùng cường độ thật (tối) bất kể giá trị Edit Mode đang để -- cùng cách
+            // "Application.isPlaying ||" đã dùng cho fog/skybox/PSX ở trên, để không phải tự chỉnh tay
+            // qua lại mỗi lần chuyển giữa dựng scene và test game.
+            directionalLight.intensity = Application.isPlaying ? playModeDirectionalLightIntensity : directionalLightIntensity;
             directionalLight.color = directionalLightColor;
         }
 
@@ -102,6 +115,31 @@ public class FogManager : MonoBehaviour
                 skyboxMaterial.SetFloat("_Exposure", exposure);
             if (skyboxMaterial.HasProperty("_Tint"))
                 skyboxMaterial.SetColor("_Tint", tint);
+        }
+
+        // PSX chỉ thật sự áp lúc Play Mode (đúng game thật) -- Edit Mode thường LUÔN tắt bất kể
+        // checkbox, cùng cách "Application.isPlaying ||" đã dùng cho fog/skybox ở trên, để không phải
+        // tự vào Renderer Data bật/tắt tay mỗi lần chuyển qua lại giữa dựng scene và test game.
+        //
+        // Toggle trên MỌI renderer trong danh sách (không chỉ 1 cái) -- vì Quality Level (Low/Medium/High,
+        // đổi qua SettingsManager.SetGraphicsQualityLevel theo PlayerPrefs "GraphicsQuality") mỗi mức có thể
+        // dùng Renderer Data khác nhau; chỉ toggle đúng 1 renderer sẽ không có tác dụng gì nếu người chơi
+        // đang ở mức dùng renderer khác. Renderer nào không active lúc đó thì set active cũng vô hại.
+        if (rendererDataList != null)
+        {
+            bool wantActive = psxEffectEnabled && Application.isPlaying;
+            foreach (var data in rendererDataList)
+            {
+                if (data == null) continue;
+                foreach (var feature in data.rendererFeatures)
+                {
+                    if (feature is UnityEngine.Rendering.Universal.FullScreenPassRendererFeature)
+                    {
+                        feature.SetActive(wantActive);
+                        break;
+                    }
+                }
+            }
         }
     }
 }

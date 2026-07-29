@@ -12,18 +12,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e8cd5d610fb20834c9161b0d746886db, type: 3}
   m_Name: FlashlightData_Ch1
   m_EditorClassIdentifier: BietThuBongToi.Runtime::FlashlightData
-  drainRate: 0.1
+  drainRate: 0.0055555557
   startBatteryLevel: 1
-  maxIntensity: 75
-  spotAngle: 25
+  maxIntensity: 80
+  spotAngle: 40
   innerSpotAngle: 7.5
-  range: 22
-  lightColor: {r: 1, g: 0.97, b: 0.88, a: 1}
+  range: 40
+  lightColor: {r: 1, g: 1, b: 1, a: 1}
   shadowType: 2
   shadowStrength: 1
   shadowBias: 0.05
   shadowNormalBias: 0.4
-  shakeRecoverAmount: 0.1
+  shakeRecoverAmount: 0.2
   shakeCooldown: 5
   shakeDrainPause: 3
   shakeBatteryThresh: 0.5

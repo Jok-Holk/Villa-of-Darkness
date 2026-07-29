@@ -1,0 +1,378 @@
+﻿=== VoD Room Structure Report ===
+(root transform mỗi phòng + mọi object tên khớp wall/door/window, world space)
+
+########## ThuPhong ##########
+  ROOT position=(7.380, 0.143, 8.647)  eulerY=180.0  localScale=(8.031, 0.094, 4.912)
+  Bounds tổng: min=(3.000,0.000,5.500) size=(8.493,2.484,6.358)
+
+  -- Direct children của root --
+    Interior  pos=(5.723,0.190,8.632)  eulerY=180.0  childCount=33
+    doorway  pos=(7.473,0.088,5.527)  eulerY=180.0  childCount=1
+    doorway (1)  pos=(11.265,0.112,9.821)  eulerY=270.0  childCount=1
+
+  -- Object khớp "wall/door/window" (đệ quy toàn bộ) --
+    [Interior/PhongLamViec (1)/Wall_LamViec]  worldPos=(5.386,1.257,5.670)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(7.356,1.242,8.642) bounds.size=(8.123,2.296,6.055)
+    [Interior/wall_with_one_window (2)]  worldPos=(3.372,4.373,6.603)  eulerY=270.0  localScale=(2.611,3.901,2.384)
+    [Interior/wall_with_one_window (2)/window_small]  worldPos=(3.258,2.084,7.395)  eulerY=270.0  localScale=(1.000,1.000,1.000)  bounds.center=(3.232,1.597,7.395) bounds.size=(0.464,1.751,1.395)
+    [Interior/wall_with_one_window (2)/window_small_frame]  worldPos=(3.375,1.539,7.395)  eulerY=270.0  localScale=(1.000,1.000,1.000)  bounds.center=(3.375,1.539,7.395) bounds.size=(0.099,1.484,1.030)
+    [Interior/wall_with_one_window (3)]  worldPos=(3.372,4.373,8.961)  eulerY=270.0  localScale=(2.813,3.901,2.384)
+    [Interior/wall_with_one_window (3)/window_small]  worldPos=(3.258,2.084,9.814)  eulerY=270.0  localScale=(1.000,1.000,1.000)  bounds.center=(3.232,1.597,9.814) bounds.size=(0.464,1.751,1.502)
+    [Interior/wall_with_one_window (3)/window_small_frame]  worldPos=(3.375,1.539,9.813)  eulerY=270.0  localScale=(1.000,1.000,1.000)  bounds.center=(3.375,1.539,9.813) bounds.size=(0.099,1.484,1.110)
+    [Interior/wall_with_one_window (4)]  worldPos=(5.144,4.313,11.600)  eulerY=0.0  localScale=(2.054,3.854,1.654)
+    [Interior/wall_with_one_window (4)/window_small]  worldPos=(5.767,2.053,11.679)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(5.767,1.571,11.697) bounds.size=(1.097,1.730,0.322)
+    [Interior/wall_with_one_window (4)/window_small_frame]  worldPos=(5.767,1.514,11.598)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(5.767,1.514,11.598) bounds.size=(0.810,1.466,0.069)
+    [Interior/wall_with_one_window (5)]  worldPos=(7.086,4.313,11.600)  eulerY=0.0  localScale=(2.407,3.854,1.654)
+    [Interior/wall_with_one_window (5)/window_small]  worldPos=(7.816,2.053,11.679)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(7.816,1.571,11.697) bounds.size=(1.286,1.730,0.322)
+    [Interior/wall_with_one_window (5)/window_small_frame]  worldPos=(7.816,1.514,11.598)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(7.816,1.514,11.598) bounds.size=(0.950,1.466,0.069)
+    [Interior/cabinetBedDrawer/door]  worldPos=(4.703,0.313,11.038)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(4.925,0.417,11.043) bounds.size=(0.443,0.209,0.065)
+    [Interior/cabinetBedDrawer (1)/door]  worldPos=(8.450,0.313,11.038)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(8.672,0.417,11.043) bounds.size=(0.443,0.209,0.065)
+    [doorway]  worldPos=(7.473,0.088,5.527)  eulerY=180.0  localScale=(0.283,24.487,0.447)  bounds.center=(8.026,1.245,5.624) bounds.size=(1.105,2.314,0.196)
+    [doorway/door]  worldPos=(7.537,0.088,5.624)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(8.026,1.213,5.624) bounds.size=(0.976,2.249,0.249)
+    [doorway (1)]  worldPos=(11.265,0.112,9.821)  eulerY=270.0  localScale=(0.459,24.072,0.281)  bounds.center=(11.365,1.250,9.273) bounds.size=(0.201,2.275,1.095)
+    [doorway (1)/door]  worldPos=(11.365,0.112,9.757)  eulerY=270.0  localScale=(1.000,1.000,1.000)  bounds.center=(11.365,1.218,9.273) bounds.size=(0.256,2.211,0.968)
+
+########## TienSanh ##########
+  ROOT position=(16.299, 0.124, 8.382)  eulerY=0.0  localScale=(0.955, 0.955, 0.955)
+  Bounds tổng: min=(12.000,0.000,5.500) size=(8.609,4.231,6.273)
+
+  -- Direct children của root --
+    sanh  pos=(16.343,0.220,10.194)  eulerY=0.0  childCount=3
+    wall_with_one_window (4)  pos=(13.282,4.220,11.385)  eulerY=0.0  childCount=3
+    wall_with_one_window (5)  pos=(17.671,4.220,11.385)  eulerY=0.0  childCount=3
+    rugDoormat  pos=(16.729,0.220,10.674)  eulerY=0.0  childCount=0
+    coatRackStanding  pos=(14.962,0.220,10.674)  eulerY=0.0  childCount=0
+    cabinetBed  pos=(19.929,0.220,7.236)  eulerY=270.0  childCount=1
+    cabinetBed (1)  pos=(12.670,0.220,6.531)  eulerY=90.0  childCount=1
+    doorway  pos=(12.097,0.220,7.809)  eulerY=90.0  childCount=1
+    doorway (1)  pos=(20.502,0.220,7.809)  eulerY=90.0  childCount=1
+    Arch_Door_Interior  pos=(16.299,1.462,11.496)  eulerY=270.0  childCount=0
+    wallWindow  pos=(19.738,0.000,11.343)  eulerY=0.0  childCount=1
+    lampSquareFloor  pos=(16.299,4.081,8.382)  eulerY=0.0  childCount=1
+    lampSquareFloor (1)  pos=(16.777,4.081,8.382)  eulerY=0.0  childCount=1
+    lampSquareFloor (2)  pos=(16.713,4.081,8.621)  eulerY=0.0  childCount=1
+    lampSquareFloor (3)  pos=(16.538,4.081,8.795)  eulerY=0.0  childCount=1
+    lampSquareFloor (4)  pos=(16.299,4.081,8.859)  eulerY=0.0  childCount=1
+    lampSquareFloor (5)  pos=(16.061,4.081,8.795)  eulerY=0.0  childCount=1
+    lampSquareFloor (6)  pos=(15.886,4.081,8.621)  eulerY=0.0  childCount=1
+    lampSquareFloor (7)  pos=(15.822,4.081,8.382)  eulerY=0.0  childCount=1
+    lampSquareFloor (8)  pos=(15.886,4.081,8.143)  eulerY=0.0  childCount=1
+    lampSquareFloor (9)  pos=(16.061,4.081,7.968)  eulerY=0.0  childCount=1
+    lampSquareFloor (10)  pos=(16.299,4.081,7.904)  eulerY=0.0  childCount=1
+    lampSquareFloor (11)  pos=(16.538,4.081,7.968)  eulerY=0.0  childCount=1
+    lampSquareFloor (12)  pos=(16.713,4.081,8.143)  eulerY=0.0  childCount=1
+    lampSquareCeiling  pos=(16.357,3.467,8.554)  eulerY=0.0  childCount=0
+    RUG  pos=(17.570,0.315,8.506)  eulerY=0.0  childCount=2
+    plantSmall1  pos=(13.684,0.697,11.131)  eulerY=90.0  childCount=0
+    plantSmall1 (2)  pos=(18.018,0.697,11.131)  eulerY=90.0  childCount=0
+    plantSmall2  pos=(14.056,0.697,11.133)  eulerY=90.0  childCount=0
+    plantSmall2 (1)  pos=(18.389,0.697,11.133)  eulerY=90.0  childCount=0
+    pottedPlant  pos=(13.854,0.697,11.139)  eulerY=0.0  childCount=1
+    pottedPlant (2)  pos=(18.188,0.697,11.139)  eulerY=0.0  childCount=1
+    pottedPlant (1)  pos=(14.550,0.697,11.163)  eulerY=0.0  childCount=1
+    pottedPlant (3)  pos=(18.883,0.697,11.163)  eulerY=0.0  childCount=1
+    plantSmall3  pos=(14.344,0.697,11.142)  eulerY=90.0  childCount=0
+    plantSmall3 (1)  pos=(18.677,0.697,11.142)  eulerY=90.0  childCount=0
+    plantSmall1 (1)  pos=(14.194,0.697,11.144)  eulerY=90.0  childCount=0
+    plantSmall1 (3)  pos=(18.528,0.697,11.144)  eulerY=90.0  childCount=0
+    sideTableDrawers  pos=(12.889,0.220,10.055)  eulerY=90.0  childCount=2
+    radio  pos=(12.488,0.950,10.152)  eulerY=90.0  childCount=0
+    lampRoundTable  pos=(12.440,0.946,11.037)  eulerY=0.0  childCount=0
+    bear  pos=(20.024,2.035,6.376)  eulerY=0.0  childCount=0
+    bear (1)  pos=(13.396,2.035,6.376)  eulerY=0.0  childCount=0
+    kitchenCabinetUpperCorner  pos=(19.543,0.220,10.328)  eulerY=180.0  childCount=0
+    books  pos=(19.840,0.349,10.767)  eulerY=186.1  childCount=0
+    books (2)  pos=(19.840,1.059,10.767)  eulerY=186.1  childCount=0
+    books (1)  pos=(19.840,0.349,10.528)  eulerY=186.1  childCount=0
+    books (3)  pos=(19.840,1.059,10.528)  eulerY=186.1  childCount=0
+    lampRoundFloor  pos=(12.655,0.220,6.296)  eulerY=0.0  childCount=0
+    plantSmall2  pos=(19.997,1.656,10.632)  eulerY=90.0  childCount=0
+
+  -- Object khớp "wall/door/window" (đệ quy toàn bộ) --
+    [sanh/Wall_Sanh]  worldPos=(18.507,0.459,11.135)  eulerY=0.0  localScale=(100.000,100.000,100.000)  bounds.center=(16.311,2.130,8.461) bounds.size=(8.596,4.203,5.922)
+    [wall_with_one_window (4)]  worldPos=(13.282,4.220,11.385)  eulerY=0.0  localScale=(1.440,1.981,0.850)
+    [wall_with_one_window (4)/window_small]  worldPos=(14.120,1.990,11.464)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(14.120,1.515,11.481) bounds.size=(1.476,1.706,0.317)
+    [wall_with_one_window (4)/window_small_frame]  worldPos=(14.120,1.459,11.384)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(14.120,1.458,11.384) bounds.size=(1.091,1.446,0.068)
+    [wall_with_one_window (5)]  worldPos=(17.671,4.220,11.385)  eulerY=0.0  localScale=(1.440,1.981,0.850)
+    [wall_with_one_window (5)/window_small]  worldPos=(18.509,1.990,11.464)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(18.509,1.515,11.481) bounds.size=(1.476,1.706,0.317)
+    [wall_with_one_window (5)/window_small_frame]  worldPos=(18.509,1.459,11.384)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(18.509,1.458,11.384) bounds.size=(1.091,1.446,0.068)
+    [rugDoormat]  worldPos=(16.729,0.220,10.674)  eulerY=0.0  localScale=(2.500,2.500,2.500)  bounds.center=(16.217,0.232,10.391) bounds.size=(1.025,0.024,0.566)
+    [cabinetBed/door]  worldPos=(19.986,0.279,7.165)  eulerY=270.0  localScale=(1.000,1.000,1.000)  bounds.center=(19.992,0.474,6.883) bounds.size=(0.082,0.392,0.564)
+    [cabinetBed (1)/door]  worldPos=(12.612,0.279,6.601)  eulerY=90.0  localScale=(1.000,1.000,1.000)  bounds.center=(12.607,0.474,6.883) bounds.size=(0.082,0.392,0.564)
+    [doorway]  worldPos=(12.097,0.220,7.809)  eulerY=90.0  localScale=(2.500,2.200,1.000)  bounds.center=(12.054,1.281,8.389) bounds.size=(0.085,2.121,1.161)
+    [doorway/door]  worldPos=(12.054,0.220,7.876)  eulerY=90.0  localScale=(1.000,1.000,1.000)  bounds.center=(12.054,1.251,8.389) bounds.size=(0.108,2.062,1.025)
+    [doorway (1)]  worldPos=(20.502,0.220,7.809)  eulerY=90.0  localScale=(2.500,2.200,1.000)  bounds.center=(20.459,1.281,8.389) bounds.size=(0.085,2.121,1.161)
+    [doorway (1)/door]  worldPos=(20.459,0.220,7.876)  eulerY=90.0  localScale=(1.000,1.000,1.000)  bounds.center=(20.459,1.251,8.389) bounds.size=(0.108,2.062,1.025)
+    [Arch_Door_Interior]  worldPos=(16.299,1.462,11.496)  eulerY=270.0  localScale=(3.000,3.000,4.000)  bounds.center=(16.299,1.462,11.496) bounds.size=(2.395,2.860,0.554)
+    [wallWindow]  worldPos=(19.738,0.000,11.343)  eulerY=0.0  localScale=(2.551,2.185,2.000)  bounds.center=(18.520,1.345,11.295) bounds.size=(2.436,2.691,0.170)
+    [wallWindow/window]  worldPos=(18.976,0.819,11.338)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(18.520,1.512,11.295) bounds.size=(0.913,1.386,0.047)
+
+########## TiepKhach ##########
+  ROOT position=(25.301, -0.382, 8.366)  eulerY=0.0  localScale=(0.955, 0.955, 0.955)
+  Bounds tổng: min=(21.000,0.000,5.500) size=(8.920,4.013,6.054)
+
+  -- Direct children của root --
+    PhongGiaDinh (1)  pos=(25.301,-0.382,8.366)  eulerY=0.0  childCount=3
+    Decor  pos=(23.095,0.096,10.134)  eulerY=0.0  childCount=31
+
+  -- Object khớp "wall/door/window" (đệ quy toàn bộ) --
+    [PhongGiaDinh (1)/Wall_GiaDinh]  worldPos=(22.896,0.586,11.137)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(25.300,2.050,8.366) bounds.size=(8.601,3.926,5.733)
+    [Decor/doorway]  worldPos=(29.631,0.095,7.639)  eulerY=270.0  localScale=(0.282,0.195,0.193)  bounds.center=(29.549,1.035,8.294) bounds.size=(0.164,1.879,1.311)
+    [Decor/doorway/door]  worldPos=(29.549,0.095,7.716)  eulerY=270.0  localScale=(1.000,1.000,1.000)  bounds.center=(29.549,1.008,8.294) bounds.size=(0.209,1.826,1.158)
+    [Decor/doorway (1)]  worldPos=(24.570,0.043,10.999)  eulerY=0.0  localScale=(0.315,0.211,0.203)  bounds.center=(25.302,1.059,11.085) bounds.size=(1.464,2.033,0.173)
+    [Decor/doorway (1)/door]  worldPos=(24.655,0.043,11.197)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(25.302,1.031,11.197) bounds.size=(1.293,1.976,0.220)
+    [Decor/wall_with_one_window]  worldPos=(22.313,3.165,11.140)  eulerY=0.0  localScale=(1.000,1.164,1.379)
+    [Decor/wall_with_one_window/window_small]  worldPos=(22.896,1.854,11.267)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(22.896,1.575,11.296) bounds.size=(1.026,1.003,0.515)
+    [Decor/wall_with_one_window/window_small_frame]  worldPos=(22.895,1.542,11.138)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(22.895,1.541,11.138) bounds.size=(0.758,0.850,0.110)
+    [Decor/wall_with_one_window (1)]  worldPos=(27.305,3.165,11.140)  eulerY=0.0  localScale=(1.000,1.164,1.379)
+    [Decor/wall_with_one_window (1)/window_small]  worldPos=(27.887,1.854,11.267)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(27.887,1.575,11.296) bounds.size=(1.026,1.003,0.515)
+    [Decor/wall_with_one_window (1)/window_small_frame]  worldPos=(27.887,1.542,11.138)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(27.887,1.541,11.138) bounds.size=(0.758,0.850,0.110)
+    [Decor/wall_with_one_window (2)]  worldPos=(29.506,3.072,10.692)  eulerY=90.0  localScale=(1.176,1.117,1.379)
+    [Decor/wall_with_one_window (2)/window_small]  worldPos=(29.633,1.813,10.008)  eulerY=90.0  localScale=(1.000,1.000,1.000)  bounds.center=(29.662,1.545,10.008) bounds.size=(0.515,0.963,1.206)
+    [Decor/wall_with_one_window (2)/window_small_frame]  worldPos=(29.504,1.513,10.008)  eulerY=90.0  localScale=(1.000,1.000,1.000)  bounds.center=(29.504,1.513,10.008) bounds.size=(0.110,0.816,0.891)
+    [Decor/wall_with_one_window (3)]  worldPos=(29.506,3.072,7.232)  eulerY=90.0  localScale=(1.084,1.117,1.379)
+    [Decor/wall_with_one_window (3)/window_small]  worldPos=(29.633,1.813,6.601)  eulerY=90.0  localScale=(1.000,1.000,1.000)  bounds.center=(29.662,1.545,6.601) bounds.size=(0.515,0.963,1.112)
+    [Decor/wall_with_one_window (3)/window_small_frame]  worldPos=(29.504,1.513,6.602)  eulerY=90.0  localScale=(1.000,1.000,1.000)  bounds.center=(29.504,1.513,6.602) bounds.size=(0.110,0.816,0.821)
+
+########## Hanh_Lang_Trai ##########
+  ROOT position=(46.170, 0.000, 12.933)  eulerY=0.0  localScale=(0.961, 0.425, 0.754)
+  Bounds tổng: min=(3.000,0.000,11.500) size=(9.422,1.954,2.865)
+
+  -- Direct children của root --
+    Ceiling_CorridorLeft  pos=(7.711,1.912,12.933)  eulerY=0.0  childCount=0
+    Floor_CorridorLeft  pos=(7.711,0.042,12.933)  eulerY=0.0  childCount=0
+    DoorCabinet (1)  pos=(6.248,0.085,11.911)  eulerY=0.0  childCount=4
+    Decor  pos=(46.170,0.000,12.933)  eulerY=0.0  childCount=11
+    Wall  pos=(46.170,0.000,12.933)  eulerY=0.0  childCount=4
+
+  -- Object khớp "wall/door/window" (đệ quy toàn bộ) --
+    [DoorCabinet (1)]  worldPos=(6.248,0.085,11.911)  eulerY=0.0  localScale=(1.117,2.014,1.135)
+    [DoorCabinet (1)/doorLeft]  worldPos=(6.691,0.234,12.192)  eulerY=25.6  localScale=(2.761,2.410,2.503)  bounds.center=(6.477,0.960,12.274) bounds.size=(0.474,1.454,0.241)
+    [DoorCabinet (1)/doorRight]  worldPos=(5.726,0.234,12.193)  eulerY=0.0  localScale=(2.825,2.410,2.410)  bounds.center=(5.969,0.960,12.193) bounds.size=(0.485,1.454,0.082)
+    [Wall]  worldPos=(46.170,0.000,12.933)  eulerY=0.0  localScale=(1.000,1.000,1.000)
+    [Wall/Walls_CorridorLeft]  worldPos=(46.170,0.319,14.592)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(7.711,0.977,11.651) bounds.size=(9.422,1.784,0.302)
+    [Wall/Walls_CorridorLeft.001]  worldPos=(46.170,0.319,14.592)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(10.355,0.977,14.215) bounds.size=(4.134,1.784,0.302)
+    [Wall/Walls_CorridorLeft.002]  worldPos=(46.170,0.319,14.592)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(5.067,0.977,14.215) bounds.size=(4.134,1.784,0.302)
+    [Wall/Walls_CorridorLeft.003]  worldPos=(46.170,0.319,14.592)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(7.711,1.444,14.215) bounds.size=(1.154,0.850,0.302)
+
+########## CauThang ##########
+  ROOT position=(-163.091, 0.080, 47.499)  eulerY=180.0  localScale=(0.344, 0.462, 0.462)
+  Bounds tổng: min=(-166.678,0.064,41.539) size=(7.051,2.592,10.285)
+
+  -- Direct children của root --
+    Cylinder  pos=(-164.017,2.378,48.810)  eulerY=180.0  childCount=0
+    Cylinder (1)  pos=(-164.017,2.198,49.071)  eulerY=180.0  childCount=0
+    Cylinder (2)  pos=(-164.017,1.997,49.350)  eulerY=180.0  childCount=0
+    Cylinder (3)  pos=(-164.017,1.800,49.607)  eulerY=180.0  childCount=0
+    Cylinder (6)  pos=(-164.017,1.207,50.418)  eulerY=180.0  childCount=0
+    Cylinder (8)  pos=(-164.017,1.007,50.655)  eulerY=180.0  childCount=0
+    Cylinder (7)  pos=(-164.017,0.813,50.934)  eulerY=180.0  childCount=0
+    Cylinder (10)  pos=(-164.017,0.423,51.469)  eulerY=180.0  childCount=0
+    Cylinder (9)  pos=(-164.017,0.628,51.190)  eulerY=180.0  childCount=0
+    Cylinder (5)  pos=(-164.017,1.411,50.138)  eulerY=180.0  childCount=0
+    Cylinder (4)  pos=(-164.017,1.609,49.886)  eulerY=180.0  childCount=0
+    Cylinder (11)  pos=(-162.321,2.198,49.071)  eulerY=180.0  childCount=0
+    Cylinder (21)  pos=(-162.321,2.386,48.820)  eulerY=180.0  childCount=0
+    Cylinder (12)  pos=(-162.321,1.997,49.350)  eulerY=180.0  childCount=0
+    Cylinder (20)  pos=(-162.321,1.609,49.886)  eulerY=180.0  childCount=0
+    Cylinder (13)  pos=(-162.321,1.800,49.607)  eulerY=180.0  childCount=0
+    Cylinder (19)  pos=(-162.321,1.411,50.138)  eulerY=180.0  childCount=0
+    Cylinder (14)  pos=(-162.321,1.207,50.418)  eulerY=180.0  childCount=0
+    Cylinder (16)  pos=(-162.321,0.813,50.934)  eulerY=180.0  childCount=0
+    Cylinder (15)  pos=(-162.321,1.007,50.655)  eulerY=180.0  childCount=0
+    Cylinder (18)  pos=(-162.321,0.628,51.190)  eulerY=180.0  childCount=0
+    Cylinder (17)  pos=(-162.321,0.423,51.469)  eulerY=180.0  childCount=0
+    Cube  pos=(-162.325,1.549,50.184)  eulerY=180.0  childCount=0
+    Cube (1)  pos=(-164.017,1.549,50.184)  eulerY=180.0  childCount=0
+    Cube  pos=(-162.326,2.597,48.709)  eulerY=180.0  childCount=0
+    Cube (1)  pos=(-164.016,2.597,48.709)  eulerY=180.0  childCount=0
+    Cube  pos=(-162.263,0.383,51.699)  eulerY=180.0  childCount=0
+    Cube (1)  pos=(-164.084,0.383,51.699)  eulerY=180.0  childCount=0
+    Cube (2)  pos=(-163.156,2.161,45.093)  eulerY=180.0  childCount=0
+    Cube (3)  pos=(-165.408,2.161,46.964)  eulerY=180.0  childCount=0
+    Cube (4)  pos=(-160.897,2.161,46.964)  eulerY=180.0  childCount=0
+    stairs (1)  pos=(-164.091,0.080,51.607)  eulerY=270.0  childCount=0
+    fence  pos=(-162.933,0.080,45.493)  eulerY=180.0  childCount=18
+    column (1)  pos=(-163.167,0.186,47.518)  eulerY=180.0  childCount=2
+
+  -- Object khớp "wall/door/window" (đệ quy toàn bộ) --
+    (không có object nào khớp tên)
+
+########## Hanh_Lang_Phai ##########
+  ROOT position=(-31.977, 0.000, 12.933)  eulerY=180.0  localScale=(0.961, 0.425, 0.754)
+  Bounds tổng: min=(21.000,0.000,11.500) size=(9.422,1.954,2.865)
+
+  -- Direct children của root --
+    Ceiling_CorridorRight  pos=(25.711,1.912,12.933)  eulerY=180.0  childCount=0
+    Floor_CorridorRight  pos=(25.711,0.042,12.933)  eulerY=180.0  childCount=0
+    DoorCabinet  pos=(23.016,0.085,11.942)  eulerY=0.0  childCount=4
+    Wall  pos=(-31.977,0.000,12.933)  eulerY=180.0  childCount=4
+    Decor  pos=(-31.977,0.000,12.933)  eulerY=180.0  childCount=14
+
+  -- Object khớp "wall/door/window" (đệ quy toàn bộ) --
+    [DoorCabinet]  worldPos=(23.016,0.085,11.942)  eulerY=0.0  localScale=(1.117,2.014,1.135)
+    [DoorCabinet/doorLeft]  worldPos=(23.458,0.234,12.222)  eulerY=25.6  localScale=(2.761,2.410,2.503)  bounds.center=(23.245,0.960,12.304) bounds.size=(0.474,1.454,0.241)
+    [DoorCabinet/doorRight]  worldPos=(22.494,0.234,12.223)  eulerY=0.0  localScale=(2.825,2.410,2.410)  bounds.center=(22.737,0.960,12.223) bounds.size=(0.485,1.454,0.082)
+    [Wall]  worldPos=(-31.977,0.000,12.933)  eulerY=180.0  localScale=(1.000,1.000,1.000)
+    [Wall/Walls_CorridorRight]  worldPos=(-31.977,0.319,11.274)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(25.711,0.977,14.215) bounds.size=(9.422,1.784,0.302)
+    [Wall/Walls_CorridorRight.001]  worldPos=(-31.977,0.319,11.274)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(23.067,0.977,11.651) bounds.size=(4.134,1.784,0.302)
+    [Wall/Walls_CorridorRight.002]  worldPos=(-31.977,0.319,11.274)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(28.355,0.977,11.651) bounds.size=(4.134,1.784,0.302)
+    [Wall/Walls_CorridorRight.003]  worldPos=(-31.977,0.319,11.274)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(25.711,1.444,11.651) bounds.size=(1.154,0.850,0.302)
+
+########## Salon ##########
+  ROOT position=(3.345, 0.172, 15.581)  eulerY=180.0  localScale=(0.862, 0.862, 0.862)
+  Bounds tổng: min=(3.000,0.000,14.500) size=(16.895,3.964,7.458)
+
+  -- Direct children của root --
+    Ceiling_Khach  pos=(11.100,3.878,18.597)  eulerY=180.0  childCount=0
+    Floor_Khach  pos=(11.100,0.086,18.597)  eulerY=180.0  childCount=0
+    Wall_Khach  pos=(4.838,1.982,15.409)  eulerY=180.0  childCount=0
+    noithatphongkhach  pos=(-130.477,10.785,82.533)  eulerY=180.0  childCount=44
+
+  -- Object khớp "wall/door/window" (đệ quy toàn bộ) --
+    [Wall_Khach]  worldPos=(4.838,1.982,15.409)  eulerY=180.0  localScale=(100.000,100.000,100.000)  bounds.center=(11.100,1.982,18.597) bounds.size=(16.200,3.619,6.721)
+    [noithatphongkhach/clock_wall]  worldPos=(12.165,2.861,21.605)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(12.165,2.852,21.558) bounds.size=(0.315,0.622,0.093)
+    [noithatphongkhach/wall_with_one_window]  worldPos=(19.010,5.783,17.165)  eulerY=90.0  localScale=(1.212,3.016,3.271)
+    [noithatphongkhach/wall_with_one_window/window_small]  worldPos=(19.281,2.719,16.528)  eulerY=90.0  localScale=(1.000,1.000,1.000)  bounds.center=(19.344,2.066,16.528) bounds.size=(1.103,2.344,1.121)
+    [noithatphongkhach/wall_with_one_window/window_small_frame]  worldPos=(19.005,1.989,16.528)  eulerY=90.0  localScale=(1.000,1.000,1.000)  bounds.center=(19.005,1.988,16.528) bounds.size=(0.235,1.987,0.828)
+    [noithatphongkhach/wall_with_one_window (1)]  worldPos=(19.010,5.783,18.550)  eulerY=90.0  localScale=(1.212,3.016,3.271)
+    [noithatphongkhach/wall_with_one_window (1)/window_small]  worldPos=(19.281,2.719,17.913)  eulerY=90.0  localScale=(1.000,1.000,1.000)  bounds.center=(19.344,2.066,17.913) bounds.size=(1.103,2.344,1.121)
+    [noithatphongkhach/wall_with_one_window (1)/window_small_frame]  worldPos=(19.005,1.989,17.914)  eulerY=90.0  localScale=(1.000,1.000,1.000)  bounds.center=(19.005,1.988,17.914) bounds.size=(0.235,1.987,0.828)
+    [noithatphongkhach/wall_with_one_window (2)]  worldPos=(19.010,5.783,19.927)  eulerY=90.0  localScale=(1.212,3.016,3.271)
+    [noithatphongkhach/wall_with_one_window (2)/window_small]  worldPos=(19.281,2.719,19.291)  eulerY=90.0  localScale=(1.000,1.000,1.000)  bounds.center=(19.344,2.066,19.291) bounds.size=(1.103,2.344,1.121)
+    [noithatphongkhach/wall_with_one_window (2)/window_small_frame]  worldPos=(19.005,1.989,19.291)  eulerY=90.0  localScale=(1.000,1.000,1.000)  bounds.center=(19.005,1.988,19.291) bounds.size=(0.235,1.987,0.828)
+    [noithatphongkhach/wall_with_one_window (3)]  worldPos=(19.035,5.783,21.304)  eulerY=90.0  localScale=(1.212,3.016,3.029)
+    [noithatphongkhach/wall_with_one_window (3)/window_small]  worldPos=(19.286,2.719,20.667)  eulerY=90.0  localScale=(1.000,1.000,1.000)  bounds.center=(19.344,2.066,20.667) bounds.size=(1.021,2.344,1.121)
+    [noithatphongkhach/wall_with_one_window (3)/window_small_frame]  worldPos=(19.030,1.989,20.668)  eulerY=90.0  localScale=(1.000,1.000,1.000)  bounds.center=(19.030,1.988,20.668) bounds.size=(0.218,1.987,0.828)
+    [noithatphongkhach/wall_with_one_window (4)]  worldPos=(16.003,5.683,15.313)  eulerY=180.0  localScale=(3.451,3.005,3.005)
+    [noithatphongkhach/wall_with_one_window (4)/window_small]  worldPos=(14.192,2.631,15.064)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(14.192,1.980,15.006) bounds.size=(3.192,2.335,1.013)
+    [noithatphongkhach/wall_with_one_window (4)/window_small_frame]  worldPos=(14.193,1.903,15.318)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(14.193,1.903,15.318) bounds.size=(2.358,1.979,0.216)
+    [noithatphongkhach/wall_with_one_window (5)]  worldPos=(9.745,5.777,15.406)  eulerY=180.0  localScale=(3.453,3.005,3.005)
+    [noithatphongkhach/wall_with_one_window (5)/window_small]  worldPos=(7.932,2.724,15.156)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(7.932,2.074,15.099) bounds.size=(3.194,2.335,1.013)
+    [noithatphongkhach/wall_with_one_window (5)/window_small_frame]  worldPos=(7.933,1.997,15.410)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(7.933,1.996,15.410) bounds.size=(2.360,1.979,0.216)
+
+########## PhongAn ##########
+  ROOT position=(54.580, 0.167, 21.247)  eulerY=0.0  localScale=(0.836, 0.836, 0.836)
+  Bounds tổng: min=(21.000,0.000,14.500) size=(8.836,3.845,7.130)
+
+  -- Direct children của root --
+    noithatphongan  pos=(171.630,28.483,-31.690)  eulerY=0.0  childCount=19
+    Ceiling_An  pos=(25.740,3.762,18.321)  eulerY=0.0  childCount=0
+    Floor_An  pos=(25.740,0.084,18.321)  eulerY=0.0  childCount=0
+    Wall_An  pos=(25.740,1.923,21.414)  eulerY=0.0  childCount=0
+
+  -- Object khớp "wall/door/window" (đệ quy toàn bộ) --
+    [noithatphongan/wall_with_one_window (7)]  worldPos=(21.790,5.648,18.394)  eulerY=270.0  localScale=(2.310,3.016,3.010)
+    [noithatphongan/wall_with_one_window (7)/window_small]  worldPos=(21.548,2.676,19.570)  eulerY=270.0  localScale=(1.000,1.000,1.000)  bounds.center=(21.492,2.042,19.570) bounds.size=(0.984,2.274,2.073)
+    [noithatphongan/wall_with_one_window (7)/window_small_frame]  worldPos=(21.795,1.967,19.570)  eulerY=270.0  localScale=(1.000,1.000,1.000)  bounds.center=(21.795,1.967,19.570) bounds.size=(0.210,1.927,1.532)
+    [noithatphongan/wall_with_one_window (8)]  worldPos=(21.796,5.629,15.883)  eulerY=270.0  localScale=(2.323,3.016,3.010)
+    [noithatphongan/wall_with_one_window (8)/window_small]  worldPos=(21.554,2.657,17.066)  eulerY=270.0  localScale=(1.000,1.000,1.000)  bounds.center=(21.499,2.024,17.066) bounds.size=(0.984,2.274,2.084)
+    [noithatphongan/wall_with_one_window (8)/window_small_frame]  worldPos=(21.801,1.949,17.066)  eulerY=270.0  localScale=(1.000,1.000,1.000)  bounds.center=(21.801,1.948,17.066) bounds.size=(0.210,1.927,1.540)
+    [noithatphongan/wall_with_one_window (6)]  worldPos=(28.942,5.604,15.214)  eulerY=180.0  localScale=(1.457,3.016,2.723)
+    [noithatphongan/wall_with_one_window (6)/window_small]  worldPos=(28.200,2.632,14.995)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(28.200,1.999,14.945) bounds.size=(1.308,2.274,0.890)
+    [noithatphongan/wall_with_one_window (6)/window_small_frame]  worldPos=(28.201,1.924,15.219)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(28.201,1.923,15.219) bounds.size=(0.966,1.927,0.190)
+    [noithatphongan/WallSconce]  worldPos=(27.263,2.591,15.593)  eulerY=0.0  localScale=(0.267,0.267,0.267)  bounds.center=(27.263,2.591,15.592) bounds.size=(0.176,0.333,0.420)
+    [noithatphongan/KhungCuaSo]  worldPos=(24.654,0.892,15.214)  eulerY=0.0  localScale=(1.044,0.708,1.787)
+    [noithatphongan/KhungCuaSo/WindowFrame]  worldPos=(24.654,0.892,15.214)  eulerY=0.0  localScale=(100.000,100.000,100.000)  bounds.center=(24.654,1.956,15.214) bounds.size=(3.771,2.130,0.323)
+    [noithatphongan/KhungCuaSo/WindowGlass]  worldPos=(24.654,0.892,15.214)  eulerY=0.0  localScale=(100.000,100.000,100.000)  bounds.center=(24.654,2.402,15.214) bounds.size=(3.243,1.039,0.072)
+    [Wall_An]  worldPos=(25.740,1.923,21.414)  eulerY=0.0  localScale=(100.000,100.000,100.000)  bounds.center=(25.740,1.923,18.321) bounds.size=(8.192,3.511,6.520)
+
+########## Nha_Phu_Bep ##########
+  ROOT position=(17.772, 0.000, 28.666)  eulerY=180.0  localScale=(0.785, 0.537, 0.807)
+  Bounds tổng: min=(15.000,0.000,26.500) size=(5.542,2.724,4.331)
+
+  -- Direct children của root --
+    Ceiling_Bep  pos=(17.772,1.878,28.666)  eulerY=180.0  childCount=0
+    Floor_Bep  pos=(17.772,0.054,28.666)  eulerY=180.0  childCount=0
+    Decor  pos=(17.772,0.000,28.666)  eulerY=180.0  childCount=39
+    Wall  pos=(17.772,0.000,28.666)  eulerY=180.0  childCount=15
+
+  -- Object khớp "wall/door/window" (đệ quy toàn bộ) --
+    [Decor/kitchenStove/door]  worldPos=(19.901,0.207,27.619)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(19.668,0.380,27.631) bounds.size=(0.467,0.345,0.050)
+    [Decor/kitchenStove (1)/door]  worldPos=(19.363,0.207,27.619)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(19.129,0.380,27.631) bounds.size=(0.467,0.345,0.050)
+    [Decor/kitchenSink/door]  worldPos=(17.750,0.192,27.583)  eulerY=1.1  localScale=(1.000,1.000,1.000)  bounds.center=(17.530,0.355,27.599) bounds.size=(0.442,0.326,0.056)
+    [Decor/kitchenCabinetDrawer/door]  worldPos=(18.249,0.184,27.577)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(18.028,0.297,27.589) bounds.size=(0.441,0.226,0.047)
+    [Decor/kitchenCabinetDrawer (5)/door]  worldPos=(15.885,0.184,29.797)  eulerY=90.0  localScale=(1.000,1.000,1.000)  bounds.center=(15.897,0.297,30.018) bounds.size=(0.047,0.226,0.441)
+    [Decor/kitchenCabinetDrawer (6)/door]  worldPos=(15.885,0.184,29.322)  eulerY=90.0  localScale=(1.000,1.000,1.000)  bounds.center=(15.897,0.297,29.543) bounds.size=(0.047,0.226,0.441)
+    [Decor/kitchenCabinetDrawer (2)/door]  worldPos=(16.736,0.184,27.577)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(16.515,0.297,27.589) bounds.size=(0.441,0.226,0.047)
+    [Decor/kitchenCabinetDrawer (3)/door]  worldPos=(17.238,0.184,27.577)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(17.018,0.297,27.589) bounds.size=(0.441,0.226,0.047)
+    [Decor/kitchenCabinetDrawer (1)/door]  worldPos=(18.751,0.184,27.577)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(18.531,0.297,27.589) bounds.size=(0.441,0.226,0.047)
+    [Decor/kitchenCabinetUpperDouble/doorLeft]  worldPos=(18.263,1.288,27.247)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(18.153,1.485,27.253) bounds.size=(0.221,0.394,0.035)
+    [Decor/kitchenCabinetUpperDouble/doorRight]  worldPos=(17.822,1.288,27.247)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(17.932,1.485,27.253) bounds.size=(0.221,0.394,0.035)
+    [Decor/kitchenCabinetUpperDouble (6)/doorLeft]  worldPos=(19.199,1.288,27.247)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(19.088,1.485,27.253) bounds.size=(0.221,0.394,0.035)
+    [Decor/kitchenCabinetUpperDouble (6)/doorRight]  worldPos=(18.757,1.288,27.247)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(18.868,1.485,27.253) bounds.size=(0.221,0.394,0.035)
+    [Decor/kitchenCabinetUpperDouble (7)/doorLeft]  worldPos=(19.669,1.288,27.247)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(19.559,1.485,27.253) bounds.size=(0.221,0.394,0.035)
+    [Decor/kitchenCabinetUpperDouble (7)/doorRight]  worldPos=(19.228,1.288,27.247)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(19.338,1.485,27.253) bounds.size=(0.221,0.394,0.035)
+    [Decor/kitchenCabinetUpperDouble (1)/doorLeft]  worldPos=(18.733,1.288,27.247)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(18.623,1.485,27.253) bounds.size=(0.221,0.394,0.035)
+    [Decor/kitchenCabinetUpperDouble (1)/doorRight]  worldPos=(18.292,1.288,27.247)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(18.402,1.485,27.253) bounds.size=(0.221,0.394,0.035)
+    [Decor/kitchenCabinetUpperDouble (2)/doorLeft]  worldPos=(17.324,1.288,27.247)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(17.214,1.485,27.253) bounds.size=(0.221,0.394,0.035)
+    [Decor/kitchenCabinetUpperDouble (2)/doorRight]  worldPos=(16.883,1.288,27.247)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(16.993,1.485,27.253) bounds.size=(0.221,0.394,0.035)
+    [Decor/kitchenCabinetUpperDouble (5)/doorLeft]  worldPos=(16.862,1.288,27.247)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(16.752,1.485,27.253) bounds.size=(0.221,0.394,0.035)
+    [Decor/kitchenCabinetUpperDouble (5)/doorRight]  worldPos=(16.421,1.288,27.247)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(16.531,1.485,27.253) bounds.size=(0.221,0.394,0.035)
+    [Decor/kitchenCabinetUpperDouble (4)/doorLeft]  worldPos=(16.392,1.288,27.247)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(16.281,1.485,27.253) bounds.size=(0.221,0.394,0.035)
+    [Decor/kitchenCabinetUpperDouble (4)/doorRight]  worldPos=(15.950,1.288,27.247)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(16.061,1.485,27.253) bounds.size=(0.221,0.394,0.035)
+    [Decor/kitchenCabinetUpperDouble (10)/doorLeft]  worldPos=(15.596,1.309,28.007)  eulerY=90.0  localScale=(1.000,1.000,1.000)  bounds.center=(15.602,1.506,28.117) bounds.size=(0.035,0.394,0.221)
+    [Decor/kitchenCabinetUpperDouble (10)/doorRight]  worldPos=(15.596,1.309,28.448)  eulerY=90.0  localScale=(1.000,1.000,1.000)  bounds.center=(15.602,1.506,28.338) bounds.size=(0.035,0.394,0.221)
+    [Decor/kitchenCabinetUpperDouble (11)/doorLeft]  worldPos=(15.596,1.309,28.495)  eulerY=90.0  localScale=(1.000,1.000,1.000)  bounds.center=(15.602,1.506,28.606) bounds.size=(0.035,0.394,0.221)
+    [Decor/kitchenCabinetUpperDouble (11)/doorRight]  worldPos=(15.596,1.309,28.937)  eulerY=90.0  localScale=(1.000,1.000,1.000)  bounds.center=(15.602,1.506,28.826) bounds.size=(0.035,0.394,0.221)
+    [Decor/kitchenCabinetUpperDouble (12)/doorLeft]  worldPos=(15.596,1.309,28.983)  eulerY=90.0  localScale=(1.000,1.000,1.000)  bounds.center=(15.602,1.506,29.094) bounds.size=(0.035,0.394,0.221)
+    [Decor/kitchenCabinetUpperDouble (12)/doorRight]  worldPos=(15.596,1.309,29.425)  eulerY=90.0  localScale=(1.000,1.000,1.000)  bounds.center=(15.602,1.506,29.314) bounds.size=(0.035,0.394,0.221)
+    [Decor/kitchenCabinetUpperDouble (3)/doorLeft]  worldPos=(17.794,1.288,27.247)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(17.684,1.485,27.253) bounds.size=(0.221,0.394,0.035)
+    [Decor/kitchenCabinetUpperDouble (3)/doorRight]  worldPos=(17.353,1.288,27.247)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(17.463,1.485,27.253) bounds.size=(0.221,0.394,0.035)
+    [Decor/kitchenFridge/doorFreezer]  worldPos=(15.947,0.975,27.434)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(15.712,1.093,27.427) bounds.size=(0.470,0.237,0.100)
+    [Decor/kitchenFridge/doorFridge]  worldPos=(15.947,0.204,27.434)  eulerY=0.0  localScale=(1.000,1.000,1.000)  bounds.center=(15.712,0.589,27.415) bounds.size=(0.470,0.771,0.125)
+    [Decor/kitchenFridgeSmall/doorFridge]  worldPos=(19.929,0.153,30.194)  eulerY=271.0  localScale=(1.000,1.000,1.000)  bounds.center=(19.937,0.326,30.060) bounds.size=(0.076,0.347,0.270)
+    [Decor/kitchenFridgeBuiltIn/doorFreezer]  worldPos=(19.921,0.434,28.592)  eulerY=270.0  localScale=(0.875,0.880,1.000)  bounds.center=(19.924,0.477,28.508) bounds.size=(0.041,0.085,0.168)
+    [Decor/kitchenFridgeBuiltIn/doorFridge]  worldPos=(19.921,0.158,28.592)  eulerY=270.0  localScale=(0.875,0.880,1.000)  bounds.center=(19.929,0.296,28.508) bounds.size=(0.051,0.277,0.168)
+    [Decor/wall_with_one_window]  worldPos=(15.181,0.139,29.226)  eulerY=270.0  localScale=(1.148,1.076,0.735)
+    [Decor/wall_with_one_window/window_small]  worldPos=(15.126,0.820,28.662)  eulerY=270.0  localScale=(1.000,1.000,1.000)  bounds.center=(15.113,0.965,28.662) bounds.size=(0.226,0.521,0.994)
+    [Decor/wall_with_one_window/window_small_frame]  worldPos=(15.182,0.982,28.662)  eulerY=270.0  localScale=(1.000,1.000,1.000)  bounds.center=(15.182,0.982,28.662) bounds.size=(0.048,0.441,0.735)
+    [Decor/wall_with_one_window (1)]  worldPos=(20.360,0.139,28.101)  eulerY=90.0  localScale=(1.148,1.076,0.735)
+    [Decor/wall_with_one_window (1)/window_small]  worldPos=(20.416,0.820,28.666)  eulerY=90.0  localScale=(1.000,1.000,1.000)  bounds.center=(20.429,0.965,28.666) bounds.size=(0.226,0.521,0.994)
+    [Decor/wall_with_one_window (1)/window_small_frame]  worldPos=(20.359,0.982,28.665)  eulerY=90.0  localScale=(1.000,1.000,1.000)  bounds.center=(20.359,0.982,28.665) bounds.size=(0.048,0.441,0.735)
+    [Decor/wall_with_one_window (2)]  worldPos=(17.190,0.167,26.753)  eulerY=180.0  localScale=(1.179,1.076,0.716)
+    [Decor/wall_with_one_window (2)/window_small]  worldPos=(17.755,0.848,26.697)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(17.755,0.992,26.685) bounds.size=(0.994,0.521,0.226)
+    [Decor/wall_with_one_window (2)/window_small_frame]  worldPos=(17.754,1.010,26.754)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(17.754,1.010,26.754) bounds.size=(0.735,0.441,0.048)
+    [Wall]  worldPos=(17.772,0.000,28.666)  eulerY=180.0  localScale=(1.000,1.000,1.000)
+    [Wall/Walls_Bep]  worldPos=(17.772,0.451,26.892)  eulerY=180.0  localScale=(1.000,1.181,1.000)  bounds.center=(17.772,0.451,26.892) bounds.size=(0.785,0.697,0.323)
+    [Wall/Walls_Bep.001]  worldPos=(18.002,0.402,26.892)  eulerY=180.0  localScale=(1.087,1.000,1.000)  bounds.center=(16.294,0.966,30.441) bounds.size=(2.391,1.717,0.323)
+    [Wall/Walls_Bep.002]  worldPos=(17.678,0.402,26.892)  eulerY=180.0  localScale=(1.035,1.000,1.000)  bounds.center=(19.304,0.966,30.441) bounds.size=(2.276,1.717,0.323)
+    [Wall/Walls_Bep.003]  worldPos=(17.812,0.402,26.892)  eulerY=180.0  localScale=(0.750,1.000,1.000)  bounds.center=(17.812,1.529,30.441) bounds.size=(0.707,0.590,0.323)
+    [Wall/Walls_Bep.004]  worldPos=(17.772,0.402,26.892)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(16.241,0.966,26.892) bounds.size=(2.278,1.717,0.323)
+    [Wall/Walls_Bep.005]  worldPos=(17.772,0.402,26.892)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(19.304,0.966,26.892) bounds.size=(2.278,1.717,0.323)
+    [Wall/Walls_Bep.006]  worldPos=(17.772,0.402,26.892)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(17.772,1.529,26.892) bounds.size=(0.785,0.590,0.323)
+    [Wall/Walls_Bep.007]  worldPos=(17.772,0.402,26.892)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(15.259,0.966,27.658) bounds.size=(0.314,1.717,1.210)
+    [Wall/Walls_Bep.008]  worldPos=(17.772,0.402,26.892)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(15.259,0.966,29.675) bounds.size=(0.314,1.717,1.210)
+    [Wall/Walls_Bep.009]  worldPos=(17.772,0.402,26.892)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(15.259,0.402,28.666) bounds.size=(0.314,0.590,0.807)
+    [Wall/Walls_Bep.010]  worldPos=(17.772,0.402,26.892)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(15.259,1.529,28.666) bounds.size=(0.314,0.590,0.807)
+    [Wall/Walls_Bep.011]  worldPos=(17.772,0.402,26.892)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(20.286,0.966,27.658) bounds.size=(0.314,1.717,1.210)
+    [Wall/Walls_Bep.012]  worldPos=(17.772,0.402,26.892)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(20.286,0.966,29.675) bounds.size=(0.314,1.717,1.210)
+    [Wall/Walls_Bep.013]  worldPos=(17.772,0.402,26.892)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(20.286,0.402,28.666) bounds.size=(0.314,0.590,0.807)
+    [Wall/Walls_Bep.014]  worldPos=(17.772,0.402,26.892)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(20.286,1.529,28.666) bounds.size=(0.314,0.590,0.807)
+
+########## Nha_Kho ##########
+  ROOT position=(9.469, 0.000, 28.696)  eulerY=180.0  localScale=(0.764, 0.764, 0.764)
+  Bounds tổng: min=(22.000,0.000,26.500) size=(5.523,3.491,4.345)
+
+  -- Direct children của root --
+    Ceiling_Kho  pos=(24.746,2.674,28.696)  eulerY=180.0  childCount=0
+    Floor_Kho  pos=(24.746,0.076,28.696)  eulerY=180.0  childCount=0
+    Arch_Door_StorageClean  pos=(24.739,0.975,30.420)  eulerY=90.0  childCount=2
+    window_small_frame (1)  pos=(24.755,2.293,27.007)  eulerY=180.0  childCount=0
+    Decor  pos=(9.469,0.000,28.696)  eulerY=180.0  childCount=15
+    Wall  pos=(9.469,0.000,28.696)  eulerY=180.0  childCount=9
+
+  -- Object khớp "wall/door/window" (đệ quy toàn bộ) --
+    [Arch_Door_StorageClean]  worldPos=(24.739,0.975,30.420)  eulerY=90.0  localScale=(0.986,1.036,0.986)
+    [Arch_Door_StorageClean/Arch_Door_StorageClean_Body]  worldPos=(24.747,0.947,30.505)  eulerY=90.0  localScale=(210.411,210.411,210.411)  bounds.center=(24.750,0.975,30.419) bounds.size=(0.913,1.661,0.248)
+    [Arch_Door_StorageClean/Arch_Door_StorageClean_Hasp]  worldPos=(25.077,0.943,30.520)  eulerY=90.0  localScale=(210.411,210.411,210.411)  bounds.center=(25.050,0.890,30.521) bounds.size=(0.235,0.179,0.050)
+    [window_small_frame (1)]  worldPos=(24.755,2.293,27.007)  eulerY=180.0  localScale=(1.331,1.082,1.428)  bounds.center=(24.755,2.293,27.007) bounds.size=(0.806,0.632,0.091)
+    [Wall]  worldPos=(9.469,0.000,28.696)  eulerY=180.0  localScale=(1.000,1.000,1.000)
+    [Wall/Walls_Kho]  worldPos=(9.469,0.573,27.015)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(23.218,1.375,30.376) bounds.size=(2.139,2.444,0.306)
+    [Wall/Walls_Kho.001]  worldPos=(9.469,0.573,27.015)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(26.274,1.375,30.376) bounds.size=(2.139,2.444,0.306)
+    [Wall/Walls_Kho.002]  worldPos=(9.469,0.573,27.015)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(24.746,2.177,30.376) bounds.size=(0.917,0.840,0.306)
+    [Wall/Walls_Kho.003]  worldPos=(9.469,0.573,27.015)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(23.257,1.375,27.015) bounds.size=(2.215,2.444,0.306)
+    [Wall/Walls_Kho.004]  worldPos=(9.469,0.573,27.015)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(26.236,1.375,27.015) bounds.size=(2.215,2.444,0.306)
+    [Wall/Walls_Kho.005]  worldPos=(9.469,0.573,27.015)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(24.746,1.069,27.015) bounds.size=(0.764,1.833,0.306)
+    [Wall/Walls_Kho.006]  worldPos=(9.469,0.573,27.015)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(22.302,1.375,28.696) bounds.size=(0.306,2.444,3.056)
+    [Wall/Walls_Kho.007]  worldPos=(9.469,0.573,27.015)  eulerY=180.0  localScale=(1.000,1.000,1.000)  bounds.center=(27.191,1.375,28.696) bounds.size=(0.306,2.444,3.056)
+

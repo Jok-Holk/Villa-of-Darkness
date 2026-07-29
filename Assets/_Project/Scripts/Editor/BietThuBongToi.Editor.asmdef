@@ -11,7 +11,10 @@
         "glTFast.Export",
         "Unity.TextMeshPro",
         "Unity.TextMeshPro.Editor",
-        "GUID:e6a84587b0355414caa39877de2dd2bd"
+        "GUID:e6a84587b0355414caa39877de2dd2bd",
+        "Unity.ProBuilder",
+        "Unity.ProBuilder.Editor",
+        "Whinarn.UnityMeshSimplifier.Runtime"
     ],
     "includePlatforms": [
         "Editor"

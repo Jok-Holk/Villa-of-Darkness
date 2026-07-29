@@ -1,0 +1,1215 @@
+﻿{
+    "generatedAtUtc": "2026-07-20T17:32:58.0800729Z",
+    "note": "Quét tự động từ Chapter1.unity — 10 phòng tầng trệt. Xem plan vectorized-cooking-petal.md.",
+    "rooms": [
+        {
+            "name": "ThuPhong",
+            "cornerX": 20.875,
+            "cornerZ": 5.375,
+            "w": 9.25,
+            "d": 6.393848419189453,
+            "h": 4.199999809265137,
+            "rotationY": 0.00001001791224553017,
+            "primaryMaterial": "Mat_Wall_Exterior_Ochre"
+        },
+        {
+            "name": "TienSanh",
+            "cornerX": 11.875,
+            "cornerZ": 5.375,
+            "w": 9.264259338378907,
+            "d": 6.4020233154296879,
+            "h": 4.231493949890137,
+            "rotationY": 180.0,
+            "primaryMaterial": "Mat_Wall_Interior_Cream"
+        },
+        {
+            "name": "TiepKhach",
+            "cornerX": 2.8749990463256838,
+            "cornerZ": 5.375,
+            "w": 9.31127643585205,
+            "d": 6.678873062133789,
+            "h": 4.199999809265137,
+            "rotationY": 0.00001001791224553017,
+            "primaryMaterial": "Mat_Wall_Exterior_Ochre"
+        },
+        {
+            "name": "Hanh_Lang_Trai",
+            "cornerX": 3.0000009536743166,
+            "cornerZ": 11.5,
+            "w": 9.422473907470704,
+            "d": 3.3483352661132814,
+            "h": 4.199999809265137,
+            "rotationY": 0.0,
+            "primaryMaterial": "Mat_Wall_Exterior_Ochre"
+        },
+        {
+            "name": "CauThang",
+            "cornerX": 12.000011444091797,
+            "cornerZ": 11.500003814697266,
+            "w": 7.050996780395508,
+            "d": 10.285327911376954,
+            "h": 4.199999809265137,
+            "rotationY": 180.0,
+            "primaryMaterial": ""
+        },
+        {
+            "name": "Hanh_Lang_Phai",
+            "cornerX": 21.0,
+            "cornerZ": 11.5,
+            "w": 9.422470092773438,
+            "d": 3.3483314514160158,
+            "h": 4.199999809265137,
+            "rotationY": 180.0,
+            "primaryMaterial": "Mat_Wall_Exterior_Ochre"
+        },
+        {
+            "name": "Salon",
+            "cornerX": 12.0,
+            "cornerZ": 14.5,
+            "w": 16.895023345947267,
+            "d": 7.45782470703125,
+            "h": 4.199999809265137,
+            "rotationY": 180.00001525878907,
+            "primaryMaterial": "Mat_Wall_Exterior_Ochre"
+        },
+        {
+            "name": "PhongAn",
+            "cornerX": 2.8749990463256838,
+            "cornerZ": 14.374992370605469,
+            "w": 9.24999713897705,
+            "d": 8.960674285888672,
+            "h": 4.200000762939453,
+            "rotationY": 90.00000762939453,
+            "primaryMaterial": "model.028"
+        },
+        {
+            "name": "Nha_Phu_Bep",
+            "cornerX": 15.0,
+            "cornerZ": 26.5,
+            "w": 5.541572570800781,
+            "d": 4.330898284912109,
+            "h": 3.200000047683716,
+            "rotationY": 180.0,
+            "primaryMaterial": "Mat_Wall_Exterior_Ochre"
+        },
+        {
+            "name": "Nha_Kho",
+            "cornerX": 22.0,
+            "cornerZ": 26.5,
+            "w": 5.522979736328125,
+            "d": 4.345478057861328,
+            "h": 3.1999998092651369,
+            "rotationY": 180.0,
+            "primaryMaterial": "Mat_Wall_Interior_Cream"
+        }
+    ],
+    "openings": [
+        {
+            "room": "ThuPhong",
+            "side": "East",
+            "posAlong": 9.962932586669922,
+            "width": 1.3947539329528809,
+            "sillY": 1.220163106918335,
+            "openHeight": 2.9599413871765138,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "ThuPhong",
+            "side": "East",
+            "posAlong": 9.963362693786621,
+            "width": 1.030461072921753,
+            "sillY": 1.3472274541854859,
+            "openHeight": 2.508868932723999,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "ThuPhong",
+            "side": "East",
+            "posAlong": 7.544253349304199,
+            "width": 1.5024290084838868,
+            "sillY": 1.220163106918335,
+            "openHeight": 2.9599413871765138,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "ThuPhong",
+            "side": "East",
+            "posAlong": 7.544717788696289,
+            "width": 1.1100127696990967,
+            "sillY": 1.3472274541854859,
+            "openHeight": 2.508868932723999,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "ThuPhong",
+            "side": "North",
+            "posAlong": 26.84084129333496,
+            "width": 1.0970085859298707,
+            "sillY": 1.1945514678955079,
+            "openHeight": 2.9242167472839357,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "ThuPhong",
+            "side": "North",
+            "posAlong": 26.8411808013916,
+            "width": 0.8104832768440247,
+            "sillY": 1.3200823068618775,
+            "openHeight": 2.478588342666626,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "ThuPhong",
+            "side": "North",
+            "posAlong": 24.791568756103517,
+            "width": 1.2858741283416749,
+            "sillY": 1.1945514678955079,
+            "openHeight": 2.9242167472839357,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "ThuPhong",
+            "side": "North",
+            "posAlong": 24.791967391967775,
+            "width": 0.9500194191932678,
+            "sillY": 1.3200823068618775,
+            "openHeight": 2.478588342666626,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "ThuPhong",
+            "side": "North",
+            "posAlong": 27.683008193969728,
+            "width": 0.4432770609855652,
+            "sillY": 0.5283622741699219,
+            "openHeight": 0.3529226779937744,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "ThuPhong",
+            "side": "North",
+            "posAlong": 23.935686111450197,
+            "width": 0.4432770609855652,
+            "sillY": 0.5283622741699219,
+            "openHeight": 0.3529226779937744,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "ThuPhong",
+            "side": "South",
+            "posAlong": 24.617918014526368,
+            "width": 1.0335887670516968,
+            "sillY": 0.14874041080474854,
+            "openHeight": 3.6596567630767824,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "ThuPhong",
+            "side": "South",
+            "posAlong": 24.617918014526368,
+            "width": 0.9130035042762756,
+            "sillY": 0.14874041080474854,
+            "openHeight": 3.556885004043579,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "ThuPhong",
+            "side": "West",
+            "posAlong": 9.378103256225586,
+            "width": 1.0402123928070069,
+            "sillY": 0.18996357917785645,
+            "openHeight": 3.6532793045043947,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "ThuPhong",
+            "side": "West",
+            "posAlong": 9.317423820495606,
+            "width": 0.9188544154167175,
+            "sillY": 0.189963698387146,
+            "openHeight": 3.550686836242676,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "TienSanh",
+            "side": "North",
+            "posAlong": 18.93407440185547,
+            "width": 1.4763013124465943,
+            "sillY": 0.6621178984642029,
+            "openHeight": 1.7060333490371705,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "TienSanh",
+            "side": "North",
+            "posAlong": 18.934532165527345,
+            "width": 1.0907094478607178,
+            "sillY": 0.7353545427322388,
+            "openHeight": 1.4460468292236329,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "TienSanh",
+            "side": "North",
+            "posAlong": 14.545173645019532,
+            "width": 1.4763013124465943,
+            "sillY": 0.6621178984642029,
+            "openHeight": 1.7060333490371705,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "TienSanh",
+            "side": "North",
+            "posAlong": 14.545629501342774,
+            "width": 1.0907094478607178,
+            "sillY": 0.7353545427322388,
+            "openHeight": 1.4460468292236329,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "TienSanh",
+            "side": "North",
+            "posAlong": 17.066713333129884,
+            "width": 1.0251117944717408,
+            "sillY": 0.21987515687942506,
+            "openHeight": 0.023878680542111398,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "TienSanh",
+            "side": "West",
+            "posAlong": 10.393797874450684,
+            "width": 0.5639190077781677,
+            "sillY": 0.27861666679382326,
+            "openHeight": 0.39161035418510439,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "TienSanh",
+            "side": "East",
+            "posAlong": 10.393796920776368,
+            "width": 0.5639190077781677,
+            "sillY": 0.27861666679382326,
+            "openHeight": 0.39161035418510439,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "TienSanh",
+            "side": "East",
+            "posAlong": 8.196778297424317,
+            "width": 1.1605039834976197,
+            "sillY": 0.21987521648406983,
+            "openHeight": 2.1213533878326418,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "TienSanh",
+            "side": "East",
+            "posAlong": 8.264473915100098,
+            "width": 1.0251119136810303,
+            "sillY": 0.21987509727478028,
+            "openHeight": 2.0617809295654299,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "TienSanh",
+            "side": "West",
+            "posAlong": 8.196778297424317,
+            "width": 1.1605039834976197,
+            "sillY": 0.21987521648406983,
+            "openHeight": 2.1213533878326418,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "TienSanh",
+            "side": "West",
+            "posAlong": 8.264473915100098,
+            "width": 1.0251119136810303,
+            "sillY": 0.21987509727478028,
+            "openHeight": 2.0617809295654299,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "TienSanh",
+            "side": "North",
+            "posAlong": 16.612478256225587,
+            "width": 2.3953306674957277,
+            "sillY": 0.031644225120544437,
+            "openHeight": 2.8598451614379885,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "TienSanh",
+            "side": "North",
+            "posAlong": 14.534364700317383,
+            "width": 2.4361984729766847,
+            "sillY": 2.384185791015625e-7,
+            "openHeight": 2.690755605697632,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "TienSanh",
+            "side": "North",
+            "posAlong": 14.534364700317383,
+            "width": 0.9125589728355408,
+            "sillY": 0.8194314241409302,
+            "openHeight": 1.3857519626617432,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "TiepKhach",
+            "side": "East",
+            "posAlong": 8.513213157653809,
+            "width": 1.3108830451965333,
+            "sillY": 0.42901015281677248,
+            "openHeight": 1.8084208965301514,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "TiepKhach",
+            "side": "East",
+            "posAlong": 8.513213157653809,
+            "width": 1.1579467058181763,
+            "sillY": 0.4290100932121277,
+            "openHeight": 1.7576357126235963,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "TiepKhach",
+            "side": "South",
+            "posAlong": 8.232077598571778,
+            "width": 1.464139699935913,
+            "sillY": 0.3782551884651184,
+            "openHeight": 1.9570144414901734,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "TiepKhach",
+            "side": "South",
+            "posAlong": 8.146669387817383,
+            "width": 1.2933233976364136,
+            "sillY": 0.37825506925582888,
+            "openHeight": 1.902056336402893,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "TiepKhach",
+            "side": "South",
+            "posAlong": 5.291553497314453,
+            "width": 1.7234413623809815,
+            "sillY": 0.0,
+            "openHeight": 1.622727870941162,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "TiepKhach",
+            "side": "South",
+            "posAlong": 5.29102087020874,
+            "width": 1.2732993364334107,
+            "sillY": 0.06966054439544678,
+            "openHeight": 1.3754364252090455,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "TiepKhach",
+            "side": "South",
+            "posAlong": 10.282947540283204,
+            "width": 1.7234413623809815,
+            "sillY": 0.0,
+            "openHeight": 1.622727870941162,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "TiepKhach",
+            "side": "South",
+            "posAlong": 10.282414436340332,
+            "width": 1.2732993364334107,
+            "sillY": 0.06966054439544678,
+            "openHeight": 1.3754364252090455,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "TiepKhach",
+            "side": "East",
+            "posAlong": 9.833052635192871,
+            "width": 1.898851752281189,
+            "sillY": 0.2508428692817688,
+            "openHeight": 1.4592281579971314,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "TiepKhach",
+            "side": "East",
+            "posAlong": 9.833639144897461,
+            "width": 1.4028944969177247,
+            "sillY": 0.3134844899177551,
+            "openHeight": 1.2368528842926026,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "TiepKhach",
+            "side": "East",
+            "posAlong": 6.413762092590332,
+            "width": 1.8275253772735596,
+            "sillY": 0.11699509620666504,
+            "openHeight": 1.5234086513519288,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "TiepKhach",
+            "side": "East",
+            "posAlong": 6.414327144622803,
+            "width": 1.3501977920532227,
+            "sillY": 0.1823919415473938,
+            "openHeight": 1.291252851486206,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "Hanh_Lang_Trai",
+            "side": "South",
+            "posAlong": 8.516701698303223,
+            "width": 0.47410404682159426,
+            "sillY": 0.5020219087600708,
+            "openHeight": 3.124723196029663,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Hanh_Lang_Trai",
+            "side": "South",
+            "posAlong": 8.008881568908692,
+            "width": 0.4853678047657013,
+            "sillY": 0.5020219087600708,
+            "openHeight": 3.124723196029663,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Hanh_Lang_Phai",
+            "side": "South",
+            "posAlong": 25.728605270385743,
+            "width": 0.47410374879837038,
+            "sillY": 0.5020219087600708,
+            "openHeight": 3.124723196029663,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Hanh_Lang_Phai",
+            "side": "South",
+            "posAlong": 25.220779418945314,
+            "width": 0.4853675365447998,
+            "sillY": 0.5020219087600708,
+            "openHeight": 3.124723196029663,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Salon",
+            "side": "East",
+            "posAlong": 19.929689407348634,
+            "width": 1.1212226152420045,
+            "sillY": 0.947587251663208,
+            "openHeight": 2.4837164878845217,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "Salon",
+            "side": "East",
+            "posAlong": 19.929336547851564,
+            "width": 0.8283726572990418,
+            "sillY": 1.0542092323303223,
+            "openHeight": 2.1052169799804689,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "Salon",
+            "side": "East",
+            "posAlong": 18.544374465942384,
+            "width": 1.1212226152420045,
+            "sillY": 0.9475882053375244,
+            "openHeight": 2.4837164878845217,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "Salon",
+            "side": "East",
+            "posAlong": 18.544021606445314,
+            "width": 0.8283726572990418,
+            "sillY": 1.0542092323303223,
+            "openHeight": 2.1052169799804689,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "Salon",
+            "side": "East",
+            "posAlong": 17.16710662841797,
+            "width": 1.1212226152420045,
+            "sillY": 0.9475882053375244,
+            "openHeight": 2.4837164878845217,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "Salon",
+            "side": "East",
+            "posAlong": 17.1667537689209,
+            "width": 0.8283726572990418,
+            "sillY": 1.0542092323303223,
+            "openHeight": 2.1052169799804689,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "Salon",
+            "side": "East",
+            "posAlong": 15.79040241241455,
+            "width": 1.1212226152420045,
+            "sillY": 0.9475882053375244,
+            "openHeight": 2.4837164878845217,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "Salon",
+            "side": "East",
+            "posAlong": 15.79004955291748,
+            "width": 0.8283726572990418,
+            "sillY": 1.0542092323303223,
+            "openHeight": 2.1052169799804689,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "Salon",
+            "side": "South",
+            "posAlong": 23.191781997680665,
+            "width": 3.191843032836914,
+            "sillY": 0.8612121343612671,
+            "openHeight": 2.4744455814361574,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "Salon",
+            "side": "South",
+            "posAlong": 23.19276237487793,
+            "width": 2.3581724166870119,
+            "sillY": 0.9674347639083862,
+            "openHeight": 2.0973589420318605,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "Salon",
+            "side": "South",
+            "posAlong": 16.932395935058595,
+            "width": 3.1937108039855959,
+            "sillY": 0.9605311155319214,
+            "openHeight": 2.4744455814361574,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "Salon",
+            "side": "South",
+            "posAlong": 16.933387756347658,
+            "width": 2.3595521450042726,
+            "sillY": 1.0667537450790406,
+            "openHeight": 2.0973589420318605,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "PhongAn",
+            "side": "South",
+            "posAlong": 8.070295333862305,
+            "width": 2.0732579231262209,
+            "sillY": 0.9889736175537109,
+            "openHeight": 2.4837164878845217,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "PhongAn",
+            "side": "South",
+            "posAlong": 8.069652557373047,
+            "width": 1.5317480564117432,
+            "sillY": 1.0955939292907715,
+            "openHeight": 2.1052169799804689,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "PhongAn",
+            "side": "South",
+            "posAlong": 5.5662713050842289,
+            "width": 2.084394693374634,
+            "sillY": 0.9688873291015625,
+            "openHeight": 2.4837164878845217,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "PhongAn",
+            "side": "South",
+            "posAlong": 5.5656256675720219,
+            "width": 1.5399762392044068,
+            "sillY": 1.075507640838623,
+            "openHeight": 2.1052169799804689,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "PhongAn",
+            "side": "West",
+            "posAlong": 16.13550567626953,
+            "width": 1.30768883228302,
+            "sillY": 0.9414960145950317,
+            "openHeight": 2.483715772628784,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "PhongAn",
+            "side": "West",
+            "posAlong": 16.135112762451173,
+            "width": 0.9661363363265991,
+            "sillY": 1.0481176376342774,
+            "openHeight": 2.1052165031433107,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "PhongAn",
+            "side": "West",
+            "posAlong": 19.681196212768556,
+            "width": 3.771369218826294,
+            "sillY": 0.9738520383834839,
+            "openHeight": 2.3260462284088136,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "PhongAn",
+            "side": "West",
+            "posAlong": 19.681196212768556,
+            "width": 3.2433769702911379,
+            "sillY": 2.056471586227417,
+            "openHeight": 1.1348776817321778,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "East",
+            "posAlong": 27.6313533782959,
+            "width": 0.30000001192092898,
+            "sillY": 0.24364200234413148,
+            "openHeight": 0.40555810928344729,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "North",
+            "posAlong": 19.129335403442384,
+            "width": 0.4671720564365387,
+            "sillY": 0.24364200234413148,
+            "openHeight": 0.40555810928344729,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "North",
+            "posAlong": 17.52961540222168,
+            "width": 0.4421572983264923,
+            "sillY": 0.2258220911026001,
+            "openHeight": 0.3831367492675781,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "North",
+            "posAlong": 18.02783203125,
+            "width": 0.44134435057640078,
+            "sillY": 0.21629692614078523,
+            "openHeight": 0.2651756703853607,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "South",
+            "posAlong": 15.897125244140625,
+            "width": 0.30000001192092898,
+            "sillY": 0.21629692614078523,
+            "openHeight": 0.2651756703853607,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "West",
+            "posAlong": 29.542863845825197,
+            "width": 0.44135257601737978,
+            "sillY": 0.21629692614078523,
+            "openHeight": 0.2651756703853607,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "North",
+            "posAlong": 16.514921188354493,
+            "width": 0.44134435057640078,
+            "sillY": 0.21629692614078523,
+            "openHeight": 0.2651756703853607,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "North",
+            "posAlong": 17.017601013183595,
+            "width": 0.44134435057640078,
+            "sillY": 0.21629692614078523,
+            "openHeight": 0.2651756703853607,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "North",
+            "posAlong": 18.530513763427736,
+            "width": 0.44134435057640078,
+            "sillY": 0.21629692614078523,
+            "openHeight": 0.2651756703853607,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "North",
+            "posAlong": 18.15276336669922,
+            "width": 0.30000001192092898,
+            "sillY": 1.5133864879608155,
+            "openHeight": 0.4633849561214447,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "North",
+            "posAlong": 17.932092666625978,
+            "width": 0.30000001192092898,
+            "sillY": 1.5133864879608155,
+            "openHeight": 0.4633849561214447,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "North",
+            "posAlong": 19.088401794433595,
+            "width": 0.30000001192092898,
+            "sillY": 1.5133864879608155,
+            "openHeight": 0.4633849561214447,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "North",
+            "posAlong": 18.86772918701172,
+            "width": 0.30000001192092898,
+            "sillY": 1.5133864879608155,
+            "openHeight": 0.4633849561214447,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "North",
+            "posAlong": 19.558650970458986,
+            "width": 0.30000001192092898,
+            "sillY": 1.5133864879608155,
+            "openHeight": 0.4633849561214447,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "North",
+            "posAlong": 19.337980270385743,
+            "width": 0.30000001192092898,
+            "sillY": 1.5133864879608155,
+            "openHeight": 0.4633849561214447,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "North",
+            "posAlong": 18.623014450073243,
+            "width": 0.30000001192092898,
+            "sillY": 1.5133864879608155,
+            "openHeight": 0.4633849561214447,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "North",
+            "posAlong": 18.402341842651368,
+            "width": 0.30000001192092898,
+            "sillY": 1.5133864879608155,
+            "openHeight": 0.4633849561214447,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "North",
+            "posAlong": 17.21388053894043,
+            "width": 0.30000001192092898,
+            "sillY": 1.5133864879608155,
+            "openHeight": 0.4633849561214447,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "North",
+            "posAlong": 16.993209838867189,
+            "width": 0.30000001192092898,
+            "sillY": 1.5133864879608155,
+            "openHeight": 0.4633849561214447,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "North",
+            "posAlong": 16.751737594604493,
+            "width": 0.30000001192092898,
+            "sillY": 1.5133864879608155,
+            "openHeight": 0.4633849561214447,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "North",
+            "posAlong": 16.53106689453125,
+            "width": 0.30000001192092898,
+            "sillY": 1.5133864879608155,
+            "openHeight": 0.4633849561214447,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "North",
+            "posAlong": 16.281484603881837,
+            "width": 0.30000001192092898,
+            "sillY": 1.5133864879608155,
+            "openHeight": 0.4633849561214447,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "North",
+            "posAlong": 16.06081199645996,
+            "width": 0.30000001192092898,
+            "sillY": 1.5133864879608155,
+            "openHeight": 0.4633849561214447,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "West",
+            "posAlong": 28.117448806762697,
+            "width": 0.30000001192092898,
+            "sillY": 1.5381518602371216,
+            "openHeight": 0.4633849561214447,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "West",
+            "posAlong": 28.33812141418457,
+            "width": 0.30000001192092898,
+            "sillY": 1.5381518602371216,
+            "openHeight": 0.4633849561214447,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "West",
+            "posAlong": 28.605539321899415,
+            "width": 0.30000001192092898,
+            "sillY": 1.5381518602371216,
+            "openHeight": 0.4633849561214447,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "West",
+            "posAlong": 28.82621192932129,
+            "width": 0.30000001192092898,
+            "sillY": 1.5381518602371216,
+            "openHeight": 0.4633849561214447,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "West",
+            "posAlong": 29.0936279296875,
+            "width": 0.30000001192092898,
+            "sillY": 1.5381518602371216,
+            "openHeight": 0.4633849561214447,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "West",
+            "posAlong": 29.314298629760743,
+            "width": 0.30000001192092898,
+            "sillY": 1.5381518602371216,
+            "openHeight": 0.4633849561214447,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "North",
+            "posAlong": 17.68413543701172,
+            "width": 0.30000001192092898,
+            "sillY": 1.5133864879608155,
+            "openHeight": 0.4633849561214447,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "North",
+            "posAlong": 17.463462829589845,
+            "width": 0.30000001192092898,
+            "sillY": 1.5133864879608155,
+            "openHeight": 0.4633849561214447,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "West",
+            "posAlong": 27.42734146118164,
+            "width": 0.30000001192092898,
+            "sillY": 1.1450368165969849,
+            "openHeight": 0.27864426374435427,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "West",
+            "posAlong": 27.41484260559082,
+            "width": 0.30000001192092898,
+            "sillY": 0.2396216094493866,
+            "openHeight": 0.9054152369499207,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "East",
+            "posAlong": 30.059526443481447,
+            "width": 0.30000001192092898,
+            "sillY": 0.17943169176578523,
+            "openHeight": 0.4077032506465912,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "East",
+            "posAlong": 28.508180618286134,
+            "width": 0.30000001192092898,
+            "sillY": 0.5100138187408447,
+            "openHeight": 0.09998954087495804,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "East",
+            "posAlong": 28.508180618286134,
+            "width": 0.30000001192092898,
+            "sillY": 0.18511183559894563,
+            "openHeight": 0.32490190863609316,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "West",
+            "posAlong": 28.66152572631836,
+            "width": 0.994289219379425,
+            "sillY": 0.8277847766876221,
+            "openHeight": 0.6116616129875183,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "West",
+            "posAlong": 28.661832809448243,
+            "width": 0.7345929741859436,
+            "sillY": 0.8947398662567139,
+            "openHeight": 0.5184490084648132,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "East",
+            "posAlong": 28.665576934814454,
+            "width": 0.994289219379425,
+            "sillY": 0.8277847766876221,
+            "openHeight": 0.6116616129875183,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "East",
+            "posAlong": 28.66526985168457,
+            "width": 0.7345929741859436,
+            "sillY": 0.8947398662567139,
+            "openHeight": 0.5184490084648132,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "North",
+            "posAlong": 17.75462532043457,
+            "width": 0.9942893981933594,
+            "sillY": 0.8601702451705933,
+            "openHeight": 0.6116616129875183,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "Nha_Phu_Bep",
+            "side": "North",
+            "posAlong": 17.754318237304689,
+            "width": 0.7345930933952332,
+            "sillY": 0.9271254539489746,
+            "openHeight": 0.5184490084648132,
+            "connectsToRoom": "",
+            "isWindow": true
+        },
+        {
+            "room": "Nha_Kho",
+            "side": "South",
+            "posAlong": 24.2988338470459,
+            "width": 0.9132652878761292,
+            "sillY": 0.13217616081237794,
+            "openHeight": 1.5227417945861817,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Kho",
+            "side": "South",
+            "posAlong": 24.26156997680664,
+            "width": 0.30000001192092898,
+            "sillY": 0.7341209650039673,
+            "openHeight": 0.16389593482017518,
+            "connectsToRoom": "",
+            "isWindow": false
+        },
+        {
+            "room": "Nha_Kho",
+            "side": "North",
+            "posAlong": 24.75459861755371,
+            "width": 0.8061613440513611,
+            "sillY": 1.8123841285705567,
+            "openHeight": 0.5791683793067932,
+            "connectsToRoom": "",
+            "isWindow": true
+        }
+    ],
+    "floors": [
+        {
+            "index": 0,
+            "elevationY": 0.0,
+            "height": 4.199999809265137,
+            "outline": [],
+            "isPlaceholder": false
+        }
+    ],
+    "staircase": {
+        "cornerX": 12.000011444091797,
+        "cornerZ": 11.500003814697266,
+        "w": 7.050996780395508,
+        "d": 10.285327911376954,
+        "floorsSpanned": 3,
+        "floorHeight": 4.199999809265137
+    }
+}

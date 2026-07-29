@@ -128,6 +128,12 @@ MonoBehaviour:
   _noteDefinition: {fileID: 11400000, guid: 8481051ade653744b9ffec87cd9c4efb, type: 2}
   _note: Sol
   _piano: {fileID: 5618304868403221464}
+  _keyClip: {fileID: 8300000, guid: 9e2a69488908b764f91fdf61171b8eb8, type: 3}
+  _pressDepth: 0.05
+  _pressSpeed: 0.6
+  _returnSpeed: 0.25
+  _renderer: {fileID: 0}
+  _highlightEmissiveColor: {r: 1, g: 0.85, b: 0.2, a: 1}
 --- !u!1 &748207382146929167
 GameObject:
   m_ObjectHideFlags: 0
@@ -256,6 +262,12 @@ MonoBehaviour:
   _noteDefinition: {fileID: 11400000, guid: 8481051ade653744b9ffec87cd9c4efb, type: 2}
   _note: Do
   _piano: {fileID: 5618304868403221464}
+  _keyClip: {fileID: 8300000, guid: 9e2a69488908b764f91fdf61171b8eb8, type: 3}
+  _pressDepth: 0.05
+  _pressSpeed: 0.6
+  _returnSpeed: 0.25
+  _renderer: {fileID: 0}
+  _highlightEmissiveColor: {r: 1, g: 0.85, b: 0.2, a: 1}
 --- !u!1 &1136466573029362912
 GameObject:
   m_ObjectHideFlags: 0
@@ -384,6 +396,12 @@ MonoBehaviour:
   _noteDefinition: {fileID: 11400000, guid: 8481051ade653744b9ffec87cd9c4efb, type: 2}
   _note: Re
   _piano: {fileID: 5618304868403221464}
+  _keyClip: {fileID: 8300000, guid: 9e2a69488908b764f91fdf61171b8eb8, type: 3}
+  _pressDepth: 0.05
+  _pressSpeed: 0.6
+  _returnSpeed: 0.25
+  _renderer: {fileID: 0}
+  _highlightEmissiveColor: {r: 1, g: 0.85, b: 0.2, a: 1}
 --- !u!1 &2621890892374050782
 GameObject:
   m_ObjectHideFlags: 0
@@ -512,6 +530,12 @@ MonoBehaviour:
   _noteDefinition: {fileID: 11400000, guid: 8481051ade653744b9ffec87cd9c4efb, type: 2}
   _note: Mi
   _piano: {fileID: 5618304868403221464}
+  _keyClip: {fileID: 8300000, guid: 9e2a69488908b764f91fdf61171b8eb8, type: 3}
+  _pressDepth: 0.05
+  _pressSpeed: 0.6
+  _returnSpeed: 0.25
+  _renderer: {fileID: 0}
+  _highlightEmissiveColor: {r: 1, g: 0.85, b: 0.2, a: 1}
 --- !u!1 &4666701972656853836
 GameObject:
   m_ObjectHideFlags: 0
@@ -640,6 +664,12 @@ MonoBehaviour:
   _noteDefinition: {fileID: 11400000, guid: 8481051ade653744b9ffec87cd9c4efb, type: 2}
   _note: La
   _piano: {fileID: 5618304868403221464}
+  _keyClip: {fileID: 8300000, guid: 9e2a69488908b764f91fdf61171b8eb8, type: 3}
+  _pressDepth: 0.05
+  _pressSpeed: 0.6
+  _returnSpeed: 0.25
+  _renderer: {fileID: 0}
+  _highlightEmissiveColor: {r: 1, g: 0.85, b: 0.2, a: 1}
 --- !u!1 &4679437269619466587
 GameObject:
   m_ObjectHideFlags: 0
@@ -752,20 +782,50 @@ MonoBehaviour:
   m_EditorClassIdentifier: BietThuBongToi.Runtime::PianoInteractable
   _noteDefinition: {fileID: 11400000, guid: 8481051ade653744b9ffec87cd9c4efb, type: 2}
   _correctSequence:
-  - Do
-  - Re
   - Mi
+  - Do
   - Fa
+  - Re
   - Sol
-  - La
-  - Si
   _correctNoteClip: {fileID: 0}
   _wrongNoteClip: {fileID: 0}
   _sequenceCompleteClip: {fileID: 0}
+  _playableKeys:
+  - {fileID: 2262591295264800886}
+  - {fileID: 896060308422443203}
+  - {fileID: 81078126738301437}
+  - {fileID: 143432777388164479}
+  - {fileID: 1122774084600529949}
+  - {fileID: 4281113894037721926}
+  - {fileID: 2576830615156913082}
+  _correctProgressBarks: []
+  _noteLabelText: {fileID: 0}
+  _noteLabelOffset: {x: 0, y: 0.15, z: 0}
   _spawnManager: {fileID: 0}
   _ghostPrefab: {fileID: 0}
   _ghostSpawnPoint: {fileID: 0}
+  _cameraZoomTarget: {fileID: 0}
+  _playerController: {fileID: 0}
+  _zoomSpeed: 3
+  _inventorySystem: {fileID: 0}
+  _requiredItemIds:
+  - manh_giay_01
+  - manh_giay_02
+  - manh_giay_03
+  - manh_giay_04
+  - manh_giay_05
+  _requireDiaryFinished: 1
+  _flashlight: {fileID: 0}
   OnSequenceComplete:
+    m_PersistentCalls:
+      m_Calls: []
+  OnEnterPianoMode:
+    m_PersistentCalls:
+      m_Calls: []
+  OnExitPianoMode:
+    m_PersistentCalls:
+      m_Calls: []
+  OnMissingSheetMusic:
     m_PersistentCalls:
       m_Calls: []
 --- !u!1 &5781897907806385485
@@ -896,6 +956,12 @@ MonoBehaviour:
   _noteDefinition: {fileID: 11400000, guid: 8481051ade653744b9ffec87cd9c4efb, type: 2}
   _note: Fa
   _piano: {fileID: 5618304868403221464}
+  _keyClip: {fileID: 8300000, guid: 9e2a69488908b764f91fdf61171b8eb8, type: 3}
+  _pressDepth: 0.05
+  _pressSpeed: 0.6
+  _returnSpeed: 0.25
+  _renderer: {fileID: 0}
+  _highlightEmissiveColor: {r: 1, g: 0.85, b: 0.2, a: 1}
 --- !u!1 &6187693240192537995
 GameObject:
   m_ObjectHideFlags: 0
@@ -1024,3 +1090,9 @@ MonoBehaviour:
   _noteDefinition: {fileID: 11400000, guid: 8481051ade653744b9ffec87cd9c4efb, type: 2}
   _note: Si
   _piano: {fileID: 5618304868403221464}
+  _keyClip: {fileID: 8300000, guid: 9e2a69488908b764f91fdf61171b8eb8, type: 3}
+  _pressDepth: 0.05
+  _pressSpeed: 0.6
+  _returnSpeed: 0.25
+  _renderer: {fileID: 0}
+  _highlightEmissiveColor: {r: 1, g: 0.85, b: 0.2, a: 1}

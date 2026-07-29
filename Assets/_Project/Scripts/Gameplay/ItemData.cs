@@ -45,6 +45,11 @@ public class ItemData : ScriptableObject
              "nên item KHÔNG BAO GIỜ bị mất/destroy khi Use.")]
     public GameObject handHeldPrefab;
 
+    [Tooltip("Chỉnh riêng góc xoay model khi cầm lên tay -- 1 số model gốc (glb) xuất ra bị nằm ngang thay vì " +
+             "đứng dọc do quy ước trục khác nhau giữa các phần mềm 3D, chỉnh 3 số này để dựng đứng lại đúng " +
+             "hướng cầm tự nhiên. Mặc định (0,0,0) = giữ nguyên góc gốc của model.")]
+    public Vector3 handHeldRotationOffset = Vector3.zero;
+
     [Header("Examine trong túi đồ (MỚI)")]
     [Tooltip("Item này có thể/cần xem 3D (xoay để đọc mật khẩu, xem chi tiết...) khi click trong Inventory.\n" +
              "Nếu true, nhớ đăng ký entry tương ứng trong InventoryUI._examineRegistry.")]

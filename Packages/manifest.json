@@ -17,7 +17,7 @@
     "com.unity.ugui": "2.0.0",
     "com.unity.universal-forwardplus-volumetric": "https://github.com/mseonKim/URP-VolumetricFog-ForwardPlus.git",
     "com.unity.visualscripting": "1.9.10",
-    "com.whinarn.unitymeshsimplifier": "https://github.com/Unity-Technologies/UnityMeshSimplifier.git",
+    "com.whinarn.unitymeshsimplifier": "https://github.com/Whinarn/UnityMeshSimplifier.git",
     "com.wooshii.hierarchydecorator": "https://github.com/WooshiiDev/HierarchyDecorator.git",
     "com.unity.modules.accessibility": "1.0.0",
     "com.unity.modules.adaptiveperformance": "1.0.0",

@@ -26,6 +26,21 @@ public class InventorySystem : MonoBehaviour
     private void Start()
     {
         if (_handheldController == null) _handheldController = HandheldItemController.Instance;
+        SyncAlreadyCollectedPickups();
+    }
+
+    // Scene vừa load (lần đầu, Retry, hay debug-jump checkpoint) -- ẩn NGAY mọi PickupItem trong world mà
+    // item tương ứng đã có sẵn trong GameData.collectedItems, tránh vừa có trong túi vừa "hồi sinh" đứng
+    // ngoài world. Item bị revertInventory loại khỏi collectedItems thì KHÔNG nằm trong danh sách này nữa
+    // -- PickupItem của nó giữ nguyên trạng thái mặc định (hiện/nhặt được), đúng ý "đồ hồi lại trong map".
+    private void SyncAlreadyCollectedPickups()
+    {
+        var allPickups = FindObjectsByType<PickupItem>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        foreach (var p in allPickups)
+        {
+            if (p.Data != null && GameData.collectedItems.Contains(p.Data.itemId))
+                p.SyncAlreadyPickedUp();
+        }
     }
 
     private void OnDestroy()
@@ -51,6 +66,11 @@ public class InventorySystem : MonoBehaviour
             GameData.collectedItems.Add(id);
             OnItemAdded.Invoke(id);
             Debug.Log($"[Inventory] Thêm: {id}");
+
+            // Vật phẩm ĐẦU TIÊN trong suốt đời game -- dạy người chơi mới biết Tab mở túi đồ, chỉ 1 lần
+            // duy nhất là đủ nhớ, không cần lặp lại mỗi lần nhặt thêm.
+            if (GameData.collectedItems.Count == 1)
+                TutorialHintUI.Instance.ShowOnce("tab_inventory", "Tab", "Mở túi đồ");
         }
     }
 
@@ -92,6 +112,20 @@ public class InventorySystem : MonoBehaviour
 
     [ContextMenu("Test: Add salt_jar")]
     private void TestAddSaltJar() => AddItem("salt_jar");
+
+    [ContextMenu("Debug: Add ALL Items (kể cả nhật ký)")]
+    private void DebugAddAllItems()
+    {
+        if (_itemDatabase == null) { Debug.LogWarning("[Inventory] _itemDatabase trống."); return; }
+        int count = 0;
+        foreach (var data in _itemDatabase)
+        {
+            if (data == null || string.IsNullOrEmpty(data.itemId)) continue;
+            AddItem(data.itemId);
+            count++;
+        }
+        Debug.Log($"[Inventory] Debug Add ALL: đã thêm {count} item.");
+    }
 
     [ContextMenu("Test: Clear All Items")]
     private void TestClearAll()

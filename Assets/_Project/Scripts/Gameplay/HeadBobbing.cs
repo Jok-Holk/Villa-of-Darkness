@@ -40,11 +40,6 @@ public class HeadbobSystem : MonoBehaviour
     [Range(0f, 0.5f)]
     public float MinSpeedThreshold = 0.1f;
 
-    [Header("Debug")]
-    [Tooltip("Bật lên để in log velocity/isGrounded/smoothedSpeed mỗi 0.5s lúc Play — xem Console")]
-    [SerializeField] private bool _debugLog = false;
-    private float _debugLogTimer;
-
     private Vector3 _startLocalPos;
     private CharacterController _cc;
     private FootstepSystem _footstepSystem;
@@ -114,15 +109,5 @@ public class HeadbobSystem : MonoBehaviour
         pos.x =  Mathf.Cos(phase) * BobAmplitude * 0.5f * ampScale;
 
         transform.localPosition = _startLocalPos + pos;
-
-        if (_debugLog)
-        {
-            _debugLogTimer += Time.deltaTime;
-            if (_debugLogTimer >= 0.5f)
-            {
-                _debugLogTimer = 0f;
-                Debug.Log($"[HeadBob Debug] cc.velocity={_cc.velocity} horizontalMag={horizontalVel.magnitude:F2} isGrounded={_cc.isGrounded} rawSpeed={rawSpeed:F2} smoothedSpeed={_smoothedSpeed:F2} tBob={_tBob:F2} active={active}");
-            }
-        }
     }
 }

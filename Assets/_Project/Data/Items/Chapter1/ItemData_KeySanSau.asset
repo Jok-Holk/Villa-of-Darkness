@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c01db4d44d7b554a80c098c52d17818, type: 3}
+  m_Name: ItemData_KeySanSau
+  m_EditorClassIdentifier: BietThuBongToi.Runtime::ItemData
+  itemId: key_sansau
+  itemName: "Ch\xECa kho\xE1 S\xE2n Sau"
+  description: "Một chiếc chìa khoá cũ, hoen gỉ nhẹ ở phần răng cưa, không có nhãn hay ký hiệu gì."
+  icon: {fileID: 21300000, guid: 2d4a32a58d05ff94fb07bd4f175ec98d, type: 3}
+  slotBorderColor: {r: 1, g: 1, b: 1, a: 1}
+  monologueClip: {fileID: 0}
+  isKeyItem: 1
+  isUsable: 1
+  handHeldPrefab: {fileID: 4588586410931242016, guid: 759fb9c0527fbdd4db26b1f491948426, type: 3}
+  handHeldRotationOffset: {x: 0, y: 0, z: 0}
+  isExaminable: 1

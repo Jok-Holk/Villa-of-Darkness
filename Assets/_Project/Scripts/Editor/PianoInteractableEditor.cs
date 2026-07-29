@@ -56,12 +56,6 @@ public class PianoInteractableEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_playableKeys"),
             new GUIContent("Playable Keys", "Kéo đúng thứ tự trái→phải: Key_Do, Key_Re, Key_Mi, Key_Fa, Key_Sol, Key_La, Key_Si"), true);
 
-        // Bark — lời thoại ngắn khi bấm đúng ← MỚI
-        EditorGUILayout.Space();
-        EditorGUILayout.LabelField("Bark — lời thoại ngắn khi bấm đúng", EditorStyles.boldLabel);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_correctProgressBarks"),
-            new GUIContent("Correct Progress Barks"), true);
-
         // Note Label 3D — bám theo phím ← MỚI
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Note Label — chữ 3D bám theo phím", EditorStyles.boldLabel);
@@ -70,13 +64,6 @@ public class PianoInteractableEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_noteLabelOffset"),
             new GUIContent("Offset (X/Y/Z)"));
 
-        // Ghost Spawn
-        EditorGUILayout.Space();
-        EditorGUILayout.LabelField("Ghost Spawn", EditorStyles.boldLabel);
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_spawnManager"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_ghostPrefab"));
-        EditorGUILayout.PropertyField(serializedObject.FindProperty("_ghostSpawnPoint"));
-
         // Camera Zoom
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Camera Zoom", EditorStyles.boldLabel);
@@ -84,15 +71,20 @@ public class PianoInteractableEditor : Editor
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_playerController"));
         EditorGUILayout.PropertyField(serializedObject.FindProperty("_zoomSpeed"));
 
-        // Sheet Music Lock ← MỚI
+        // Sheet Music Lock -- ĐÃ SỬA: field cũ "_requiredItemId" (1 string) không còn tồn tại từ lúc
+        // PianoInteractable đổi sang yêu cầu ĐỦ 5 mảnh giấy + đọc xong nhật ký (thay vì 1 item duy nhất) --
+        // FindProperty trả về null cho field đã xoá, PropertyField(null) ném NullReferenceException liên tục.
         EditorGUILayout.Space();
         EditorGUILayout.LabelField("Sheet Music Lock", EditorStyles.boldLabel);
 
         SerializedProperty invProp = serializedObject.FindProperty("_inventorySystem");
         EditorGUILayout.PropertyField(invProp, new GUIContent("Inventory System"));
 
-        SerializedProperty reqProp = serializedObject.FindProperty("_requiredItemId");
-        EditorGUILayout.PropertyField(reqProp, new GUIContent("Required Item ID"));
+        SerializedProperty reqIdsProp = serializedObject.FindProperty("_requiredItemIds");
+        EditorGUILayout.PropertyField(reqIdsProp, new GUIContent("Required Item IDs (5 mảnh giấy)"), true);
+
+        SerializedProperty reqDiaryProp = serializedObject.FindProperty("_requireDiaryFinished");
+        EditorGUILayout.PropertyField(reqDiaryProp, new GUIContent("Require Diary Finished"));
 
         // Cảnh báo nếu chưa gán InventorySystem
         if (invProp.objectReferenceValue == null)
@@ -102,6 +94,11 @@ public class PianoInteractableEditor : Editor
                 "player interact được luôn.",
                 MessageType.Warning);
         }
+
+        // Đèn pin — tắt tạm khi chơi đàn, khôi phục đúng trạng thái khi thoát
+        EditorGUILayout.Space();
+        EditorGUILayout.LabelField("Đèn pin", EditorStyles.boldLabel);
+        EditorGUILayout.PropertyField(serializedObject.FindProperty("_flashlight"), new GUIContent("Flashlight"));
 
         // Events
         EditorGUILayout.Space();

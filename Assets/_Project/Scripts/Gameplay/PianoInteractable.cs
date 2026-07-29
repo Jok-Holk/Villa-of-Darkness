@@ -27,20 +27,11 @@ public class PianoInteractable : MonoBehaviour, IInteractable
     [SerializeField] private PianoKey[] _playableKeys;
     private int _selectedKeyIndex = 0;
 
-    [Header("Bark — lời thoại ngắn khi bấm đúng thứ tự (không dùng DialogueUI đầy đủ)")]
-    [Tooltip("Random 1 trong các clip này mỗi khi bấm đúng 1 nốt trong sequence")]
-    [SerializeField] private AudioClip[] _correctProgressBarks;
-
     [Header("Note Label — chữ 3D nổi trong không gian, bám theo phím đang chọn")]
     [Tooltip("3D Text (World Space, KHÔNG phải Canvas UI) — kéo object 'Text - TextMeshPro' (3D Object) vào đây. Để trống nếu chưa làm.")]
     [SerializeField] private TMPro.TextMeshPro _noteLabelText;
     [Tooltip("Lệch X/Y/Z so với vị trí phím đang chọn (world space) — CHỈNH TRỰC TIẾP 3 SỐ NÀY để đổi vị trí, không kéo tay object (object sẽ bị code ghi đè mỗi lần chọn phím)")]
     [SerializeField] private Vector3 _noteLabelOffset = new Vector3(0f, 0.15f, 0f);
-
-    [Header("Ghost Spawn")]
-    [SerializeField] private SpawnManager _spawnManager;
-    [SerializeField] private GameObject   _ghostPrefab;
-    [SerializeField] private Transform    _ghostSpawnPoint;
 
     [Header("Camera Zoom")]
     [Tooltip("Vị trí camera sẽ zoom đến khi nhìn vào piano")]
@@ -50,11 +41,13 @@ public class PianoInteractable : MonoBehaviour, IInteractable
     [Tooltip("Tốc độ zoom vào/ra")]
     [SerializeField] private float _zoomSpeed = 3f;
 
-    [Header("Sheet Music Lock")]
-    [Tooltip("Kéo InventorySystem vào để kiểm tra SheetMusic trước khi chơi")]
+    [Header("Điều kiện mở khoá — đủ 5 mảnh giấy + đọc xong nhật ký (Salon)")]
+    [Tooltip("Kéo InventorySystem vào để kiểm tra trước khi chơi")]
     [SerializeField] private InventorySystem _inventorySystem;
-    [Tooltip("Item ID của tờ nhạc — mặc định: SheetMusic")]
-    [SerializeField] private string _requiredItemId = "SheetMusic";
+    [Tooltip("itemId của 5 mảnh giấy — phải có ĐỦ CẢ 5 mới cho chơi")]
+    [SerializeField] private string[] _requiredItemIds = { "manh_giay_01", "manh_giay_02", "manh_giay_03", "manh_giay_04", "manh_giay_05" };
+    [Tooltip("Bắt buộc đọc xong nhật ký (DiaryReaderUI.HasFinishedReading) trước khi cho chơi piano")]
+    [SerializeField] private bool _requireDiaryFinished = true;
 
     [Header("Đèn pin — tạm tắt khi chơi đàn, khôi phục đúng trạng thái trước đó khi thoát")]
     [SerializeField] private FlashlightController _flashlight;
@@ -83,10 +76,18 @@ public class PianoInteractable : MonoBehaviour, IInteractable
     /// <summary>Fire khi player interact nhưng chưa có SheetMusic — UI dùng để hiện prompt.</summary>
     public UnityEvent OnMissingSheetMusic = new UnityEvent();
 
+    public bool IsCompleted => _isCompleted;
+
     // ─── INIT ─────────────────────────────────────────────────────────────────
     private void Awake()
     {
         _cam = Camera.main;
+
+        // THÊM 2026-07-27: Nhớ piano đã giải xong theo checkpoint -- trước đây Retry (chết) SAU khi đã đàn
+        // xong sẽ bắt đàn lại từ đầu dù đã hoàn thành đúng ở checkpoint trước đó. Đăng ký ở Awake() (không
+        // phải Start()) vì CheckpointManager.Restore() chạy ngay sau khi scene load, trước Start().
+        string id = "Piano." + CheckpointManager.GetHierarchyPath(transform);
+        CheckpointManager.RegisterFlag(id, () => _isCompleted, v => _isCompleted = v);
     }
 
     private void Start()
@@ -193,16 +194,27 @@ public class PianoInteractable : MonoBehaviour, IInteractable
 
         if (_isInPianoMode) return; // đang trong mode → Update() lo việc thoát
 
-        // Kiểm tra tờ nhạc — phải có trong túi mới được chơi
-        if (_inventorySystem != null && !string.IsNullOrEmpty(_requiredItemId))
+        // Kiểm tra đủ 5 mảnh giấy — phải có TẤT CẢ mới được chơi
+        if (_inventorySystem != null && _requiredItemIds != null)
         {
-            if (!_inventorySystem.HasItem(_requiredItemId))
+            foreach (var id in _requiredItemIds)
             {
-                Debug.Log("[Piano] Cần tìm bản nhạc trước.");
-                // Fire event để UI hiện prompt nếu cần (designer wire vào UnityEvent)
-                OnMissingSheetMusic?.Invoke();
-                return;
+                if (string.IsNullOrEmpty(id)) continue;
+                if (!_inventorySystem.HasItem(id))
+                {
+                    Debug.Log($"[Piano] Còn thiếu mảnh giấy ({id}) — chưa đủ 5 mảnh.");
+                    OnMissingSheetMusic?.Invoke();
+                    return;
+                }
             }
+        }
+
+        // Kiểm tra đã đọc xong nhật ký chưa
+        if (_requireDiaryFinished && DiaryReaderUI.Instance != null && !DiaryReaderUI.Instance.HasFinishedReading)
+        {
+            Debug.Log("[Piano] Chưa đọc xong nhật ký — chưa muốn động vào cây đàn này.");
+            OnMissingSheetMusic?.Invoke();
+            return;
         }
 
         EnterPianoMode();
@@ -325,10 +337,6 @@ public class PianoInteractable : MonoBehaviour, IInteractable
             _inputSequence.Add(note);
             PlaySFX(_correctNoteClip);
 
-            // Bark ngắn ngẫu nhiên khi đúng — không dùng DialogueUI đầy đủ, chỉ 1 câu thoại rời
-            if (_correctProgressBarks != null && _correctProgressBarks.Length > 0)
-                PlaySFX(_correctProgressBarks[Random.Range(0, _correctProgressBarks.Length)]);
-
             string progress = string.Join(" → ", _inputSequence);
             Debug.Log($"[Piano] ✔ {note} | {progress} ({_inputSequence.Count}/{_correctSequence.Length})");
 
@@ -354,15 +362,6 @@ public class PianoInteractable : MonoBehaviour, IInteractable
         OnSequenceComplete.Invoke();
 
         ExitPianoMode();
-
-        if (_spawnManager != null && _ghostPrefab != null)
-        {
-            if (_ghostSpawnPoint != null)
-                _spawnManager.SpawnAtTransform(_ghostPrefab, _ghostSpawnPoint);
-            else
-                _spawnManager.SpawnAt(_ghostPrefab, transform.position + transform.forward * 2f);
-            Debug.Log("[Piano] Ghost spawned!");
-        }
     }
 
     // ─── CAMERA ZOOM (Lerp) ───────────────────────────────────────────────────

@@ -61,8 +61,7 @@ public class DeathScreenUI : MonoBehaviour
     [SerializeField] private TMP_Text headlineGhostR;
     [SerializeField] private TMP_Text headlineGhostC;
 
-    // Jok tự chỉnh trực tiếp trong Inspector — kéo số này rồi bấm lại "VoD/Temp/Preview DeathScreen" để thấy ngay,
-    // không cần nhờ sửa code + recompile mỗi lần nữa. 0.5 = tâm sáng ở giữa màn hình thật, 1 = sát mép trên.
+    // Jok tự chỉnh trực tiếp trong Inspector. 0.5 = tâm sáng ở giữa màn hình thật, 1 = sát mép trên.
     [SerializeField] [Range(0.3f, 1f)] private float vignetteCenterY = 0.82f;
 
     // ── Gốc giữ nguyên ────────────────────────────────────────────────────────
@@ -157,6 +156,11 @@ public class DeathScreenUI : MonoBehaviour
         if (vignetteImage    != null) vignetteImage.gameObject.SetActive(true);
         if (apparitionImage  != null) apparitionImage.gameObject.SetActive(true);
         if (whiteFlash       != null) whiteFlash.gameObject.SetActive(true);
+
+        // Ẩn HUD gameplay -- không cần gọi lại true, màn hình chết luôn dẫn tới Retry (reload scene) nên
+        // HudMetersUI tự huỷ + tự dựng lại sạch, InteractPrompt cũng tự huỷ theo scene.
+        InteractPromptUI.Instance?.SetDotVisible(false);
+        HudMetersUI.Instance.SetVisible(false);
 
         if (_glitch != null) StopCoroutine(_glitch);
         _glitch = StartCoroutine(GlitchRoutine());

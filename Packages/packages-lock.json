@@ -284,11 +284,11 @@
       "url": "https://packages.unity.com"
     },
     "com.whinarn.unitymeshsimplifier": {
-      "version": "https://github.com/Unity-Technologies/UnityMeshSimplifier.git",
+      "version": "https://github.com/Whinarn/UnityMeshSimplifier.git",
       "depth": 0,
       "source": "git",
       "dependencies": {},
-      "hash": "a6d70fb447098e8f0c9162a63afd679ac410aabb"
+      "hash": "53fdb3122645bcd3ad2c258235200dff3dfbaa9b"
     },
     "com.wooshii.hierarchydecorator": {
       "version": "https://github.com/WooshiiDev/HierarchyDecorator.git",

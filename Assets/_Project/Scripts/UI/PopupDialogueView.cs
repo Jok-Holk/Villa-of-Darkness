@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 
@@ -8,6 +7,9 @@ using TMPro;
 //
 // Bản copy độc lập của logic typewriter (không dùng chung class với SubtitleDialogueView) —
 // cố ý trùng code, theo đúng yêu cầu "2 script quản lý khác nhau thật sự".
+//
+// ĐÃ ĐỔI CÁCH LÀM: xem comment tương ứng trong SubtitleDialogueView.cs -- dùng thẳng
+// TMP_Text.maxVisibleCharacters thay vì tự tay chỉnh vertex, cho chắc chắn hiện đúng.
 public class PopupDialogueView : MonoBehaviour, IDialogueView
 {
     [Header("References")]
@@ -18,16 +20,20 @@ public class PopupDialogueView : MonoBehaviour, IDialogueView
     [Header("Typewriter")]
     [Range(0.01f, 0.1f)]
     public float charDelay = 0.03f;
-    [Tooltip("Thời gian (giây) để 1 ký tự hoàn thành fade-in + pop-in")]
-    [Range(0.05f, 0.5f)]
-    public float charRevealDuration = 0.18f;
-    [Tooltip("Ký tự bắt đầu phồng to bao nhiêu lần kích thước gốc trước khi co lại đúng size")]
-    [Range(1f, 2f)]
-    public float popOvershoot = 1.35f;
 
-    [Header("Confirm Arrow Blink")]
-    [Range(0.2f, 2f)]
-    public float blinkInterval = 0.6f;
+    [Header("SFX — CHỈ Popup (nội tâm/không giọng) mới có tiếng gõ chữ; Subtitle có voice thật nên không cần")]
+    [Tooltip("AudioSource riêng để Play()/Stop() được theo ý (không dùng PlayOneShot vì cần cắt giữa chừng lúc skip)")]
+    [SerializeField] private AudioSource typingBlipSource;
+    [Tooltip("Tiếng xác nhận/qua dòng khi bấm Space")]
+    [SerializeField] private AudioClip advanceClickSfx;
+
+    [Header("Confirm Arrow Blink — hiện lâu, tắt ngắn (đỡ chói/giật hơn kiểu 50/50 cũ)")]
+    [Tooltip("Thời gian HIỆN mỗi nhịp nháy")]
+    [Range(0.2f, 3f)]
+    public float blinkOnDuration = 2f;
+    [Tooltip("Thời gian TẮT mỗi nhịp nháy")]
+    [Range(0.1f, 1f)]
+    public float blinkOffDuration = 0.5f;
 
     public bool IsOpen { get; private set; }
     public bool IsTyping { get; private set; }
@@ -37,28 +43,22 @@ public class PopupDialogueView : MonoBehaviour, IDialogueView
     DialogueLine _currentLine;
 
     Coroutine _typeRoutine;
-    Coroutine _vertexAnimRoutine;
     Coroutine _blinkRoutine;
-
-    class CharReveal
-    {
-        public int charIndex;
-        public float startTime;
-    }
-    List<CharReveal> _activeReveals = new List<CharReveal>();
 
     public void Open()
     {
         gameObject.SetActive(true);
         IsOpen = true;
+
+        // Cùng bug/fix như SubtitleDialogueView.Open() -- xem comment bên đó.
+        Canvas.ForceUpdateCanvases();
     }
 
     public void Close()
     {
         if (_typeRoutine != null) StopCoroutine(_typeRoutine);
-        if (_vertexAnimRoutine != null) StopCoroutine(_vertexAnimRoutine);
         if (_blinkRoutine != null) StopCoroutine(_blinkRoutine);
-        _activeReveals.Clear();
+        StopTypingBlip();
         IsTyping = false;
         IsWaitingForNext = false;
         IsOpen = false;
@@ -81,137 +81,22 @@ public class PopupDialogueView : MonoBehaviour, IDialogueView
     IEnumerator TypeLine(DialogueLine line)
     {
         IsTyping = true;
-        _activeReveals.Clear();
 
         bodyText.text = line.text;
+        bodyText.maxVisibleCharacters = 0;
         bodyText.ForceMeshUpdate();
-        HideAllCharacters();
 
-        if (_vertexAnimRoutine != null) StopCoroutine(_vertexAnimRoutine);
-        _vertexAnimRoutine = StartCoroutine(AnimateRevealedChars());
+        PlayTypingBlip();
 
         int totalChars = bodyText.textInfo.characterCount;
-        for (int i = 0; i < totalChars; i++)
+        for (int i = 1; i <= totalChars; i++)
         {
-            if (!bodyText.textInfo.characterInfo[i].isVisible)
-                continue;
-
-            _activeReveals.Add(new CharReveal { charIndex = i, startTime = Time.unscaledTime });
+            bodyText.maxVisibleCharacters = i;
             yield return new WaitForSecondsRealtime(charDelay);
         }
 
-        yield return new WaitForSecondsRealtime(charRevealDuration);
-
+        StopTypingBlip();
         FinishLine();
-    }
-
-    void HideAllCharacters()
-    {
-        var textInfo = bodyText.textInfo;
-        for (int i = 0; i < textInfo.characterCount; i++)
-        {
-            if (!textInfo.characterInfo[i].isVisible) continue;
-            SetCharAlpha(i, 0f);
-            SetCharScale(i, 0f);
-        }
-        bodyText.UpdateVertexData(TMP_VertexDataUpdateFlags.All);
-    }
-
-    IEnumerator AnimateRevealedChars()
-    {
-        while (true)
-        {
-            bool dirty = false;
-
-            for (int r = _activeReveals.Count - 1; r >= 0; r--)
-            {
-                var reveal = _activeReveals[r];
-                float t = (Time.unscaledTime - reveal.startTime) / charRevealDuration;
-
-                if (t >= 1f)
-                {
-                    SetCharAlpha(reveal.charIndex, 1f);
-                    SetCharScale(reveal.charIndex, 1f);
-                    _activeReveals.RemoveAt(r);
-                    dirty = true;
-                    continue;
-                }
-
-                float alpha = Mathf.Clamp01(t * 1.6f);
-                float scale = EvaluatePopScale(t);
-
-                SetCharAlpha(reveal.charIndex, alpha);
-                SetCharScale(reveal.charIndex, scale);
-                dirty = true;
-            }
-
-            if (dirty)
-                bodyText.UpdateVertexData(TMP_VertexDataUpdateFlags.All);
-
-            yield return null;
-        }
-    }
-
-    float EvaluatePopScale(float t)
-    {
-        if (t < 0.6f)
-        {
-            float local = t / 0.6f;
-            return Mathf.Lerp(0f, popOvershoot, EaseOutQuad(local));
-        }
-        else
-        {
-            float local = (t - 0.6f) / 0.4f;
-            return Mathf.Lerp(popOvershoot, 1f, EaseOutQuad(local));
-        }
-    }
-
-    float EaseOutQuad(float x) => 1f - (1f - x) * (1f - x);
-
-    void SetCharAlpha(int charIndex, float alpha01)
-    {
-        var textInfo = bodyText.textInfo;
-        if (charIndex < 0 || charIndex >= textInfo.characterCount) return;
-
-        var charInfo = textInfo.characterInfo[charIndex];
-        if (!charInfo.isVisible) return;
-
-        int materialIndex = charInfo.materialReferenceIndex;
-        int vertexIndex   = charInfo.vertexIndex;
-        Color32[] colors  = textInfo.meshInfo[materialIndex].colors32;
-        byte a = (byte)Mathf.RoundToInt(Mathf.Clamp01(alpha01) * 255f);
-
-        for (int v = 0; v < 4; v++)
-        {
-            Color32 c = colors[vertexIndex + v];
-            c.a = a;
-            colors[vertexIndex + v] = c;
-        }
-    }
-
-    void SetCharScale(int charIndex, float scale)
-    {
-        var textInfo = bodyText.textInfo;
-        if (charIndex < 0 || charIndex >= textInfo.characterCount) return;
-
-        var charInfo = textInfo.characterInfo[charIndex];
-        if (!charInfo.isVisible) return;
-
-        int materialIndex = charInfo.materialReferenceIndex;
-        int vertexIndex   = charInfo.vertexIndex;
-        Vector3[] vertices = textInfo.meshInfo[materialIndex].vertices;
-
-        Vector3 bl = vertices[vertexIndex + 0];
-        Vector3 tl = vertices[vertexIndex + 1];
-        Vector3 tr = vertices[vertexIndex + 2];
-        Vector3 br = vertices[vertexIndex + 3];
-
-        Vector3 center = (bl + tl + tr + br) / 4f;
-
-        vertices[vertexIndex + 0] = center + (bl - center) * scale;
-        vertices[vertexIndex + 1] = center + (tl - center) * scale;
-        vertices[vertexIndex + 2] = center + (tr - center) * scale;
-        vertices[vertexIndex + 3] = center + (br - center) * scale;
     }
 
     public void SkipTypewriter()
@@ -219,35 +104,39 @@ public class PopupDialogueView : MonoBehaviour, IDialogueView
         if (!IsTyping) return;
 
         if (_typeRoutine != null) StopCoroutine(_typeRoutine);
-        if (_vertexAnimRoutine != null) StopCoroutine(_vertexAnimRoutine);
-        _activeReveals.Clear();
+        StopTypingBlip(); // cắt ngay lập tức, không để tiếng rít kêu tiếp sau khi chữ đã hiện hết
 
         bodyText.text = _currentLine.text;
+        bodyText.maxVisibleCharacters = int.MaxValue;
         bodyText.ForceMeshUpdate();
 
-        var textInfo = bodyText.textInfo;
-        for (int i = 0; i < textInfo.characterCount; i++)
-        {
-            if (!textInfo.characterInfo[i].isVisible) continue;
-            SetCharAlpha(i, 1f);
-            SetCharScale(i, 1f);
-        }
-        bodyText.UpdateVertexData(TMP_VertexDataUpdateFlags.All);
-
         FinishLine();
+    }
+
+    void PlayTypingBlip()
+    {
+        if (typingBlipSource == null) return;
+        typingBlipSource.loop = true;
+        typingBlipSource.Play();
+    }
+
+    void StopTypingBlip()
+    {
+        if (typingBlipSource == null) return;
+        typingBlipSource.Stop();
     }
 
     void FinishLine()
     {
         IsTyping = false;
-        if (_vertexAnimRoutine != null) StopCoroutine(_vertexAnimRoutine);
-
         SetArrowVisible(true);
         IsWaitingForNext = true;
     }
 
     public void AdvanceOrSkip()
     {
+        if (advanceClickSfx != null) AudioManager.Instance?.PlaySFX(advanceClickSfx, 0.3f);
+
         if (IsTyping)
         {
             SkipTypewriter();
@@ -278,8 +167,10 @@ public class PopupDialogueView : MonoBehaviour, IDialogueView
     {
         while (true)
         {
-            yield return new WaitForSecondsRealtime(blinkInterval * 0.5f);
-            confirmArrow.SetActive(!confirmArrow.activeSelf);
+            yield return new WaitForSecondsRealtime(blinkOnDuration);
+            confirmArrow.SetActive(false);
+            yield return new WaitForSecondsRealtime(blinkOffDuration);
+            confirmArrow.SetActive(true);
         }
     }
 }

@@ -1,0 +1,8 @@
+﻿=== VoD PASS3 — Fix ThuPhong doorway/door outlier ===
+Trung vị tham chiếu 'doorway/door' (loại trừ ThuPhong): 2.305
+
+'doorway': hệ số hiệu chỉnh x0.935  (currentMag=2.465 -> target=2.305)  localScale mới=(0.26, 22.90, 0.42)
+'doorway (1)': hệ số hiệu chỉnh x0.950  (currentMag=2.427 -> target=2.305)  localScale mới=(0.44, 22.86, 0.27)
+
+Đã sửa 2 object 'doorway' trong ThuPhong.
+LƯU Ý: chỉ đổi SCALE, chưa re-snap lại position áp sát tường — chạy lại VoD/Scan+Fix Interior (Doors vs Walls) sau nếu cần.

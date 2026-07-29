@@ -1,0 +1,10 @@
+﻿=== VoD PASS3 — Fix TiepKhach window_small outlier ===
+Trung vị tham chiếu 'window_small' (loại trừ TiepKhach): 2.562
+
+'wall_with_one_window': hệ số hiệu chỉnh x1.680  (currentMag=1.525 -> target=2.562)  localScale mới=(1.68, 1.96, 2.32)
+'wall_with_one_window (1)': hệ số hiệu chỉnh x1.680  (currentMag=1.525 -> target=2.562)  localScale mới=(1.68, 1.96, 2.32)
+'wall_with_one_window (2)': hệ số hiệu chỉnh x1.574  (currentMag=1.627 -> target=2.562)  localScale mới=(1.85, 1.76, 2.17)
+'wall_with_one_window (3)': hệ số hiệu chỉnh x1.644  (currentMag=1.559 -> target=2.562)  localScale mới=(1.78, 1.84, 2.27)
+
+Đã sửa 4 cụm 'wall_with_one_window' trong TiepKhach.
+LƯU Ý: chỉ đổi SCALE, chưa re-snap lại position áp sát tường — chạy lại VoD/Scan+Fix Interior (Doors vs Walls) sau nếu cần.

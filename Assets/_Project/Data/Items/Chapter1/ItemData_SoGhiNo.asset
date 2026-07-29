@@ -1,0 +1,39 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c01db4d44d7b554a80c098c52d17818, type: 3}
+  m_Name: ItemData_SoGhiNo
+  m_EditorClassIdentifier: BietThuBongToi.Runtime::ItemData
+  itemId: so_no
+  itemName: "Gi\u1EA5y ghi n\u1EE3"
+  description: "Quy\u1EC3n s\u1ED5 k\u1EBF to\xE1n b\xECa da \u0111\xE3 s\u1EDDn,
+    ghi ch\xE9p b\u1EB1ng n\xE9t ch\u1EEF ngay ng\u1EAFn, r\xE0nh m\u1EA1ch - \u0111\xFAng
+    phong c\xE1ch s\u1ED5 s\xE1ch c\u1EE7a m\u1ED9t ng\u01B0\u1EDDi c\u1EA9n th\u1EADn
+    trong chuy\u1EC7n ti\u1EC1n b\u1EA1c.\n\nPh\u1EA7n l\u1EDBn c\xE1c trang ch\u1EC9
+    l\xE0 nh\u1EEFng con s\u1ED1 kh\xF4 khan: ti\u1EC1n c\xF4ng th\u1EE3 n\u1EC1,
+    ti\u1EC1n v\u1EADt li\u1EC7u, ti\u1EC1n s\u1EEDa m\xE1i... Nh\u01B0ng c\xF3 m\u1ED9t
+    trang, \u0111\u1EC1 th\xE1ng 6 n\u0103m 1963, kh\xE1c h\u1EB3n ph\u1EA7n c\xF2n
+    l\u1EA1i.\n\n\"Chi ph\u1EE5 c\u1EA5p \u0111\u1EB7c bi\u1EC7t \u2014 m\u1ED9t
+    kho\u1EA3n, kh\xF4ng ghi r\xF5 l\xFD do \u2014 200 \u0111\u1ED3ng.\"\n\nNgay
+    d\u01B0\u1EDBi \u0111\xF3, c\xF9ng m\u1ED9t n\xE9t m\u1EF1c: \"3 phu \u0111\xE0o
+    gi\u1EBFng xin ngh\u1EC9 vi\u1EC7c, kh\xF4ng l\xFD do.\" Kh\xF4ng c\xF3 t\xEAn.
+    Kh\xF4ng c\xF3 l\u1EDDi gi\u1EA3i th\xEDch v\xEC sao kho\u1EA3n chi l\u1EA1i
+    \u0111\xFAng v\xE0o ng\xE0y 3 ng\u01B0\u1EDDi c\xF9ng l\xFAc b\u1ECF vi\u1EC7c.\n\nSau
+    trang \u0111\xF3, s\u1ED5 s\xE1ch tr\u1EDF l\u1EA1i b\xECnh th\u01B0\u1EDDng
+    \u2014 nh\u01B0 ch\u01B0a t\u1EEBng c\xF3 chuy\u1EC7n g\xEC x\u1EA3y ra."
+  icon: {fileID: 21300000, guid: 7ee4351cee6eb4c4499337f41740cc76, type: 3}
+  slotBorderColor: {r: 1, g: 1, b: 1, a: 1}
+  monologueClip: {fileID: 0}
+  isKeyItem: 1
+  isUsable: 0
+  handHeldPrefab: {fileID: 0}
+  handHeldRotationOffset: {x: 0, y: 0, z: 0}
+  isExaminable: 1

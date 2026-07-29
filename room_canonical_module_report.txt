@@ -1,0 +1,216 @@
+﻿=== VoD PASS 2 v2 — Canonical Module Size Report (local-axis size, không bị lệch do rotation) ===
+rawSize = kích thước mesh THEO TRỤC LOCAL (mesh.bounds * lossyScale) / hệ số scale phòng đã áp trước đó.
+Dùng local-axis nên object bị xoay 90/180 độ vẫn so sánh đúng (không bị đảo W<->D như bản Pass2 v1 cũ).
+Chỉ xét nhóm tên liên quan kiến trúc: window/door/glass/frame/wall. Bỏ Cube/Cylinder... vì Unity đặt tên trùng cho nhiều vật không liên quan.
+
+--- 'window_small_frame'  (n=23, size trung bình=2.855, chênh lệch=65%)  ⚠ LỆCH NHIỀU ---
+    [TienSanh] wall_with_one_window (4)/window_small_frame  rawSize=(X1.142 x Y1.514 x Z0.071)  lệch -34% so với TB  <-- LỆCH
+    [TienSanh] wall_with_one_window (5)/window_small_frame  rawSize=(X1.142 x Y1.514 x Z0.071)  lệch -34% so với TB  <-- LỆCH
+    [TiepKhach] Decor/wall_with_one_window (2)/window_small_frame  rawSize=(X1.469 x Y1.345 x Z0.181)  lệch -30% so với TB  <-- LỆCH
+    [TiepKhach] Decor/wall_with_one_window (3)/window_small_frame  rawSize=(X1.414 x Y1.405 x Z0.189)  lệch -30% so với TB  <-- LỆCH
+    [TiepKhach] Decor/wall_with_one_window/window_small_frame  rawSize=(X1.333 x Y1.496 x Z0.194)  lệch -29% so với TB  <-- LỆCH
+    [TiepKhach] Decor/wall_with_one_window (1)/window_small_frame  rawSize=(X1.333 x Y1.496 x Z0.194)  lệch -29% so với TB  <-- LỆCH
+    [Salon] noithatphongkhach/wall_with_one_window (3)/window_small_frame  rawSize=(X0.961 x Y2.305 x Z-0.253)  lệch -12% so với TB
+    [Salon] noithatphongkhach/wall_with_one_window/window_small_frame  rawSize=(X0.961 x Y2.305 x Z-0.273)  lệch -12% so với TB
+    [Salon] noithatphongkhach/wall_with_one_window (1)/window_small_frame  rawSize=(X0.961 x Y2.305 x Z-0.273)  lệch -12% so với TB
+    [Salon] noithatphongkhach/wall_with_one_window (2)/window_small_frame  rawSize=(X0.961 x Y2.305 x Z-0.273)  lệch -12% so với TB
+    [PhongAn] noithatphongan/wall_with_one_window (6)/window_small_frame  rawSize=(X1.156 x Y2.306 x Z0.227)  lệch -9% so với TB
+    [Nha_Kho] window_small_frame (1)  rawSize=(X2.078 x Y1.628 x Z0.235)  lệch -7% so với TB
+    [PhongAn] noithatphongan/wall_with_one_window (7)/window_small_frame  rawSize=(X1.832 x Y2.306 x Z0.251)  lệch +4% so với TB
+    [PhongAn] noithatphongan/wall_with_one_window (8)/window_small_frame  rawSize=(X1.842 x Y2.306 x Z0.251)  lệch +4% so với TB
+    [ThuPhong] Interior/wall_with_one_window (4)/window_small_frame  rawSize=(X1.627 x Y2.944 x Z0.138)  lệch +18% so với TB
+    [ThuPhong] Interior/wall_with_one_window (5)/window_small_frame  rawSize=(X1.908 x Y2.944 x Z0.138)  lệch +23% so với TB
+    [Salon] noithatphongkhach/wall_with_one_window (4)/window_small_frame  rawSize=(X2.736 x Y2.296 x Z-0.251)  lệch +25% so với TB  <-- LỆCH
+    [Salon] noithatphongkhach/wall_with_one_window (5)/window_small_frame  rawSize=(X2.737 x Y2.296 x Z-0.251)  lệch +25% so với TB  <-- LỆCH
+    [ThuPhong] Interior/wall_with_one_window (2)/window_small_frame  rawSize=(X2.069 x Y2.980 x Z0.199)  lệch +27% so với TB  <-- LỆCH
+    [ThuPhong] Interior/wall_with_one_window (3)/window_small_frame  rawSize=(X2.229 x Y2.980 x Z0.199)  lệch +31% so với TB  <-- LỆCH
+    [Nha_Phu_Bep] Decor/wall_with_one_window/window_small_frame  rawSize=(X3.208 x Y1.927 x Z0.211)  lệch +31% so với TB  <-- LỆCH
+    [Nha_Phu_Bep] Decor/wall_with_one_window (1)/window_small_frame  rawSize=(X3.208 x Y1.927 x Z0.211)  lệch +31% so với TB  <-- LỆCH
+    [Nha_Phu_Bep] Decor/wall_with_one_window (2)/window_small_frame  rawSize=(X3.208 x Y1.927 x Z0.211)  lệch +31% so với TB  <-- LỆCH
+
+--- 'window_small'  (n=22, size trung bình=3.725, chênh lệch=70%)  ⚠ LỆCH NHIỀU ---
+    [TienSanh] wall_with_one_window (4)/window_small  rawSize=(X1.546 x Y1.786 x Z0.332)  lệch -36% so với TB  <-- LỆCH
+    [TienSanh] wall_with_one_window (5)/window_small  rawSize=(X1.546 x Y1.786 x Z0.332)  lệch -36% so với TB  <-- LỆCH
+    [TiepKhach] Decor/wall_with_one_window/window_small  rawSize=(X1.805 x Y1.765 x Z0.907)  lệch -28% so với TB  <-- LỆCH
+    [TiepKhach] Decor/wall_with_one_window (1)/window_small  rawSize=(X1.805 x Y1.765 x Z0.907)  lệch -28% so với TB  <-- LỆCH
+    [TiepKhach] Decor/wall_with_one_window (2)/window_small  rawSize=(X1.988 x Y1.587 x Z0.850)  lệch -28% so với TB  <-- LỆCH
+    [TiepKhach] Decor/wall_with_one_window (3)/window_small  rawSize=(X1.914 x Y1.657 x Z0.887)  lệch -28% so với TB  <-- LỆCH
+    [Salon] noithatphongkhach/wall_with_one_window (3)/window_small  rawSize=(X1.301 x Y2.719 x Z-1.184)  lệch -13% so với TB
+    [Salon] noithatphongkhach/wall_with_one_window/window_small  rawSize=(X1.301 x Y2.719 x Z-1.279)  lệch -12% so với TB
+    [Salon] noithatphongkhach/wall_with_one_window (1)/window_small  rawSize=(X1.301 x Y2.719 x Z-1.279)  lệch -12% so với TB
+    [Salon] noithatphongkhach/wall_with_one_window (2)/window_small  rawSize=(X1.301 x Y2.719 x Z-1.279)  lệch -12% so với TB
+    [PhongAn] noithatphongan/wall_with_one_window (6)/window_small  rawSize=(X1.564 x Y2.720 x Z1.065)  lệch -11% so với TB
+    [PhongAn] noithatphongan/wall_with_one_window (7)/window_small  rawSize=(X2.480 x Y2.720 x Z1.177)  lệch +4% so với TB
+    [PhongAn] noithatphongan/wall_with_one_window (8)/window_small  rawSize=(X2.493 x Y2.720 x Z1.177)  lệch +4% so với TB
+    [ThuPhong] Interior/wall_with_one_window (4)/window_small  rawSize=(X2.203 x Y3.473 x Z0.646)  lệch +12% so với TB
+    [ThuPhong] Interior/wall_with_one_window (5)/window_small  rawSize=(X2.582 x Y3.473 x Z0.646)  lệch +17% so với TB
+    [ThuPhong] Interior/wall_with_one_window (2)/window_small  rawSize=(X2.801 x Y3.515 x Z0.932)  lệch +23% so với TB
+    [ThuPhong] Interior/wall_with_one_window (3)/window_small  rawSize=(X3.017 x Y3.515 x Z0.932)  lệch +27% so với TB  <-- LỆCH
+    [Salon] noithatphongkhach/wall_with_one_window (4)/window_small  rawSize=(X3.703 x Y2.709 x Z-1.175)  lệch +27% so với TB  <-- LỆCH
+    [Salon] noithatphongkhach/wall_with_one_window (5)/window_small  rawSize=(X3.705 x Y2.709 x Z-1.175)  lệch +27% so với TB  <-- LỆCH
+    [Nha_Phu_Bep] Decor/wall_with_one_window/window_small  rawSize=(X4.342 x Y2.274 x Z0.986)  lệch +34% so với TB  <-- LỆCH
+    [Nha_Phu_Bep] Decor/wall_with_one_window (1)/window_small  rawSize=(X4.342 x Y2.274 x Z0.986)  lệch +34% so với TB  <-- LỆCH
+    [Nha_Phu_Bep] Decor/wall_with_one_window (2)/window_small  rawSize=(X4.342 x Y2.274 x Z0.986)  lệch +34% so với TB  <-- LỆCH
+
+--- 'glass'  (n=19, size trung bình=2.589, chênh lệch=67%)  ⚠ LỆCH NHIỀU ---
+    [TienSanh] wall_with_one_window (4)/glass  rawSize=(X1.087 x Y1.443 x Z0.026)  lệch -30% so với TB  <-- LỆCH
+    [TienSanh] wall_with_one_window (5)/glass  rawSize=(X1.087 x Y1.443 x Z0.026)  lệch -30% so với TB  <-- LỆCH
+    [TiepKhach] Decor/wall_with_one_window (2)/glass  rawSize=(X1.398 x Y1.282 x Z0.065)  lệch -27% so với TB  <-- LỆCH
+    [TiepKhach] Decor/wall_with_one_window (3)/glass  rawSize=(X1.346 x Y1.339 x Z0.068)  lệch -27% so với TB  <-- LỆCH
+    [TiepKhach] Decor/wall_with_one_window/glass  rawSize=(X1.269 x Y1.426 x Z0.070)  lệch -26% so với TB  <-- LỆCH
+    [TiepKhach] Decor/wall_with_one_window (1)/glass  rawSize=(X1.269 x Y1.426 x Z0.070)  lệch -26% so với TB  <-- LỆCH
+    [Salon] noithatphongkhach/wall_with_one_window (3)/glass  rawSize=(X0.915 x Y2.197 x Z-0.091)  lệch -8% so với TB
+    [Salon] noithatphongkhach/wall_with_one_window/glass  rawSize=(X0.915 x Y2.197 x Z-0.098)  lệch -8% so với TB
+    [Salon] noithatphongkhach/wall_with_one_window (1)/glass  rawSize=(X0.915 x Y2.197 x Z-0.098)  lệch -8% so với TB
+    [Salon] noithatphongkhach/wall_with_one_window (2)/glass  rawSize=(X0.915 x Y2.197 x Z-0.098)  lệch -8% so với TB
+    [PhongAn] noithatphongan/wall_with_one_window (6)/glass  rawSize=(X1.100 x Y2.197 x Z0.082)  lệch -5% so với TB
+    [PhongAn] noithatphongan/wall_with_one_window (7)/glass  rawSize=(X1.744 x Y2.197 x Z0.090)  lệch +8% so với TB
+    [PhongAn] noithatphongan/wall_with_one_window (8)/glass  rawSize=(X1.754 x Y2.197 x Z0.090)  lệch +9% so với TB
+    [ThuPhong] Interior/wall_with_one_window (4)/glass  rawSize=(X1.549 x Y2.805 x Z0.050)  lệch +24% so với TB
+    [ThuPhong] Interior/wall_with_one_window (5)/glass  rawSize=(X1.816 x Y2.805 x Z0.050)  lệch +29% so với TB  <-- LỆCH
+    [Salon] noithatphongkhach/wall_with_one_window (4)/glass  rawSize=(X2.604 x Y2.188 x Z-0.090)  lệch +31% so với TB  <-- LỆCH
+    [Salon] noithatphongkhach/wall_with_one_window (5)/glass  rawSize=(X2.606 x Y2.188 x Z-0.090)  lệch +31% so với TB  <-- LỆCH
+    [ThuPhong] Interior/wall_with_one_window (2)/glass  rawSize=(X1.970 x Y2.840 x Z0.071)  lệch +34% so với TB  <-- LỆCH
+    [ThuPhong] Interior/wall_with_one_window (3)/glass  rawSize=(X2.122 x Y2.840 x Z0.071)  lệch +37% so với TB  <-- LỆCH
+
+--- 'door'  (n=19, size trung bình=2.254, chênh lệch=173%)  ⚠ LỆCH NHIỀU ---
+    [TienSanh] cabinetBed/door  rawSize=(X0.590 x Y0.410 x Z0.086)  lệch -68% so với TB  <-- LỆCH
+    [TienSanh] cabinetBed (1)/door  rawSize=(X0.590 x Y0.410 x Z0.086)  lệch -68% so với TB  <-- LỆCH
+    [ThuPhong] Interior/cabinetBedDrawer/door  rawSize=(X0.890 x Y0.419 x Z0.130)  lệch -56% so với TB  <-- LỆCH
+    [ThuPhong] Interior/cabinetBedDrawer (1)/door  rawSize=(X0.890 x Y0.419 x Z0.130)  lệch -56% so với TB  <-- LỆCH
+    [Nha_Phu_Bep] Decor/kitchenCabinetDrawer/door  rawSize=(X1.927 x Y0.986 x Z0.205)  lệch -4% so với TB
+    [Nha_Phu_Bep] Decor/kitchenCabinetDrawer (5)/door  rawSize=(X1.927 x Y0.986 x Z0.205)  lệch -4% so với TB
+    [Nha_Phu_Bep] Decor/kitchenCabinetDrawer (6)/door  rawSize=(X1.927 x Y0.986 x Z0.205)  lệch -4% so với TB
+    [Nha_Phu_Bep] Decor/kitchenCabinetDrawer (2)/door  rawSize=(X1.927 x Y0.986 x Z0.205)  lệch -4% so với TB
+    [Nha_Phu_Bep] Decor/kitchenCabinetDrawer (3)/door  rawSize=(X1.927 x Y0.986 x Z0.205)  lệch -4% so với TB
+    [Nha_Phu_Bep] Decor/kitchenCabinetDrawer (1)/door  rawSize=(X1.927 x Y0.986 x Z0.205)  lệch -4% so với TB
+    [TiepKhach] Decor/doorway/door  rawSize=(X1.213 x Y1.912 x Z0.219)  lệch +1% so với TB
+    [Nha_Phu_Bep] Decor/kitchenSink/door  rawSize=(X1.927 x Y1.424 x Z0.205)  lệch +7% so với TB
+    [TienSanh] doorway/door  rawSize=(X1.073 x Y2.159 x Z0.113)  lệch +7% so với TB
+    [TienSanh] doorway (1)/door  rawSize=(X1.073 x Y2.159 x Z0.113)  lệch +7% so với TB
+    [TiepKhach] Decor/doorway (1)/door  rawSize=(X1.354 x Y2.069 x Z0.231)  lệch +10% so với TB
+    [Nha_Phu_Bep] Decor/kitchenStove/door  rawSize=(X2.040 x Y1.507 x Z0.217)  lệch +13% so với TB
+    [Nha_Phu_Bep] Decor/kitchenStove (1)/door  rawSize=(X2.040 x Y1.507 x Z0.217)  lệch +13% so với TB
+    [ThuPhong] doorway/door  rawSize=(X1.833 x Y4.224 x Z0.468)  lệch +105% so với TB  <-- LỆCH
+    [ThuPhong] doorway (1)/door  rawSize=(X1.845 x Y4.217 x Z0.487)  lệch +105% so với TB  <-- LỆCH
+
+--- 'Frame_Landscape'  (n=16, size trung bình=1.341, chênh lệch=0%) ---
+    [Hanh_Lang_Phai] Decor/PictureFrames (2)/Frame_Landscape  rawSize=(X1.198 x Y0.599 x Z0.050)  lệch +0% so với TB
+    [Hanh_Lang_Phai] Decor/PictureFrames (2)/Frame_Landscape (1)  rawSize=(X1.198 x Y0.599 x Z0.050)  lệch +0% so với TB
+    [Hanh_Lang_Phai] Decor/PictureFrames (2)/Frame_Landscape (2)  rawSize=(X1.198 x Y0.599 x Z0.050)  lệch +0% so với TB
+    [Hanh_Lang_Phai] Decor/PictureFrames (2)/Frame_Landscape (3)  rawSize=(X1.198 x Y0.599 x Z0.050)  lệch +0% so với TB
+    [Hanh_Lang_Phai] Decor/PictureFrames (3)/Frame_Landscape  rawSize=(X1.198 x Y0.599 x Z0.050)  lệch +0% so với TB
+    [Hanh_Lang_Phai] Decor/PictureFrames (3)/Frame_Landscape (1)  rawSize=(X1.198 x Y0.599 x Z0.050)  lệch +0% so với TB
+    [Hanh_Lang_Phai] Decor/PictureFrames (3)/Frame_Landscape (2)  rawSize=(X1.198 x Y0.599 x Z0.050)  lệch +0% so với TB
+    [Hanh_Lang_Phai] Decor/PictureFrames (3)/Frame_Landscape (3)  rawSize=(X1.198 x Y0.599 x Z0.050)  lệch +0% so với TB
+    [Hanh_Lang_Trai] Decor/PictureFrames/Frame_Landscape  rawSize=(X1.198 x Y0.599 x Z0.050)  lệch +0% so với TB
+    [Hanh_Lang_Trai] Decor/PictureFrames/Frame_Landscape (1)  rawSize=(X1.198 x Y0.599 x Z0.050)  lệch +0% so với TB
+    [Hanh_Lang_Trai] Decor/PictureFrames/Frame_Landscape (2)  rawSize=(X1.198 x Y0.599 x Z0.050)  lệch +0% so với TB
+    [Hanh_Lang_Trai] Decor/PictureFrames/Frame_Landscape (3)  rawSize=(X1.198 x Y0.599 x Z0.050)  lệch +0% so với TB
+    [Hanh_Lang_Trai] Decor/PictureFrames (1)/Frame_Landscape  rawSize=(X1.198 x Y0.599 x Z0.050)  lệch +0% so với TB
+    [Hanh_Lang_Trai] Decor/PictureFrames (1)/Frame_Landscape (1)  rawSize=(X1.198 x Y0.599 x Z0.050)  lệch +0% so với TB
+    [Hanh_Lang_Trai] Decor/PictureFrames (1)/Frame_Landscape (2)  rawSize=(X1.198 x Y0.599 x Z0.050)  lệch +0% so với TB
+    [Hanh_Lang_Trai] Decor/PictureFrames (1)/Frame_Landscape (3)  rawSize=(X1.198 x Y0.599 x Z0.050)  lệch +0% so với TB
+
+--- 'Walls_Bep'  (n=15, size trung bình=7.967, chênh lệch=109%)  ⚠ LỆCH NHIỀU ---
+    [Nha_Phu_Bep] Wall/Walls_Bep.003  rawSize=(X3.088 x Y2.578 x Z1.409)  lệch -47% so với TB  <-- LỆCH
+    [Nha_Phu_Bep] Wall/Walls_Bep.006  rawSize=(X3.430 x Y2.578 x Z1.409)  lệch -43% so với TB  <-- LỆCH
+    [Nha_Phu_Bep] Wall/Walls_Bep.010  rawSize=(X1.372 x Y2.578 x Z3.523)  lệch -43% so với TB  <-- LỆCH
+    [Nha_Phu_Bep] Wall/Walls_Bep.014  rawSize=(X1.372 x Y2.578 x Z3.523)  lệch -43% so với TB  <-- LỆCH
+    [Nha_Phu_Bep] Wall/Walls_Bep.009  rawSize=(X1.372 x Y2.578 x Z3.523)  lệch -43% so với TB  <-- LỆCH
+    [Nha_Phu_Bep] Wall/Walls_Bep.013  rawSize=(X1.372 x Y2.578 x Z3.523)  lệch -43% so với TB  <-- LỆCH
+    [Nha_Phu_Bep] Wall/Walls_Bep  rawSize=(X3.430 x Y3.045 x Z1.409)  lệch -40% so với TB  <-- LỆCH
+    [Nha_Phu_Bep] Wall/Walls_Bep.008  rawSize=(X1.372 x Y7.498 x Z5.284)  lệch +16% so với TB
+    [Nha_Phu_Bep] Wall/Walls_Bep.012  rawSize=(X1.372 x Y7.498 x Z5.284)  lệch +16% so với TB
+    [Nha_Phu_Bep] Wall/Walls_Bep.007  rawSize=(X1.372 x Y7.498 x Z5.284)  lệch +16% so với TB
+    [Nha_Phu_Bep] Wall/Walls_Bep.011  rawSize=(X1.372 x Y7.498 x Z5.284)  lệch +16% so với TB
+    [Nha_Phu_Bep] Wall/Walls_Bep.002  rawSize=(X9.938 x Y7.498 x Z1.409)  lệch +57% so với TB  <-- LỆCH
+    [Nha_Phu_Bep] Wall/Walls_Bep.004  rawSize=(X9.947 x Y7.498 x Z1.409)  lệch +57% so với TB  <-- LỆCH
+    [Nha_Phu_Bep] Wall/Walls_Bep.005  rawSize=(X9.947 x Y7.498 x Z1.409)  lệch +57% so với TB  <-- LỆCH
+    [Nha_Phu_Bep] Wall/Walls_Bep.001  rawSize=(X10.443 x Y7.498 x Z1.409)  lệch +62% so với TB  <-- LỆCH
+
+--- 'doorLeft'  (n=13, size trung bình=2.364, chênh lệch=106%)  ⚠ LỆCH NHIỀU ---
+    [Nha_Phu_Bep] Decor/kitchenCabinetUpperDouble/doorLeft  rawSize=(X0.964 x Y1.722 x Z0.154)  lệch -16% so với TB
+    [Nha_Phu_Bep] Decor/kitchenCabinetUpperDouble (6)/doorLeft  rawSize=(X0.964 x Y1.722 x Z0.154)  lệch -16% so với TB
+    [Nha_Phu_Bep] Decor/kitchenCabinetUpperDouble (7)/doorLeft  rawSize=(X0.964 x Y1.722 x Z0.154)  lệch -16% so với TB
+    [Nha_Phu_Bep] Decor/kitchenCabinetUpperDouble (1)/doorLeft  rawSize=(X0.964 x Y1.722 x Z0.154)  lệch -16% so với TB
+    [Nha_Phu_Bep] Decor/kitchenCabinetUpperDouble (2)/doorLeft  rawSize=(X0.964 x Y1.722 x Z0.154)  lệch -16% so với TB
+    [Nha_Phu_Bep] Decor/kitchenCabinetUpperDouble (5)/doorLeft  rawSize=(X0.964 x Y1.722 x Z0.154)  lệch -16% so với TB
+    [Nha_Phu_Bep] Decor/kitchenCabinetUpperDouble (4)/doorLeft  rawSize=(X0.964 x Y1.722 x Z0.154)  lệch -16% so với TB
+    [Nha_Phu_Bep] Decor/kitchenCabinetUpperDouble (3)/doorLeft  rawSize=(X0.964 x Y1.722 x Z0.154)  lệch -16% so với TB
+    [Nha_Phu_Bep] Decor/kitchenCabinetUpperDouble (10)/doorLeft  rawSize=(X0.964 x Y1.722 x Z0.154)  lệch -16% so với TB
+    [Nha_Phu_Bep] Decor/kitchenCabinetUpperDouble (11)/doorLeft  rawSize=(X0.964 x Y1.722 x Z0.154)  lệch -16% so với TB
+    [Nha_Phu_Bep] Decor/kitchenCabinetUpperDouble (12)/doorLeft  rawSize=(X0.964 x Y1.722 x Z0.154)  lệch -16% so với TB
+    [Hanh_Lang_Phai] DoorCabinet/doorLeft  rawSize=(X1.338 x Y4.263 x Z0.263)  lệch +89% so với TB  <-- LỆCH
+    [Hanh_Lang_Trai] DoorCabinet (1)/doorLeft  rawSize=(X1.338 x Y4.263 x Z0.263)  lệch +89% so với TB  <-- LỆCH
+
+--- 'doorRight'  (n=13, size trung bình=2.368, chênh lệch=107%)  ⚠ LỆCH NHIỀU ---
+    [Nha_Phu_Bep] Decor/kitchenCabinetUpperDouble/doorRight  rawSize=(X0.964 x Y1.722 x Z0.154)  lệch -16% so với TB
+    [Nha_Phu_Bep] Decor/kitchenCabinetUpperDouble (6)/doorRight  rawSize=(X0.964 x Y1.722 x Z0.154)  lệch -16% so với TB
+    [Nha_Phu_Bep] Decor/kitchenCabinetUpperDouble (7)/doorRight  rawSize=(X0.964 x Y1.722 x Z0.154)  lệch -16% so với TB
+    [Nha_Phu_Bep] Decor/kitchenCabinetUpperDouble (1)/doorRight  rawSize=(X0.964 x Y1.722 x Z0.154)  lệch -16% so với TB
+    [Nha_Phu_Bep] Decor/kitchenCabinetUpperDouble (2)/doorRight  rawSize=(X0.964 x Y1.722 x Z0.154)  lệch -16% so với TB
+    [Nha_Phu_Bep] Decor/kitchenCabinetUpperDouble (5)/doorRight  rawSize=(X0.964 x Y1.722 x Z0.154)  lệch -16% so với TB
+    [Nha_Phu_Bep] Decor/kitchenCabinetUpperDouble (4)/doorRight  rawSize=(X0.964 x Y1.722 x Z0.154)  lệch -16% so với TB
+    [Nha_Phu_Bep] Decor/kitchenCabinetUpperDouble (3)/doorRight  rawSize=(X0.964 x Y1.722 x Z0.154)  lệch -16% so với TB
+    [Nha_Phu_Bep] Decor/kitchenCabinetUpperDouble (10)/doorRight  rawSize=(X0.964 x Y1.722 x Z0.154)  lệch -16% so với TB
+    [Nha_Phu_Bep] Decor/kitchenCabinetUpperDouble (11)/doorRight  rawSize=(X0.964 x Y1.722 x Z0.154)  lệch -16% so với TB
+    [Nha_Phu_Bep] Decor/kitchenCabinetUpperDouble (12)/doorRight  rawSize=(X0.964 x Y1.722 x Z0.154)  lệch -16% so với TB
+    [Hanh_Lang_Phai] DoorCabinet/doorRight  rawSize=(X1.423 x Y4.263 x Z0.242)  lệch +90% so với TB  <-- LỆCH
+    [Hanh_Lang_Trai] DoorCabinet (1)/doorRight  rawSize=(X1.423 x Y4.263 x Z0.242)  lệch +90% so với TB  <-- LỆCH
+
+--- 'Walls_Kho'  (n=8, size trung bình=7.826, chênh lệch=87%)  ⚠ LỆCH NHIỀU ---
+    [Nha_Kho] Wall/Walls_Kho.002  rawSize=(X2.363 x Y2.166 x Z0.788)  lệch -58% so với TB  <-- LỆCH
+    [Nha_Kho] Wall/Walls_Kho.005  rawSize=(X1.969 x Y4.725 x Z0.788)  lệch -34% so với TB  <-- LỆCH
+    [Nha_Kho] Wall/Walls_Kho  rawSize=(X5.513 x Y6.300 x Z0.788)  lệch +7% so với TB
+    [Nha_Kho] Wall/Walls_Kho.001  rawSize=(X5.513 x Y6.300 x Z0.788)  lệch +7% so với TB
+    [Nha_Kho] Wall/Walls_Kho.003  rawSize=(X5.709 x Y6.300 x Z0.788)  lệch +9% so với TB
+    [Nha_Kho] Wall/Walls_Kho.004  rawSize=(X5.709 x Y6.300 x Z0.788)  lệch +9% so với TB
+    [Nha_Kho] Wall/Walls_Kho.006  rawSize=(X0.788 x Y6.300 x Z7.875)  lệch +29% so với TB  <-- LỆCH
+    [Nha_Kho] Wall/Walls_Kho.007  rawSize=(X0.788 x Y6.300 x Z7.875)  lệch +29% so với TB  <-- LỆCH
+
+--- 'doorway'  (n=6, size trung bình=3.294, chênh lệch=74%)  ⚠ LỆCH NHIỀU ---
+    [TiepKhach] Decor/doorway  rawSize=(X1.373 x Y1.967 x Z0.172)  lệch -27% so với TB  <-- LỆCH
+    [TienSanh] doorway  rawSize=(X1.215 x Y2.221 x Z0.089)  lệch -23% so với TB
+    [TienSanh] doorway (1)  rawSize=(X1.215 x Y2.221 x Z0.089)  lệch -23% so với TB
+    [TiepKhach] Decor/doorway (1)  rawSize=(X1.533 x Y2.129 x Z0.181)  lệch -20% so với TB
+    [ThuPhong] doorway  rawSize=(X2.075 x Y4.346 x Z0.367)  lệch +47% so với TB  <-- LỆCH
+    [ThuPhong] doorway (1)  rawSize=(X2.089 x Y4.339 x Z0.383)  lệch +47% so với TB  <-- LỆCH
+
+--- 'Frame_Square'  (n=6, size trung bình=1.131, chênh lệch=0%) ---
+    [Hanh_Lang_Phai] Decor/PictureFrames (2)/Frame_Square  rawSize=(X0.799 x Y0.799 x Z0.050)  lệch +0% so với TB
+    [Hanh_Lang_Phai] Decor/PictureFrames (2)/Frame_Square (1)  rawSize=(X0.799 x Y0.799 x Z0.050)  lệch +0% so với TB
+    [Hanh_Lang_Phai] Decor/PictureFrames (3)/Frame_Square  rawSize=(X0.799 x Y0.799 x Z0.050)  lệch +0% so với TB
+    [Hanh_Lang_Trai] Decor/PictureFrames/Frame_Square  rawSize=(X0.799 x Y0.799 x Z0.050)  lệch +0% so với TB
+    [Hanh_Lang_Trai] Decor/PictureFrames/Frame_Square (1)  rawSize=(X0.799 x Y0.799 x Z0.050)  lệch +0% so với TB
+    [Hanh_Lang_Trai] Decor/PictureFrames (1)/Frame_Square  rawSize=(X0.799 x Y0.799 x Z0.050)  lệch +0% so với TB
+
+--- 'Frame_Portrait'  (n=4, size trung bình=1.081, chênh lệch=0%) ---
+    [Hanh_Lang_Phai] Decor/PictureFrames (2)/Frame_Portrait  rawSize=(X0.599 x Y0.899 x Z0.050)  lệch +0% so với TB
+    [Hanh_Lang_Phai] Decor/PictureFrames (3)/Frame_Portrait  rawSize=(X0.599 x Y0.899 x Z0.050)  lệch +0% so với TB
+    [Hanh_Lang_Trai] Decor/PictureFrames/Frame_Portrait  rawSize=(X0.599 x Y0.899 x Z0.050)  lệch +0% so với TB
+    [Hanh_Lang_Trai] Decor/PictureFrames (1)/Frame_Portrait  rawSize=(X0.599 x Y0.899 x Z0.050)  lệch +0% so với TB
+
+--- 'Walls_CorridorLeft'  (n=4, size trung bình=14.725, chênh lệch=162%)  ⚠ LỆCH NHIỀU ---
+    [Hanh_Lang_Trai] Wall/Walls_CorridorLeft.003  rawSize=(X3.383 x Y2.491 x Z0.885)  lệch -71% so với TB  <-- LỆCH
+    [Hanh_Lang_Trai] Wall/Walls_CorridorLeft.001  rawSize=(X12.124 x Y5.232 x Z0.885)  lệch -10% so với TB
+    [Hanh_Lang_Trai] Wall/Walls_CorridorLeft.002  rawSize=(X12.124 x Y5.232 x Z0.885)  lệch -10% so với TB
+    [Hanh_Lang_Trai] Wall/Walls_CorridorLeft  rawSize=(X27.632 x Y5.232 x Z0.885)  lệch +91% so với TB  <-- LỆCH
+
+--- 'Walls_CorridorRight'  (n=4, size trung bình=14.725, chênh lệch=162%)  ⚠ LỆCH NHIỀU ---
+    [Hanh_Lang_Phai] Wall/Walls_CorridorRight.003  rawSize=(X3.383 x Y2.491 x Z0.885)  lệch -71% so với TB  <-- LỆCH
+    [Hanh_Lang_Phai] Wall/Walls_CorridorRight.001  rawSize=(X12.124 x Y5.232 x Z0.885)  lệch -10% so với TB
+    [Hanh_Lang_Phai] Wall/Walls_CorridorRight.002  rawSize=(X12.124 x Y5.232 x Z0.885)  lệch -10% so với TB
+    [Hanh_Lang_Phai] Wall/Walls_CorridorRight  rawSize=(X27.632 x Y5.232 x Z0.885)  lệch +91% so với TB  <-- LỆCH
+
+--- 'doorFridge'  (n=3, size trung bình=2.450, chênh lệch=104%)  ⚠ LỆCH NHIỀU ---
+    [Nha_Phu_Bep] Decor/kitchenFridgeBuiltIn/doorFridge  rawSize=(X0.733 x Y1.208 x Z0.223)  lệch -42% so với TB  <-- LỆCH
+    [Nha_Phu_Bep] Decor/kitchenFridgeSmall/doorFridge  rawSize=(X1.172 x Y1.515 x Z0.311)  lệch -21% so với TB
+    [Nha_Phu_Bep] Decor/kitchenFridge/doorFridge  rawSize=(X2.054 x Y3.365 x Z0.546)  lệch +62% so với TB  <-- LỆCH
+
+--- 'doorFreezer'  (n=2, size trung bình=1.591, chênh lệch=94%)  ⚠ LỆCH NHIỀU ---
+    [Nha_Phu_Bep] Decor/kitchenFridgeBuiltIn/doorFreezer  rawSize=(X0.733 x Y0.372 x Z0.178)  lệch -47% so với TB  <-- LỆCH
+    [Nha_Phu_Bep] Decor/kitchenFridge/doorFreezer  rawSize=(X2.054 x Y1.036 x Z0.437)  lệch +47% so với TB  <-- LỆCH
+
+=== Tổng kết ===
+  Số nhóm loại module kiến trúc lệch >25% giữa các instance: 13

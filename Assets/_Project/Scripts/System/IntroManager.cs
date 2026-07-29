@@ -49,6 +49,16 @@ public class IntroManager : MonoBehaviour
     [Header("Dialogue")]
     [SerializeField] private DialogueAsset introDialogue;
 
+    [Header("HUD ẩn suốt intro (VD: thanh Stamina, icon pin đèn) — tự hiện lại khi gameplay bắt đầu")]
+    [SerializeField] private GameObject[] hudToHideDuringIntro;
+
+    [Header("Ambient ngoài trời (AmbientZone, Play On Start) — vặn nhỏ mượt lúc dialogue mở")]
+    [SerializeField] private AmbientZone exteriorAmbient;
+    [Tooltip("Mức volume ambient giữ nguyên vĩnh viễn sau khi dialogue mở (VD: 0.3 = 30%)")]
+    [Range(0f, 1f)] [SerializeField] private float exteriorAmbientDuckedVolume = 0.2f;
+    [Tooltip("Thời gian vặn nhỏ mượt — KHÔNG tức thì")]
+    [SerializeField] private float exteriorAmbientDuckDuration = 2.5f;
+
     [Header("Debug / Test")]
     [Tooltip("Tick lên = bỏ qua TOÀN BỘ intro (không đen màn hình, không di chuyển ép buộc, không dialogue) — dùng khi test phần khác của map")]
     [SerializeField] private bool skipIntroEntirely = false;
@@ -65,6 +75,16 @@ public class IntroManager : MonoBehaviour
         if (PlayerController.Instance != null)
             _cc = PlayerController.Instance.GetComponent<CharacterController>();
 
+        // Đã có checkpoint (cổng sau khi xong intro lần đầu, hoặc xa hơn — VD phòng ăn) -- KHÔNG chạy
+        // lại cinematic nữa, restore thẳng vị trí/hướng nhìn đã lưu rồi trả quyền điều khiển ngay.
+        if (CheckpointManager.HasCheckpoint)
+        {
+            CheckpointManager.Restore(PlayerController.Instance.transform);
+            PlayerController.Instance?.SetInputEnabled(true);
+            SetHudVisible(true);
+            return;
+        }
+
         StartCoroutine(RunIntro());
     }
 
@@ -72,25 +92,57 @@ public class IntroManager : MonoBehaviour
     {
         _skipRequested = false;
         PlayerController.Instance?.SetInputEnabled(false);
+        SetHudVisible(false); // ẩn HUD (stamina/pin đèn) suốt intro -- DialogueUI.CloseDialogue() sẽ tự hiện lại khi dialogue đóng, còn nếu KHÔNG có dialogue thì tự hiện ở nhánh else bên dưới
+
+        // Panel đen (EyelidBlink) mặc định có thể đang tắt trong Hierarchy -- StartCoroutine trên
+        // GameObject inactive sẽ KHÔNG chạy (Unity chỉ log warning, không throw), khiến callback
+        // onComplete không bao giờ gọi -> BlinkStepsRoutine treo vĩnh viễn ở vòng "while (!done)" sau
+        // này -> intro không bao giờ mở dialogue, input khoá luôn. Bật active lên trước, chắc chắn.
+        if (eyelidBlink != null) eyelidBlink.gameObject.SetActive(true);
         eyelidBlink?.SnapClosed();
 
         // ─── BƯỚC 1: di chuyển A→B lúc còn đen ─────────────────────────────
-        if (pointA != null && pointB != null && PlayerController.Instance != null)
+        // Đi bằng CharacterController.Move() THẬT (giữ enabled xuyên suốt), KHÔNG lerp thẳng transform
+        // -- HeadbobSystem đo tốc độ qua độ dời vị trí + _cc.isGrounded, mà isGrounded luôn false khi
+        // CharacterController bị tắt (như bản cũ) nên tắt hẳn head-bob/tiếng bước chân dù vị trí vẫn
+        // đổi mỗi frame. Move() thật còn tự tôn trọng va chạm tường/đồ vật dọc đường, không xuyên tường.
+        if (pointA != null && pointB != null && PlayerController.Instance != null && _cc != null)
         {
             Transform player = PlayerController.Instance.transform;
-            if (_cc != null) _cc.enabled = false;
+            _cc.enabled = true;
             player.position = pointA.position;
 
-            float t = 0f;
-            while (t < moveDuration)
+            Vector3 flatDir = pointB.position - pointA.position;
+            flatDir.y = 0f;
+            float totalDist = flatDir.magnitude;
+            if (flatDir.sqrMagnitude > 0.0001f) player.rotation = Quaternion.LookRotation(flatDir.normalized, Vector3.up);
+            float speed = totalDist / Mathf.Max(0.01f, moveDuration);
+
+            // Giới hạn theo QUÃNG ĐƯỜNG CÒN LẠI (không phải theo thời gian) -- vòng lặp kiểu
+            // "while (t < moveDuration) { t += dt; Move(...) }" luôn đi lố ở frame cuối (frame khiến t
+            // vượt ngưỡng vẫn full step trước khi thoát), cộng dồn ra lố hẳn 1 khoảng nhìn thấy được so
+            // với B. Trừ dần remaining, clamp step không vượt quá phần còn lại -> không bao giờ đi lố.
+            float remaining = totalDist;
+            while (remaining > 0.001f)
             {
                 if (allowDebugSkip && Input.GetKeyDown(skipKey)) { _skipRequested = true; break; }
-                t += Time.deltaTime;
-                player.position = Vector3.Lerp(pointA.position, pointB.position, Mathf.Clamp01(t / moveDuration));
+                float step = Mathf.Min(speed * Time.deltaTime, remaining);
+                _cc.Move(player.forward * step);
+                remaining -= step;
+                if (!_cc.isGrounded) _cc.Move(Vector3.down * 9.8f * Time.deltaTime);
                 yield return null;
             }
-            player.position = pointB.position;
-            if (_cc != null) _cc.enabled = true;
+
+            // Chốt lại đúng X/Z điểm B (giữ nguyên Y hiện tại, tránh lún đất) -- phòng trường hợp sân
+            // dốc nhẹ khiến CharacterController trượt thêm theo phương ngang lúc xử lý va chạm/trọng
+            // lực, cộng dồn lệch khỏi B dù bước di chuyển đã clamp đúng quãng đường.
+            if (!_skipRequested)
+            {
+                Vector3 finalPos = player.position;
+                finalPos.x = pointB.position.x;
+                finalPos.z = pointB.position.z;
+                player.position = finalPos;
+            }
         }
 
         // ─── BƯỚC 2: xoay camera + chớp đen song song ──────────────────────
@@ -122,11 +174,29 @@ public class IntroManager : MonoBehaviour
         if (_cc != null) _cc.enabled = true;
         PlayerController.Instance?.SetPitch(cameraEndEuler.x);
 
+        // Checkpoint "cổng vào" (cảnh 1) -- lưu NGAY sau khi xong intro (đi A→B + xoay camera + chớp
+        // mắt), TRƯỚC khi dialogue chạy. Lần sau vào lại Chapter1 (Retry hoặc load lại scene) sẽ thấy
+        // CheckpointManager.HasCheckpoint=true ở Start() bên trên -- tự bỏ qua toàn bộ cinematic này,
+        // restore thẳng vào đúng vị trí/hướng nhìn hiện tại của Player lúc này.
+        if (PlayerController.Instance != null)
+            CheckpointManager.Save(1, PlayerController.Instance.transform.position, PlayerController.Instance.transform.rotation);
+
         // ─── BƯỚC 3: dialogue intro ─────────────────────────────────────────
+        exteriorAmbient?.FadeToVolume(exteriorAmbientDuckedVolume, exteriorAmbientDuckDuration); // vặn nhỏ mượt, giữ nguyên từ đây trở đi
         if (introDialogue != null)
             DialogueUI.Instance?.StartDialogue(introDialogue);
         else
+        {
             PlayerController.Instance?.SetInputEnabled(true); // không có dialogue thì tự trả quyền điều khiển luôn
+            SetHudVisible(true); // ...và tự hiện lại HUD luôn, vì sẽ không có DialogueUI.CloseDialogue() nào gọi việc này
+        }
+    }
+
+    private void SetHudVisible(bool visible)
+    {
+        if (hudToHideDuringIntro == null) return;
+        foreach (var go in hudToHideDuringIntro)
+            if (go != null) go.SetActive(visible);
     }
 
     private bool _rotRunning;

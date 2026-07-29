@@ -26,8 +26,8 @@ Material:
     m_Ints: []
     m_Floats:
     - _ColorDepth: 48
-    - _DitherStrength: 0.15
-    - _PixelDivisor: 3
+    - _DitherStrength: 0.1
+    - _PixelDivisor: 2.5
     - _ScanlineStrength: 0.06
     m_Colors: []
   m_BuildTextureStacks: []

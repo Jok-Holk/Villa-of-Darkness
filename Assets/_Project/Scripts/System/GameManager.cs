@@ -16,6 +16,8 @@ public class GameManager : MonoBehaviour
         }
 
         Instance = this;
+        transform.SetParent(null); // DontDestroyOnLoad chỉ chạy được với root object -- object này có thể đang
+        // nằm dưới divider "= MANAGERS" trong Hierarchy (chỉ để gọn lúc edit), tự tách ra root lúc runtime.
         DontDestroyOnLoad(gameObject);
 
         SceneManager.sceneLoaded += OnSceneLoaded;
@@ -43,7 +45,9 @@ public class GameManager : MonoBehaviour
         // thay vì vị trí spawn mặc định của scene. Chưa có checkpoint nào thì bỏ qua, giữ hành vi cũ.
         if (_pendingCheckpointRestore && CheckpointManager.HasCheckpoint && PlayerController.Instance != null)
         {
-            CheckpointManager.Restore(PlayerController.Instance.transform);
+            // revertInventory: true -- chết (Retry) mất hết đồ nhặt SAU checkpoint gần nhất, đúng yêu cầu
+            // "đồ đạc sẽ reset nếu chết" (trước đây mặc định giữ nguyên toàn bộ, không revert).
+            CheckpointManager.Restore(PlayerController.Instance.transform, revertInventory: true);
         }
         _pendingCheckpointRestore = false;
     }
@@ -93,6 +97,8 @@ public class GameManager : MonoBehaviour
     public void LoadMainMenu()
     {
         GameData.Reset();
+        CheckpointManager.Clear(); // về Main Menu = coi như bỏ ván đang chơi -- không thì "New Game" lần
+        // sau vẫn thấy HasCheckpoint=true, IntroManager tưởng đã qua cổng nên bỏ qua cinematic sai.
         Time.timeScale   = 1f;
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible   = true;

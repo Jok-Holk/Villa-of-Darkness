@@ -1,0 +1,236 @@
+﻿=== VoD PASS 1 — True Module Scale Report (chỉ đo, không sửa) ===
+Mục đích: so sánh kích thước THẬT (world bounds) của cửa sổ/tường/cửa giữa các phòng.
+Nếu cùng 1 loại module (vd cửa sổ 4 ô kính) mà kích thước lệch nhau nhiều giữa phòng này với phòng khác => bằng chứng scale bị ép sai.
+
+########## ThuPhong  (hệ số scale đã áp trước đó: x0.498) ##########
+  [tường] 'Wall_LamViec'  thickness=6.055  height=2.30  full=(W8.12 x H2.30 x D6.06)
+  [cửa sổ] 'window_small'  size=(W0.46 x H1.75 x D1.39)
+  [cửa sổ] 'window_small_frame'  size=(W0.10 x H1.48 x D1.03)
+  [cửa sổ] 'window_small'  size=(W0.46 x H1.75 x D1.50)
+  [cửa sổ] 'window_small_frame'  size=(W0.10 x H1.48 x D1.11)
+  [cửa sổ] 'window_small'  size=(W1.10 x H1.73 x D0.32)
+  [cửa sổ] 'window_small_frame'  size=(W0.81 x H1.47 x D0.07)
+  [cửa sổ] 'window_small'  size=(W1.29 x H1.73 x D0.32)
+  [cửa sổ] 'window_small_frame'  size=(W0.95 x H1.47 x D0.07)
+  [cửa]   'door'  size=(W0.44 x H0.21 x D0.06)
+  [cửa]   'door'  size=(W0.44 x H0.21 x D0.06)
+  [cửa]   'doorway'  size=(W1.11 x H2.31 x D0.20)
+  [cửa]   'door'  size=(W0.98 x H2.25 x D0.25)
+  [cửa]   'doorway (1)'  size=(W0.20 x H2.28 x D1.10)
+  [cửa]   'door'  size=(W0.26 x H2.21 x D0.97)
+
+  >> TB cửa sổ (8): W=0.66 H=1.61  (min W=0.10, max W=1.29)
+  >> TB độ dày tường (1): 6.055m, chiều cao TB: 2.30m
+  >> TB cửa (6): W=0.57 H=1.58
+
+########## TienSanh  (hệ số scale đã áp trước đó: x0.955) ##########
+  [tường] 'Wall_Sanh'  thickness=5.922  height=4.20  full=(W8.60 x H4.20 x D5.92)
+  [cửa sổ] 'window_small'  size=(W1.48 x H1.71 x D0.32)
+  [cửa sổ] 'window_small_frame'  size=(W1.09 x H1.45 x D0.07)
+  [cửa sổ] 'window_small'  size=(W1.48 x H1.71 x D0.32)
+  [cửa sổ] 'window_small_frame'  size=(W1.09 x H1.45 x D0.07)
+  [cửa]   'rugDoormat'  size=(W1.03 x H0.02 x D0.57)
+  [cửa]   'door'  size=(W0.08 x H0.39 x D0.56)
+  [cửa]   'door'  size=(W0.08 x H0.39 x D0.56)
+  [cửa]   'doorway'  size=(W0.09 x H2.12 x D1.16)
+  [cửa]   'door'  size=(W0.11 x H2.06 x D1.03)
+  [cửa]   'doorway (1)'  size=(W0.09 x H2.12 x D1.16)
+  [cửa]   'door'  size=(W0.11 x H2.06 x D1.03)
+  [cửa]   'Arch_Door_Interior'  size=(W2.40 x H2.86 x D0.55)
+  [cửa sổ] 'wallWindow'  size=(W2.44 x H2.69 x D0.17)
+  [cửa sổ] 'window'  size=(W0.91 x H1.39 x D0.05)
+
+  >> TB cửa sổ (6): W=1.41 H=1.73  (min W=0.91, max W=2.44)
+  >> TB độ dày tường (1): 5.922m, chiều cao TB: 4.20m
+  >> TB cửa (8): W=0.50 H=1.50
+
+########## TiepKhach  (hệ số scale đã áp trước đó: x0.955) ##########
+  [tường] 'Wall_GiaDinh'  thickness=5.733  height=3.93  full=(W8.60 x H3.93 x D5.73)
+  [cửa]   'doorway'  size=(W0.16 x H1.88 x D1.31)
+  [cửa]   'door'  size=(W0.21 x H1.83 x D1.16)
+  [cửa]   'doorway (1)'  size=(W1.46 x H2.03 x D0.17)
+  [cửa]   'door'  size=(W1.29 x H1.98 x D0.22)
+  [cửa sổ] 'window_small'  size=(W1.03 x H1.00 x D0.52)
+  [cửa sổ] 'window_small_frame'  size=(W0.76 x H0.85 x D0.11)
+  [cửa sổ] 'window_small'  size=(W1.03 x H1.00 x D0.52)
+  [cửa sổ] 'window_small_frame'  size=(W0.76 x H0.85 x D0.11)
+  [cửa sổ] 'window_small'  size=(W0.52 x H0.96 x D1.21)
+  [cửa sổ] 'window_small_frame'  size=(W0.11 x H0.82 x D0.89)
+  [cửa sổ] 'window_small'  size=(W0.52 x H0.96 x D1.11)
+  [cửa sổ] 'window_small_frame'  size=(W0.11 x H0.82 x D0.82)
+
+  >> TB cửa sổ (8): W=0.60 H=0.91  (min W=0.11, max W=1.03)
+  >> TB độ dày tường (1): 5.733m, chiều cao TB: 3.93m
+  >> TB cửa (4): W=0.78 H=1.93
+
+########## Hanh_Lang_Trai  (hệ số scale đã áp trước đó: x0.341) ##########
+  [cửa]   'doorLeft'  size=(W0.47 x H1.45 x D0.24)
+  [cửa]   'doorRight'  size=(W0.49 x H1.45 x D0.08)
+  [tường] 'Walls_CorridorLeft'  thickness=0.302  height=1.78  full=(W9.42 x H1.78 x D0.30)
+  [tường] 'Walls_CorridorLeft.001'  thickness=0.302  height=1.78  full=(W4.13 x H1.78 x D0.30)
+  [tường] 'Walls_CorridorLeft.002'  thickness=0.302  height=1.78  full=(W4.13 x H1.78 x D0.30)
+  [tường] 'Walls_CorridorLeft.003'  thickness=0.302  height=0.85  full=(W1.15 x H0.85 x D0.30)
+
+  >> TB độ dày tường (4): 0.302m, chiều cao TB: 1.55m
+  >> TB cửa (2): W=0.48 H=1.45
+
+########## CauThang  (hệ số scale đã áp trước đó: x0.610) ##########
+
+
+########## Hanh_Lang_Phai  (hệ số scale đã áp trước đó: x0.341) ##########
+  [cửa]   'doorLeft'  size=(W0.47 x H1.45 x D0.24)
+  [cửa]   'doorRight'  size=(W0.49 x H1.45 x D0.08)
+  [tường] 'Walls_CorridorRight'  thickness=0.302  height=1.78  full=(W9.42 x H1.78 x D0.30)
+  [tường] 'Walls_CorridorRight.001'  thickness=0.302  height=1.78  full=(W4.13 x H1.78 x D0.30)
+  [tường] 'Walls_CorridorRight.002'  thickness=0.302  height=1.78  full=(W4.13 x H1.78 x D0.30)
+  [tường] 'Walls_CorridorRight.003'  thickness=0.302  height=0.85  full=(W1.15 x H0.85 x D0.30)
+
+  >> TB độ dày tường (4): 0.302m, chiều cao TB: 1.55m
+  >> TB cửa (2): W=0.48 H=1.45
+
+########## Salon  (hệ số scale đã áp trước đó: x0.862) ##########
+  [tường] 'Wall_Khach'  thickness=6.721  height=3.62  full=(W16.20 x H3.62 x D6.72)
+  [tường] 'clock_wall'  thickness=0.093  height=0.62  full=(W0.31 x H0.62 x D0.09)
+  [cửa sổ] 'window_small'  size=(W1.10 x H2.34 x D1.12)
+  [cửa sổ] 'window_small_frame'  size=(W0.24 x H1.99 x D0.83)
+  [cửa sổ] 'window_small'  size=(W1.10 x H2.34 x D1.12)
+  [cửa sổ] 'window_small_frame'  size=(W0.24 x H1.99 x D0.83)
+  [cửa sổ] 'window_small'  size=(W1.10 x H2.34 x D1.12)
+  [cửa sổ] 'window_small_frame'  size=(W0.24 x H1.99 x D0.83)
+  [cửa sổ] 'window_small'  size=(W1.02 x H2.34 x D1.12)
+  [cửa sổ] 'window_small_frame'  size=(W0.22 x H1.99 x D0.83)
+  [cửa sổ] 'window_small'  size=(W3.19 x H2.34 x D1.01)
+  [cửa sổ] 'window_small_frame'  size=(W2.36 x H1.98 x D0.22)
+  [cửa sổ] 'window_small'  size=(W3.19 x H2.34 x D1.01)
+  [cửa sổ] 'window_small_frame'  size=(W2.36 x H1.98 x D0.22)
+
+  >> TB cửa sổ (12): W=1.36 H=2.16  (min W=0.22, max W=3.19)
+  >> TB độ dày tường (2): 3.407m, chiều cao TB: 2.12m
+
+########## PhongAn  (hệ số scale đã áp trước đó: x0.836) ##########
+  [cửa sổ] 'window_small'  size=(W2.07 x H2.27 x D0.98)
+  [cửa sổ] 'window_small_frame'  size=(W1.53 x H1.93 x D0.21)
+  [cửa sổ] 'window_small'  size=(W2.08 x H2.27 x D0.98)
+  [cửa sổ] 'window_small_frame'  size=(W1.54 x H1.93 x D0.21)
+  [cửa sổ] 'window_small'  size=(W0.89 x H2.27 x D1.31)
+  [cửa sổ] 'window_small_frame'  size=(W0.19 x H1.93 x D0.97)
+  [tường] 'WallSconce'  thickness=0.176  height=0.33  full=(W0.42 x H0.33 x D0.18)
+  [cửa sổ] 'WindowFrame'  size=(W0.32 x H2.13 x D3.77)
+  [cửa sổ] 'WindowGlass'  size=(W0.07 x H1.04 x D3.24)
+  [tường] 'Wall_An'  thickness=6.520  height=3.51  full=(W6.52 x H3.51 x D8.19)
+
+  >> TB cửa sổ (8): W=1.09 H=1.97  (min W=0.07, max W=2.08)
+  >> TB độ dày tường (2): 3.348m, chiều cao TB: 1.92m
+
+########## Nha_Phu_Bep  (hệ số scale đã áp trước đó: x0.229) ##########
+  [cửa]   'door'  size=(W0.47 x H0.35 x D0.05)
+  [cửa]   'door'  size=(W0.47 x H0.35 x D0.05)
+  [cửa]   'door'  size=(W0.44 x H0.33 x D0.06)
+  [cửa]   'door'  size=(W0.44 x H0.23 x D0.05)
+  [cửa]   'door'  size=(W0.05 x H0.23 x D0.44)
+  [cửa]   'door'  size=(W0.05 x H0.23 x D0.44)
+  [cửa]   'door'  size=(W0.44 x H0.23 x D0.05)
+  [cửa]   'door'  size=(W0.44 x H0.23 x D0.05)
+  [cửa]   'door'  size=(W0.44 x H0.23 x D0.05)
+  [cửa]   'doorLeft'  size=(W0.22 x H0.39 x D0.04)
+  [cửa]   'doorRight'  size=(W0.22 x H0.39 x D0.04)
+  [cửa]   'doorLeft'  size=(W0.22 x H0.39 x D0.04)
+  [cửa]   'doorRight'  size=(W0.22 x H0.39 x D0.04)
+  [cửa]   'doorLeft'  size=(W0.22 x H0.39 x D0.04)
+  [cửa]   'doorRight'  size=(W0.22 x H0.39 x D0.04)
+  [cửa]   'doorLeft'  size=(W0.22 x H0.39 x D0.04)
+  [cửa]   'doorRight'  size=(W0.22 x H0.39 x D0.04)
+  [cửa]   'doorLeft'  size=(W0.22 x H0.39 x D0.04)
+  [cửa]   'doorRight'  size=(W0.22 x H0.39 x D0.04)
+  [cửa]   'doorLeft'  size=(W0.22 x H0.39 x D0.04)
+  [cửa]   'doorRight'  size=(W0.22 x H0.39 x D0.04)
+  [cửa]   'doorLeft'  size=(W0.22 x H0.39 x D0.04)
+  [cửa]   'doorRight'  size=(W0.22 x H0.39 x D0.04)
+  [cửa]   'doorLeft'  size=(W0.04 x H0.39 x D0.22)
+  [cửa]   'doorRight'  size=(W0.04 x H0.39 x D0.22)
+  [cửa]   'doorLeft'  size=(W0.04 x H0.39 x D0.22)
+  [cửa]   'doorRight'  size=(W0.04 x H0.39 x D0.22)
+  [cửa]   'doorLeft'  size=(W0.04 x H0.39 x D0.22)
+  [cửa]   'doorRight'  size=(W0.04 x H0.39 x D0.22)
+  [cửa]   'doorLeft'  size=(W0.22 x H0.39 x D0.04)
+  [cửa]   'doorRight'  size=(W0.22 x H0.39 x D0.04)
+  [cửa]   'doorFreezer'  size=(W0.47 x H0.24 x D0.10)
+  [cửa]   'doorFridge'  size=(W0.47 x H0.77 x D0.12)
+  [cửa]   'doorFridge'  size=(W0.08 x H0.35 x D0.27)
+  [cửa]   'doorFreezer'  size=(W0.04 x H0.09 x D0.17)
+  [cửa]   'doorFridge'  size=(W0.05 x H0.28 x D0.17)
+  [cửa sổ] 'window_small'  size=(W0.23 x H0.52 x D0.99)
+  [cửa sổ] 'window_small_frame'  size=(W0.05 x H0.44 x D0.73)
+  [cửa sổ] 'window_small'  size=(W0.23 x H0.52 x D0.99)
+  [cửa sổ] 'window_small_frame'  size=(W0.05 x H0.44 x D0.73)
+  [cửa sổ] 'window_small'  size=(W0.99 x H0.52 x D0.23)
+  [cửa sổ] 'window_small_frame'  size=(W0.73 x H0.44 x D0.05)
+  [tường] 'Walls_Bep'  thickness=0.323  height=0.70  full=(W0.79 x H0.70 x D0.32)
+  [tường] 'Walls_Bep.001'  thickness=0.323  height=1.72  full=(W2.39 x H1.72 x D0.32)
+  [tường] 'Walls_Bep.002'  thickness=0.323  height=1.72  full=(W2.28 x H1.72 x D0.32)
+  [tường] 'Walls_Bep.003'  thickness=0.323  height=0.59  full=(W0.71 x H0.59 x D0.32)
+  [tường] 'Walls_Bep.004'  thickness=0.323  height=1.72  full=(W2.28 x H1.72 x D0.32)
+  [tường] 'Walls_Bep.005'  thickness=0.323  height=1.72  full=(W2.28 x H1.72 x D0.32)
+  [tường] 'Walls_Bep.006'  thickness=0.323  height=0.59  full=(W0.79 x H0.59 x D0.32)
+  [tường] 'Walls_Bep.007'  thickness=0.314  height=1.72  full=(W0.31 x H1.72 x D1.21)
+  [tường] 'Walls_Bep.008'  thickness=0.314  height=1.72  full=(W0.31 x H1.72 x D1.21)
+  [tường] 'Walls_Bep.009'  thickness=0.314  height=0.59  full=(W0.31 x H0.59 x D0.81)
+  [tường] 'Walls_Bep.010'  thickness=0.314  height=0.59  full=(W0.31 x H0.59 x D0.81)
+  [tường] 'Walls_Bep.011'  thickness=0.314  height=1.72  full=(W0.31 x H1.72 x D1.21)
+  [tường] 'Walls_Bep.012'  thickness=0.314  height=1.72  full=(W0.31 x H1.72 x D1.21)
+  [tường] 'Walls_Bep.013'  thickness=0.314  height=0.59  full=(W0.31 x H0.59 x D0.81)
+  [tường] 'Walls_Bep.014'  thickness=0.314  height=0.59  full=(W0.31 x H0.59 x D0.81)
+
+  >> TB cửa sổ (6): W=0.38 H=0.48  (min W=0.05, max W=0.99)
+  >> TB độ dày tường (15): 0.318m, chiều cao TB: 1.20m
+  >> TB cửa (36): W=0.22 H=0.35
+
+########## Nha_Kho  (hệ số scale đã áp trước đó: x0.388) ##########
+  [cửa]   'Arch_Door_StorageClean_Body'  size=(W0.91 x H1.66 x D0.25)
+  [cửa]   'Arch_Door_StorageClean_Hasp'  size=(W0.24 x H0.18 x D0.05)
+  [cửa sổ] 'window_small_frame (1)'  size=(W0.81 x H0.63 x D0.09)
+  [tường] 'Walls_Kho'  thickness=0.306  height=2.44  full=(W2.14 x H2.44 x D0.31)
+  [tường] 'Walls_Kho.001'  thickness=0.306  height=2.44  full=(W2.14 x H2.44 x D0.31)
+  [tường] 'Walls_Kho.002'  thickness=0.306  height=0.84  full=(W0.92 x H0.84 x D0.31)
+  [tường] 'Walls_Kho.003'  thickness=0.306  height=2.44  full=(W2.22 x H2.44 x D0.31)
+  [tường] 'Walls_Kho.004'  thickness=0.306  height=2.44  full=(W2.22 x H2.44 x D0.31)
+  [tường] 'Walls_Kho.005'  thickness=0.306  height=1.83  full=(W0.76 x H1.83 x D0.31)
+  [tường] 'Walls_Kho.006'  thickness=0.306  height=2.44  full=(W0.31 x H2.44 x D3.06)
+  [tường] 'Walls_Kho.007'  thickness=0.306  height=2.44  full=(W0.31 x H2.44 x D3.06)
+
+  >> TB cửa sổ (1): W=0.81 H=0.63  (min W=0.81, max W=0.81)
+  >> TB độ dày tường (8): 0.306m, chiều cao TB: 2.17m
+  >> TB cửa (2): W=0.57 H=0.92
+
+=== BẢNG SO SÁNH TỔNG (để phát hiện phòng lệch tỉ lệ) ===
+
+-- Cửa sổ (avg W x H, mét) --
+  Nha_Phu_Bep      avgW=0.38  avgH=0.48  (n=6, range W 0.05-0.99)  [hệ số cũ x0.229]
+  TiepKhach        avgW=0.60  avgH=0.91  (n=8, range W 0.11-1.03)  [hệ số cũ x0.955]
+  ThuPhong         avgW=0.66  avgH=1.61  (n=8, range W 0.10-1.29)  [hệ số cũ x0.498]
+  Nha_Kho          avgW=0.81  avgH=0.63  (n=1, range W 0.81-0.81)  [hệ số cũ x0.388]
+  PhongAn          avgW=1.09  avgH=1.97  (n=8, range W 0.07-2.08)  [hệ số cũ x0.836]
+  Salon            avgW=1.36  avgH=2.16  (n=12, range W 0.22-3.19)  [hệ số cũ x0.862]
+  TienSanh         avgW=1.41  avgH=1.73  (n=6, range W 0.91-2.44)  [hệ số cũ x0.955]
+
+-- Tường (avg thickness / height, mét) --
+  Hanh_Lang_Phai   thickness=0.302  height=1.55  (n=4)  [hệ số cũ x0.341]
+  Hanh_Lang_Trai   thickness=0.302  height=1.55  (n=4)  [hệ số cũ x0.341]
+  Nha_Kho          thickness=0.306  height=2.17  (n=8)  [hệ số cũ x0.388]
+  Nha_Phu_Bep      thickness=0.318  height=1.20  (n=15)  [hệ số cũ x0.229]
+  PhongAn          thickness=3.348  height=1.92  (n=2)  [hệ số cũ x0.836]
+  Salon            thickness=3.407  height=2.12  (n=2)  [hệ số cũ x0.862]
+  TiepKhach        thickness=5.733  height=3.93  (n=1)  [hệ số cũ x0.955]
+  TienSanh         thickness=5.922  height=4.20  (n=1)  [hệ số cũ x0.955]
+  ThuPhong         thickness=6.055  height=2.30  (n=1)  [hệ số cũ x0.498]
+
+-- Cửa (avg W x H, mét) --
+  Nha_Phu_Bep      avgW=0.22  avgH=0.35  (n=36)  [hệ số cũ x0.229]
+  Hanh_Lang_Phai   avgW=0.48  avgH=1.45  (n=2)  [hệ số cũ x0.341]
+  Hanh_Lang_Trai   avgW=0.48  avgH=1.45  (n=2)  [hệ số cũ x0.341]
+  TienSanh         avgW=0.50  avgH=1.50  (n=8)  [hệ số cũ x0.955]
+  ThuPhong         avgW=0.57  avgH=1.58  (n=6)  [hệ số cũ x0.498]
+  Nha_Kho          avgW=0.57  avgH=0.92  (n=2)  [hệ số cũ x0.388]
+  TiepKhach        avgW=0.78  avgH=1.93  (n=4)  [hệ số cũ x0.955]
+
+Đọc bảng: nếu 2 phòng liền kề (vd ThuPhong-TienSanh, Salon-PhongAn) có avgW cửa sổ/tường lệch nhau >20-30% thì gần như chắc chắn là do hệ số scale ép sai, không phải chủ ý thiết kế.

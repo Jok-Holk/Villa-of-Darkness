@@ -1,0 +1,11 @@
+﻿=== VoD Fix ALL Room Heights (batch) ===
+[ThuPhong] cao 4.20m, lệch 0.0% < ngưỡng 2% — bỏ qua, không sửa.
+[TienSanh] cao 4.23m, lệch 0.7% < ngưỡng 2% — bỏ qua, không sửa.
+[TiepKhach] cao 4.20m, lệch 0.0% < ngưỡng 2% — bỏ qua, không sửa.
+[Hanh_Lang_Trai] cao 4.20m, lệch 0.0% < ngưỡng 2% — bỏ qua, không sửa.
+[CauThang] cao 4.20m, lệch 0.0% < ngưỡng 2% — bỏ qua, không sửa.
+[Hanh_Lang_Phai] cao 4.20m, lệch 0.0% < ngưỡng 2% — bỏ qua, không sửa.
+[Salon] cao 4.20m, lệch 0.0% < ngưỡng 2% — bỏ qua, không sửa.
+[PhongAn] cao 4.20m, lệch 0.0% < ngưỡng 2% — bỏ qua, không sửa.
+[Nha_Phu_Bep] cao 3.20m, lệch 0.0% < ngưỡng 2% — bỏ qua, không sửa.
+[Nha_Kho] cao 3.20m, lệch 0.0% < ngưỡng 2% — bỏ qua, không sửa.

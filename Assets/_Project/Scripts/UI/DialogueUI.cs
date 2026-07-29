@@ -3,26 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-// ─────────────────────────────────────────────────────────
-// DATA
-// ─────────────────────────────────────────────────────────
-
-[Serializable]
-public class DialogueLine
-{
-    public string speakerName;
-    [TextArea(2, 6)]
-    public string text;
-
-    [Tooltip("Có giọng lồng tiếng (VO) → hiện dạng phụ đề tinh giản. Không tick → nội tâm/ghi chú, hiện dạng popup khung, dừng lại đọc.")]
-    public bool hasVoice = true;
-}
-
-[CreateAssetMenu(menuName = "Dialogue/Dialogue Asset")]
-public class DialogueAsset : ScriptableObject
-{
-    public List<DialogueLine> lines = new List<DialogueLine>();
-}
+// DialogueLine / DialogueAsset đã tách ra DialogueAsset.cs (file riêng đúng tên class --
+// Unity không tự resolve MonoScript cho ScriptableObject tạo bằng CreateInstance khi
+// class không trùng tên file chứa nó, khiến m_Script serialize ra {fileID: 0} và asset
+// không hiện trong Object Picker dù vẫn đọc/ghi field bình thường qua YAML).
 
 // ─────────────────────────────────────────────────────────
 // UI ORCHESTRATOR — quản lý state/thứ tự dòng thoại, KHÔNG tự vẽ.
@@ -62,6 +46,9 @@ public class DialogueUI : MonoBehaviour
     [Header("Events")]
     public UnityEvent OnDialogueEnd;
 
+    [Header("HUD ẩn khi có hội thoại đang chạy — VD: thanh Stamina, icon pin đèn")]
+    [SerializeField] private GameObject[] hudToHideDuringDialogue;
+
     // ── State ──────────────────────────────────────────────
     DialogueAsset _asset;
     int _lineIndex;
@@ -82,6 +69,7 @@ public class DialogueUI : MonoBehaviour
         _asset      = asset;
         _lineIndex  = -1;
         dialoguePanel.SetActive(true);
+        SetHudVisible(false);
 
         // Thoại = pop-up chặn hẳn gameplay (khác Inventory — Tab không pause).
         // Đứng nói chuyện không nên bị ma bắt/mất tập trung giữa chừng.
@@ -113,15 +101,24 @@ public class DialogueUI : MonoBehaviour
 
     public void CloseDialogue()
     {
+        AudioManager.Instance?.StopVoice();
         _activeView?.Close();
         _activeView = null;
         _asset = null;
         _lineIndex = -1;
         dialoguePanel.SetActive(false);
+        SetHudVisible(true);
 
         Time.timeScale = 1f;
         PlayerController.Instance?.SetInputEnabled(true);
         InteractionSystem.IsInputBlocked = false;
+    }
+
+    private void SetHudVisible(bool visible)
+    {
+        if (hudToHideDuringDialogue == null) return;
+        foreach (var go in hudToHideDuringDialogue)
+            if (go != null) go.SetActive(visible);
     }
 
     // ─────────────────────────────────────────────────────
@@ -163,5 +160,12 @@ public class DialogueUI : MonoBehaviour
         _activeView = nextView;
         _activeView.Open();
         _activeView.PlayLine(line, AdvanceLine);
+
+        // Play() trên cùng AudioSource tự cắt tiếng dòng trước nếu còn đang phát dở khi chuyển dòng nhanh
+        // -- không cần tự Stop() tay trước khi gọi PlayVoice() dòng mới.
+        if (line.hasVoice && line.voiceClip != null)
+            AudioManager.Instance?.PlayVoice(line.voiceClip);
+        else
+            AudioManager.Instance?.StopVoice();
     }
 }

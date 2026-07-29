@@ -1,13 +1,7 @@
 fileFormatVersion: 2
-<<<<<<<< HEAD:Assets/Pandazole_Ultimate_Pack/Pandazole Nature Environment Pack/Models/Demo/Demo.fbx.meta
-guid: d464abb1ad852f44eac21cec8e48f3e5
-ModelImporter:
-  serializedVersion: 20200
-========
 guid: b00e14ca2ce45ac4dbf63d1ced67ddd2
 ModelImporter:
   serializedVersion: 21300
->>>>>>>> origin/phase2.8/detail/-Ghost-AI_Mirror_Triggers-:Assets/_Project/Models/Props/Decor/Hocker/Worn wooden crate/Box/Meshes/box_low.fbx.meta
   internalIDToNameTable: []
   externalObjects: {}
   materials:
@@ -20,16 +14,13 @@ ModelImporter:
     bakeSimulation: 0
     resampleCurves: 1
     optimizeGameObjects: 0
-<<<<<<<< HEAD:Assets/Pandazole_Ultimate_Pack/Pandazole Nature Environment Pack/Models/Demo/Demo.fbx.meta
-========
     removeConstantScaleCurves: 1
->>>>>>>> origin/phase2.8/detail/-Ghost-AI_Mirror_Triggers-:Assets/_Project/Models/Props/Decor/Hocker/Worn wooden crate/Box/Meshes/box_low.fbx.meta
-    motionNodeName: 
-    rigImportErrors: 
-    rigImportWarnings: 
-    animationImportErrors: 
-    animationImportWarnings: 
-    animationRetargetingWarnings: 
+    motionNodeName:
+    rigImportErrors:
+    rigImportWarnings:
+    animationImportErrors:
+    animationImportWarnings:
+    animationRetargetingWarnings:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
@@ -64,10 +55,7 @@ ModelImporter:
     skinWeightsMode: 0
     maxBonesPerVertex: 4
     minBoneWeight: 0.001
-<<<<<<<< HEAD:Assets/Pandazole_Ultimate_Pack/Pandazole Nature Environment Pack/Models/Demo/Demo.fbx.meta
-========
     optimizeBones: 1
->>>>>>>> origin/phase2.8/detail/-Ghost-AI_Mirror_Triggers-:Assets/_Project/Models/Props/Decor/Hocker/Worn wooden crate/Box/Meshes/box_low.fbx.meta
     meshOptimizationFlags: -1
     indexFormat: 0
     secondaryUVAngleDistortion: 8
@@ -100,7 +88,7 @@ ModelImporter:
     legStretch: 0.05
     feetSpacing: 0
     globalScale: 1
-    rootMotionBoneName: 
+    rootMotionBoneName:
     hasTranslationDoF: 0
     hasExtraRoot: 0
     skeletonHasParents: 1
@@ -110,26 +98,15 @@ ModelImporter:
   humanoidOversampling: 1
   avatarSetup: 0
   addHumanoidExtraRootOnlyWhenUsingAvatar: 1
-<<<<<<<< HEAD:Assets/Pandazole_Ultimate_Pack/Pandazole Nature Environment Pack/Models/Demo/Demo.fbx.meta
-========
   remapMaterialsIfMaterialImportModeIsNone: 0
->>>>>>>> origin/phase2.8/detail/-Ghost-AI_Mirror_Triggers-:Assets/_Project/Models/Props/Decor/Hocker/Worn wooden crate/Box/Meshes/box_low.fbx.meta
   additionalBone: 0
-  userData: 
-  assetBundleName: 
-  assetBundleVariant: 
+  userData:
+  assetBundleName:
+  assetBundleVariant:
 AssetOrigin:
   serializedVersion: 1
-<<<<<<<< HEAD:Assets/Pandazole_Ultimate_Pack/Pandazole Nature Environment Pack/Models/Demo/Demo.fbx.meta
-  productId: 212621
-  packageName: Pandazole - Nature Environment Lowpoly Pack
-  packageVersion: 1.0.0
-  assetPath: Assets/Pandazole_Ultimate_Pack/Pandazole Nature Environment Pack/Models/Demo/Demo.fbx
-  uploadId: 479369
-========
   productId: 246735
   packageName: Worn wooden crate
   packageVersion: 1.0
   assetPath: Assets/Hocker/Worn wooden crate/Box/Meshes/box_low.fbx
   uploadId: 562190
->>>>>>>> origin/phase2.8/detail/-Ghost-AI_Mirror_Triggers-:Assets/_Project/Models/Props/Decor/Hocker/Worn wooden crate/Box/Meshes/box_low.fbx.meta

@@ -20,12 +20,15 @@ public class InventoryTabHandler : MonoBehaviour
         if (!Input.GetKeyDown(KeyCode.Tab)) return;
         if (_inventoryUI == null) return;
 
-        // BUG FIX 5: Nếu inventory đang ẩn nhưng examine đang chạy (trạng thái
-        // hợp lệ khi click item từ inventory), Tab phải đóng examine + inventory
-        // thay vì gọi Toggle() → Toggle sẽ thấy _isOpen=true → Close() đúng rồi.
-        // Nhưng nếu _isOpen=false vì inventory bị ẩn khi examine → Toggle() sẽ Open()
-        // thay vì Close(). Fix: dùng IsOpen || IsExamining.
-        if (_inventoryUI.IsOpen || _inventoryUI.IsExamining)
+        // KIẾN TRÚC (Jok yêu cầu): luồng chỉ 1 CHIỀU -- Gameplay -> Tab -> Inventory -> Examine/Diary.
+        // Thoát khỏi Examine/Diary CHỈ bằng đúng phím riêng của nó (Chuột phải khi mở từ Inventory, E khi soi
+        // trực tiếp ngoài world) -- Tab bị "force đè lên" trong lúc đang ở 2 màn này dễ sinh lỗi (từng phải vá
+        // tạm ở BUG FIX 5/6 cũ: đóng nhầm/kẹt lớp). Giờ chặn HẲN Tab (không làm gì cả) trong 2 trạng thái này,
+        // thay vì cố xử lý "lùi 1 lớp" -- chỉ 1 đường thoát duy nhất, không còn nhập nhằng.
+        if (DiaryReaderUI.Instance != null && DiaryReaderUI.Instance.IsOpen) return;
+        if (ExamineItem.AnyExamining) return;
+
+        if (_inventoryUI.IsOpen)
             _inventoryUI.Close();
         else
             _inventoryUI.Open();

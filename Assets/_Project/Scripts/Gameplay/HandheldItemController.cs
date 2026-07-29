@@ -79,7 +79,10 @@ public class HandheldItemController : MonoBehaviour
         {
             instance = Instantiate(data.handHeldPrefab, _leftHandSocket);
             instance.transform.localPosition = Vector3.zero;
-            instance.transform.localRotation = Quaternion.identity;
+            // Áp offset riêng từng item -- 1 số model glb xuất ra nằm ngang thay vì đứng dọc do khác quy
+            // ước trục giữa các phần mềm 3D, Jok tự chỉnh "Hand Held Rotation Offset" trên ItemData tương
+            // ứng cho tới khi model đứng đúng hướng tự nhiên trên tay.
+            instance.transform.localRotation = Quaternion.Euler(data.handHeldRotationOffset);
             _pool[data] = instance;
         }
         else

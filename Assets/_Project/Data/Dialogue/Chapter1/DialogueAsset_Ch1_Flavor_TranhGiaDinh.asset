@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff4459042ab88464388416038b51768c, type: 3}
+  m_Name: DialogueAsset_Ch1_Flavor_TranhGiaDinh
+  m_EditorClassIdentifier: BietThuBongToi.Runtime::DialogueAsset
+  lines:
+  - speakerName: Minh Khoa
+    text: "M\u1ED9t gia \u0111\xECnh \u0111\u1EE9ng th\u1EB3ng h\xE0ng tr\u01B0\u1EDBc
+      \u1ED1ng k\xEDnh: v\u1EE3 ch\u1ED3ng, hai \u0111\u1EE9a tr\u1EBB. \u1EA2nh
+      ch\u1EE5p n\u0103m 1960. Gia \u0111\xECnh l\u1EDBn. V\u1EE3 ch\u1ED3ng, hai
+      con nh\u1ECF. Tr\xF4ng... h\u1EA1nh ph\xFAc."
+    hasVoice: 0
+    voiceClip: {fileID: 0}

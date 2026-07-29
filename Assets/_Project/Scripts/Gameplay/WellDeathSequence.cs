@@ -23,12 +23,19 @@ public class WellDeathSequence : MonoBehaviour
     [SerializeField] private float _overlayFadeDuration = 1.5f;
 
     [Header("Visual — Bước 2: jumpscare Ma Da trồi lên (tuỳ chọn)")]
-    [Tooltip("GameObject Ma Da đặt sẵn trong giếng, mặc định tắt — sẽ SetActive(true) đúng lúc jumpscare. Để trống nếu chưa có model, sequence vẫn chạy (bỏ qua bước này).")]
+    [Tooltip("GameObject Ma Da đặt sẵn trong giếng, mặc định tắt — sẽ SetActive(true) đúng lúc jumpscare. Để trống nếu chưa có model, tự dùng '_jumpscareSprite' 2D thay thế (nếu có gán); nếu cả 2 đều trống thì bỏ qua bước ảnh, sequence vẫn chạy.")]
     [SerializeField] private GameObject _maDaApparition;
-    [Tooltip("Ma Da trồi lên trong bao lâu trước khi màn hình bắt đầu tối")]
+    [Tooltip("Ảnh jumpscare 2D (AI-generated) DÙNG THAY nếu chưa dựng được model 3D Ma Da -- bật full-screen đột ngột, ưu tiên model 3D hơn nếu cả 2 đều gán.")]
+    [SerializeField] private Sprite _jumpscareSprite;
+    [Tooltip("Ma Da trồi lên (hoặc ảnh 2D bật ra) trong bao lâu trước khi màn hình bắt đầu tối")]
     [SerializeField] private float _apparitionPopDuration = 0.15f;
     [Tooltip("Giữ hình Ma Da hiện rõ bao lâu trước khi fade đen — đây là nhịp 'giật mình' của jumpscare")]
     [SerializeField] private float _apparitionHoldDuration = 0.6f;
+
+    [Header("Visual — Bước 2b: kéo Player chìm xuống (CHẠY ĐỒNG THỜI với jumpscare bước 2, không phải trước/sau)")]
+    [Tooltip("1 thế lực vô hình dưới nước kéo Player chìm dần -- chạy song song với jumpscare cho hợp lý (nếu để tuần tự, người chơi đã bị kéo xong xuôi mới thấy ảnh bật ra thì vô lý).")]
+    [SerializeField] private float _pullDownDistance = 1.5f;
+    [SerializeField] private float _pullDownDuration = 1.2f;
 
     [Header("Visual — Bước 3: fade đen")]
     [SerializeField] private float _screenFadeDuration = 1f;
@@ -94,8 +101,11 @@ public class WellDeathSequence : MonoBehaviour
         // 3. Đốm sáng dưới nước — cảnh báo trước jumpscare, đúng nhịp GDD
         yield return StartCoroutine(ApplyBlueOverlay());
 
-        // 4. Jumpscare — Ma Da trồi lên đột ngột kèm âm thanh giật mình
+        // 4. Kéo Player chìm xuống + Jumpscare Ma Da trồi lên — ĐỒNG THỜI, không tuần tự (đang bị kéo
+        // xuống mà màn hình đứng yên chờ ảnh mới bật ra thì không hợp lý).
+        Coroutine pullDown = StartCoroutine(PullPlayerDown());
         yield return StartCoroutine(PlayJumpscare());
+        yield return pullDown;
 
         // 5. Fade màn hình đen
         yield return StartCoroutine(FadeScreenToBlack());
@@ -108,32 +118,89 @@ public class WellDeathSequence : MonoBehaviour
 
     private IEnumerator PlayJumpscare()
     {
-        if (_maDaApparition == null)
-        {
-            // Chưa có model Ma Da gắn sẵn — bỏ qua bước này, sequence vẫn chạy tiếp bình thường.
-            yield break;
-        }
-
+        // SFX phát bất kể có model/ảnh hay chưa — trước đây bị kẹt trong nhánh early-return của
+        // _maDaApparition nên nếu chưa gắn model thì im lặng luôn, dù đã có sẵn SFX_WellJumpscare_MaDa.
         if (_jumpscareSfx != null)
             AudioManager.Instance?.PlaySFX(_jumpscareSfx);
 
-        // Trồi lên đột ngột: pop scale từ 0 lên 1 trong thời gian rất ngắn — cảm giác giật mình
-        Transform t = _maDaApparition.transform;
-        Vector3 fullScale = t.localScale == Vector3.zero ? Vector3.one : t.localScale;
-        t.localScale = Vector3.zero;
-        _maDaApparition.SetActive(true);
+        if (_maDaApparition != null)
+        {
+            // Trồi lên đột ngột: pop scale từ 0 lên 1 trong thời gian rất ngắn — cảm giác giật mình
+            Transform t = _maDaApparition.transform;
+            Vector3 fullScale = t.localScale == Vector3.zero ? Vector3.one : t.localScale;
+            t.localScale = Vector3.zero;
+            _maDaApparition.SetActive(true);
+
+            float elapsed = 0f;
+            while (elapsed < _apparitionPopDuration)
+            {
+                elapsed += Time.deltaTime;
+                t.localScale = Vector3.Lerp(Vector3.zero, fullScale, elapsed / _apparitionPopDuration);
+                yield return null;
+            }
+            t.localScale = fullScale;
+
+            // Giữ hình rõ một nhịp trước khi màn hình bắt đầu tối — đây là khoảnh khắc "giật mình"
+            yield return new WaitForSeconds(_apparitionHoldDuration);
+        }
+        else if (_jumpscareSprite != null)
+        {
+            yield return StartCoroutine(PlaySpriteJumpscare());
+        }
+        // Cả 2 đều trống — chưa có model lẫn ảnh, bỏ qua bước hình ảnh, sequence vẫn chạy tiếp (đã phát SFX ở trên).
+    }
+
+    private IEnumerator PlaySpriteJumpscare()
+    {
+        Canvas canvas = Object.FindFirstObjectByType<Canvas>();
+        if (canvas == null) yield break;
+
+        GameObject imgGO = new GameObject("MaDaJumpscareImage");
+        imgGO.transform.SetParent(canvas.transform, false);
+        var img = imgGO.AddComponent<Image>();
+        img.sprite = _jumpscareSprite;
+        img.preserveAspect = true;
+        var rt = img.rectTransform;
+        rt.anchorMin = Vector2.zero;
+        rt.anchorMax = Vector2.one;
+        rt.offsetMin = Vector2.zero;
+        rt.offsetMax = Vector2.zero;
+        rt.localScale = Vector3.zero;
 
         float elapsed = 0f;
         while (elapsed < _apparitionPopDuration)
         {
             elapsed += Time.deltaTime;
-            t.localScale = Vector3.Lerp(Vector3.zero, fullScale, elapsed / _apparitionPopDuration);
+            rt.localScale = Vector3.Lerp(Vector3.zero, Vector3.one, elapsed / _apparitionPopDuration);
             yield return null;
         }
-        t.localScale = fullScale;
+        rt.localScale = Vector3.one;
 
-        // Giữ hình rõ một nhịp trước khi màn hình bắt đầu tối — đây là khoảnh khắc "giật mình"
         yield return new WaitForSeconds(_apparitionHoldDuration);
+
+        // FadeScreenToBlack ngay sau đó tự tạo Image riêng của nó — không cần giữ ảnh jumpscare này lại.
+        Object.Destroy(imgGO);
+    }
+
+    private IEnumerator PullPlayerDown()
+    {
+        if (_playerController == null) yield break;
+
+        Transform p = _playerController.transform;
+        Vector3 start = p.position;
+        Vector3 end = start + Vector3.down * _pullDownDistance;
+
+        float t = 0f;
+        while (t < _pullDownDuration)
+        {
+            t += Time.deltaTime;
+            float progress = t / _pullDownDuration;
+            // Rung nhẹ giảm dần — cảm giác vùng vẫy trước khi bị kéo hẳn xuống, không phải trượt đều tăm tắp.
+            Vector3 jitter = new Vector3(Mathf.Sin(t * 23f), 0f, Mathf.Cos(t * 19f)) * 0.03f * (1f - progress);
+            p.position = Vector3.Lerp(start, end, progress) + jitter;
+            yield return null;
+        }
+        p.position = end;
     }
 
     private IEnumerator ApplyBlueOverlay()

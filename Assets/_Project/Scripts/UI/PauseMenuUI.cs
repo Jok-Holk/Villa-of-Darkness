@@ -19,6 +19,13 @@ public class PauseMenuUI : MonoBehaviour
         _pauseMenuPanel.SetActive(true);
         Cursor.visible   = true;
         Cursor.lockState = CursorLockMode.None;
+
+        // Ẩn HUD gameplay (crosshair + prompt tương tác, 2 vạch Thể lực/Đèn pin) -- trước đây KHÔNG có
+        // dòng nào ẩn HUD lúc Pause/Settings cả, HUD đứng đè lên menu tạm dừng suốt (kể cả Settings vì
+        // Settings chỉ lồng bên trong trạng thái đã Pause() sẵn, không cần xử lý riêng).
+        InteractPromptUI.Instance?.SetDotVisible(false);
+        HudMetersUI.Instance.SetVisible(false);
+
         OnPause.Invoke();
     }
 
@@ -30,6 +37,10 @@ public class PauseMenuUI : MonoBehaviour
         _pauseMenuPanel.SetActive(false);
         Cursor.visible   = false;
         Cursor.lockState = CursorLockMode.Locked;
+
+        InteractPromptUI.Instance?.SetDotVisible(true);
+        HudMetersUI.Instance.SetVisible(true);
+
         OnResume.Invoke();
     }
 

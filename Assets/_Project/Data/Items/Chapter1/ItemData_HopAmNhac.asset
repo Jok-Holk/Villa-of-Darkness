@@ -1,0 +1,29 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7c01db4d44d7b554a80c098c52d17818, type: 3}
+  m_Name: ItemData_HopAmNhac
+  m_EditorClassIdentifier: BietThuBongToi.Runtime::ItemData
+  itemId: hop_am_nhac
+  itemName: "H\u1ED9p \xE2m nh\u1EA1c \u0111\u1ED3ng"
+  description: "M\u1ED9t h\u1ED9p \xE2m nh\u1EA1c b\u1EB1ng \u0111\u1ED3ng c\u0169.
+    N\u0103m \u0111o\u1EA1n ghi \xE2m, c\xF9ng m\u1ED9t gi\u1ECDng... c\xE0ng v\u1EC1
+    sau c\xE0ng ho\u1EA3ng lo\u1EA1n h\u01A1n. Di v\u1EADt c\u1EE7a Ch\u01B0\u01A1ng
+    1 -- s\u1EBD n\u1EB1m c\u1EA1nh gi\u1EBFng cho ng\u01B0\u1EDDi k\u1EBF ti\u1EBFp
+    t\xECm th\u1EA5y, c\xF9ng \u0111o\u1EA1n b\u0103ng n\xE0y."
+  icon: {fileID: 21300000, guid: 55f904573f7ba2d45a6987b94b377421, type: 3}
+  slotBorderColor: {r: 1, g: 1, b: 1, a: 1}
+  monologueClip: {fileID: 0}
+  isKeyItem: 1
+  isUsable: 0
+  handHeldPrefab: {fileID: 0}
+  handHeldRotationOffset: {x: 0, y: 0, z: 0}
+  isExaminable: 0

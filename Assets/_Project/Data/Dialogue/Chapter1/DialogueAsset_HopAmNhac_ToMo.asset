@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff4459042ab88464388416038b51768c, type: 3}
+  m_Name: DialogueAsset_HopAmNhac_ToMo
+  m_EditorClassIdentifier: BietThuBongToi.Runtime::DialogueAsset
+  lines:
+  - speakerName: Khoa
+    text: "M\u1ED9t h\u1ED9p nh\u1EA1c b\u1EB1ng \u0111\u1ED3ng, \u0111\u1EB7t ngay
+      ng\u1EAFn gi\u1EEFa l\u1EDBp b\u1EE5i -- nh\u01B0 th\u1EC3 m\u1EDBi c\xF3 ai
+      \u0111\xF3 lau qua n\xF3 ch\u01B0a l\xE2u."
+    hasVoice: 0
+    voiceClip: {fileID: 0}
+  - speakerName: Khoa
+    text: "B\xEAn trong n\xE0y l\xE0 g\xEC nh\u1EC9? Th\u1EED l\xEAn d\xE2y xem sao."
+    hasVoice: 0
+    voiceClip: {fileID: 0}

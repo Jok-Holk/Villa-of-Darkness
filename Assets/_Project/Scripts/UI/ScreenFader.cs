@@ -32,6 +32,13 @@ public class ScreenFader : MonoBehaviour
 
         _canvasGroup.alpha = 0f;
         _canvasGroup.blocksRaycasts = false;
+
+        // Đảm bảo mọi con (VD "BlackImage") LUÔN active -- ẩn/hiện của cả hệ thống này chỉ dựa vào
+        // _canvasGroup.alpha, không phải activeSelf của từng con. Nếu ai lỡ tắt riêng 1 con (VD dọn
+        // Hierarchy lúc edit) mà quên bật lại thì alpha=1 lúc FadeOut() vẫn không thấy gì -- tự sửa ở đây
+        // để không phụ thuộc phải nhớ bật tay đúng từng con.
+        foreach (Transform child in transform)
+            if (!child.gameObject.activeSelf) child.gameObject.SetActive(true);
     }
 
     public void FadeOut(float duration, Action onComplete = null)

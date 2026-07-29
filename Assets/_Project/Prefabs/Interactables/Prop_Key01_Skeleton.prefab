@@ -129,7 +129,7 @@ MonoBehaviour:
   _examineRotationOffset: {x: 0, y: 0, z: 0}
   _playerController: {fileID: 0}
   _linkedPickupItem: {fileID: 3657544523349646324}
-  _pickupKey: 102
+  _pickupKey: 101
   OnExamineStart:
     m_PersistentCalls:
       m_Calls: []

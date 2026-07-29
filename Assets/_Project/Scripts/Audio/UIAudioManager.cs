@@ -20,6 +20,8 @@ public class UIAudioManager : MonoBehaviour
     {
         if (Instance != null && Instance != this) { Destroy(gameObject); return; }
         Instance = this;
+        transform.SetParent(null); // DontDestroyOnLoad chỉ chạy được với root object -- object này có thể đang
+        // nằm dưới divider "= MANAGERS" trong Hierarchy (chỉ để gọn lúc edit), tự tách ra root lúc runtime.
         DontDestroyOnLoad(gameObject);
 
         SceneManager.sceneLoaded += (scene, mode) => HookAllButtons();
