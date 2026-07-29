@@ -278,12 +278,25 @@ public class GhostAI : MonoBehaviour
         _anim.SetFloat("Speed", _speedParameter);
     }
 
+    // THÊM 2026-07-30 (Jok yêu cầu -- "trốn tủ thì hiện hint tắt đèn pin, nhưng còn bật đèn pin thì enemy
+    // có quyền mở tủ jumpscare luôn"): trước đây IsPlayerHiding CHE HOÀN TOÀN mọi phát hiện bất kể đèn pin
+    // bật hay tắt -- trốn xong bật đèn pin vẫn tuyệt đối an toàn, sai thiết kế. Giờ trốn CHỈ thật sự an toàn
+    // khi đèn pin đang TẮT -- bật đèn pin trong lúc trốn thì ghost vẫn phát hiện được bình thường.
+    private bool IsPlayerHidingSafely()
+    {
+        var hideComponent = _player.GetComponent<HideSpot>();
+        if (hideComponent == null || !hideComponent.IsPlayerHiding) return false;
+
+        var flashlight = Object.FindFirstObjectByType<FlashlightController>();
+        bool flashlightOn = flashlight != null && flashlight.IsOn;
+        return !flashlightOn; // trốn + đèn TẮT = an toàn. Trốn + đèn BẬT = KHÔNG an toàn nữa.
+    }
+
     private bool CanDetectPlayer()
     {
         if (_player == null) return false;
 
-        var hideComponent = _player.GetComponent<HideSpot>();
-        if (hideComponent != null && hideComponent.IsPlayerHiding) return false;
+        if (IsPlayerHidingSafely()) return false;
 
         Vector3 dirToPlayer = _player.position - transform.position;
         float dist = dirToPlayer.magnitude;
@@ -301,8 +314,7 @@ public class GhostAI : MonoBehaviour
     {
         if (_player == null) return false;
 
-        var hideComponent = _player.GetComponent<HideSpot>();
-        if (hideComponent != null && hideComponent.IsPlayerHiding) return false;
+        if (IsPlayerHidingSafely()) return false;
 
         Rigidbody playerRb = _player.GetComponent<Rigidbody>();
         float playerVelocity = (playerRb != null) ? playerRb.linearVelocity.magnitude : 0f;
