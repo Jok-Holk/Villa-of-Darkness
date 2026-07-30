@@ -49,6 +49,10 @@ public class GhostAI : MonoBehaviour
 
     [Header("Kill")]
     [SerializeField] private float _killDelay = 0.5f;
+    [Tooltip("Player đang trốn tủ mà bật đèn pin -- ghost áp sát trong khoảng cách này thì tự mở tủ + kill " +
+             "thẳng bằng code (không chờ va chạm vật lý, vì Collider Player bị tắt lúc đang trốn).")]
+    [SerializeField] private float _hideKillDistance = 1.5f;
+    private bool _isKillingHidden = false;
 
     [Header("Jumpscare lúc bắt được Player (sau khi đuổi) -- Game Over cơ bản, KHÔNG phải kết Chapter 1")]
     [SerializeField] private Sprite _jumpscareImage;
@@ -190,6 +194,22 @@ public class GhostAI : MonoBehaviour
     {
         if (_agent == null) return;
 
+        // THÊM -- Player trốn tủ mà bật đèn pin: đã bị phát hiện (CanDetectPlayer/CanHearPlayer trả true vì
+        // IsPlayerHidingSafely() = false ở dưới), ghost đuổi tới đây bằng SetDestination(_player.position)
+        // như logic Chase bình thường bên dưới. Nhưng vì Collider Player bị tắt lúc trốn nên không có va
+        // chạm vật lý để kill được -- ghost sẽ đứng sát tủ mãi mãi mà không làm gì. Khi đã áp đủ gần, chủ
+        // động mở tủ + kill thẳng bằng code, không chờ va chạm nữa.
+        if (IsPlayerHidingUnsafe(out HideSpot hideSpot))
+        {
+            float distToHide = Vector3.Distance(transform.position, _player.position);
+            if (distToHide <= _hideKillDistance)
+            {
+                StartCoroutine(ForceOpenAndKillRoutine(hideSpot));
+                return;
+            }
+            // Chưa đủ gần -- cứ để rơi xuống logic Chase bình thường bên dưới, tiếp tục chạy tới tủ.
+        }
+
         if (!CanDetectPlayer() && !CanHearPlayer())
         {
             // Khi mất dấu, gọi hàm chuyển trạng thái có sẵn trong code của bạn
@@ -282,14 +302,29 @@ public class GhostAI : MonoBehaviour
     // có quyền mở tủ jumpscare luôn"): trước đây IsPlayerHiding CHE HOÀN TOÀN mọi phát hiện bất kể đèn pin
     // bật hay tắt -- trốn xong bật đèn pin vẫn tuyệt đối an toàn, sai thiết kế. Giờ trốn CHỈ thật sự an toàn
     // khi đèn pin đang TẮT -- bật đèn pin trong lúc trốn thì ghost vẫn phát hiện được bình thường.
+    // SỬA -- bản cũ dùng _player.GetComponent<HideSpot>(), nhưng script HideSpot nằm trên object CÁI TỦ,
+    // không nằm trên Player, nên GetComponent luôn trả về null -- hàm này trước giờ không bao giờ thấy được
+    // Player đang trốn cả. Đổi sang HideSpot.CurrentActive (biến static, luôn trỏ đúng tủ đang có Player ở
+    // trong -- xem HideSpot.cs) để kiểm tra đúng.
     private bool IsPlayerHidingSafely()
     {
-        var hideComponent = _player.GetComponent<HideSpot>();
-        if (hideComponent == null || !hideComponent.IsPlayerHiding) return false;
+        var hideSpot = HideSpot.CurrentActive;
+        if (hideSpot == null || !hideSpot.IsPlayerHiding) return false;
 
         var flashlight = Object.FindFirstObjectByType<FlashlightController>();
         bool flashlightOn = flashlight != null && flashlight.IsOn;
         return !flashlightOn; // trốn + đèn TẮT = an toàn. Trốn + đèn BẬT = KHÔNG an toàn nữa.
+    }
+
+    // THÊM -- Player đang trốn mà bật đèn pin (KHÔNG an toàn) hay không, kèm ra chính cái HideSpot đó để
+    // ForceOpenAndKillRoutine() biết cửa nào cần mở khi kill.
+    private bool IsPlayerHidingUnsafe(out HideSpot hideSpot)
+    {
+        hideSpot = HideSpot.CurrentActive;
+        if (hideSpot == null || !hideSpot.IsPlayerHiding) return false;
+
+        var flashlight = Object.FindFirstObjectByType<FlashlightController>();
+        return flashlight != null && flashlight.IsOn;
     }
 
     private bool CanDetectPlayer()
@@ -401,6 +436,31 @@ public class GhostAI : MonoBehaviour
                 _lightFlickerCount, _lightFlickerInterval, _cameraShakeDuration, _cameraShakeMagnitude,
                 () => JumpscareGameOverUI.Trigger(_jumpscareImage, null, 1.5f, 3f));
         }
+    }
+
+    // THÊM -- kill trực tiếp bằng code khi Player trốn tủ mà bật đèn pin (xem check ở đầu UpdateChase). Mở
+    // tủ ra HẲN (khác _isOpeningDoor/OpenDoorwayRoutine ở trên -- đó là dừng lại mở cửa lúc PATROL đi ngang
+    // qua, còn đây là mở tủ để LỘ MẶT Player ra cho cinematic jumpscare) rồi chạy đúng chuỗi cinematic y hệt
+    // cách kill bình thường ở OnTriggerStay bên trên, chỉ khác là không cần đợi va chạm vật lý.
+    private IEnumerator ForceOpenAndKillRoutine(HideSpot hideSpot)
+    {
+        if (_isKillingHidden || _hasKilled) yield break;
+        _isKillingHidden = true;
+
+        if (_agent != null && _agent.isOnNavMesh) _agent.isStopped = true;
+
+        hideSpot.ForceCaughtOpen();
+
+        _hasKilled    = true;
+        _currentState = State.Kill;
+
+        AudioClip scream = PickCatchScream();
+        GhostCinematicJumpscare.Trigger(_anim, scream, _jumpscareLight, _attackTriggerName, _attackFreezeDelay,
+            _lightFlickerCount, _lightFlickerInterval, _cameraShakeDuration, _cameraShakeMagnitude,
+            () => JumpscareGameOverUI.Trigger(_jumpscareImage, null, 1.5f, 3f));
+
+        yield return null;
+        _isKillingHidden = false;
     }
 
     // SỬA (Jok yêu cầu 2026-07-30 -- "chọn tuần tự 2 audio này cho việc trigger jumpscare"): mặc định phát
