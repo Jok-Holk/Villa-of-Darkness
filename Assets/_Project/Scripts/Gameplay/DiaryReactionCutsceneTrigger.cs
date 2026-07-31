@@ -56,6 +56,12 @@ public class DiaryReactionCutsceneTrigger : MonoBehaviour
         if (!other.CompareTag("Player")) return;
         if (DiaryReaderUI.Instance == null || !DiaryReaderUI.Instance.HasFinishedReading) return;
 
+        // THÊM (Jok hỏi "có check hiện đang cảnh 3 không"): cutscene này CHỈ thuộc về cảnh 2 (mở đường tới
+        // Thư Phòng TRƯỚC khi cảnh 3 bắt đầu) -- nếu Player debug-nhảy thẳng cảnh 3 (CheckpointDebugTool)
+        // rồi lỡ đi ngang đúng vùng này, KHÔNG được mở lại cửa/lướt ma ngoài ngữ cảnh, vì cửa đó lúc cảnh 3
+        // có thể đã bị Chapter1Scene3Manager khoá/kẹt theo quy định riêng rồi.
+        if (Chapter1Scene3Manager.IsActive) return;
+
         _hasTriggered = true;
         StartCoroutine(RunCutscene());
     }
@@ -106,10 +112,21 @@ public class DiaryReactionCutsceneTrigger : MonoBehaviour
             if (travelDir.sqrMagnitude > 0.0001f)
                 _ghost.rotation = Quaternion.LookRotation(travelDir.normalized, Vector3.up);
 
-            // Chạy animation đi/chạy (param "Speed" -- MonsterAnimator.controller của Thuận, cùng quy ước với
-            // GhostAI) trong lúc lướt, tránh đứng yên/T-pose khi trượt vị trí.
+            // SỬA (Tân báo bị chữ T lúc lướt, dù Animator Controller đã gán đúng): KHÔNG phải do "position bị
+            // kéo bằng code không liên quan gì đến Speed" như nghi ngờ ban đầu -- SetFloat("Speed") vẫn hoạt
+            // động đúng. Root cause thật: object này vừa SetActive(true) lần ĐẦU TIÊN (đứng tắt từ Awake())
+            // vừa bị dời transform.position NGAY LẬP TỨC trong CÙNG 1 khung hình -- SkinnedMeshRenderer chưa
+            // kịp tính lại bounds tại vị trí mới, Animator mặc định dùng AnimatorCullingMode.CullCompletely
+            // (tắt hẳn update nếu renderer bị coi là "không hiện ra"/ngoài tầm nhìn) nên bỏ qua luôn frame
+            // animate đầu tiên -- vì đây LẦN ĐẦU active nên không có pose cũ để giữ lại, kết quả hiện bind
+            // pose gốc = chữ T. Fix: ép AlwaysAnimate để Animator LUÔN evaluate bất kể trạng thái bounds/tầm
+            // nhìn ngay lúc vừa teleport.
             var ghostAnimator = _ghost.GetComponentInChildren<Animator>();
-            if (ghostAnimator != null) ghostAnimator.SetFloat("Speed", 2f);
+            if (ghostAnimator != null)
+            {
+                ghostAnimator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+                ghostAnimator.SetFloat("Speed", 2f);
+            }
 
             float t = 0f;
             while (t < _ghostGlideDuration)

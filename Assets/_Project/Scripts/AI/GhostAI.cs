@@ -63,6 +63,15 @@ public class GhostAI : MonoBehaviour
     [SerializeField] private bool _sequentialScreams = true;
     private int _screamIndex = 0;
 
+    // THÊM 2026-07-31 (Jok hỏi rà soát -- phát hiện gap thật: 3 file MK-DEATH (giọng PLAYER phản ứng lúc
+    // chết, KHÔNG phải giọng ma) chưa có chỗ nào phát cả). JumpscareGameOverUI.Trigger() có sẵn tham số
+    // "scream" thứ 2 -- trước giờ luôn truyền null (vì scream của MA đã phát riêng qua GhostCinematicJumpscare
+    // ở trên rồi) -- giờ tái dùng đúng chỗ trống đó cho giọng PLAYER, phát đúng lúc màn hình bắt đầu
+    // "BẠN ĐÃ CHẾT" hiện ra, hợp lý về nhịp phim hơn là để trống.
+    [Tooltip("MK-DEATH-01/02/03 -- giọng PLAYER phản ứng lúc bị bắt (KHÔNG phải giọng ma) -- phát tuần tự, dùng chung quy ước _sequentialScreams ở trên.")]
+    [SerializeField] private AudioClip[] _playerDeathVoiceClips;
+    private int _deathVoiceIndex = 0;
+
     [Header("Cinematic jumpscare MỚI (freeze + camera shake + đèn chớp) -- chạy TRƯỚC JumpscareGameOverUI")]
     [Tooltip("Ánh sáng jumpscare đặt ở object enemy (VD ngay trước mặt) -- chớp tắt để lộ mặt lúc jumpscare. Để trống thì bỏ qua bước này.")]
     [SerializeField] private Light _jumpscareLight;
@@ -120,6 +129,12 @@ public class GhostAI : MonoBehaviour
         _anim = visual.GetComponentInChildren<Animator>();
         if (_anim == null) _anim = visual.AddComponent<Animator>();
         if (_animatorController != null) _anim.runtimeAnimatorController = _animatorController;
+
+        // Phòng bug T-pose (xem fix tương tự trong DiaryReactionCutsceneTrigger.cs): AnimatorCullingMode mặc
+        // định (CullCompletely) có thể bỏ qua evaluate frame đầu nếu SkinnedMeshRenderer chưa kịp tính bounds
+        // tại vị trí spawn -- ép AlwaysAnimate cho chắc, model này bị teleport/toggle active khá nhiều
+        // (ForceOpenAndKillRoutine, patrol...).
+        _anim.cullingMode = AnimatorCullingMode.AlwaysAnimate;
     }
 
     // THÊM: reset flag khi scene reload (OnEnable chạy lại)
@@ -152,6 +167,8 @@ public class GhostAI : MonoBehaviour
     {
         if (_agent == null) return;
         _agent.speed = _patrolSpeed;
+
+        UpdatePatrolVoiceBark();
 
         if (_waypoints == null || _waypoints.Length == 0) return;
         if (!_agent.isOnNavMesh) return;
@@ -254,6 +271,89 @@ public class GhostAI : MonoBehaviour
         if (_agent != null) _agent.speed = _chaseSpeed;
 
         if (justSpotted) OnPlayerSpotted?.Invoke();
+    }
+
+    // SỬA 2026-07-31 (Jok chỉnh lại: "ghost không bị đóng băng lúc Player trốn, không teleport -- patrol bình
+    // thường"): bỏ hẳn PauseForCutscene()/ResumeFromCutscene()/WarpTo() -- không cần nữa, để đúng
+    // CanDetectPlayer()/CanHearPlayer()/EnterInvestigate()/EnterPatrol() có sẵn tự lo (ghost mất dấu Player
+    // đang trốn thì tự đi tới _lastKnownPosition đứng 1 lúc rồi tự quay lại patrol, không cần code ép riêng).
+    /// <summary>Ép chuyển thẳng sang Chase ngay lập tức, bất kể CanDetectPlayer()/CanHearPlayer() hiện tại
+    /// đúng hay sai -- dùng cho cutscene kịch bản (GhostChaseIntroCutscene.cs, "lộ diện" cố ý qua thoại/giọng,
+    /// không cần chờ phát hiện tự nhiên).</summary>
+    public void ForceEnterChase() => EnterChase();
+
+    // THÊM 2026-07-31 (Jok: "mấy lời patrol của enemy cứ mấy voice kia xong rồi làm biến dạng tiếng 1 tí cho
+    // kinh dị" -- giọng ma KHÔNG dùng DialogueAsset/DialogueUI như thoại Player, chỉ phát AudioClip thô với
+    // pitch hạ thấp cho biến dạng/kinh dị). Dùng AudioSource RIÊNG (không qua AudioManager.PlaySFX chung) vì
+    // cần chỉnh pitch độc lập, không ảnh hưởng SFX khác đang phát cùng lúc.
+    [Header("Giọng Ma Vú Dài lúc patrol -- Jok tự kéo đủ số câu thoại thật vào đây, chạy TUẦN TỰ hết vòng lặp lại, KHÔNG phải DialogueAsset")]
+    [SerializeField] private AudioClip[] _patrolVoiceClips;
+    [SerializeField] private float _voicePitch = 0.65f;
+    [Tooltip("Khoảng cách (giây) giữa 2 câu thoại patrol liên tiếp -- để 0 thì tắt hẳn, không tự phát định kỳ (chỉ phát khi PlayDistortedVoice() được gọi tay từ cutscene).")]
+    [SerializeField] private float _voiceBarkDelay = 15f;
+
+    // THÊM (Jok: "cần effect riêng cho voice ma vú dài nó kinh dị hơn nói chung"): không chỉ hạ pitch --
+    // thêm AudioDistortionFilter (méo tiếng) + AudioLowPassFilter (bóp tần cao, nghe trầm/ù như từ dưới
+    // giếng/qua tường vọng lại) -- cả 2 tự tạo bằng code lúc AudioSource được add lần đầu, không cần Jok tự
+    // gắn Component tay trong scene.
+    [Header("Hiệu ứng biến dạng thêm (ngoài pitch) -- chỉnh tay cho kinh dị hơn")]
+    [SerializeField] private float _voiceDistortionLevel = 0.35f;
+    [SerializeField] private float _voiceLowPassCutoff = 2200f;
+
+    private AudioSource _voiceSource;
+    private AudioDistortionFilter _voiceDistortion;
+    private AudioLowPassFilter _voiceLowPass;
+    private float _nextVoiceBarkTime = -1f;
+    private int _voiceBarkIndex = 0;
+
+    /// <summary>Phát 1 AudioClip với pitch hạ + distortion + low-pass (biến dạng giọng kinh dị) -- dùng cho
+    /// cả bark tự động lúc patrol lẫn gọi tay từ cutscene (VD GhostChaseIntroCutscene lúc "lộ diện").</summary>
+    public void PlayDistortedVoice(AudioClip clip)
+    {
+        if (clip == null) return;
+        if (_voiceSource == null)
+        {
+            _voiceSource = gameObject.AddComponent<AudioSource>();
+            _voiceSource.spatialBlend = 1f; // 3D thật -- Player nghe rõ hướng/khoảng cách tới ma
+            _voiceDistortion = gameObject.AddComponent<AudioDistortionFilter>();
+            _voiceLowPass    = gameObject.AddComponent<AudioLowPassFilter>();
+        }
+        _voiceSource.pitch = _voicePitch;
+        if (_voiceDistortion != null) _voiceDistortion.distortionLevel = _voiceDistortionLevel;
+        if (_voiceLowPass != null) _voiceLowPass.cutoffFrequency = _voiceLowPassCutoff;
+        _voiceSource.PlayOneShot(clip);
+    }
+
+    // SỬA 2026-07-31 (Jok: "cứ cho nó nói tuần tự thôi, cách nhau 1 khoảng delay voice"): TUẦN TỰ (01, 02,
+    // 03... hết vòng quay lại 01), KHÔNG random -- đúng quy ước _sequentialScreams đã dùng cho _catchScreams.
+    // File thật Jok đưa (VO_Ch1_MaVuDai_Patrol_Full.wav) dài ~81s (đủ cả 6 đoạn trong 1 file) -- PHẢI đợi
+    // hết ĐỘ DÀI clip rồi mới cộng thêm _voiceBarkDelay, không thì lần phát sau chồng lên chính nó.
+    private void UpdatePatrolVoiceBark()
+    {
+        if (_patrolVoiceClips == null || _patrolVoiceClips.Length == 0) return;
+        if (_voiceBarkDelay <= 0f) return;
+
+        if (_nextVoiceBarkTime < 0f) { ScheduleNextVoiceBark(0f); return; }
+
+        if (Time.time >= _nextVoiceBarkTime)
+        {
+            AudioClip clip = _patrolVoiceClips[_voiceBarkIndex];
+            PlayDistortedVoice(clip);
+            _voiceBarkIndex = (_voiceBarkIndex + 1) % _patrolVoiceClips.Length;
+            ScheduleNextVoiceBark(clip != null ? clip.length : 0f);
+        }
+    }
+
+    private void ScheduleNextVoiceBark(float afterClipLength)
+    {
+        _nextVoiceBarkTime = Time.time + afterClipLength + _voiceBarkDelay;
+    }
+
+    /// <summary>Ngắt ngay giọng patrol đang phát dở -- gọi lúc bắt đầu jumpscare, tránh chồng tiếng với
+    /// scream bắt được (Jok: "ngắt voice patrol đi lúc jumpscare").</summary>
+    private void StopPatrolVoice()
+    {
+        if (_voiceSource != null) _voiceSource.Stop();
     }
 
     /// <summary>
@@ -426,15 +526,17 @@ public class GhostAI : MonoBehaviour
             _hasKilled    = true; // Đánh dấu đã kill
             _killTimer    = 0f;
             _currentState = State.Kill;
+            StopPatrolVoice();
 
             AudioClip scream = PickCatchScream();
             // Cinematic mới (tiếng hét + freeze attack + camera shake + đèn chớp lộ mặt) chạy TRƯỚC, xong
             // mới tới JumpscareGameOverUI (fade đen + "BẠN ĐÃ CHẾT") -- xem GhostCinematicJumpscare.cs.
-            // Scream truyền thẳng vào đây (phát NGAY lúc bắt đầu cinematic) -- KHÔNG truyền lại lần 2 vào
-            // JumpscareGameOverUI bên dưới (scream=null) để tránh phát trùng 2 lần.
+            // Scream (ma) truyền thẳng vào đây (phát NGAY lúc bắt đầu cinematic) -- KHÔNG truyền lại lần 2.
+            // Tham số scream của JumpscareGameOverUI bên dưới giờ dùng cho GIỌNG PLAYER (MK-DEATH) thay vì
+            // null -- phát đúng lúc màn hình "BẠN ĐÃ CHẾT" hiện ra.
             GhostCinematicJumpscare.Trigger(_anim, scream, _jumpscareLight, _attackTriggerName, _attackFreezeDelay,
                 _lightFlickerCount, _lightFlickerInterval, _cameraShakeDuration, _cameraShakeMagnitude,
-                () => JumpscareGameOverUI.Trigger(_jumpscareImage, null, 1.5f, 3f));
+                () => JumpscareGameOverUI.Trigger(_jumpscareImage, PickPlayerDeathVoice(), 1.5f, 3f));
         }
     }
 
@@ -453,11 +555,12 @@ public class GhostAI : MonoBehaviour
 
         _hasKilled    = true;
         _currentState = State.Kill;
+        StopPatrolVoice();
 
         AudioClip scream = PickCatchScream();
         GhostCinematicJumpscare.Trigger(_anim, scream, _jumpscareLight, _attackTriggerName, _attackFreezeDelay,
             _lightFlickerCount, _lightFlickerInterval, _cameraShakeDuration, _cameraShakeMagnitude,
-            () => JumpscareGameOverUI.Trigger(_jumpscareImage, null, 1.5f, 3f));
+            () => JumpscareGameOverUI.Trigger(_jumpscareImage, PickPlayerDeathVoice(), 1.5f, 3f));
 
         yield return null;
         _isKillingHidden = false;
@@ -474,6 +577,18 @@ public class GhostAI : MonoBehaviour
 
         AudioClip clip = _catchScreams[_screamIndex % _catchScreams.Length];
         _screamIndex = (_screamIndex + 1) % _catchScreams.Length;
+        return clip;
+    }
+
+    private AudioClip PickPlayerDeathVoice()
+    {
+        if (_playerDeathVoiceClips == null || _playerDeathVoiceClips.Length == 0) return null;
+
+        if (!_sequentialScreams)
+            return _playerDeathVoiceClips[Random.Range(0, _playerDeathVoiceClips.Length)];
+
+        AudioClip clip = _playerDeathVoiceClips[_deathVoiceIndex % _playerDeathVoiceClips.Length];
+        _deathVoiceIndex = (_deathVoiceIndex + 1) % _playerDeathVoiceClips.Length;
         return clip;
     }
 

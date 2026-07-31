@@ -17,6 +17,8 @@ public class WellDeathSequence : MonoBehaviour
     [SerializeField] private float _voiceDelay = 0f;
     [Tooltip("Âm thanh giật mình khi Ma Da trồi lên — phát đúng lúc apparition xuất hiện")]
     [SerializeField] private AudioClip _jumpscareSfx;
+    [Tooltip("MK-DEATH-xx -- giọng PLAYER phản ứng lúc chết ở giếng (KHÔNG phải giọng Ma Da) -- phát ĐỒNG THỜI với _jumpscareSfx lúc apparition trồi lên. Để trống nếu chưa có (gap tìm thấy 2026-07-31, cùng phát hiện với đường bị GhostAI bắt).")]
+    [SerializeField] private AudioClip _playerDeathVoiceClip;
 
     [Header("Visual — Bước 1: đốm sáng dưới nước (trước jumpscare)")]
     [SerializeField] private Color _blueOverlayColor = new Color(0f, 0.3f, 1f, 0.6f);
@@ -45,6 +47,11 @@ public class WellDeathSequence : MonoBehaviour
     [SerializeField] private PlayerController _playerController;
     [SerializeField] private float _requiredDistance = 2f;
 
+    [Tooltip("Đèn ma quái luôn nhấp nháy quanh miệng giếng (WellGlowLight.cs, độc lập với sequence này) -- " +
+             "để trống nếu không cần đồng bộ, sequence vẫn chạy bình thường. Có gán thì sẽ Intensify() " +
+             "(sáng rực + đổi màu) đúng lúc bắt đầu cảnh báo trước jumpscare.")]
+    [SerializeField] private WellGlowLight _wellGlow;
+
     private CanvasGroup _screenFadeCanvas;
     private bool _deathSequenceTriggered = false;
 
@@ -69,6 +76,11 @@ public class WellDeathSequence : MonoBehaviour
     {
         if (_deathSequenceTriggered) return;
 
+        // THÊM 2026-07-31 (Jok: "ban đầu cảnh 2 thì well vô hại lắm"): giếng PHẢI vô hại tuyệt đối trước khi
+        // vào cảnh 3 -- không có check này, Player lỡ nhìn giếng đủ lâu ngay từ cảnh 2 (trước khi kịch bản
+        // rượt đuổi bắt đầu) vẫn chết oan bình thường qua đường GazeTrigger cũ.
+        if (!Chapter1Scene3Manager.IsActive) return;
+
         if (_playerController != null)
         {
             float distance = Vector3.Distance(_playerController.transform.position, transform.position);
@@ -79,6 +91,17 @@ public class WellDeathSequence : MonoBehaviour
             }
         }
 
+        _deathSequenceTriggered = true;
+        StartCoroutine(PlayDeathSequence());
+    }
+
+    // THÊM 2026-07-31 (Jok: "cutscene mà, đâu phải gaze nữa -- ban đầu cảnh 2 thì well vô hại lắm"): đoạn kết
+    // Chapter 1 (WalkToWellCutscene ép Player đi bộ ra tới giếng) phải CHẮC CHẮN xảy ra, không phụ thuộc
+    // Player có tự gaze đủ lâu hay không -- wire method này vào WalkToWellCutscene.OnArrivedAtWell (Inspector),
+    // bỏ qua hẳn GazeTrigger/khoảng cách, chạy thẳng death sequence.
+    public void ForceTrigger()
+    {
+        if (_deathSequenceTriggered) return;
         _deathSequenceTriggered = true;
         StartCoroutine(PlayDeathSequence());
     }
@@ -99,6 +122,7 @@ public class WellDeathSequence : MonoBehaviour
         }
 
         // 3. Đốm sáng dưới nước — cảnh báo trước jumpscare, đúng nhịp GDD
+        _wellGlow?.Intensify(); // đèn miệng giếng (nếu có gán) sáng rực + đổi màu đúng lúc cảnh báo bắt đầu
         yield return StartCoroutine(ApplyBlueOverlay());
 
         // 4. Kéo Player chìm xuống + Jumpscare Ma Da trồi lên — ĐỒNG THỜI, không tuần tự (đang bị kéo
@@ -122,6 +146,8 @@ public class WellDeathSequence : MonoBehaviour
         // _maDaApparition nên nếu chưa gắn model thì im lặng luôn, dù đã có sẵn SFX_WellJumpscare_MaDa.
         if (_jumpscareSfx != null)
             AudioManager.Instance?.PlaySFX(_jumpscareSfx);
+        if (_playerDeathVoiceClip != null)
+            AudioManager.Instance?.PlaySFX(_playerDeathVoiceClip);
 
         if (_maDaApparition != null)
         {

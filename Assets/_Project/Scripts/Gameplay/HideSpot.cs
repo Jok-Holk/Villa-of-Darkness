@@ -66,6 +66,15 @@ public class HideSpot : MonoBehaviour, IInteractable
             StartCoroutine(ExitRoutine());
     }
 
+    // THÊM 2026-07-31 (cutscene "bị dí phải trốn ngay" -- ForcedHideCutscene.cs): Player KHÔNG tự bấm E,
+    // cutscene ép trốn thẳng. Tái dùng NGUYÊN EnterRoutine() có sẵn (camera slide + mở/hé cửa) -- không viết
+    // logic trốn riêng, tránh lệch hành vi so với lúc Player tự tương tác bình thường.
+    public void ForceEnter()
+    {
+        if (_playerIsHiding || _isBusy) return;
+        StartCoroutine(EnterRoutine());
+    }
+
     private IEnumerator EnterRoutine()
     {
         _isBusy = true;

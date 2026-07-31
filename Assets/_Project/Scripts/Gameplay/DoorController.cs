@@ -71,13 +71,28 @@ public class DoorController : MonoBehaviour, IInteractable, IInteractableLabel
     // đúng giá trị mặc định lúc thiết kế scene, kể cả cửa đã mở khoá TỪ TRƯỚC checkpoint gần nhất (vẫn còn
     // chìa trong túi nhưng cửa lại khoá lại, phải mở khoá lại vô lý). Đăng ký ở Awake() (không phải Start())
     // vì CheckpointManager.Restore() được gọi ngay sau khi scene load xong, TRƯỚC Start() của các object --
-    // đăng ký ở Start() sẽ trễ mất 1 nhịp, bỏ lỡ lần Restore() đầu tiên. CHỈ theo dõi khoá/mở khoá (không
-    // theo dõi cửa đang mở/đóng vật lý) -- cửa mở/đóng chỉ là trạng thái tức thời, scene reload vốn đã tự
-    // đưa về đúng góc đóng mặc định, không cần nhớ riêng.
+    // đăng ký ở Start() sẽ trễ mất 1 nhịp, bỏ lỡ lần Restore() đầu tiên.
+    //
+    // SỬA 2026-07-31 (Jok hỏi "cùng 1 đồ vật, rotation thay đổi thì làm sao Retry tự xoay lại đúng"): trước
+    // đây CHỈ theo dõi khoá/mở khoá, CỐ Ý bỏ qua rotation mở/đóng vật lý vì coi là "trạng thái tức thời,
+    // scene reload tự về đúng góc đóng mặc định" -- SAI trong trường hợp 1 cửa dùng xuyên suốt nhiều mốc
+    // checkpoint (VD Player đã mở ở cảnh 2, Retry ở cảnh 3 mà đóng kín lại là vô lý). Giờ theo dõi luôn
+    // _isOpen y hệt _isLocked -- KHÔNG cần code riêng phân biệt "cảnh 2 hay cảnh 3" cho từng cửa nữa, mỗi
+    // checkpoint tự chụp đúng trạng thái mở/đóng tại thời điểm lưu, Retry xong tự về đúng y vậy.
+    private bool _pendingRestoredOpenState;
+    private bool _hasPendingRestoredOpenState;
+
     private void Awake()
     {
         string id = "Door." + CheckpointManager.GetHierarchyPath(transform);
         CheckpointManager.RegisterFlag(id, () => _isLocked, v => SetLocked(v));
+
+        // Setter CHỈ lưu tạm -- KHÔNG set thẳng _isOpen/_targetRot ở đây, vì CheckpointManager.Restore()
+        // chạy TRƯỚC Start() (xem comment gốc trong CheckpointManager.cs), lúc đó _openRot/_closedRot chưa
+        // được tính (vẫn là Quaternion.identity mặc định) -- set thẳng ngay bây giờ sẽ ra góc xoay rác. Áp
+        // dụng thật sự dời xuống Start(), sau khi đã tính xong baseline.
+        CheckpointManager.RegisterFlag(id + ".Open", () => _isOpen,
+            v => { _pendingRestoredOpenState = v; _hasPendingRestoredOpenState = true; });
     }
 
     private void Start()
@@ -89,8 +104,22 @@ public class DoorController : MonoBehaviour, IInteractable, IInteractableLabel
         _closedPos = transform.localPosition;
         _openPos   = _closedPos + _slideOffset;
 
+        // Checkpoint vừa restore xong 1 trạng thái mở/đóng khác với mặc định authored trong scene -- ghi đè
+        // _isOpen NGAY TẠI ĐÂY (sau khi _openRot/_closedRot đã tính xong đúng).
+        if (_hasPendingRestoredOpenState)
+        {
+            _isOpen = _pendingRestoredOpenState;
+            _hasPendingRestoredOpenState = false;
+        }
+
         _targetRot = _isOpen ? _openRot : _closedRot;
         _targetPos = _isOpen ? _openPos : _closedPos;
+
+        // Đặt thẳng luôn transform hiện tại thay vì đợi Update() Lerp dần -- tránh cửa "trôi" từ từ ngay
+        // khung hình đầu tiên sau khi scene vừa load xong (đây là lúc restore, không phải Player tương tác
+        // thật, không cần hiệu ứng xoay mượt).
+        if (_isDrawer) transform.localPosition = _targetPos;
+        else transform.localRotation = _targetRot;
     }
 
     private void Update()

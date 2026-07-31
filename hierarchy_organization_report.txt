@@ -1,0 +1,43 @@
+=== VoD Hierarchy Organization Report ===
+Nhãn [Cảnh X] dựa trên BẰNG CHỨNG THẬT (component gắn trên object, hoặc bị
+Chapter1Scene3Manager tham chiếu tới) -- không đoán theo tên. Object không có bằng
+chứng gì thì để trống, Jok tự phân loại bằng mắt.
+
+Chapter1Scene3Manager tìm thấy tại 'Scene3Manager':
+  - 6 cửa được quản lý trực tiếp (ép trạng thái lúc vào cảnh 3).
+
+=== 33 ROOT OBJECT (theo đúng thứ tự Hierarchy) ===
+
+- Player -- 51 object con  (chưa rõ cảnh nào)
+- = MANAGERS -- 10 object con  (chưa rõ cảnh nào)
+- = ENVIRONMENT -- 1208 object con [Cảnh 3 - có 3/15 cửa bị Scene3Manager quản lý]
+- = FURNITURE (HideSpot/Decor) -- 28 object con [2 cửa, KHÔNG thuộc Scene3Manager]
+- = PROPS -- 56 object con  (chưa rõ cảnh nào)
+- = GAMEPLAY SYSTEMS -- 109 object con [Checkpoint stage=2] [SaveCheckpointOnEvent stage=3] [Cảnh 3 - GhostAI] [Cảnh 2 - DiaryReaction] [Cảnh 1→2 - WindowEntry] [Cảnh 2→3 - Hộp nhạc] [Cảnh 3 - có 1/1 cửa bị Scene3Manager quản lý]
+- = UI -- 231 object con  (chưa rõ cảnh nào)
+- IntroAmbient_ExteriorGarden -- 0 object con  (chưa rõ cảnh nào)
+- DialogueUI_Controller -- 0 object con  (chưa rõ cảnh nào)
+- ScreenFader_Canvas [INACTIVE] -- 1 object con  (chưa rõ cảnh nào)
+- Prop_NhatKy -- 1 object con  (chưa rõ cảnh nào)
+- Prop_SoGhiNo -- 2 object con  (chưa rõ cảnh nào)
+- Prop_KeyTiepKhach -- 0 object con  (chưa rõ cảnh nào)
+- Prop_KeySalon -- 0 object con  (chưa rõ cảnh nào)
+- Prop_KeySanSau -- 0 object con  (chưa rõ cảnh nào)
+- Door_ThuPhong_TienSanh -- 1 object con [Cảnh 3 - có 1/1 cửa bị Scene3Manager quản lý]
+- Door_SalonToHanhLang -- 1 object con [Cảnh 3 - có 1/1 cửa bị Scene3Manager quản lý]
+- Prop_manh_giay_01 -- 2 object con  (chưa rõ cảnh nào)
+- Prop_manh_giay_02 -- 2 object con  (chưa rõ cảnh nào)
+- Prop_manh_giay_03 -- 2 object con  (chưa rõ cảnh nào)
+- Prop_manh_giay_04 -- 2 object con  (chưa rõ cảnh nào)
+- Prop_manh_giay_05 -- 2 object con  (chưa rõ cảnh nào)
+- ExamineStageUI -- 15 object con  (chưa rõ cảnh nào)
+- HudMetersUI -- 12 object con  (chưa rõ cảnh nào)
+- TutorialHintUI -- 5 object con  (chưa rõ cảnh nào)
+- Scene3Manager -- 0 object con [SaveCheckpointOnEvent stage=3] [Cảnh 3 - Scene3Manager chính]
+- WayPoints -- 6 object con  (chưa rõ cảnh nào)
+- Scene3_CheckpointSpawn -- 0 object con  (chưa rõ cảnh nào)
+- NavMesh Surface -- 0 object con  (chưa rõ cảnh nào)
+- HideDoor (1) -- 4 object con [1 cửa, KHÔNG thuộc Scene3Manager]
+- HideDoor (4) -- 4 object con [1 cửa, KHÔNG thuộc Scene3Manager]
+- HideDoor (2) -- 4 object con [1 cửa, KHÔNG thuộc Scene3Manager]
+- HideDoor (3) -- 4 object con [1 cửa, KHÔNG thuộc Scene3Manager]

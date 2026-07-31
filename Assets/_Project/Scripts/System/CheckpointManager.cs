@@ -45,6 +45,12 @@ public static class CheckpointManager
     // Restore() ghi lại đúng giá trị đó qua setter -- object không có mặt lúc lưu (chưa xuất hiện trong
     // game) thì đơn giản là không có gì để khôi phục, giữ nguyên mặc định.
     //
+    // SỬA 2026-07-31 (Jok hỏi: 1 cửa dùng xuyên suốt nhiều cảnh, rotation mở/đóng phải tự đúng theo từng
+    // checkpoint, không set tay riêng theo cảnh): DoorController giờ đăng ký CẢ _isOpen (không chỉ
+    // _isLocked như trước) qua ID phụ "<id>.Open" -- xem DoorController.Awake()/Start(). Đoạn comment cũ ở
+    // đây từng nói "cửa mở/đóng chỉ là trạng thái tức thời, không cần nhớ riêng" -- SAI trong trường hợp 1
+    // cửa dùng chung nhiều mốc checkpoint (VD Player mở ở cảnh 2, Retry ở cảnh 3 mà đóng lại là vô lý).
+    //
     // CHỈ sống trong RAM (giống GameData.collectedItems) -- KHÔNG qua PlayerPrefs như vị trí/stage, vì mỗi
     // flag cần 1 kiểu lưu trữ có cấu trúc (key-value) khác hẳn vài số float đơn giản. Nghĩa là chỉ đúng
     // trong CÙNG 1 lần mở game (Retry/chết nhiều lần) -- tắt hẳn Unity/game xong mở lại thì trạng thái cửa

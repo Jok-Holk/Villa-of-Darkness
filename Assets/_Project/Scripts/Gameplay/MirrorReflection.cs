@@ -202,6 +202,13 @@ public class MirrorReflection : MonoBehaviour
     private void OnDestroy()
     {
         if (_renderTexture == null) return;
+
+        // SỬA (Jok báo lỗi Console "Releasing render texture that is set as Camera.targetTexture!"): Camera
+        // con (_reflectionCamera) vẫn còn giữ tham chiếu tới _renderTexture lúc Destroy -- phải gỡ
+        // targetTexture ra TRƯỚC, không thì Unity cảnh báo mỗi lần domain reload/script recompile (chạy rất
+        // thường xuyên vì [ExecuteAlways]), gây nhiễu Console liên tục dù không crash gì.
+        if (_reflectionCamera != null) _reflectionCamera.targetTexture = null;
+
         // [ExecuteAlways] -- OnDestroy() có thể chạy ở cả Edit Mode (VD lúc script recompile, domain
         // reload huỷ/tạo lại object) lẫn Play Mode. Destroy() chỉ hợp lệ lúc Play -- gọi ở Edit Mode ném
         // lỗi "Destroy may not be called from edit mode! Use DestroyImmediate instead."

@@ -27,8 +27,14 @@ public class Chapter1Scene3Manager : MonoBehaviour
     [SerializeField] private DoorController _hallwayToSalonDoor;
 
     [Header("3) Kích hoạt cảnh 3 (gọi sau bước 2, hoặc tự gọi thủ công để test)")]
-    [Tooltip("Mấy object tương tác được không còn liên quan tới cảnh 3 -- tắt hẳn (SetActive(false)).")]
+    [Tooltip("Mấy object tương tác được không còn liên quan tới cảnh 3 -- tắt hẳn (SetActive(false)), BẤT KỂ trạng thái cảnh 2 để lại.")]
     [SerializeField] private GameObject[] _interactablesToDisable;
+
+    [Tooltip("Chiều ngược lại của mảng trên -- object CHỈ xuất hiện/tương tác được TỪ cảnh 3 trở đi (VD tranh " +
+             "ảnh/prop đổi khác đi khi vào cảnh 3) -- ép BẬT (SetActive(true)), BẤT KỂ trạng thái cảnh 2 để lại. " +
+             "Nếu cần đổi cả HÌNH DẠNG (không chỉ bật/tắt) thì dùng ModelSwap.cs (đã có, xem Gameplay/ModelSwap.cs) " +
+             "gắn trên chính object đó, rồi kéo object CHA của nó vào 1 trong 2 mảng này để ép chạy đúng lúc.")]
+    [SerializeField] private GameObject[] _interactablesToEnable;
 
     [Tooltip("Cửa sân sau bị KẸT CỨNG (dù có chìa đúng cũng không mở) -- VD Phòng Ăn -> Hành Lang Sau.")]
     [SerializeField] private DoorController[] _backyardDoorsToJam;
@@ -41,13 +47,43 @@ public class Chapter1Scene3Manager : MonoBehaviour
              "chỉ liệt kê ở đây nếu Jok muốn ActivateScene3() tự double-check SetLocked(true) cho chắc.")]
     [SerializeField] private DoorController _mainDoorReconfirmLocked;
 
-    [Header("Sự kiện phụ -- wire thêm nhạc nền căng thẳng / đổi patrol ghost / v.v.")]
+    [Header("Nhạc nền căng thẳng -- tự phát khi ActivateScene3(), tự tắt lúc WalkToWellCutscene ra tới giếng (StopBGM)")]
+    [SerializeField] private AudioClip _chaseBgm;
+
+    [Header("Sự kiện phụ -- wire thêm đổi patrol ghost / v.v.")]
     public UnityEvent OnScene3Activated;
 
     private void Awake()
     {
         Instance = this;
         IsActive = false;
+    }
+
+    // THÊM 2026-07-31 (Jok hỏi "tuỳ vào checkpoint cảnh thực tế thì sao?"): CheckpointManager CHỈ khôi phục
+    // đúng field "_isLocked" của DoorController (xem DoorController.Awake -- RegisterFlag), KHÔNG hề biết
+    // gì về "_forceJammed" hay trạng thái SetActive() của _interactablesToDisable[]. Nếu Player chết GIỮA
+    // cảnh 3 (sau khi ActivateScene3() đã kẹt cứng cửa sân sau) rồi Retry về checkpoint stage 3 -- scene
+    // reload ra 1 Chapter1Scene3Manager HOÀN TOÀN MỚI, IsActive tự về false, và KHÔNG có gì tự gọi lại
+    // ActivateScene3() nữa (chỉ OnMusicBoxFinished() gọi, mà băng đã nghe xong từ trước rồi, không phát lại)
+    // -- kết quả: 2 cửa lẽ ra kẹt cứng vĩnh viễn chỉ còn khoá thường (mở lại được bằng chìa), phá vỡ thiết
+    // kế "không còn đường lùi". Fix: nếu checkpoint đã ở stage 3+ (nghĩa là Player đang ở lại/quay lại đúng
+    // đoạn này, không phải lần đầu tới), tự ép ActivateScene3() lại ngay khi scene vừa load xong -- hàm này
+    // đã có sẵn guard IsActive nên gọi nhiều lần vẫn an toàn, idempotent.
+    //
+    // SỬA 2026-07-31: KHÔNG gọi thẳng trong Start() -- Unity KHÔNG đảm bảo thứ tự Start() giữa các object
+    // khác nhau trong cùng 1 scene, nếu Start() của Chapter1Scene3Manager chạy TRƯỚC Start() của chính cửa
+    // bị Close() ở đây thì DoorController._closedRot/_openRot chưa kịp tính (vẫn Quaternion.identity mặc
+    // định) -- cửa sẽ đóng về góc rác. Trì hoãn đúng 1 frame (WaitForEndOfFrame) để chắc chắn MỌI Start()
+    // trong scene (kể cả DoorController) đã chạy xong hết trước khi đụng vào door.Close().
+    private void Start()
+    {
+        if (CheckpointManager.CurrentStage >= 3) StartCoroutine(ActivateScene3AfterAllStart());
+    }
+
+    private System.Collections.IEnumerator ActivateScene3AfterAllStart()
+    {
+        yield return new WaitForEndOfFrame();
+        ActivateScene3();
     }
 
     private void OnDestroy()
@@ -96,6 +132,10 @@ public class Chapter1Scene3Manager : MonoBehaviour
             foreach (var go in _interactablesToDisable)
                 if (go != null) go.SetActive(false);
 
+        if (_interactablesToEnable != null)
+            foreach (var go in _interactablesToEnable)
+                if (go != null) go.SetActive(true);
+
         if (_backyardDoorsToJam != null)
         {
             foreach (var door in _backyardDoorsToJam)
@@ -116,6 +156,8 @@ public class Chapter1Scene3Manager : MonoBehaviour
 
         if (_mainDoorReconfirmLocked != null)
             _mainDoorReconfirmLocked.SetLocked(true);
+
+        if (_chaseBgm != null) AudioManager.Instance?.PlayBGM(_chaseBgm);
 
         Debug.Log("[Chapter1Scene3Manager] Cảnh 3 đã kích hoạt.");
         OnScene3Activated?.Invoke();
