@@ -39,9 +39,12 @@ public class DiaryReaderUI : MonoBehaviour
     public UnityEvent OnFinishedReading;
 
     private int _currentPage;
-    private TextMeshProUGUI _cornerNavText; // "A / D lật trang" -- cần ref riêng để tô màu động theo trang
+    private TextMeshProUGUI _cornerNavText;
     public bool HasFinishedReading { get; private set; }
     public bool IsOpen => _panel != null && _panel.activeSelf;
+
+    // Cờ phân biệt "OnEnable chạy vì chính Open() gọi" với "OnEnable chạy vì leftover state lúc Play bắt đầu"
+    private bool _openingFromCode = false;
 
     private void Update()
     {
@@ -63,16 +66,11 @@ public class DiaryReaderUI : MonoBehaviour
     private void OnEnable()
     {
         Instance = this;
-
-        // SỬA (Jok yêu cầu -- "xoá 3 nút này được không"): PrevButton/NextButton/CloseButton đã xoá hẳn khỏi
-        // scene, thay bằng A/D + góc hint "THOÁT/Chuột phải". Field/listener liên quan cũng dọn sạch luôn,
-        // không giữ lại tham chiếu tới object không còn tồn tại.
         BuildVisuals();
 
-        // AN TOÀN: phòng Jok bật "_panel" lên xem layout ở Edit Mode rồi quên tắt lại trước khi bấm Play --
-        // ép về ẩn mỗi lần vào Play thật, chỉ Open() mới được bật lại, không phụ thuộc trạng thái Jok để lại
-        // lúc preview. Giữ nguyên trạng thái Jok để ở Edit Mode (không ép tắt) để Preview Window dùng được.
-        if (Application.isPlaying && _panel != null) _panel.SetActive(false);
+        // CHỈ ép-ẩn khi KHÔNG phải do Open() gây ra -- tránh tự đóng ngay sau khi vừa mở.
+        if (Application.isPlaying && _panel != null && !_openingFromCode)
+            _panel.SetActive(false);
     }
 
     // Mockup đã duyệt (artifact "Màn Đọc Nhật Ký") mới chỉ áp phần CHỨC NĂNG (A/D, counter) -- còn thiếu
@@ -101,7 +99,7 @@ public class DiaryReaderUI : MonoBehaviour
         try { BuildCounter(panelT, notoFont); } catch (System.Exception e) { Debug.LogException(e); }
         try
         {
-            _cornerNavText = BuildCornerHint(panelT, "CornerNav",  TextAlignmentOptions.BottomLeft,  new Vector2(0f, 0f), new Vector2(39f, 39f),
+            _cornerNavText = BuildCornerHint(panelT, "CornerNav", TextAlignmentOptions.BottomLeft, new Vector2(0f, 0f), new Vector2(39f, 39f),
                 "LẬT TRANG", "A / D", notoFont); // ghi đè ngay bởi UpdateNavHintColors() bên dưới, chỉ là placeholder ban đầu
             BuildCornerHint(panelT, "CornerExit", TextAlignmentOptions.BottomRight, new Vector2(1f, 0f), new Vector2(-39f, 39f),
                 "THOÁT", "Chuột phải", notoFont);
@@ -139,7 +137,7 @@ public class DiaryReaderUI : MonoBehaviour
         var titleRt = titleGO.GetComponent<RectTransform>();
         titleRt.anchorMin = new Vector2(0.5f, 1f);
         titleRt.anchorMax = new Vector2(0.5f, 1f);
-        titleRt.pivot     = new Vector2(0.5f, 1f);
+        titleRt.pivot = new Vector2(0.5f, 1f);
         titleRt.sizeDelta = new Vector2(900f, 130f);
         titleRt.anchoredPosition = new Vector2(0f, -39f);
     }
@@ -176,7 +174,7 @@ public class DiaryReaderUI : MonoBehaviour
         var pillRt = pillGO.GetComponent<RectTransform>();
         pillRt.anchorMin = new Vector2(1f, 1f);
         pillRt.anchorMax = new Vector2(1f, 1f);
-        pillRt.pivot     = new Vector2(1f, 1f);
+        pillRt.pivot = new Vector2(1f, 1f);
         pillRt.anchoredPosition = new Vector2(-39f, -39f);
 
         var labelT = pillGO.transform.Find("PageCounterLabel");
@@ -215,7 +213,7 @@ public class DiaryReaderUI : MonoBehaviour
         var rt = go.GetComponent<RectTransform>();
         rt.anchorMin = anchor;
         rt.anchorMax = anchor;
-        rt.pivot     = anchor;
+        rt.pivot = anchor;
         rt.sizeDelta = new Vector2(560f, 150f);
         rt.anchoredPosition = offset;
         return text;
@@ -227,16 +225,16 @@ public class DiaryReaderUI : MonoBehaviour
     {
         if (_cornerNavText == null) return;
 
-        bool hasPages   = _pages != null && _pages.Length > 0;
-        bool canGoBack  = hasPages && _currentPage > 0;
-        bool canGoFwd   = hasPages && _currentPage < _pages.Length - 1;
+        bool hasPages = _pages != null && _pages.Length > 0;
+        bool canGoBack = hasPages && _currentPage > 0;
+        bool canGoFwd = hasPages && _currentPage < _pages.Length - 1;
         // Edit Mode / chưa gán _pages -- mặc định sáng cả 2 để Jok xem layout đầy đủ, không tối om.
         if (!hasPages) { canGoBack = true; canGoFwd = true; }
 
         const string activeColor = "#c9a25c";
-        const string dimColor    = "#5a5248";
+        const string dimColor = "#5a5248";
         string aColor = canGoBack ? activeColor : dimColor;
-        string dColor = canGoFwd  ? activeColor : dimColor;
+        string dColor = canGoFwd ? activeColor : dimColor;
 
         // SỬA (Jok yêu cầu -- "chữ lật trang dòng này bị thừa"): nhãn "LẬT TRANG" ở trên đã nói rõ ý nghĩa
         // rồi, dòng dưới chỉ cần "A / D" không lặp lại chữ.
@@ -248,7 +246,11 @@ public class DiaryReaderUI : MonoBehaviour
     {
         if (_pages == null || _pages.Length == 0) return;
         _currentPage = 0;
-        if (_panel != null) _panel.SetActive(true);
+
+        _openingFromCode = true;
+        if (_panel != null) _panel.SetActive(true);   // trigger OnEnable() nhưng bỏ qua ép-ẩn nhờ cờ trên
+        _openingFromCode = false;
+
         RefreshPage();
     }
 
