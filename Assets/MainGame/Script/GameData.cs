@@ -14,7 +14,7 @@ public sealed class GameData : MonoBehaviour
     private const string MusicVolumeKey = PrefPrefix + "MusicVolume";
     private const string SfxVolumeKey = PrefPrefix + "SfxVolume";
 
-    private const int BrightnessSortingOrder = 32000;
+    private const int BrightnessSortingOrder = -100;
 
     public static GameData Instance { get; private set; }
     public static event Action<GameSettings> SettingsChanged;
@@ -87,10 +87,33 @@ public sealed class GameData : MonoBehaviour
     {
         settings.Clamp();
 
-        var resolution = settings.Resolution;
-        Screen.SetResolution(resolution.x, resolution.y, settings.FullScreenMode);
+        ApplyDisplaySettings(settings);
         ApplyBrightness(settings.Brightness);
         AudioManager.Instance?.ApplySettings(settings);
+    }
+
+    private static void ApplyDisplaySettings(GameSettings settings)
+    {
+        var resolution = settings.Resolution;
+        if (resolution.x <= 0 || resolution.y <= 0)
+            resolution = new Vector2Int(Mathf.Max(1, Screen.width), Mathf.Max(1, Screen.height));
+
+        FullScreenMode mode = settings.FullScreenMode;
+        if (mode == FullScreenMode.FullScreenWindow)
+        {
+            var current = Screen.currentResolution;
+            if (current.width > 0 && current.height > 0)
+                resolution = new Vector2Int(current.width, current.height);
+        }
+
+        try
+        {
+            Screen.SetResolution(resolution.x, resolution.y, mode);
+        }
+        catch (Exception exception)
+        {
+            Debug.LogWarning($"Cannot apply display settings {resolution.x}x{resolution.y} / {mode}: {exception.Message}");
+        }
     }
 
     private void InitializeAsSingleton()

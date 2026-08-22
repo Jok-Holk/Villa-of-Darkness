@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public sealed class WellEndingTrigger : MonoBehaviour
 {
     private const string DefaultJumpscareAssetPath = "Assets/MainGame/UI/ma duoi gieng.png";
+    private const string DefaultPlayerScreamAssetPath = "Assets/MainGame/Audio/Voice/Chapter1/VO_Ch1_MK-DEATH-03.wav";
     private const string FallbackJumpscareResourcePath = "UI/EndingJumpscare";
 
     [Header("Testing")]
@@ -17,6 +18,7 @@ public sealed class WellEndingTrigger : MonoBehaviour
     [SerializeField, Min(0.5f)] private float triggerRadius = 2.8f;
     [SerializeField] private bool armedOnStart;
     [SerializeField] private bool triggerCutsceneOnOwnCollider;
+    [SerializeField] private bool hideMonstersWhenEndingStarts = true;
 
     [Header("Outtro CutScene")]
     [SerializeField] private CutSceneManager cutSceneManager;
@@ -34,6 +36,12 @@ public sealed class WellEndingTrigger : MonoBehaviour
     [SerializeField, Min(0f)] private float normalGlowIntensity = 4500f;
     [SerializeField, Min(0.1f)] private float flashDuration = 1.2f;
 
+    [Header("Terrain Hole")]
+    [SerializeField] private bool carveTerrainHoleOnAwake = true;
+    [SerializeField] private Terrain terrainToCarve;
+    [SerializeField, Min(0.1f)] private float terrainHoleRadius = 1.55f;
+    [SerializeField] private Vector3 terrainHoleOffset;
+
     [Header("Jumpscare")]
     [SerializeField] private Texture2D jumpscareTexture;
     [SerializeField, Min(0.05f)] private float jumpscarePopDuration = 0.16f;
@@ -42,6 +50,21 @@ public sealed class WellEndingTrigger : MonoBehaviour
     [SerializeField, Min(0.05f)] private float jumpscareImpactScale = 1.08f;
     [SerializeField, Range(0f, 1f)] private float jumpscareOpacity = 1f;
     [SerializeField, Range(0f, 1f)] private float jumpscareDarkBackdropOpacity = 0.78f;
+    [SerializeField] private AudioClip playerJumpscareScream;
+    [SerializeField, TextArea(1, 3)] private string playerJumpscareSubtitle = "...Ai đó... giúp...";
+    [SerializeField, Range(1, 3)] private int fallbackPlayerScreamVoiceIndex = 3;
+    [SerializeField, Min(0f)] private float jumpscareCameraShakeDuration = 0.9f;
+    [SerializeField, Range(0f, 0.25f)] private float jumpscareCameraShakePosition = 0.075f;
+    [SerializeField, Range(0f, 8f)] private float jumpscareCameraShakeRotation = 2.8f;
+    [SerializeField, Range(0f, 80f)] private float jumpscareScreenShakePixels = 26f;
+    [SerializeField, Min(1f)] private float jumpscareShakeFrequency = 24f;
+
+    [Header("Circular Backdrop")]
+    [SerializeField, Range(0f, 1f)] private float circularBackdropBaseOpacity = 0.28f;
+    [SerializeField, Range(0f, 1f)] private float circularBackdropEdgeOpacity = 0.92f;
+    [SerializeField, Min(0.05f)] private float circularBackdropStartScale = 0.48f;
+    [SerializeField, Min(0.05f)] private float circularBackdropEndScale = 1.18f;
+    [SerializeField, Min(128)] private int circularBackdropTextureSize = 768;
 
     [Header("Ending Text")]
     [SerializeField, Min(1f)] private float creditsDuration = 36f;
@@ -50,6 +73,10 @@ public sealed class WellEndingTrigger : MonoBehaviour
     [SerializeField, Min(0f)] private float menuReturnDelay = 1.25f;
     [SerializeField] private float creditsStartY = -920f;
     [SerializeField] private float creditsEndY = 1480f;
+    [SerializeField] private bool showDeathScreenBeforePartTwo = true;
+    [SerializeField, Min(0f)] private float endingDeathScreenHoldDuration = 2.5f;
+    [SerializeField] private bool showPartTwoContinueButton = true;
+    [SerializeField] private string partTwoTransitionSceneName = "EndingP2Transition";
     [TextArea(6, 18)]
     [SerializeField] private string endingLine =
         "VILLA OF DARKNESS\n\n" +
@@ -78,12 +105,16 @@ public sealed class WellEndingTrigger : MonoBehaviour
     private SphereCollider triggerCollider;
     private bool isArmed;
     private bool hasTriggered;
+    private Texture2D circularBackdropTexture;
+    private bool terrainHoleCarved;
 
 #if UNITY_EDITOR
     private void OnValidate()
     {
         if (jumpscareTexture == null || jumpscareTexture.name == "EndingJumpscare")
             jumpscareTexture = UnityEditor.AssetDatabase.LoadAssetAtPath<Texture2D>(DefaultJumpscareAssetPath);
+        if (playerJumpscareScream == null)
+            playerJumpscareScream = UnityEditor.AssetDatabase.LoadAssetAtPath<AudioClip>(DefaultPlayerScreamAssetPath);
         ResolveReferences();
     }
 #endif
@@ -97,6 +128,8 @@ public sealed class WellEndingTrigger : MonoBehaviour
 
         if (jumpscareTexture == null)
             jumpscareTexture = Resources.Load<Texture2D>(FallbackJumpscareResourcePath);
+
+        EnsureTerrainHole();
 
         if (armedOnStart)
             ActivateEndingSetup();
@@ -112,12 +145,13 @@ public sealed class WellEndingTrigger : MonoBehaviour
         testEnding = false;
         hasTriggered = false;
         ActivateEndingSetup();
-        BeginExitDoorEnding(ResolveCarriedGramophone());
+        BeginExitDoorEnding(null);
     }
 
     public void ActivateEndingSetup()
     {
         ResolveReferences();
+        EnsureTerrainHole();
         isArmed = true;
         EnsureWellGlow();
         SetWellLightActive(true, normalGlowIntensity);
@@ -140,8 +174,8 @@ public sealed class WellEndingTrigger : MonoBehaviour
         if (player == null)
             return;
 
-        carriedGramophone ??= ResolveCarriedGramophone();
         hasTriggered = true;
+        HideMonstersForEnding();
         StartCoroutine(ExitDoorEndingRoutine(carriedGramophone));
     }
 
@@ -155,7 +189,24 @@ public sealed class WellEndingTrigger : MonoBehaviour
             return;
 
         hasTriggered = true;
-        StartCoroutine(ExitDoorEndingRoutine(ResolveCarriedGramophone()));
+        HideMonstersForEnding();
+        StartCoroutine(ExitDoorEndingRoutine(null));
+    }
+
+    private void HideMonstersForEnding()
+    {
+        if (!hideMonstersWhenEndingStarts)
+            return;
+
+        var monsters = FindObjectsByType<MonsterAI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        for (int i = 0; i < monsters.Length; i++)
+        {
+            if (monsters[i] == null)
+                continue;
+
+            monsters[i].DisableHunt(true);
+            monsters[i].SetMeshVisible(false);
+        }
     }
 
     private IEnumerator ExitDoorEndingRoutine(Transform carriedGramophone)
@@ -168,11 +219,7 @@ public sealed class WellEndingTrigger : MonoBehaviour
 
         var controller = GameController.Instance;
         if (controller != null)
-        {
-            controller.SetChapterPhase(GameController.ChapterPhase.Ending);
-            if (controller.gameUI != null)
-                controller.gameUI.SetActive(false);
-        }
+            controller.SetGameState(GameController.GameState.Cutscene);
 
         if (FpsHorrorKit.PlayerInteract.Instance != null)
             FpsHorrorKit.PlayerInteract.Instance.sendRaycast = false;
@@ -209,43 +256,103 @@ public sealed class WellEndingTrigger : MonoBehaviour
                 controller.gameUI.SetActive(false);
         }
 
-        BuildEndingUi(out CanvasGroup blackGroup, out RawImage jumpscareImage, out RectTransform jumpscareRect, out TextMeshProUGUI creditLabel);
+        BuildEndingUi(
+            out GameObject endingUiRoot,
+            out CanvasGroup blackGroup,
+            out CanvasGroup vignetteGroup,
+            out RectTransform vignetteRect,
+            out RawImage jumpscareImage,
+            out RectTransform jumpscareRect,
+            out TextMeshProUGUI jumpscareSubtitle,
+            out TextMeshProUGUI creditLabel,
+            out GameObject choiceRoot,
+            out Button continuePartTwoButton,
+            out Button returnMenuButton);
 
-        AudioManager.Instance?.PlayWellJumpscare();
-        yield return PlayJumpscareImage(blackGroup, jumpscareImage, jumpscareRect);
+        PlayWellJumpscareAudio();
+        yield return PlayJumpscareImage(blackGroup, vignetteGroup, vignetteRect, jumpscareImage, jumpscareRect, jumpscareSubtitle);
 
         if (jumpscareImage != null)
             jumpscareImage.gameObject.SetActive(false);
 
+        AudioManager.Instance?.PlayDeathMusic();
+        PlayerPrefsMainMenuSaveService.UnlockPartTwo();
+
+        if (showDeathScreenBeforePartTwo && controller != null)
+        {
+            if (endingUiRoot != null)
+                endingUiRoot.SetActive(false);
+
+            controller.ShowEndingDeathScreenPresentation();
+            if (endingDeathScreenHoldDuration > 0f)
+                yield return new WaitForSeconds(endingDeathScreenHoldDuration);
+            controller.HideEndingDeathScreenPresentation();
+        }
+
+        if (endingUiRoot != null)
+            endingUiRoot.SetActive(true);
+
         float blackAlpha = blackGroup != null ? blackGroup.alpha : 0f;
         yield return FadeBlack(blackGroup, blackAlpha, 1f, fadeToBlackDuration);
 
-        AudioManager.Instance?.PlayDeathMusic();
         if (blackHoldDuration > 0f)
             yield return new WaitForSeconds(blackHoldDuration);
 
         yield return RunEndingCredits(creditLabel);
 
-        if (menuReturnDelay > 0f)
-            yield return new WaitForSeconds(menuReturnDelay);
+        if (creditLabel != null)
+            creditLabel.gameObject.SetActive(false);
 
-        if (GameController.Instance != null)
-            GameController.Instance.LoadMainMenu();
-        else
-            SceneManager.LoadScene("Menu");
+        yield return WaitForEndingChoice(choiceRoot, continuePartTwoButton, returnMenuButton);
     }
 
-    private IEnumerator PlayJumpscareImage(CanvasGroup blackGroup, RawImage jumpscareImage, RectTransform jumpscareRect)
+    private void PlayWellJumpscareAudio()
+    {
+        var audio = AudioManager.Instance;
+        if (audio == null)
+            return;
+
+        audio.PlayWellJumpscare();
+        if (playerJumpscareScream != null)
+            audio.PlayPlayerVoice(playerJumpscareScream);
+        else
+            audio.PlayDeathVoice(fallbackPlayerScreamVoiceIndex);
+    }
+
+    private IEnumerator PlayJumpscareImage(
+        CanvasGroup blackGroup,
+        CanvasGroup vignetteGroup,
+        RectTransform vignetteRect,
+        RawImage jumpscareImage,
+        RectTransform jumpscareRect,
+        TextMeshProUGUI jumpscareSubtitle)
     {
         if (jumpscareImage == null || jumpscareRect == null)
             yield break;
 
         if (blackGroup != null)
-            blackGroup.alpha = jumpscareDarkBackdropOpacity;
+            blackGroup.alpha = circularBackdropBaseOpacity;
+        if (vignetteGroup != null)
+            vignetteGroup.alpha = jumpscareDarkBackdropOpacity;
+        if (vignetteRect != null)
+            vignetteRect.localScale = Vector3.one * circularBackdropStartScale;
+
+        Camera shakeCamera = Camera.main;
+        Transform shakeCameraTransform = shakeCamera != null ? shakeCamera.transform : null;
+        Vector3 cameraBasePosition = shakeCameraTransform != null ? shakeCameraTransform.localPosition : Vector3.zero;
+        Quaternion cameraBaseRotation = shakeCameraTransform != null ? shakeCameraTransform.localRotation : Quaternion.identity;
+        Behaviour cameraBrain = shakeCamera != null ? shakeCamera.GetComponent("CinemachineBrain") as Behaviour : null;
+        bool cameraBrainWasEnabled = cameraBrain != null && cameraBrain.enabled;
+        if (cameraBrain != null)
+            cameraBrain.enabled = false;
+
+        Vector2 jumpscareBasePosition = jumpscareRect.anchoredPosition;
+        Quaternion jumpscareBaseRotation = jumpscareRect.localRotation;
 
         jumpscareImage.gameObject.SetActive(true);
         jumpscareImage.color = new Color(1f, 1f, 1f, 0f);
         jumpscareRect.localScale = Vector3.one * jumpscareStartScale;
+        ShowJumpscareSubtitle(jumpscareSubtitle, true);
 
         float elapsed = 0f;
         while (elapsed < jumpscarePopDuration)
@@ -254,15 +361,105 @@ public sealed class WellEndingTrigger : MonoBehaviour
             float impact = 1f - Mathf.Pow(1f - t, 3f);
             jumpscareImage.color = new Color(1f, 1f, 1f, Mathf.Lerp(0f, jumpscareOpacity, impact));
             jumpscareRect.localScale = Vector3.one * Mathf.Lerp(jumpscareStartScale, jumpscareImpactScale, impact);
+            if (vignetteRect != null)
+                vignetteRect.localScale = Vector3.one * Mathf.Lerp(circularBackdropStartScale, circularBackdropEndScale, impact);
+            ApplyJumpscareShake(shakeCameraTransform, cameraBasePosition, cameraBaseRotation, jumpscareRect, jumpscareBasePosition, elapsed);
             elapsed += Time.deltaTime;
             yield return null;
         }
 
         jumpscareImage.color = new Color(1f, 1f, 1f, jumpscareOpacity);
         jumpscareRect.localScale = Vector3.one;
+        if (vignetteRect != null)
+            vignetteRect.localScale = Vector3.one * circularBackdropEndScale;
 
         if (jumpscareHoldDuration > 0f)
-            yield return new WaitForSeconds(jumpscareHoldDuration);
+        {
+            float holdElapsed = 0f;
+            while (holdElapsed < jumpscareHoldDuration)
+            {
+                ApplyJumpscareShake(
+                    shakeCameraTransform,
+                    cameraBasePosition,
+                    cameraBaseRotation,
+                    jumpscareRect,
+                    jumpscareBasePosition,
+                    elapsed + holdElapsed);
+                holdElapsed += Time.deltaTime;
+                yield return null;
+            }
+        }
+
+        RestoreJumpscareShake(shakeCameraTransform, cameraBasePosition, cameraBaseRotation, jumpscareRect, jumpscareBasePosition, jumpscareBaseRotation);
+        if (cameraBrain != null)
+            cameraBrain.enabled = cameraBrainWasEnabled;
+        ShowJumpscareSubtitle(jumpscareSubtitle, false);
+    }
+
+    private void ShowJumpscareSubtitle(TextMeshProUGUI subtitle, bool visible)
+    {
+        if (subtitle == null)
+            return;
+
+        subtitle.text = visible ? playerJumpscareSubtitle : string.Empty;
+        subtitle.gameObject.SetActive(visible && !string.IsNullOrWhiteSpace(playerJumpscareSubtitle));
+    }
+
+    private void ApplyJumpscareShake(
+        Transform cameraTransform,
+        Vector3 cameraBasePosition,
+        Quaternion cameraBaseRotation,
+        RectTransform imageRect,
+        Vector2 imageBasePosition,
+        float elapsed)
+    {
+        if (jumpscareCameraShakeDuration <= 0f || elapsed >= jumpscareCameraShakeDuration)
+        {
+            RestoreJumpscareShake(cameraTransform, cameraBasePosition, cameraBaseRotation, imageRect, imageBasePosition, Quaternion.identity);
+            return;
+        }
+
+        float life = 1f - Mathf.Clamp01(elapsed / jumpscareCameraShakeDuration);
+        float phase = elapsed * jumpscareShakeFrequency;
+        float x = (Mathf.PerlinNoise(phase, 8.13f) - 0.5f) * 2f;
+        float y = (Mathf.PerlinNoise(14.71f, phase) - 0.5f) * 2f;
+        float roll = Mathf.Sin(phase * Mathf.PI * 2f) * life;
+
+        if (cameraTransform != null)
+        {
+            cameraTransform.localPosition = cameraBasePosition + new Vector3(x, y, 0f) * jumpscareCameraShakePosition * life;
+            cameraTransform.localRotation = cameraBaseRotation * Quaternion.Euler(
+                y * jumpscareCameraShakeRotation * life,
+                x * jumpscareCameraShakeRotation * life,
+                roll * jumpscareCameraShakeRotation * 0.65f);
+        }
+
+        if (imageRect != null)
+        {
+            imageRect.anchoredPosition = imageBasePosition + new Vector2(x, y) * jumpscareScreenShakePixels * life;
+            imageRect.localRotation = Quaternion.Euler(0f, 0f, roll * jumpscareCameraShakeRotation * 1.4f);
+        }
+    }
+
+    private static void RestoreJumpscareShake(
+        Transform cameraTransform,
+        Vector3 cameraBasePosition,
+        Quaternion cameraBaseRotation,
+        RectTransform imageRect,
+        Vector2 imageBasePosition,
+        Quaternion imageBaseRotation)
+    {
+        if (cameraTransform != null)
+        {
+            cameraTransform.localPosition = cameraBasePosition;
+            cameraTransform.localRotation = cameraBaseRotation;
+        }
+
+        if (imageRect != null)
+        {
+            imageRect.anchoredPosition = imageBasePosition;
+            imageRect.localRotation = imageBaseRotation;
+        }
     }
 
     private static IEnumerator FadeBlack(CanvasGroup blackGroup, float from, float to, float duration)
@@ -309,9 +506,59 @@ public sealed class WellEndingTrigger : MonoBehaviour
         rect.anchoredPosition = new Vector2(0f, creditsEndY);
     }
 
-    private void BuildEndingUi(out CanvasGroup blackGroup, out RawImage jumpscareImage, out RectTransform jumpscareRect, out TextMeshProUGUI creditLabel)
+    private IEnumerator WaitForEndingChoice(GameObject choiceRoot, Button continuePartTwoButton, Button returnMenuButton)
+    {
+        if (choiceRoot == null || returnMenuButton == null)
+        {
+            if (menuReturnDelay > 0f)
+                yield return new WaitForSeconds(menuReturnDelay);
+
+            LoadMainMenuScene();
+            yield break;
+        }
+
+        string targetScene = null;
+        choiceRoot.SetActive(true);
+        SetEndingCursor(true);
+
+        if (continuePartTwoButton != null)
+        {
+            continuePartTwoButton.gameObject.SetActive(showPartTwoContinueButton && !string.IsNullOrWhiteSpace(partTwoTransitionSceneName));
+            continuePartTwoButton.onClick.RemoveAllListeners();
+            continuePartTwoButton.onClick.AddListener(() =>
+            {
+                targetScene = partTwoTransitionSceneName;
+            });
+        }
+
+        returnMenuButton.onClick.RemoveAllListeners();
+        returnMenuButton.onClick.AddListener(() =>
+        {
+            targetScene = GetMainMenuSceneName();
+        });
+
+        while (string.IsNullOrWhiteSpace(targetScene))
+            yield return null;
+
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(targetScene);
+    }
+
+    private void BuildEndingUi(
+        out GameObject endingUiRoot,
+        out CanvasGroup blackGroup,
+        out CanvasGroup vignetteGroup,
+        out RectTransform vignetteRect,
+        out RawImage jumpscareImage,
+        out RectTransform jumpscareRect,
+        out TextMeshProUGUI jumpscareSubtitle,
+        out TextMeshProUGUI creditLabel,
+        out GameObject choiceRoot,
+        out Button continuePartTwoButton,
+        out Button returnMenuButton)
     {
         var canvasObject = new GameObject("EndingRuntimeUI", typeof(RectTransform), typeof(Canvas), typeof(CanvasScaler), typeof(GraphicRaycaster));
+        endingUiRoot = canvasObject;
         var canvas = canvasObject.GetComponent<Canvas>();
         canvas.renderMode = RenderMode.ScreenSpaceOverlay;
         canvas.sortingOrder = 900;
@@ -325,6 +572,20 @@ public sealed class WellEndingTrigger : MonoBehaviour
         blackGroup = black.gameObject.AddComponent<CanvasGroup>();
         blackGroup.alpha = 0f;
 
+        var vignette = new GameObject("EndingCircularVignette", typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage), typeof(AspectRatioFitter), typeof(CanvasGroup)).GetComponent<RawImage>();
+        vignette.transform.SetParent(canvasObject.transform, false);
+        vignette.texture = GetCircularBackdropTexture();
+        vignette.color = Color.white;
+        vignette.raycastTarget = false;
+        vignetteRect = vignette.rectTransform;
+        Stretch(vignetteRect);
+        vignetteRect.localScale = Vector3.one * circularBackdropStartScale;
+        var vignetteFitter = vignette.GetComponent<AspectRatioFitter>();
+        vignetteFitter.aspectMode = AspectRatioFitter.AspectMode.EnvelopeParent;
+        vignetteFitter.aspectRatio = 1f;
+        vignetteGroup = vignette.GetComponent<CanvasGroup>();
+        vignetteGroup.alpha = 0f;
+
         jumpscareImage = new GameObject("EndingJumpscareImage", typeof(RectTransform), typeof(CanvasRenderer), typeof(RawImage), typeof(AspectRatioFitter)).GetComponent<RawImage>();
         jumpscareImage.transform.SetParent(canvasObject.transform, false);
         var texture = jumpscareTexture != null ? jumpscareTexture : Resources.Load<Texture2D>(FallbackJumpscareResourcePath);
@@ -337,6 +598,27 @@ public sealed class WellEndingTrigger : MonoBehaviour
         aspectFitter.aspectMode = AspectRatioFitter.AspectMode.FitInParent;
         aspectFitter.aspectRatio = texture != null && texture.height > 0 ? (float)texture.width / texture.height : 1f;
         jumpscareImage.gameObject.SetActive(false);
+
+        jumpscareSubtitle = new GameObject("EndingJumpscareSubtitle", typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI)).GetComponent<TextMeshProUGUI>();
+        jumpscareSubtitle.transform.SetParent(canvasObject.transform, false);
+        RectTransform subtitleRect = jumpscareSubtitle.rectTransform;
+        subtitleRect.anchorMin = new Vector2(0.5f, 0f);
+        subtitleRect.anchorMax = new Vector2(0.5f, 0f);
+        subtitleRect.pivot = new Vector2(0.5f, 0f);
+        subtitleRect.sizeDelta = new Vector2(1480f, 160f);
+        subtitleRect.anchoredPosition = new Vector2(0f, 92f);
+        jumpscareSubtitle.text = string.Empty;
+        jumpscareSubtitle.fontSize = 38f;
+        jumpscareSubtitle.lineSpacing = 6f;
+        jumpscareSubtitle.color = Color.white;
+        jumpscareSubtitle.fontStyle = FontStyles.Bold;
+        jumpscareSubtitle.alignment = TextAlignmentOptions.Center;
+        jumpscareSubtitle.textWrappingMode = TextWrappingModes.Normal;
+        jumpscareSubtitle.overflowMode = TextOverflowModes.Overflow;
+        jumpscareSubtitle.outlineColor = Color.black;
+        jumpscareSubtitle.outlineWidth = 0.18f;
+        jumpscareSubtitle.raycastTarget = false;
+        jumpscareSubtitle.gameObject.SetActive(false);
 
         creditLabel = new GameObject("EndingMovieCredits", typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI)).GetComponent<TextMeshProUGUI>();
         creditLabel.transform.SetParent(canvasObject.transform, false);
@@ -356,6 +638,65 @@ public sealed class WellEndingTrigger : MonoBehaviour
         creditLabel.overflowMode = TextOverflowModes.Overflow;
         creditLabel.raycastTarget = false;
         creditLabel.gameObject.SetActive(false);
+
+        choiceRoot = new GameObject("EndingChoicePanel", typeof(RectTransform));
+        choiceRoot.transform.SetParent(canvasObject.transform, false);
+        var choiceRect = choiceRoot.GetComponent<RectTransform>();
+        Stretch(choiceRect);
+
+        var title = new GameObject("EndingChoiceTitle", typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI)).GetComponent<TextMeshProUGUI>();
+        title.transform.SetParent(choiceRoot.transform, false);
+        RectTransform titleRect = title.rectTransform;
+        titleRect.anchorMin = new Vector2(0.5f, 0.5f);
+        titleRect.anchorMax = new Vector2(0.5f, 0.5f);
+        titleRect.pivot = new Vector2(0.5f, 0.5f);
+        titleRect.sizeDelta = new Vector2(980f, 110f);
+        titleRect.anchoredPosition = new Vector2(0f, 120f);
+        title.text = "HO\u00C0N TH\u00C0NH PH\u1EA6N 1";
+        title.fontSize = 48f;
+        title.fontStyle = FontStyles.Bold;
+        title.alignment = TextAlignmentOptions.Center;
+        title.color = new Color(0.86f, 0.92f, 0.96f, 1f);
+        title.raycastTarget = false;
+
+        continuePartTwoButton = CreateEndingChoiceButton(choiceRoot.transform, "ContinuePartTwoButton", "TI\u1EBEP T\u1EE4C", new Vector2(0f, -20f));
+        returnMenuButton = CreateEndingChoiceButton(choiceRoot.transform, "ReturnMenuButton", "TR\u1EDE V\u1EC0 MENU", new Vector2(0f, -130f));
+        choiceRoot.SetActive(false);
+    }
+
+    private Texture2D GetCircularBackdropTexture()
+    {
+        if (circularBackdropTexture != null)
+            return circularBackdropTexture;
+
+        int size = Mathf.Max(128, circularBackdropTextureSize);
+        var pixels = new Color32[size * size];
+        float center = (size - 1f) * 0.5f;
+        float innerRadius = center * 0.34f;
+        float outerRadius = center * 0.98f;
+        byte maxAlpha = (byte)Mathf.RoundToInt(circularBackdropEdgeOpacity * 255f);
+
+        for (int y = 0; y < size; y++)
+        {
+            for (int x = 0; x < size; x++)
+            {
+                float distance = Vector2.Distance(new Vector2(x, y), new Vector2(center, center));
+                float fade = Mathf.InverseLerp(innerRadius, outerRadius, distance);
+                fade = Mathf.SmoothStep(0f, 1f, fade);
+                byte alpha = (byte)Mathf.RoundToInt(maxAlpha * fade);
+                pixels[y * size + x] = new Color32(0, 0, 0, alpha);
+            }
+        }
+
+        circularBackdropTexture = new Texture2D(size, size, TextureFormat.RGBA32, false)
+        {
+            name = "EndingGeneratedCircularBackdrop",
+            wrapMode = TextureWrapMode.Clamp,
+            filterMode = FilterMode.Bilinear
+        };
+        circularBackdropTexture.SetPixels32(pixels);
+        circularBackdropTexture.Apply(false, true);
+        return circularBackdropTexture;
     }
 
     private void DropGramophone(Transform carriedGramophone)
@@ -422,6 +763,77 @@ public sealed class WellEndingTrigger : MonoBehaviour
         wellLight.intensity = intensity;
     }
 
+    private void EnsureTerrainHole()
+    {
+        if (!carveTerrainHoleOnAwake || terrainHoleCarved)
+            return;
+
+        Vector3 worldCenter = transform.position + terrainHoleOffset;
+        Terrain terrain = ResolveTerrainForHole(worldCenter);
+        if (terrain == null || terrain.terrainData == null)
+            return;
+
+        TerrainData data = terrain.terrainData;
+        int resolution = data.holesResolution;
+        if (resolution <= 0 || data.size.x <= 0f || data.size.z <= 0f)
+            return;
+
+        Vector3 localCenter = worldCenter - terrain.transform.position;
+        float normalizedX = localCenter.x / data.size.x;
+        float normalizedZ = localCenter.z / data.size.z;
+        int centerX = Mathf.RoundToInt(normalizedX * (resolution - 1));
+        int centerY = Mathf.RoundToInt(normalizedZ * (resolution - 1));
+        if (centerX < 0 || centerX >= resolution || centerY < 0 || centerY >= resolution)
+            return;
+
+        int radiusX = Mathf.Max(1, Mathf.CeilToInt((terrainHoleRadius / data.size.x) * (resolution - 1)));
+        int radiusY = Mathf.Max(1, Mathf.CeilToInt((terrainHoleRadius / data.size.z) * (resolution - 1)));
+        int xMin = Mathf.Clamp(centerX - radiusX, 0, resolution - 1);
+        int yMin = Mathf.Clamp(centerY - radiusY, 0, resolution - 1);
+        int xMax = Mathf.Clamp(centerX + radiusX, 0, resolution - 1);
+        int yMax = Mathf.Clamp(centerY + radiusY, 0, resolution - 1);
+        int width = xMax - xMin + 1;
+        int height = yMax - yMin + 1;
+        if (width <= 0 || height <= 0)
+            return;
+
+        bool[,] holes = data.GetHoles(xMin, yMin, width, height);
+        for (int y = 0; y < height; y++)
+        {
+            for (int x = 0; x < width; x++)
+            {
+                float dx = (xMin + x - centerX) / (float)radiusX;
+                float dy = (yMin + y - centerY) / (float)radiusY;
+                if (dx * dx + dy * dy <= 1f)
+                    holes[y, x] = false;
+            }
+        }
+
+        data.SetHoles(xMin, yMin, holes);
+        terrainHoleCarved = true;
+    }
+
+    private Terrain ResolveTerrainForHole(Vector3 worldCenter)
+    {
+        if (terrainToCarve != null)
+            return terrainToCarve;
+
+        foreach (var terrain in Terrain.activeTerrains)
+        {
+            if (terrain == null || terrain.terrainData == null)
+                continue;
+
+            Vector3 position = terrain.transform.position;
+            Vector3 size = terrain.terrainData.size;
+            bool containsX = worldCenter.x >= position.x && worldCenter.x <= position.x + size.x;
+            bool containsZ = worldCenter.z >= position.z && worldCenter.z <= position.z + size.z;
+            if (containsX && containsZ)
+                return terrain;
+        }
+
+        return Terrain.activeTerrain ?? FindFirstObjectByType<Terrain>(FindObjectsInactive.Exclude);
+    }
+
     private void ResolveReferences()
     {
         if (cutSceneManager == null)
@@ -462,6 +874,72 @@ public sealed class WellEndingTrigger : MonoBehaviour
         }
 
         return null;
+    }
+
+    private static Button CreateEndingChoiceButton(Transform parent, string objectName, string label, Vector2 anchoredPosition)
+    {
+        var buttonObject = new GameObject(objectName, typeof(RectTransform), typeof(CanvasRenderer), typeof(Image), typeof(Button));
+        buttonObject.transform.SetParent(parent, false);
+
+        var buttonRect = buttonObject.GetComponent<RectTransform>();
+        buttonRect.anchorMin = new Vector2(0.5f, 0.5f);
+        buttonRect.anchorMax = new Vector2(0.5f, 0.5f);
+        buttonRect.pivot = new Vector2(0.5f, 0.5f);
+        buttonRect.sizeDelta = new Vector2(460f, 82f);
+        buttonRect.anchoredPosition = anchoredPosition;
+
+        var image = buttonObject.GetComponent<Image>();
+        image.color = new Color(0.18f, 0.02f, 0.02f, 0.92f);
+        image.raycastTarget = true;
+
+        var button = buttonObject.GetComponent<Button>();
+        button.targetGraphic = image;
+        var colors = button.colors;
+        colors.normalColor = Color.white;
+        colors.highlightedColor = new Color(0.8f, 0.2f, 0.2f, 1f);
+        colors.pressedColor = new Color(0.55f, 0.02f, 0.02f, 1f);
+        colors.selectedColor = Color.white;
+        colors.disabledColor = new Color(0.25f, 0.25f, 0.25f, 0.55f);
+        colors.fadeDuration = 0.08f;
+        button.colors = colors;
+
+        var labelObject = new GameObject("LabelText", typeof(RectTransform), typeof(CanvasRenderer), typeof(TextMeshProUGUI));
+        labelObject.transform.SetParent(buttonObject.transform, false);
+        var labelRect = labelObject.GetComponent<RectTransform>();
+        Stretch(labelRect);
+        labelRect.offsetMin = new Vector2(24f, 0f);
+        labelRect.offsetMax = new Vector2(-24f, 0f);
+
+        var text = labelObject.GetComponent<TextMeshProUGUI>();
+        text.text = label;
+        text.fontSize = 34f;
+        text.fontStyle = FontStyles.Bold;
+        text.alignment = TextAlignmentOptions.Center;
+        text.textWrappingMode = TextWrappingModes.NoWrap;
+        text.overflowMode = TextOverflowModes.Ellipsis;
+        text.color = new Color(0.86f, 0.92f, 0.96f, 1f);
+        text.raycastTarget = false;
+
+        return button;
+    }
+
+    private static void LoadMainMenuScene()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(GetMainMenuSceneName());
+    }
+
+    private static string GetMainMenuSceneName()
+    {
+        return GameController.Instance != null && !string.IsNullOrWhiteSpace(GameController.Instance.mainMenuSceneName)
+            ? GameController.Instance.mainMenuSceneName
+            : "Menu";
+    }
+
+    private static void SetEndingCursor(bool visible)
+    {
+        Cursor.visible = visible;
+        Cursor.lockState = visible ? CursorLockMode.None : CursorLockMode.Locked;
     }
 
     private static Image CreateImage(string objectName, Transform parent, Color color)

@@ -24,6 +24,9 @@ namespace FpsHorrorKit
         private TextMeshProUGUI fallbackBatteryPercentText;
         private bool fallbackFlashlightOn;
         private bool hasSyncedFallbackFlashlight;
+        private bool cutsceneFallbackFlashlightForced;
+        private bool savedFallbackFlashlightOn;
+        private bool savedFallbackFlashlightActive;
 
         public event Action OnInventoryChanged;
         public event Action<ItemData, int> OnItemAdded;
@@ -122,6 +125,20 @@ namespace FpsHorrorKit
             return Find(item) != null;
         }
 
+        public void ResetToStartingItems()
+        {
+            items.Clear();
+            CurrentEquippedItem = null;
+            HeldItemController.Instance?.Clear();
+
+            if (startingFlashlight != null)
+                AddItem(startingFlashlight, 1);
+
+            ItemUsageSystem.Instance?.GrantFlashlightItem(false);
+            OnItemEquipped?.Invoke(null);
+            OnInventoryChanged?.Invoke();
+        }
+
         public InventoryItem Find(ItemData item)
         {
             return items.Find(entry => entry.Data == item);
@@ -143,30 +160,45 @@ namespace FpsHorrorKit
                 return false;
 
             bool used = false;
-            switch (item.itemType)
+            bool playGenericUseSound = true;
+            if (DebtBookUI.IsDebtBook(item))
             {
-                case ItemType.Battery:
-                    used = UseBattery(item);
-                    break;
-                case ItemType.Key:
-                    EquipItem(item);
-                    used = true;
-                    break;
-                case ItemType.Flashlight:
-                    if (ItemUsageSystem.Instance != null)
-                        ItemUsageSystem.Instance.ForceFlashlightOn(true);
-                    else
-                        ToggleFallbackFlashlight();
-                    used = true;
-                    break;
-                default:
-                    used = true;
-                    break;
+                used = DebtBookUI.Open(item);
+                playGenericUseSound = false;
+            }
+            else
+            {
+                switch (item.itemType)
+                {
+                    case ItemType.Battery:
+                        used = UseBattery(item);
+                        playGenericUseSound = false;
+                        break;
+                    case ItemType.Key:
+                        EquipItem(item);
+                        used = true;
+                        break;
+                    case ItemType.Flashlight:
+                        if (ItemUsageSystem.Instance != null)
+                            ItemUsageSystem.Instance.ForceFlashlightOn(true);
+                        else
+                            ToggleFallbackFlashlight();
+                        used = true;
+                        break;
+                    default:
+                        used = true;
+                        break;
+                }
             }
 
             if (used)
             {
-                AudioManager.Instance?.PlayGenericInteract();
+                if (playGenericUseSound)
+                    AudioManager.Instance?.PlayGenericInteract();
+
+                if (item.itemType != ItemType.Flashlight && CurrentEquippedItem?.itemType != ItemType.Flashlight)
+                    HeldItemController.Instance?.HideCurrentVisual();
+
                 OnItemUsed?.Invoke(item);
                 OnInventoryChanged?.Invoke();
             }
@@ -202,7 +234,7 @@ namespace FpsHorrorKit
             }
 
             RemoveItem(item, 1);
-            AudioManager.Instance?.PlayFlashlightToggle();
+            AudioManager.Instance?.PlayFlashlightBatteryUse();
             InteractMessageScript.Instance?.ShowMessage("Đã sạc đầy pin đèn pin.");
             return true;
         }
@@ -233,6 +265,19 @@ namespace FpsHorrorKit
             InitializeFallbackFlashlight();
             SyncFallbackFlashlightStateFromScene();
 
+            if (cutsceneFallbackFlashlightForced)
+            {
+                SetFallbackFlashlightActive(true);
+                UpdateFallbackFlashlightUi();
+                return;
+            }
+
+            if (GameController.IsGameplayInputLocked())
+            {
+                UpdateFallbackFlashlightUi();
+                return;
+            }
+
             var keyboard = Keyboard.current;
             if (keyboard != null && keyboard.fKey.wasPressedThisFrame)
                 ToggleFallbackFlashlight();
@@ -256,6 +301,9 @@ namespace FpsHorrorKit
 
         private void ToggleFallbackFlashlight()
         {
+            if (GameController.IsGameplayInputLocked())
+                return;
+
             if (ItemUsageSystem.Instance != null)
             {
                 ItemUsageSystem.Instance.UseFlashlight();
@@ -272,6 +320,36 @@ namespace FpsHorrorKit
             fallbackFlashlightOn = !IsFallbackFlashlightLightActive();
             SetFallbackFlashlightActive(fallbackFlashlightOn);
             AudioManager.Instance?.PlayFlashlightToggle();
+        }
+
+        public void SetCutsceneFallbackFlashlightForced(bool forced)
+        {
+            if (ItemUsageSystem.Instance != null)
+                return;
+
+            InitializeFallbackFlashlight();
+
+            if (forced)
+            {
+                if (!cutsceneFallbackFlashlightForced)
+                {
+                    savedFallbackFlashlightOn = fallbackFlashlightOn;
+                    savedFallbackFlashlightActive = IsFallbackFlashlightLightActive();
+                }
+
+                cutsceneFallbackFlashlightForced = true;
+                SetFallbackFlashlightActive(true);
+                UpdateFallbackFlashlightUi();
+                return;
+            }
+
+            if (!cutsceneFallbackFlashlightForced)
+                return;
+
+            cutsceneFallbackFlashlightForced = false;
+            fallbackFlashlightOn = savedFallbackFlashlightOn;
+            SetFallbackFlashlightActive(savedFallbackFlashlightActive);
+            UpdateFallbackFlashlightUi();
         }
 
         private void InitializeFallbackFlashlight()

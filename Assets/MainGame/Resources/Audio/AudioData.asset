@@ -15,6 +15,12 @@ MonoBehaviour:
   menuMusic: {fileID: 8300000, guid: 9d646b1744dd91a4592b89d9625de322, type: 3}
   introAmbience: {fileID: 8300000, guid: 2dc9a029d0f6a4d4f95eca9f86b410f2, type: 3}
   gameplayAmbience: {fileID: 8300000, guid: fcf6276a13ac13e4aabcf0ecfdf2d3b2, type: 3}
+  gameplayAmbiences:
+  - {fileID: 8300000, guid: fcf6276a13ac13e4aabcf0ecfdf2d3b2, type: 3}
+  - {fileID: 8300000, guid: d647ed10ff7183342a220aed39cc6873, type: 3}
+  gameplayAmbienceSilenceSeconds: 45
+  gameplayAmbienceMaxSilenceSeconds: 90
+  gameplayAmbienceBlockedRetrySeconds: 3
   ghostAmbience: {fileID: 8300000, guid: 175b325ec4eb7674491bcef498fd21db, type: 3}
   chaseMusic: {fileID: 8300000, guid: e03bf5e746688b04487345ac827f5669, type: 3}
   deathMusic: {fileID: 8300000, guid: afbb8b47caf19f04aaab86413d8bc459, type: 3}
@@ -22,11 +28,13 @@ MonoBehaviour:
   buttonClick: {fileID: 8300000, guid: 21516114640167f48b2548f53bfed396, type: 3}
   applySettings: {fileID: 8300000, guid: 5f8783404fb034b4198678c79d7a5848, type: 3}
   back: {fileID: 8300000, guid: 21516114640167f48b2548f53bfed396, type: 3}
-  flashlightToggle: {fileID: 8300000, guid: cf295f270d975a34b98bb78c4f3c97fa, type: 3}
+  flashlightToggle: {fileID: 8300000, guid: 21516114640167f48b2548f53bfed396, type: 3}
+  flashlightBatteryUse: {fileID: 8300000, guid: cf295f270d975a34b98bb78c4f3c97fa, type: 3}
   cameraShot: {fileID: 8300000, guid: 672f5389d8d97a24085692dd1e494351, type: 3}
   keyPickup: {fileID: 8300000, guid: 8c17a6180226bcc408326f891788adb2, type: 3}
   notePickup: {fileID: 8300000, guid: b8361c095491b9b44b3a95411e1d6e1d, type: 3}
   paperPickup: {fileID: 8300000, guid: 58845c63099b9204fa6a615ae9554878, type: 3}
+  diaryPageFlip: {fileID: 8300000, guid: 58845c63099b9204fa6a615ae9554878, type: 3}
   genericInteract: {fileID: 8300000, guid: 0d384f898556b8a4099288246cf43319, type: 3}
   doorLocked: {fileID: 8300000, guid: a323b22d1ada88743b149c6ec090038a, type: 3}
   doorOpenSlow: {fileID: 8300000, guid: adf554832d4d64e49b6b736a9691d5ce, type: 3}
@@ -34,7 +42,7 @@ MonoBehaviour:
   itemUnlock: {fileID: 8300000, guid: 727fb1361283fc549842ec39b71e9f52, type: 3}
   musicBoxStartup: {fileID: 8300000, guid: bdecdb100e48b3f4a911f9bfad935a4e, type: 3}
   pianoWrong: {fileID: 8300000, guid: cafeac1e291de0a44ae5d05f361b7f6a, type: 3}
-  sanityWarning: {fileID: 8300000, guid: 4894c20b9e97adf4c843d7f0a016a07d, type: 3}
+  sanityWarning: {fileID: 0}
   ghostJumpscare: {fileID: 8300000, guid: c052b9de3347aca43a03715dbd5680dd, type: 3}
   wellJumpscare: {fileID: 8300000, guid: 7b317219f13a5bd42ab12a6d6cfda83a, type: 3}
   clothTearOff: {fileID: 8300000, guid: 994ed9127919f634fb2febbbbb85a196, type: 3}

@@ -8,6 +8,8 @@ namespace FpsHorrorKit
 {
     public sealed class InventoryUI : MonoBehaviour
     {
+        private const int InventorySortingOrder = 20000;
+
         private enum InventoryTab
         {
             Inventory,
@@ -53,6 +55,7 @@ namespace FpsHorrorKit
         private TextMeshProUGUI musicProgressText;
         private InventoryTab currentTab;
         private ItemData selectedItem;
+        private bool hierarchyMissingLogged;
 
         public bool IsOpen => root != null && root.activeSelf;
 
@@ -69,7 +72,7 @@ namespace FpsHorrorKit
 
         private void Start()
         {
-            Build();
+            BindHierarchy();
             Subscribe();
             Close();
         }
@@ -90,6 +93,13 @@ namespace FpsHorrorKit
 
         private void Update()
         {
+            if (GameController.IsCutsceneOrEndInputLocked())
+            {
+                if (IsOpen)
+                    Close();
+                return;
+            }
+
             var keyboard = Keyboard.current;
             if (keyboard == null)
                 return;
@@ -126,7 +136,10 @@ namespace FpsHorrorKit
             if (!CanOpenFromCurrentState())
                 return;
 
-            Build();
+            BindHierarchy();
+            if (root == null)
+                return;
+
             AudioManager.Instance?.PlayButtonClick();
             root.SetActive(true);
             SetTab(currentTab);
@@ -231,7 +244,7 @@ namespace FpsHorrorKit
 
             var selectedStack = selectedItem != null && manager != null ? manager.Find(selectedItem) : null;
             bool hasSelected = selectedStack != null;
-            if (detailName != null) detailName.text = hasSelected ? selectedItem.itemName : "Chưa chọn vật phẩm";
+            if (detailName != null) detailName.text = hasSelected ? selectedItem.itemName : "Chưa chọn vật phẩm.";
             if (detailDescription != null) detailDescription.text = hasSelected ? selectedItem.description : "Chọn một ô trong hành trang để xem thông tin.";
             if (detailAmount != null) detailAmount.text = hasSelected ? $"Số lượng: {selectedStack.Amount}" : "";
             if (detailIcon != null)
@@ -242,12 +255,18 @@ namespace FpsHorrorKit
             if (detailEquipped != null)
             {
                 bool equipped = hasSelected && manager.CurrentEquippedItem == selectedItem;
-                detailEquipped.text = equipped ? "Đang cầm" : "";
+                detailEquipped.text = equipped ? "Đang cầm." : "";
             }
             if (useButton != null)
             {
                 useButton.gameObject.SetActive(hasSelected && selectedItem.canUse);
-                if (useButtonText != null) useButtonText.text = selectedItem != null && selectedItem.itemType == ItemType.Key ? "TRANG BỊ" : "SỬ DỤNG";
+                if (useButtonText != null)
+                {
+                    if (DebtBookUI.IsDebtBook(selectedItem))
+                        useButtonText.text = "ĐỌC";
+                    else
+                        useButtonText.text = selectedItem != null && selectedItem.itemType == ItemType.Key ? "TRANG BỊ" : "SỬ DỤNG";
+                }
             }
         }
 
@@ -309,9 +328,156 @@ namespace FpsHorrorKit
         private bool CanOpenFromCurrentState()
         {
             var controller = GameController.Instance;
-            return controller == null || controller.currentGameState == GameController.GameState.Gameplay;
+            return controller == null || controller.CanUseGameplayInput();
         }
 
+#if UNITY_EDITOR
+        private void OnValidate()
+        {
+            if (Application.isPlaying || transform.Find("InventoryOverlay") != null)
+                return;
+
+            UnityEditor.EditorApplication.delayCall += RebuildMissingHierarchyInEditor;
+        }
+
+        [ContextMenu("Rebuild Inventory UI Hierarchy")]
+        private void RebuildHierarchyInEditor()
+        {
+            if (Application.isPlaying)
+                return;
+
+            ClearEditorHierarchy();
+            root = null;
+            inventoryTabRoot = null;
+            musicTabRoot = null;
+            inventorySlots.Clear();
+            musicIcons.Clear();
+            tabButtons.Clear();
+            tabTexts.Clear();
+
+            Build();
+
+            if (root != null)
+                root.SetActive(false);
+
+            UnityEditor.EditorUtility.SetDirty(this);
+            UnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(gameObject.scene);
+        }
+
+        private void RebuildMissingHierarchyInEditor()
+        {
+            if (this == null || Application.isPlaying || transform.Find("InventoryOverlay") != null)
+                return;
+
+            RebuildHierarchyInEditor();
+        }
+
+        private void ClearEditorHierarchy()
+        {
+            for (int i = transform.childCount - 1; i >= 0; i--)
+                DestroyImmediate(transform.GetChild(i).gameObject);
+        }
+#endif
+
+        private void BindHierarchy()
+        {
+            inventorySlots.Clear();
+            musicIcons.Clear();
+            tabButtons.Clear();
+            tabTexts.Clear();
+
+            root = transform.Find("InventoryOverlay")?.gameObject;
+            if (root == null)
+            {
+                if (!hierarchyMissingLogged)
+                {
+                    Debug.LogError("Inventory UI hierarchy is missing. Use Tools/MainGame/Rebuild Inventory UI Hierarchy.");
+                    hierarchyMissingLogged = true;
+                }
+                return;
+            }
+
+            inventoryTabRoot = root.transform.Find("InventoryTab")?.gameObject;
+            musicTabRoot = root.transform.Find("MusicSheetTab")?.gameObject;
+
+            BindTabButton("Tab_1", InventoryTab.Inventory);
+            BindTabButton("Tab_2", InventoryTab.Music);
+
+            var closeButton = root.transform.Find("CloseButton")?.GetComponent<Button>();
+            if (closeButton != null)
+            {
+                closeButton.onClick.RemoveAllListeners();
+                closeButton.onClick.AddListener(Close);
+            }
+
+            var gridPanel = inventoryTabRoot != null ? inventoryTabRoot.transform.Find("GridPanel") : null;
+            if (gridPanel != null)
+            {
+                var slots = gridPanel.GetComponentsInChildren<InventorySlotUI>(true);
+                System.Array.Sort(slots, (left, right) => string.CompareOrdinal(left.name, right.name));
+                foreach (var slot in slots)
+                {
+                    slot.Setup(this, slotSprite, selectedSlotSprite);
+                    inventorySlots.Add(slot);
+                }
+            }
+
+            var detail = inventoryTabRoot != null ? inventoryTabRoot.transform.Find("DetailPanel") : null;
+            if (detail != null)
+            {
+                detailName = detail.Find("DetailName")?.GetComponent<TextMeshProUGUI>();
+                detailIcon = detail.Find("DetailIcon")?.GetComponent<Image>();
+                detailAmount = detail.Find("DetailAmount")?.GetComponent<TextMeshProUGUI>();
+                detailEquipped = detail.Find("EquippedText")?.GetComponent<TextMeshProUGUI>();
+                detailDescription = detail.Find("DetailDescription")?.GetComponent<TextMeshProUGUI>();
+                useButton = detail.Find("UseButton")?.GetComponent<Button>();
+                useButtonText = useButton != null ? useButton.GetComponentInChildren<TextMeshProUGUI>(true) : null;
+                if (useButton != null)
+                {
+                    useButton.onClick.RemoveAllListeners();
+                    useButton.onClick.AddListener(UseSelectedItem);
+                }
+            }
+
+            var musicPanel = musicTabRoot != null ? musicTabRoot.transform.Find("MusicPanel") : null;
+            if (musicPanel != null)
+            {
+                musicProgressText = musicPanel.Find("MusicProgress")?.GetComponent<TextMeshProUGUI>();
+                var icons = musicPanel.GetComponentsInChildren<Image>(true);
+                System.Array.Sort(icons, CompareMusicIconOrder);
+                foreach (var icon in icons)
+                {
+                    if (icon.name == "MusicIcon")
+                        musicIcons.Add(icon);
+                }
+            }
+
+            hierarchyMissingLogged = false;
+        }
+
+        private void BindTabButton(string objectName, InventoryTab tab)
+        {
+            if (root == null)
+                return;
+
+            var button = root.transform.Find(objectName)?.GetComponent<Button>();
+            if (button == null)
+                return;
+
+            button.onClick.RemoveAllListeners();
+            button.onClick.AddListener(() => SetTab(tab));
+            tabButtons.Add(button);
+            tabTexts.Add(button.GetComponentInChildren<TextMeshProUGUI>(true));
+        }
+
+        private static int CompareMusicIconOrder(Image left, Image right)
+        {
+            string leftName = left != null && left.transform.parent != null ? left.transform.parent.name : string.Empty;
+            string rightName = right != null && right.transform.parent != null ? right.transform.parent.name : string.Empty;
+            return string.CompareOrdinal(leftName, rightName);
+        }
+
+#if UNITY_EDITOR
         private void Build()
         {
             if (root != null)
@@ -321,7 +487,8 @@ namespace FpsHorrorKit
             if (canvas == null)
                 canvas = gameObject.AddComponent<Canvas>();
             canvas.renderMode = RenderMode.ScreenSpaceOverlay;
-            canvas.sortingOrder = 80;
+            canvas.overrideSorting = true;
+            canvas.sortingOrder = InventorySortingOrder;
             if (GetComponent<CanvasScaler>() == null)
             {
                 var scaler = gameObject.AddComponent<CanvasScaler>();
@@ -333,7 +500,8 @@ namespace FpsHorrorKit
 
             root = CreateUIObject(transform, "InventoryOverlay").gameObject;
             Stretch(root.GetComponent<RectTransform>());
-            AddImage(root.transform, "DimBackground", backgroundSprite, new Color(0.01f, 0.035f, 0.055f, 0.84f), Image.Type.Sliced, true);
+            AddImage(root.transform, "SceneShield", null, new Color(38f / 255f, 38f / 255f, 38f / 255f, 0.92f), Image.Type.Simple, true);
+            AddImage(root.transform, "DimBackground", backgroundSprite, new Color(0.01f, 0.035f, 0.055f, 0.96f), Image.Type.Sliced, true);
 
             BuildTabs(root.transform);
             inventoryTabRoot = CreateUIObject(root.transform, "InventoryTab").gameObject;
@@ -376,7 +544,7 @@ namespace FpsHorrorKit
 
         private void BuildInventoryTab(Transform parent)
         {
-            var gridPanel = AddImage(parent, "GridPanel", panelSprite, new Color(0.02f, 0.07f, 0.1f, 0.58f), Image.Type.Sliced, false);
+            var gridPanel = AddImage(parent, "GridPanel", panelSprite, new Color(0.02f, 0.07f, 0.1f, 0.88f), Image.Type.Sliced, false);
             SetRect(gridPanel.rectTransform, new Vector2(0.08f, 0.12f), new Vector2(0.62f, 0.78f), Vector2.zero, Vector2.zero);
 
             for (int row = 0; row < 3; row++)
@@ -400,7 +568,7 @@ namespace FpsHorrorKit
                 }
             }
 
-            var detail = AddImage(parent, "DetailPanel", infoPanelSprite, new Color(0.018f, 0.06f, 0.09f, 0.68f), Image.Type.Sliced, false);
+            var detail = AddImage(parent, "DetailPanel", infoPanelSprite, new Color(0.018f, 0.06f, 0.09f, 0.9f), Image.Type.Sliced, false);
             SetRect(detail.rectTransform, new Vector2(0.67f, 0.12f), new Vector2(0.93f, 0.78f), Vector2.zero, Vector2.zero);
             detailName = AddText(detail.transform, "DetailName", "ĐÈN PIN", 32, new Color(0.85f, 0.95f, 1f), TextAlignmentOptions.Center, new Vector2(0.08f, 0.84f), new Vector2(0.92f, 0.94f));
             AddImage(detail.transform, "TopDivider", dividerSprite, new Color(0.68f, 0.85f, 0.95f, 0.7f), Image.Type.Sliced, false).rectTransform.sizeDelta = new Vector2(260f, 12f);
@@ -421,24 +589,17 @@ namespace FpsHorrorKit
 
         private void BuildMusicTab(Transform parent)
         {
-            var panel = AddImage(parent, "MusicPanel", panelSprite, new Color(0.02f, 0.07f, 0.1f, 0.58f), Image.Type.Sliced, false);
+            var panel = AddImage(parent, "MusicPanel", panelSprite, new Color(0.02f, 0.07f, 0.1f, 0.9f), Image.Type.Sliced, false);
             SetRect(panel.rectTransform, new Vector2(0.14f, 0.16f), new Vector2(0.86f, 0.74f), Vector2.zero, Vector2.zero);
             AddText(panel.transform, "MusicTitle", "MẢNH NỐT NHẠC", 38, new Color(0.85f, 0.95f, 1f), TextAlignmentOptions.Center, new Vector2(0.1f, 0.83f), new Vector2(0.9f, 0.94f));
             musicProgressText = AddText(panel.transform, "MusicProgress", "0 / 4", 30, new Color(0.68f, 0.9f, 1f), TextAlignmentOptions.Center, new Vector2(0.42f, 0.73f), new Vector2(0.58f, 0.82f));
 
+            CreateMusicSlotsInEditor(panel.transform, 5);
             EnsureMusicSlotCount(5);
         }
 
-        private void EnsureMusicSlotCount(int total)
+        private void CreateMusicSlotsInEditor(Transform panel, int total)
         {
-            if (musicProgressText == null)
-                return;
-
-            var panel = musicProgressText.transform.parent;
-            if (panel == null)
-                return;
-
-            total = Mathf.Max(1, total);
             while (musicIcons.Count < total)
             {
                 int index = musicIcons.Count;
@@ -447,7 +608,12 @@ namespace FpsHorrorKit
                 SetRect(icon.rectTransform, new Vector2(0.1f, 0.13f), new Vector2(0.9f, 0.87f), Vector2.zero, Vector2.zero);
                 musicIcons.Add(icon);
             }
+        }
+#endif
 
+        private void EnsureMusicSlotCount(int total)
+        {
+            total = Mathf.Max(1, total);
             float gap = 0.025f;
             float slotWidth = Mathf.Min(0.16f, (0.84f - gap * (total - 1)) / total);
             float totalWidth = slotWidth * total + gap * (total - 1);
@@ -469,11 +635,15 @@ namespace FpsHorrorKit
                 frame.offsetMin = Vector2.zero;
                 frame.offsetMax = Vector2.zero;
             }
+
+            if (musicIcons.Count < total && !hierarchyMissingLogged)
+                Debug.LogWarning($"Inventory music tab has {musicIcons.Count} scene slots but needs {total}. Use Tools/MainGame/Rebuild Inventory UI Hierarchy.");
         }
 
+#if UNITY_EDITOR
         private void BuildFooter(Transform parent)
         {
-            var footer = AddText(parent, "FooterHelp", "TAB - Đóng     |     Chuột trái - Chọn     |     Chuột phải / nhấp đúp - Sử dụng     |     Q / E - Đổi tab     |     ESC - Đóng", 22, new Color(0.68f, 0.76f, 0.8f), TextAlignmentOptions.Center, new Vector2(0.08f, 0.03f), new Vector2(0.92f, 0.08f));
+            var footer = AddText(parent, "FooterHelp", "TAB - Đóng.     |     Chuột trái - Chọn.     |     Chuột phải / nhấp đúp - Sử dụng.     |     Q / E - Đổi tab.     |     ESC - Đóng.", 22, new Color(0.68f, 0.76f, 0.8f), TextAlignmentOptions.Center, new Vector2(0.08f, 0.03f), new Vector2(0.92f, 0.08f));
             footer.textWrappingMode = TextWrappingModes.NoWrap;
         }
 
@@ -534,5 +704,6 @@ namespace FpsHorrorKit
             rect.offsetMin = offsetMin;
             rect.offsetMax = offsetMax;
         }
+#endif
     }
 }

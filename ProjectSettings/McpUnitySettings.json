@@ -1,8 +1,9 @@
 {
     "Port": 8090,
-    "RequestTimeoutSeconds": 60,
+    "RequestTimeoutSeconds": 10,
     "AutoStartServer": true,
-    "EnableInfoLogs": true,
-    "NpmExecutablePath": "",
-    "AllowRemoteConnections": true
+    "AllowBatchModeServer": false,
+    "EnableInfoLogs": false,
+    "NpmExecutablePath": "D:\\npm.cmd",
+    "AllowRemoteConnections": false
 }

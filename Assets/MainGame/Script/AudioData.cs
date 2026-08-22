@@ -7,6 +7,10 @@ public sealed class AudioData : ScriptableObject
     public AudioClip menuMusic;
     public AudioClip introAmbience;
     public AudioClip gameplayAmbience;
+    public AudioClip[] gameplayAmbiences;
+    [Min(0f)] public float gameplayAmbienceSilenceSeconds = 45f;
+    [Min(0f)] public float gameplayAmbienceMaxSilenceSeconds = 90f;
+    [Min(0.1f)] public float gameplayAmbienceBlockedRetrySeconds = 3f;
     public AudioClip ghostAmbience;
     public AudioClip chaseMusic;
     public AudioClip deathMusic;
@@ -19,10 +23,12 @@ public sealed class AudioData : ScriptableObject
 
     [Header("Gameplay SFX")]
     public AudioClip flashlightToggle;
+    public AudioClip flashlightBatteryUse;
     public AudioClip cameraShot;
     public AudioClip keyPickup;
     public AudioClip notePickup;
     public AudioClip paperPickup;
+    public AudioClip diaryPageFlip;
     public AudioClip genericInteract;
     public AudioClip doorLocked;
     public AudioClip doorOpenSlow;

@@ -27,6 +27,9 @@ namespace FpsHorrorKit
         private bool hasPlayed;
         private bool isPlayingTape;
         private bool duckedBackground;
+        private bool pausedByFocusLoss;
+        private float lastKnownTapeTime;
+        private float suppressStoppedCheckUntil;
 
         private void Awake()
         {
@@ -35,14 +38,27 @@ namespace FpsHorrorKit
 
         private void Update()
         {
+            if (audioSource != null && audioSource.isPlaying)
+            {
+                lastKnownTapeTime = audioSource.time;
+            }
+
             if (audioSource != null && audioSource.isPlaying && recordTransform != null)
                 recordTransform.Rotate(Vector3.up, recordRotationSpeed * Time.deltaTime, Space.Self);
 
             if (isPlayingTape && audioSource != null && !audioSource.isPlaying)
-                FinishTape(true);
+            {
+                if (!Application.isFocused || Time.unscaledTime < suppressStoppedCheckUntil)
+                    return;
+
+                if (HasTapeReachedEnd())
+                    FinishTape(true);
+                else
+                    ResumeTapeFromLastKnownTime();
+            }
         }
 
-        public bool IsPlayingTape => isPlayingTape && audioSource != null && audioSource.isPlaying;
+        public bool IsPlayingTape => isPlayingTape;
         public float TapeLength => tapeClip != null ? tapeClip.length : 0f;
 
         public void PlayTape()
@@ -58,8 +74,6 @@ namespace FpsHorrorKit
             if (activateCuasoOnPlay)
                 ResolveCuasoObject()?.SetActive(true);
 
-            DoorSystem.LockDoorsMarkedForGramophoneTape();
-
             audioSource.Stop();
             audioSource.clip = tapeClip;
             audioSource.loop = false;
@@ -68,7 +82,11 @@ namespace FpsHorrorKit
             audioSource.minDistance = tapeMinDistance;
             audioSource.maxDistance = tapeMaxDistance;
             audioSource.Play();
+            AudioManager.Instance?.BlockGameplayAmbience(tapeClip.length);
             isPlayingTape = true;
+            pausedByFocusLoss = false;
+            lastKnownTapeTime = 0f;
+            suppressStoppedCheckUntil = Time.unscaledTime + 0.25f;
 
             if (duckBackgroundDuringTape)
             {
@@ -79,10 +97,14 @@ namespace FpsHorrorKit
 
         public void SkipTape()
         {
+            if (!isPlayingTape)
+                return;
+
             ResolveReferences();
 
             if (audioSource != null)
             {
+                lastKnownTapeTime = 0f;
                 audioSource.Stop();
                 audioSource.clip = null;
             }
@@ -93,12 +115,17 @@ namespace FpsHorrorKit
         private void FinishTape(bool notifyFinished)
         {
             isPlayingTape = false;
+            pausedByFocusLoss = false;
+            lastKnownTapeTime = 0f;
+            suppressStoppedCheckUntil = 0f;
 
             if (duckedBackground)
             {
                 AudioManager.Instance?.ClearBackgroundDuck();
                 duckedBackground = false;
             }
+
+            DoorSystem.CloseDoorsMarkedForGramophoneTape();
 
             if (notifyFinished)
                 TapeFinished?.Invoke();
@@ -108,6 +135,56 @@ namespace FpsHorrorKit
         {
             if (duckedBackground)
                 AudioManager.Instance?.ClearBackgroundDuck();
+        }
+
+        private void OnApplicationFocus(bool hasFocus)
+        {
+            if (!isPlayingTape || audioSource == null)
+                return;
+
+            suppressStoppedCheckUntil = Time.unscaledTime + 0.5f;
+
+            if (!hasFocus)
+            {
+                lastKnownTapeTime = audioSource.time;
+                if (audioSource.isPlaying)
+                {
+                    audioSource.Pause();
+                    pausedByFocusLoss = true;
+                }
+
+                return;
+            }
+
+            if (pausedByFocusLoss || !audioSource.isPlaying)
+                ResumeTapeFromLastKnownTime();
+        }
+
+        private bool HasTapeReachedEnd()
+        {
+            if (tapeClip == null)
+                return true;
+
+            float endTime = Mathf.Max(0.05f, tapeClip.length - 0.12f);
+            return lastKnownTapeTime >= endTime || audioSource.time >= endTime;
+        }
+
+        private void ResumeTapeFromLastKnownTime()
+        {
+            if (!isPlayingTape || audioSource == null || tapeClip == null)
+                return;
+
+            audioSource.clip = tapeClip;
+            audioSource.loop = false;
+            audioSource.volume = tapeVolume;
+            audioSource.spatialBlend = tapeSpatialBlend;
+            audioSource.minDistance = tapeMinDistance;
+            audioSource.maxDistance = tapeMaxDistance;
+            audioSource.time = Mathf.Clamp(lastKnownTapeTime, 0f, Mathf.Max(0f, tapeClip.length - 0.05f));
+            audioSource.Play();
+            AudioManager.Instance?.BlockGameplayAmbience(tapeClip.length - audioSource.time);
+            pausedByFocusLoss = false;
+            suppressStoppedCheckUntil = Time.unscaledTime + 0.5f;
         }
 
         private void ResolveReferences()

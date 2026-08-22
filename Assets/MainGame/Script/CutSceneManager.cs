@@ -10,8 +10,11 @@ using FpsHorrorKit;
 
 public sealed class CutSceneManager : MonoBehaviour
 {
+    private const string DefaultIntroWindowEntryCutSceneId = "intro_window_entry";
+
     [Header("Sequences")]
     [SerializeField] private string introCutSceneId = "intro";
+    [SerializeField] private string introWindowEntryCutSceneId = DefaultIntroWindowEntryCutSceneId;
     [SerializeField] private bool autoResolveSequences = true;
     [SerializeField] private List<CutSceneSequence> sequences = new();
 
@@ -37,6 +40,8 @@ public sealed class CutSceneManager : MonoBehaviour
     [SerializeField] private AudioSource typewriterClickSource;
     [SerializeField] private AudioClip typewriterClickClip;
     [SerializeField, Range(0f, 1f)] private float typewriterClickVolume = 0.45f;
+    [SerializeField, Min(1f)] private float typewriterClickVolumeDivider = 6f;
+    [SerializeField, Min(0f)] private float skipInputCooldown = 0.45f;
 
     [Header("Navigation")]
     [SerializeField, Min(0.1f)] private float cutSceneMoveSpeed = 2.2f;
@@ -65,6 +70,11 @@ public sealed class CutSceneManager : MonoBehaviour
     private Vector3 cameraVelocity;
     private NavMeshPath navPath;
     private AudioClip generatedTypewriterClickClip;
+    private float nextSkipAllowedTime;
+    private bool waitForSkipRelease;
+    private bool skipConsumedForPoint;
+
+    public static bool SuppressSpaceSkipInput { get; set; }
 
     public bool IsPlaying => runningCutScene != null;
     public bool IsPlayingIntro => IsPlaying && runningSequence != null && IsIntro(runningSequence);
@@ -138,6 +148,7 @@ public sealed class CutSceneManager : MonoBehaviour
     {
         runningSequence = sequence;
         playedSequenceIds.Add(sequence.CutSceneId);
+        cameraVelocity = Vector3.zero;
         EnterCutScene(gameController);
 
         if (sequence.TeleportToStartPoint && sequence.StartPoint != null)
@@ -161,6 +172,8 @@ public sealed class CutSceneManager : MonoBehaviour
         if (point == null)
             yield break;
 
+        skipConsumedForPoint = false;
+        cameraVelocity = Vector3.zero;
         ResolveDialogue(point, out var text, out var audioClip, out var fallbackDuration);
         var speechText = ExtractSpeechText(text);
         var hasSpeechText = !string.IsNullOrWhiteSpace(speechText);
@@ -188,8 +201,9 @@ public sealed class CutSceneManager : MonoBehaviour
                 continue;
             }
 
-            if (!speechDone && SkipPressed())
+            if (!speechDone && movementDone && !skipConsumedForPoint && TryConsumeSkipPressed())
             {
+                skipConsumedForPoint = true;
                 speechDone = true;
                 typewriterDone = true;
                 speechElapsed = speechDuration;
@@ -232,6 +246,12 @@ public sealed class CutSceneManager : MonoBehaviour
     {
         gameController?.SetGameState(GameController.GameState.Cutscene);
 
+        FpsAssetsInputs.Instance?.ClearGameplayInput();
+        nextSkipAllowedTime = Time.unscaledTime + skipInputCooldown;
+        waitForSkipRelease = Keyboard.current != null && Keyboard.current.spaceKey.isPressed;
+        skipConsumedForPoint = false;
+        cameraVelocity = Vector3.zero;
+
         playerController.isCutScene = true;
         playerController.isInteracting = true;
         playerController.StopCutSceneMovement();
@@ -273,8 +293,15 @@ public sealed class CutSceneManager : MonoBehaviour
             playerController.StopCutSceneMovement();
         }
 
-        if (sequence != null && IsIntro(sequence))
+        FpsAssetsInputs.Instance?.ClearGameplayInput();
+        cameraVelocity = Vector3.zero;
+        waitForSkipRelease = false;
+        skipConsumedForPoint = false;
+        if (sequence != null && IsIntroWindowEntry(sequence))
+        {
+            ChapterOneCheckpointManager.Instance?.MarkWindowCutsceneCompleted();
             gameController?.SetChapterPhase(GameController.ChapterPhase.EnterHouse);
+        }
 
         gameController?.StartGameplay();
     }
@@ -296,13 +323,36 @@ public sealed class CutSceneManager : MonoBehaviour
     {
         navPath ??= new NavMeshPath();
 
-        if (!TrySampleNavMesh(playerRoot.position, out var start) || !TrySampleNavMesh(targetPosition, out var destination))
-            return new[] { playerRoot.position, targetPosition };
+        bool sampledStart = TrySampleNavMesh(playerRoot.position, out var start);
+        bool sampledDestination = TrySampleNavMesh(targetPosition, out var destination);
+        if (!sampledDestination)
+        {
+            if (!TryFindNearestNavMeshPoint(targetPosition, out destination))
+                return IsDirectCutSceneSegmentClear(playerRoot.position, targetPosition)
+                    ? new[] { playerRoot.position, targetPosition }
+                    : System.Array.Empty<Vector3>();
+        }
+
+        if (!sampledStart)
+        {
+            if (!TryFindNearestNavMeshPoint(playerRoot.position, out start)
+                || !IsDirectCutSceneSegmentClear(playerRoot.position, start))
+            {
+                return System.Array.Empty<Vector3>();
+            }
+        }
 
         if (!NavMesh.CalculatePath(start, destination, NavMesh.AllAreas, navPath) || navPath.corners.Length < 2)
-            return new[] { playerRoot.position, targetPosition };
+            return IsDirectCutSceneSegmentClear(playerRoot.position, destination)
+                ? new[] { playerRoot.position, destination }
+                : System.Array.Empty<Vector3>();
 
-        return navPath.corners;
+        if (sampledStart)
+            return navPath.corners;
+
+        var corners = new List<Vector3>(navPath.corners.Length + 1) { playerRoot.position };
+        corners.AddRange(navPath.corners);
+        return corners.ToArray();
     }
 
     private bool MoveAlongPath(Vector3[] corners, ref int cornerIndex, CutScenePoint point)
@@ -488,7 +538,7 @@ public sealed class CutSceneManager : MonoBehaviour
 
         var clip = typewriterClickClip != null ? typewriterClickClip : GetGeneratedTypewriterClickClip();
         if (clip != null)
-            source.PlayOneShot(clip, typewriterClickVolume);
+            source.PlayOneShot(clip, typewriterClickVolume / Mathf.Max(1f, typewriterClickVolumeDivider));
     }
 
     private AudioClip GetGeneratedTypewriterClickClip()
@@ -523,7 +573,10 @@ public sealed class CutSceneManager : MonoBehaviour
         voiceSource.Stop();
         voiceSource.clip = clip;
         if (clip != null)
+        {
+            AudioManager.Instance?.BlockGameplayAmbience(clip.length);
             voiceSource.Play();
+        }
     }
 
     private void StopVoice()
@@ -543,6 +596,31 @@ public sealed class CutSceneManager : MonoBehaviour
 
         sampledPosition = position;
         return false;
+    }
+
+    private bool TryFindNearestNavMeshPoint(Vector3 position, out Vector3 sampledPosition)
+    {
+        float baseRadius = Mathf.Max(navMeshSampleRadius, 0.5f);
+        float maxRadius = baseRadius * 8f;
+
+        for (float radius = baseRadius; radius <= maxRadius; radius += baseRadius)
+        {
+            if (NavMesh.SamplePosition(position, out var hit, radius, NavMesh.AllAreas))
+            {
+                sampledPosition = hit.position;
+                return true;
+            }
+        }
+
+        sampledPosition = position;
+        return false;
+    }
+
+    private static bool IsDirectCutSceneSegmentClear(Vector3 from, Vector3 to)
+    {
+        Vector3 origin = from + Vector3.up * 0.85f;
+        Vector3 target = to + Vector3.up * 0.85f;
+        return !Physics.Linecast(origin, target, ~0, QueryTriggerInteraction.Ignore);
     }
 
     private CutSceneSequence FindSequence(string cutSceneId)
@@ -574,6 +652,12 @@ public sealed class CutSceneManager : MonoBehaviour
         return string.Equals(sequence.CutSceneId, introCutSceneId, System.StringComparison.OrdinalIgnoreCase);
     }
 
+    private bool IsIntroWindowEntry(CutSceneSequence sequence)
+    {
+        return string.Equals(sequence.CutSceneId, introWindowEntryCutSceneId, System.StringComparison.OrdinalIgnoreCase)
+            || string.Equals(sequence.CutSceneId, DefaultIntroWindowEntryCutSceneId, System.StringComparison.OrdinalIgnoreCase);
+    }
+
     private static CutScenePoint FirstPlayablePoint(CutSceneSequence sequence)
     {
         foreach (var point in sequence.Points)
@@ -585,10 +669,37 @@ public sealed class CutSceneManager : MonoBehaviour
         return null;
     }
 
-    private static bool SkipPressed()
+    private bool TryConsumeSkipPressed()
     {
         var keyboard = Keyboard.current;
-        return keyboard != null && keyboard.spaceKey.wasPressedThisFrame;
+        if (keyboard == null)
+            return false;
+
+        if (SuppressSpaceSkipInput)
+        {
+            if (keyboard.spaceKey.isPressed)
+            {
+                waitForSkipRelease = true;
+                FpsAssetsInputs.Instance?.ClearGameplayInput();
+            }
+
+            return false;
+        }
+
+        if (waitForSkipRelease)
+        {
+            if (!keyboard.spaceKey.isPressed)
+                waitForSkipRelease = false;
+            return false;
+        }
+
+        if (Time.unscaledTime < nextSkipAllowedTime || !keyboard.spaceKey.wasPressedThisFrame)
+            return false;
+
+        nextSkipAllowedTime = Time.unscaledTime + skipInputCooldown;
+        waitForSkipRelease = true;
+        FpsAssetsInputs.Instance?.ClearGameplayInput();
+        return true;
     }
 
     private IEnumerator RotatePlayerToFlat(Vector3 targetPosition, CutScenePoint cameraPoint)

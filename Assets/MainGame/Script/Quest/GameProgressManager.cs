@@ -43,6 +43,8 @@ namespace FpsHorrorKit
 
             currentProgress = progress;
             OnProgressChanged?.Invoke(currentProgress);
+            if (currentProgress != GameProgress.PianoCompleted)
+                AudioManager.Instance?.RequestGameplayAmbienceMoment();
         }
 
         public void NotifyMusicSheetCollected()

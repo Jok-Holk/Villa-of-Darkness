@@ -8,8 +8,9 @@ public sealed class EndingCutsceneTrigger : MonoBehaviour
 
     [Header("Ending")]
     [SerializeField] private WellEndingTrigger ending;
-    [SerializeField] private FpsHorrorKit.GramophoneTapePlayer gramophoneTapePlayer;
     [SerializeField] private bool armedOnStart;
+    [SerializeField] private bool allowDuringEscapePhase = true;
+    [SerializeField] private bool hideMonstersBeforeEnding = true;
 
     private bool isArmed;
     private bool hasTriggered;
@@ -55,7 +56,7 @@ public sealed class EndingCutsceneTrigger : MonoBehaviour
 
     private void TryBeginEnding(Collider other)
     {
-        if (!isArmed || hasTriggered)
+        if (!CanTriggerEnding() || hasTriggered)
             return;
 
         var player = other.GetComponentInParent<FpsHorrorKit.FpsController>();
@@ -76,7 +77,36 @@ public sealed class EndingCutsceneTrigger : MonoBehaviour
             return;
 
         hasTriggered = true;
-        ending.BeginExitDoorEnding(gramophoneTapePlayer != null ? gramophoneTapePlayer.transform : null);
+        HideMonstersForEnding();
+        ending.BeginExitDoorEnding(null);
+    }
+
+    private bool CanTriggerEnding()
+    {
+        if (isArmed)
+            return true;
+
+        if (!allowDuringEscapePhase)
+            return false;
+
+        var controller = GameController.Instance;
+        return controller != null && controller.currentChapterPhase >= GameController.ChapterPhase.Escape;
+    }
+
+    private void HideMonstersForEnding()
+    {
+        if (!hideMonstersBeforeEnding)
+            return;
+
+        var monsters = FindObjectsByType<MonsterAI>(FindObjectsInactive.Include, FindObjectsSortMode.None);
+        for (int i = 0; i < monsters.Length; i++)
+        {
+            if (monsters[i] == null)
+                continue;
+
+            monsters[i].DisableHunt(true);
+            monsters[i].SetMeshVisible(false);
+        }
     }
 
     private void ResolveReferences()
@@ -88,8 +118,5 @@ public sealed class EndingCutsceneTrigger : MonoBehaviour
                 ? wellObject.GetComponent<WellEndingTrigger>()
                 : FindFirstObjectByType<WellEndingTrigger>(FindObjectsInactive.Include);
         }
-
-        if (gramophoneTapePlayer == null)
-            gramophoneTapePlayer = FindFirstObjectByType<FpsHorrorKit.GramophoneTapePlayer>(FindObjectsInactive.Include);
     }
 }

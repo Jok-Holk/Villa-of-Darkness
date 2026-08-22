@@ -64,11 +64,30 @@ namespace FpsHorrorKit
             Build();
             Close();
             if (PianoPuzzle.Instance != null)
+            {
                 PianoPuzzle.Instance.OnPianoCompleted += OnCompleted;
+                PianoPuzzle.Instance.OnPianoFailed += OnFailed;
+            }
+        }
+
+        private void OnDestroy()
+        {
+            if (PianoPuzzle.Instance == null)
+                return;
+
+            PianoPuzzle.Instance.OnPianoCompleted -= OnCompleted;
+            PianoPuzzle.Instance.OnPianoFailed -= OnFailed;
         }
 
         private void Update()
         {
+            if (GameController.IsCutsceneOrEndInputLocked())
+            {
+                if (IsOpen)
+                    Close();
+                return;
+            }
+
             if (!IsOpen || Keyboard.current == null)
                 return;
 
@@ -84,6 +103,9 @@ namespace FpsHorrorKit
 
         public void Open()
         {
+            if (GameController.Instance != null && !GameController.Instance.CanUseGameplayInput())
+                return;
+
             Build();
             root.SetActive(true);
             completed = false;
@@ -96,6 +118,11 @@ namespace FpsHorrorKit
             if (root != null)
                 root.SetActive(false);
             SetGameplayBlocked(false);
+        }
+
+        public void PlayPhysicalNoteAudio(string note)
+        {
+            PlayNoteAudio(note, FallbackPitchForNote(note));
         }
 
         private void Play(string note, float pitch)
@@ -205,16 +232,29 @@ namespace FpsHorrorKit
             Close();
         }
 
+        private void OnFailed()
+        {
+            if (!IsOpen)
+                return;
+
+            completed = false;
+            Close();
+        }
+
         private void SetGameplayBlocked(bool blocked)
         {
             if (blocked)
             {
+                AudioManager.Instance?.SetGameplayAmbienceSuppressed(true);
+                AudioManager.Instance?.SetBackgroundDuck(0f);
                 if (PlayerInteract.Instance != null) PlayerInteract.Instance.sendRaycast = false;
                 if (GameController.Instance != null) GameController.Instance.SetGameState(GameController.GameState.Puzzle);
                 else InteractCameraSettings.Instance?.ShowCursor();
                 return;
             }
 
+            AudioManager.Instance?.SetGameplayAmbienceSuppressed(false);
+            AudioManager.Instance?.ClearBackgroundDuck();
             if (GameController.Instance != null && GameController.Instance.currentGameState == GameController.GameState.Puzzle && !(InventoryUI.Instance != null && InventoryUI.Instance.IsOpen))
                 GameController.Instance.SetGameState(GameController.GameState.Gameplay);
             if (PlayerInteract.Instance != null) PlayerInteract.Instance.sendRaycast = true;
@@ -329,7 +369,7 @@ namespace FpsHorrorKit
             eventSystemObject.AddComponent<InputSystemUIInputModule>();
         }
 
-        private static float FallbackPitchForNote(string note)
+        public static float FallbackPitchForNote(string note)
         {
             return note switch
             {
