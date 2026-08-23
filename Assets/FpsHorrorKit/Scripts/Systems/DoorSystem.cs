@@ -134,12 +134,24 @@ namespace FpsHorrorKit
             }
         }
 
+        public void CloseFromStory()
+        {
+            lockedByGramophoneTape = false;
+
+            if (isOpen && isFinished)
+            {
+                StartCoroutine(OpenDoor(startRotation));
+                isOpen = false;
+            }
+        }
+
         public void UnlockAndOpenFromStory()
         {
             lockedByGramophoneTape = false;
             isLocked = false;
             hasKey = true;
             AudioManager.Instance?.PlayDoorUnlock();
+            AudioManager.Instance?.RequestGameplayAmbienceMoment();
             OnDoorUnlocked?.Invoke(this);
 
             if (!isOpen && isFinished)
@@ -147,6 +159,14 @@ namespace FpsHorrorKit
                 StartCoroutine(OpenDoor(endRotation, () => OnPlayerOpened?.Invoke(this)));
                 isOpen = true;
             }
+        }
+
+        public void UnlockFromStory()
+        {
+            lockedByGramophoneTape = false;
+            isLocked = false;
+            hasKey = true;
+            OnDoorUnlocked?.Invoke(this);
         }
 
         public void Highlight()
@@ -202,6 +222,7 @@ namespace FpsHorrorKit
             if (consumeKeyOnUse && equippedKey.itemType != ItemType.Key)
                 inventory.RemoveItem(equippedKey, 1);
             AudioManager.Instance?.PlayDoorUnlock();
+            AudioManager.Instance?.RequestGameplayAmbienceMoment();
             InteractMessageScript.Instance?.ShowMessage("Đã mở khóa cửa.");
             OnDoorUnlocked?.Invoke(this);
             return true;
@@ -231,19 +252,36 @@ namespace FpsHorrorKit
 
         public static void LockDoorsMarkedForGramophoneTape()
         {
-            gramophoneTapeLockActive = true;
+            CloseDoorsMarkedForGramophoneTape();
+        }
+
+        public static void CloseDoorsMarkedForGramophoneTape()
+        {
+            gramophoneTapeLockActive = false;
 
             var doors = FindObjectsByType<DoorSystem>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
             foreach (var door in doors)
             {
                 if (door != null && door.closeAndLockWhenGramophoneTapePlays)
-                    door.LockFromGramophoneTape();
+                    door.CloseFromGramophoneTape();
             }
         }
 
-        private void LockFromGramophoneTape()
+        private void CloseFromGramophoneTape()
         {
-            CloseAndLockFromStory();
+            CloseFromStory();
+        }
+
+        public static void CloseAllDoorsFromStory()
+        {
+            gramophoneTapeLockActive = false;
+
+            var doors = FindObjectsByType<DoorSystem>(FindObjectsInactive.Exclude, FindObjectsSortMode.None);
+            foreach (var door in doors)
+            {
+                if (door != null)
+                    door.CloseFromStory();
+            }
         }
 
         private IEnumerator SubscribeToPianoCompletion()
@@ -328,13 +366,16 @@ namespace FpsHorrorKit
 
             isLocked = false;
             hasKey = true;
-            AudioManager.Instance?.PlayDoorUnlock();
             OnDoorUnlocked?.Invoke(this);
 
             if (!isOpen && isFinished)
             {
-                StartCoroutine(OpenDoor(endRotation));
+                StartCoroutine(OpenDoor(endRotation, () => AudioManager.Instance?.AllowSanityWarningAfterPianoDoorOpened(true)));
                 isOpen = true;
+            }
+            else
+            {
+                AudioManager.Instance?.AllowSanityWarningAfterPianoDoorOpened(true);
             }
         }
 

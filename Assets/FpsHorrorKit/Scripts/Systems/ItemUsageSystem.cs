@@ -26,6 +26,17 @@ namespace FpsHorrorKit
 
         private FpsAssetsInputs _input;
         private bool isFirstCameraOpen = false;
+        private bool cutsceneFlashlightForced;
+        private bool savedCutsceneFlashlightState;
+        private bool savedLanternActive;
+        private bool savedLanternCanvasActive;
+        private bool savedLightActive;
+        private bool savedHasLantern;
+        private bool savedCanUseLantern;
+        private bool savedUsingLantern;
+        private bool savedLanternEnergyEnough;
+
+        public bool IsCutsceneFlashlightForced => cutsceneFlashlightForced;
 
         private void Awake()
         {
@@ -54,12 +65,21 @@ namespace FpsHorrorKit
 
         private void Update()
         {
+            if (global::GameController.IsGameplayInputLocked())
+            {
+                _input?.ClearGameplayInput();
+                return;
+            }
+
             CheckInputSelect();
             CheckInputUse();
         }
 
         private void CheckInputSelect()
         {
+            if (_input == null)
+                return;
+
             if (isAlbumActive) { return; }
 
             if (_input.itemIndex == 1 && _input.isPressed)
@@ -96,6 +116,9 @@ namespace FpsHorrorKit
 
         public void CheckInputUse()
         {
+            if (_input == null)
+                return;
+
             if (_input.useFlashlight)
             {
                 UseFlashlight();
@@ -208,6 +231,68 @@ namespace FpsHorrorKit
                 if (playToggleSound)
                     AudioManager.Instance?.PlayFlashlightToggle();
             }
+        }
+
+        public void SetCutsceneFlashlightForced(bool forced)
+        {
+            if (forced)
+            {
+                ForceCutsceneFlashlightOn();
+                return;
+            }
+
+            RestoreCutsceneFlashlight();
+        }
+
+        private void ForceCutsceneFlashlightOn()
+        {
+            if (lantern == null || _lanternCanvas == null || itemLantern == null || !EnsureFlashlightLight())
+                return;
+
+            if (!cutsceneFlashlightForced)
+            {
+                savedCutsceneFlashlightState = true;
+                savedLanternActive = lantern.activeSelf;
+                savedLanternCanvasActive = _lanternCanvas.activeSelf;
+                savedLightActive = IsFlashlightLightActive();
+                savedHasLantern = itemLantern.hasItem;
+                savedCanUseLantern = itemLantern.canUseItem;
+                savedUsingLantern = itemLantern.isUsingItem;
+                savedLanternEnergyEnough = itemLantern.isEnergyEnough;
+            }
+
+            cutsceneFlashlightForced = true;
+            itemLantern.hasItem = true;
+            itemLantern.canUseItem = true;
+            itemLantern.isUsingItem = true;
+            itemLantern.isEnergyEnough = itemLantern.energyLevel > 0f;
+
+            lantern.SetActive(false);
+            _lanternCanvas.SetActive(false);
+            SetFlashlightLightActive(true);
+        }
+
+        private void RestoreCutsceneFlashlight()
+        {
+            if (!cutsceneFlashlightForced)
+                return;
+
+            cutsceneFlashlightForced = false;
+
+            if (lantern != null)
+                lantern.SetActive(savedCutsceneFlashlightState && savedLanternActive);
+            if (_lanternCanvas != null)
+                _lanternCanvas.SetActive(savedCutsceneFlashlightState && savedLanternCanvasActive);
+            if (itemLantern != null)
+            {
+                itemLantern.hasItem = savedCutsceneFlashlightState && savedHasLantern;
+                itemLantern.canUseItem = savedCutsceneFlashlightState && savedCanUseLantern;
+                itemLantern.isUsingItem = savedCutsceneFlashlightState && savedUsingLantern;
+                itemLantern.isEnergyEnough = savedCutsceneFlashlightState && savedLanternEnergyEnough;
+            }
+
+            SetFlashlightLightActive(savedCutsceneFlashlightState && savedLightActive);
+            savedCutsceneFlashlightState = false;
         }
 
         public void SetFlashlightLightActive(bool active)
