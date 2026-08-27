@@ -1,5 +1,6 @@
 namespace FpsHorrorKit
 {
+    using System;
     using TMPro;
     using UnityEngine;
     using UnityEngine.UI;
@@ -19,11 +20,13 @@ namespace FpsHorrorKit
         public bool showHiglight = true;
 
         [SerializeField] private bool canDragDoor;
+        [SerializeField] private bool blockInteractionsWhenP2LampOff = true;
 
         private FpsAssetsInputs input;
         private IInteractable currentInteractable;
         private GameObject defaultHighlightObj;
         private string defaultInteractText;
+        private global::MainGame.P2.P2OilLamp p2OilLamp;
 
         private void Awake()
         {
@@ -54,6 +57,13 @@ namespace FpsHorrorKit
             if (global::GameController.IsGameplayInputLocked())
             {
                 input?.ClearGameplayInput();
+                UnHighlight();
+                return;
+            }
+
+            if (blockInteractionsWhenP2LampOff && IsP2LampOff())
+            {
+                sendRaycast = true;
                 UnHighlight();
                 return;
             }
@@ -93,32 +103,45 @@ namespace FpsHorrorKit
             }
 
             var ray = Camera.main.ScreenPointToRay(new Vector3(Screen.width / 2f, Screen.height / 2f, 0f));
-            if (!Physics.Raycast(ray, out var hit, interactRange, ~0, QueryTriggerInteraction.Ignore))
+            var hits = Physics.RaycastAll(ray, interactRange, ~0, QueryTriggerInteraction.Ignore);
+            if (hits.Length == 0)
             {
                 UnHighlight();
                 return;
             }
 
-            var interactable = hit.collider.GetComponent<IInteractable>() ?? hit.collider.GetComponentInParent<IInteractable>();
-            if (interactable == null)
+            Array.Sort(hits, (a, b) => a.distance.CompareTo(b.distance));
+            foreach (var hit in hits)
             {
-                UnHighlight();
+                var filter = hit.collider.GetComponent<IInteractionRaycastFilter>() ?? hit.collider.GetComponentInParent<IInteractionRaycastFilter>();
+                if (filter != null && !filter.BlocksInteractionRaycast(hit.collider))
+                    continue;
+
+                var interactable = hit.collider.GetComponent<IInteractable>() ?? hit.collider.GetComponentInParent<IInteractable>();
+                if (interactable == null)
+                {
+                    UnHighlight();
+                    return;
+                }
+
+                if (currentInteractable != null && currentInteractable != interactable)
+                    currentInteractable.UnHighlight();
+
+                currentInteractable = interactable;
+                canDragDoor = CanHoldInteract(currentInteractable);
+                Highlight();
+
+                if (input != null && input.interact && higlightObject != null && higlightObject.activeSelf)
+                {
+                    currentInteractable.Interact();
+                    input.interact = false;
+                    UnHighlight();
+                }
+
                 return;
             }
 
-            if (currentInteractable != null && currentInteractable != interactable)
-                currentInteractable.UnHighlight();
-
-            currentInteractable = interactable;
-            canDragDoor = CanHoldInteract(currentInteractable);
-            Highlight();
-
-            if (input != null && input.interact && higlightObject != null && higlightObject.activeSelf)
-            {
-                currentInteractable.Interact();
-                input.interact = false;
-                UnHighlight();
-            }
+            UnHighlight();
         }
 
         private void OnDrawGizmosSelected()
@@ -193,6 +216,30 @@ namespace FpsHorrorKit
         private static bool CanHoldInteract(IInteractable interactable)
         {
             return interactable is DragToOpenSystem || interactable is DrawerSystem;
+        }
+
+        private bool IsP2LampOff()
+        {
+            if (p2OilLamp == null || !p2OilLamp.ControlsGameplaySystems)
+                p2OilLamp = FindGameplayP2OilLamp();
+
+            return p2OilLamp != null && !p2OilLamp.IsLit;
+        }
+
+        private static global::MainGame.P2.P2OilLamp FindGameplayP2OilLamp()
+        {
+            global::MainGame.P2.P2OilLamp fallback = null;
+            foreach (var lamp in FindObjectsByType<global::MainGame.P2.P2OilLamp>(FindObjectsInactive.Include, FindObjectsSortMode.None))
+            {
+                if (lamp == null)
+                    continue;
+
+                fallback ??= lamp;
+                if (lamp.ControlsGameplaySystems)
+                    return lamp;
+            }
+
+            return fallback;
         }
     }
 }
