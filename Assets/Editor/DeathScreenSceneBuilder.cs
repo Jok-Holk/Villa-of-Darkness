@@ -62,7 +62,7 @@ public static class DeathScreenSceneBuilder
         AddText(
             root,
             "DateLine",
-            "\u0110\u00c0 L\u1ea0T TH\u1ee8 B\u1ea2O  |  14/3/2000",
+            "ĐÀ LẠT THỨ BẢO  |  14/3/2000",
             26,
             new Color(0.72f, 0.65f, 0.52f, 0.88f),
             TextAlignmentOptions.Center,
@@ -74,7 +74,7 @@ public static class DeathScreenSceneBuilder
         var title = AddText(
             root,
             "Title",
-            "PH\u00d3NG VI\u00caN M\u1ea4T T\u00cdCH T\u1ea0I BI\u1ec6T TH\u1ef0 \u0110\u1ed6 GIA",
+            "SINH VIÊN MẤT TÍCH TẠI BIỆT THỰ ĐỖ GIA",
             74,
             new Color(0.95f, 0.88f, 0.68f, 1f),
             TextAlignmentOptions.Center,
@@ -92,7 +92,7 @@ public static class DeathScreenSceneBuilder
         var subtitle = AddText(
             root,
             "ReportLine",
-            "NGU\u1ed2N TIN T\u1eea C\u00d4NG AN L\u00c0M D\u1ea4Y L\u00caN NGHI V\u1ea4N\nTR\u01af\u1edcNG H\u1ee2P M\u1ea4T T\u00cdCH B\u00cd \u1ea8N V\u00c0O \u0110\u00caM 13/3.",
+            "NGUỒN TIN TỪ CÔNG AN LÀM DẤY LÊN NGHI VẤN\nTRƯỜNG HỢP MẤT TÍCH BÍ ẨN VÀO ĐÊM 13/3.",
             25,
             new Color(0.74f, 0.67f, 0.52f, 0.9f),
             TextAlignmentOptions.Center,
@@ -106,7 +106,7 @@ public static class DeathScreenSceneBuilder
         var nameLine = AddText(
             root,
             "MissingName",
-            "NGUY\u1ec4N MINH KHOA, 1979 - 2000...",
+            "NGUYỄN MINH KHOA, 1979 - 2000...",
             42,
             new Color(0.95f, 0.02f, 0.02f, 1f),
             TextAlignmentOptions.Center,

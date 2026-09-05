@@ -56,6 +56,7 @@ public class GameController : MonoBehaviour
     public GameObject deathUI;
     public float deathUIShowDelay = 1.5f;
     [SerializeField, Min(0f)] private float jumpscareAutoRespawnDelay = 2.5f;
+    private DeathScreenEffects deathUIEffects;
 
     [Header("Ending")]
     public GameObject endingUI;
@@ -531,8 +532,7 @@ public class GameController : MonoBehaviour
             pauseUI.SetActive(false);
         if (settingsUI != null)
             settingsUI.SetActive(false);
-        if (deathUI != null)
-            deathUI.SetActive(false);
+        HideDeathUI();
 
         HideFirstPersonFlashlightViewModel();
         SetGameState(GameState.Dead);
@@ -572,8 +572,7 @@ public class GameController : MonoBehaviour
     public void HideEndingDeathScreenPresentation()
     {
         endingDeathScreenPresentation = false;
-        if (deathUI != null)
-            deathUI.SetActive(false);
+        HideDeathUI();
         SetCursor(false);
     }
 
@@ -588,18 +587,27 @@ public class GameController : MonoBehaviour
     {
         ResolveDeathUI();
         if (deathUI != null) deathUI.SetActive(true);
+        deathUIEffects?.Show();
         SetCursor(true);
+    }
+
+    private void HideDeathUI()
+    {
+        deathUIEffects?.Hide();
+        if (deathUI != null) deathUI.SetActive(false);
     }
 
     private void ResolveDeathUI()
     {
-        if (deathUI != null)
-            return;
+        if (deathUI == null)
+        {
+            deathUI = FindSceneGameObject("DeathUI");
+            if (deathUI != null)
+                deathUI.SetActive(false);
+        }
 
-        deathUI = FindSceneGameObject("DeathUI");
-
-        if (deathUI != null)
-            deathUI.SetActive(false);
+        if (deathUI != null && deathUIEffects == null)
+            deathUIEffects = deathUI.GetComponent<DeathScreenEffects>();
     }
 
     private static GameObject FindSceneGameObject(string objectName)
